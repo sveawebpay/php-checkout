@@ -13,6 +13,8 @@ if (!defined('SVEA_REQUEST_DIR'))
 //
 foreach (glob(SVEA_REQUEST_DIR . "/Connector/*.php") as $config)
     include_once($config);
+foreach (glob(SVEA_REQUEST_DIR . "/Order/*.php") as $config)
+    include_once($config);
 //foreach (glob(SVEA_REQUEST_DIR . "/BuildOrder/Validator/*.php") as $config)
 //    include_once($config);
 //foreach (glob(SVEA_REQUEST_DIR . "/BuildOrder/RowBuilders/*.php") as $config)
