@@ -12,4 +12,8 @@ class SveaCheckoutOrder {
     public function __construct(SveaCurlHandler $connector) {
         $this->connector = $connector;
     }
+
+    public function create(array $data) {
+        $this->connector->apply('POST',$data);
+    }
 }
