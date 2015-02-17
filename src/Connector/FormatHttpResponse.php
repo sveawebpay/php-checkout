@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * TODO: use this class?
  * Format http response to readable format
  */
 class FormatHttpResponse {

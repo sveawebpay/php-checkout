@@ -4,8 +4,15 @@ require_once $root . '/../../src/Includes.php';
 
 class SveaConnector {
 
+    public static $sveaCurlHandler;
+
     public static function create() {
-        return new SveaCurlHandler();
+        self::$sveaCurlHandler = new SveaCurlHandler();
+        return  self::$sveaCurlHandler;
+    }
+
+    public static function getOrderUrl() {
+        return self::$sveaCurlHandler->getOrderUrl();
     }
 
 }

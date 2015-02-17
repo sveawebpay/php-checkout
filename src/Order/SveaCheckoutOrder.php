@@ -15,8 +15,14 @@ class SveaCheckoutOrder {
     /**
      *
      * @param type array of data
+     * @return type http info
      */
     public function create($data) {
         return $this->connector->apply('POST',$data);
+    }
+
+    public function get() {
+        $url = $this->connector->getOrderUrl();
+        return $this->connector->apply('GET', $url);
     }
 }
