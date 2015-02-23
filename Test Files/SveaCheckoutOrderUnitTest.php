@@ -5,12 +5,6 @@ require_once $root . '/../src/Includes.php';
 
 class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
 
-    function test_get_order_object() {
-        $connector = SveaConnector::create();
-        $order = new SveaCheckoutOrder($connector);
-        $this->assertEquals(get_class($order),'SveaCheckoutOrder');
-    }
-
     private function get_request_data_array() {
         $data["merchant"] = array(
             "id" => 24,
@@ -43,12 +37,18 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         return $data;
     }
 
+     function test_get_order_object() {
+        $connector = SveaConnector::create();
+        $order = new SveaCheckoutOrder($connector);
+        $this->assertEquals(get_class($order),'SveaCheckoutOrder');
+    }
+
     function test_create() {
         $data = $this->get_request_data_array();
         $connector = SveaConnector::create();
         $order = new SveaCheckoutOrder($connector);
         $curl_info = $order->create($data);
-
+        $this->assertEquals($curl_info['http_code'],201);//Statuscode 201 means success
 //      Array
 //(
 //    [url] => http://sveawebpaycheckoutws.dev.svea.com/checkout/orders
@@ -81,7 +81,6 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
 //    [local_port] => 60983
 //    [redirect_url] =>
 //)
-        $this->assertEquals($curl_info['http_code'],201);//Statuscode 201 means success
     }
 
     function test_get_orderid_from_http_header_response() {
@@ -90,15 +89,20 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $order = new SveaCheckoutOrder($connector);
         $order->create($data);
         $orderUrl = SveaConnector::getOrderUrl();
-        print_r($orderUrl);
-         $this->assertEquals('1',201);
+        $http = strpos($orderUrl, 'http://');//is http
+        $service = strpos($orderUrl, 'sveawebpaycheckoutws.dev.svea.com/checkout/orders');
+        print_r($http);
+        print_r(' : ');
+        print_r($service);
+         $this->assertEquals(0,$http);
+         $this->assertEquals(1,$service);
     }
-
-    function test_get_order() {
-        $data = $this->get_request_data_array();
-        $connector = SveaConnector::create();
-        $order = new SveaCheckoutOrder($connector);
-        $order->create($data);
-        $order->get();
-    }
+//
+//    function test_get_order() {
+//        $data = $this->get_request_data_array();
+//        $connector = SveaConnector::create();
+//        $order = new SveaCheckoutOrder($connector);
+//        $order->create($data);
+//        $order->get();
+//    }
 }

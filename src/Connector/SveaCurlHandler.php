@@ -66,8 +66,8 @@ class SveaCurlHandler {
             curl_setopt($this->handler, CURLOPT_RETURNTRANSFER, true);//set to get response
             curl_setopt($this->handler, CURLOPT_POSTFIELDS, $json);
             //process the headers to readable format. TODO: Need it?
-//            $curlHeaders = new FormatHttpResponse();
-//            curl_setopt($this->handler, CURLOPT_HEADERFUNCTION,  array(&$curlHeaders, 'processHeader'));
+            $curlHeaders = new FormatHttpResponse();
+            curl_setopt($this->handler, CURLOPT_HEADERFUNCTION,  array(&$curlHeaders, 'processHeader'));
 
             $response = $this->execute();
             $info = $this->getInfo();
@@ -79,7 +79,9 @@ class SveaCurlHandler {
                 "Connection to '{$this->svea_connection_url}' failed: {$error}"
                 );
             }
-            $this->orderUrl = $response;//-> get url
+
+            $this->orderUrl = $curlHeaders->getHeaderValue('Location');//-> get url
+//            print_r($this->orderUrl);
             return $info;
 
 

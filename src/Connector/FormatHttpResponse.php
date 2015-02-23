@@ -38,8 +38,20 @@ class FormatHttpResponse {
         $key = substr($header, 0, $pos);
         $value = trim(substr($header, $pos+1));
         $this->headers[$key] = trim($value);
-
         return strlen($header);
+        }
+    }
+
+        /**
+     * Gets the given key in header response.
+     * @param type $name Description
+     * @return header key
+     */
+    public function getHeaderValue($key = NULL) {
+        foreach ($this->headers as $headerkey => $value) {
+            if ($key == $headerkey) {
+                return $value;
+            }
         }
     }
 
@@ -48,7 +60,7 @@ class FormatHttpResponse {
      *
      * @return array
      */
-    public function getHeaders()
+    public function getHeaders($key = NULL)
     {
         return $this->headers;
     }
