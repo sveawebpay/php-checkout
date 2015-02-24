@@ -6,8 +6,7 @@ require_once $root . '/../src/Includes.php';
 class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
 
     private function get_request_data_array() {
-        $data["merchant"] = array(
-            "id" => 24,
+        $data["MerchantSettings"] = array(
             "termsuri" => "http://svea.com/terms.aspx",
             "checkouturi" => "https://svea.com/checkout.aspx",
             "confirmationuri" => "https://svea.com/thankyou.aspx?sid=123&svea_order={checkout.order.uri}",
@@ -33,6 +32,8 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         )
         );
         $data["cart"] = $cart;
+        $data["Locale"] = 'Sv';
+        $data["MerchantId"] = 1;
 
         return $data;
     }
@@ -48,39 +49,8 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $connector = SveaConnector::create();
         $order = new SveaCheckoutOrder($connector);
         $curl_info = $order->create($data);
-        $this->assertEquals($curl_info['http_code'],201);//Statuscode 201 means success
-//      Array
-//(
-//    [url] => http://sveawebpaycheckoutws.dev.svea.com/checkout/orders
-//    [content_type] => application/json; charset=utf-8
-//    [http_code] => 500
-//    [header_size] => 325
-//    [request_size] => 716
-//    [filetime] => -1
-//    [ssl_verify_result] => 0
-//    [redirect_count] => 0
-//    [total_time] => 0.062
-//    [namelookup_time] => 0
-//    [connect_time] => 0
-//    [pretransfer_time] => 0
-//    [size_upload] => 575
-//    [size_download] => 7377
-//    [speed_download] => 118983
-//    [speed_upload] => 9274
-//    [download_content_length] => 7377
-//    [upload_content_length] => 575
-//    [starttransfer_time] => 0.062
-//    [redirect_time] => 0
-//    [certinfo] => Array
-//        (
-//        )
-//
-//    [primary_ip] => 10.111.50.100
-//    [primary_port] => 80
-//    [local_ip] => 127.0.0.1
-//    [local_port] => 60983
-//    [redirect_url] =>
-//)
+
+        $this->assertEquals(201, $curl_info['http_code']);//Statuscode 201 means success
     }
 
     function test_get_orderid_from_http_header_response() {
@@ -91,18 +61,17 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $orderUrl = SveaConnector::getOrderUrl();
         $http = strpos($orderUrl, 'http://');//is http
         $service = strpos($orderUrl, 'sveawebpaycheckoutws.dev.svea.com/checkout/orders');
-        print_r($http);
-        print_r(' : ');
-        print_r($service);
+
          $this->assertEquals(0,$http);
-         $this->assertEquals(1,$service);
+         $this->assertEquals(7,$service);//what comes after http://
     }
-//
-//    function test_get_order() {
-//        $data = $this->get_request_data_array();
-//        $connector = SveaConnector::create();
-//        $order = new SveaCheckoutOrder($connector);
-//        $order->create($data);
-//        $order->get();
-//    }
+
+    function test_get_order() {
+        $data = $this->get_request_data_array();
+        $connector = SveaConnector::create();
+        $order = new SveaCheckoutOrder($connector);
+        $order->create($data);
+        $curl_info = $order->get();
+         $this->assertEquals(201, $curl_info['http_code']);//Statuscode 201 means success
+    }
 }
