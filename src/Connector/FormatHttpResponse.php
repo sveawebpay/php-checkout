@@ -11,7 +11,10 @@ class FormatHttpResponse {
     *
     * @var array
     */
-   protected $headers;
+   private $headers;
+   private $request;
+   private $status;
+   private $data;
 
    /**
      * Initializes a new instance of the HTTP cURL class.
@@ -19,6 +22,31 @@ class FormatHttpResponse {
     public function __construct() {
         $this->headers = array();
     }
+
+
+
+//    public function handleResponse( $request, array $headers, $status, $data) {
+    public function handleResponse( $request, $status, $data) {
+         $this->request = $request;
+//        $this->headers = array();
+//        foreach ($headers as $key => $value) {
+//            $this->headers[strtolower($key)] = $value;
+//        }
+        $this->status = $status;
+        $this->data = $data;
+
+        return $this;
+    }
+     public function getStatus() {
+        return $this->status;
+    }
+    public function getRequest() {
+        return $this->request;
+    }
+    public function getData() {
+        return $this->data;
+    }
+
     /**
      * Set headers array
      * @param type curl result
