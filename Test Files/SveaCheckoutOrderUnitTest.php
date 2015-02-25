@@ -58,7 +58,7 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $connector = SveaConnector::create();
         $order = new SveaCheckoutOrder($connector);
         $order->create($data);
-        $orderUrl = SveaConnector::getOrderUrl();
+        $orderUrl = $order->getLocation();
         $http = strpos($orderUrl, 'http://');//is http
         $service = strpos($orderUrl, 'sveawebpaycheckoutws.dev.svea.com/checkout/orders');
 

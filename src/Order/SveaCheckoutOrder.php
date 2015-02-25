@@ -11,7 +11,7 @@ class SveaCheckoutOrder {
     private $location;
 
 
-    public function __construct(SveaCurlHandler $connector, $uri = null) {
+    public function __construct(SveaCheckoutConnector $connector, $uri = null) {
         $this->connector = $connector;
          if ($uri !== null) {
             $this->setLocation($uri);
@@ -22,8 +22,7 @@ class SveaCheckoutOrder {
      *
      * @return string
      */
-    public function getLocation()
-    {
+    public function getLocation() {
         return $this->location;
     }
 
@@ -34,8 +33,7 @@ class SveaCheckoutOrder {
      *
      * @return void
      */
-    public function setLocation($location)
-    {
+    public function setLocation($location) {
         $this->location = strval($location);
     }
     /**
@@ -44,11 +42,10 @@ class SveaCheckoutOrder {
      * @return type http info
      */
     public function create($data) {
-        return $this->connector->apply('POST',  $this, $data);
+        return $this->connector->apply('POST', $this, $data);
     }
 
     public function get() {
-        $url = $this->connector->getOrderUrl();
 //        $resource = $this->connector->getResource();
 //        print_r(gettype($resource));
         return $this->connector->apply('GET', $this, $this->location);

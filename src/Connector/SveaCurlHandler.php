@@ -7,9 +7,11 @@ require_once $root . '/../../src/Includes.php';
  */
 class SveaCurlHandler {
 
-    private $orderUrl;
+//    private $orderUrl;
 
-    public $svea_connection_url = 'http://sveawebpaycheckoutws.dev.svea.com/checkout/orders';
+    private $location;
+
+//    public $svea_connection_url = 'http://sveawebpaycheckoutws.dev.svea.com/checkout/orders';
     /**
      * cUrl handler
      * @var resource
@@ -27,8 +29,12 @@ class SveaCurlHandler {
      */
     public function __construct() {
         $this->handler = curl_init();
+//        return $this->handler;
+    }
+    public function getResource() {
         return $this->handler;
     }
+
     /**
      * Do curl_exec
      * @return mixed response
@@ -52,57 +58,28 @@ class SveaCurlHandler {
         return curl_getinfo($this->handler);
     }
 
-    public function getOrderUrl() {
-        return $this->orderUrl;
+//    public function getConnectionUrl() {
+//        return $this->svea_connection_url;
+//    }
+
+    /**
+     * Get the URL of the resource
+     *
+     * @return string
+     */
+    public function getLocation() {
+        return $this->location;
     }
 
-//    public function getResource() {
-//        return $this->handler;
-//    }
+    /**
+     * Set the URL of the resource
+     *
+     * @param string $location URL of the resource
+     *
+     * @return void
+     */
+    public function setLocation($location) {
+        $this->location = strval($location);
+    }
 
-//    public function apply($method, $data = NULL) {
-////        $this->handler = $resource;
-//                // Set HTTP Headers wich ones to set?
-////        $request->setHeader('User-Agent', (string)$this->userAgent());
-////        $request->setHeader('Authorization', "Svea {$digest}");
-////        $request->setHeader('Accept', $resource->getContentType());
-////        if (strlen($payload) > 0) {
-////            $request->setHeader('Content-Type', $resource->getContentType());
-////            $request->setData($payload);
-////        }
-//        //create
-//        if ($method == 'POST') {
-////             print_r(gettype($this->handler));
-//            $json = json_encode($data);
-//            curl_setopt($this->handler, CURLOPT_POSTFIELDS, $json);
-//            curl_setopt($this->handler, CURLOPT_POST, true);
-//            curl_setopt($this->handler, CURLOPT_URL, $this->svea_connection_url);
-//        } elseif ($method == 'GET') {
-////            print_r(gettype($this->handler));
-//             curl_setopt($this->handler, CURLOPT_URL, $data);
-//        }
-//        curl_setopt($this->handler,CURLOPT_HTTPHEADER , array('Content-Type: application/json'));
-//        curl_setopt($this->handler, CURLOPT_HEADER, true);//to get headers in response
-//
-//
-//        curl_setopt($this->handler, CURLOPT_RETURNTRANSFER, true);//set to get response
-//
-//        //process the headers to readable format. TODO: Need it?
-//        $curlHeaders = new FormatHttpResponse();
-//        curl_setopt($this->handler, CURLOPT_HEADERFUNCTION,  array(&$curlHeaders, 'processHeader'));
-//
-//        $response = $this->execute();
-//        $info = $this->getInfo();
-//        $error = $this->getError();
-//        $this->close();
-//
-//        if ($response === false || $info === false) {
-//            throw new Exception(
-//            "Connection to '{$this->svea_connection_url}' failed: {$error}"
-//            );
-//        }
-//
-//        $this->orderUrl = $curlHeaders->getHeaderValue('Location');
-//        return $info;
-//    }
 }
