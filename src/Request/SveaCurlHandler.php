@@ -6,14 +6,6 @@ require_once $root . '/../../src/Includes.php';
  * Handle curl commands
  */
 class SveaCurlHandler {
-
-//    private $orderUrl;
-
-    private $location;
-
-    private $_data;
-
-//    public $svea_connection_url = 'http://sveawebpaycheckoutws.dev.svea.com/checkout/orders';
     /**
      * cUrl handler
      * @var resource
@@ -31,8 +23,11 @@ class SveaCurlHandler {
      */
     public function __construct() {
         $this->handler = curl_init();
-//        return $this->handler;
     }
+    /**
+     * Get curl resource object
+     * @return type
+     */
     public function getResource() {
         return $this->handler;
     }
@@ -51,44 +46,20 @@ class SveaCurlHandler {
     public function close() {
         curl_close($this->handler);
     }
-
+    /**
+     * Get Curl Error
+     * @return type
+     */
     public function getError() {
          return curl_error($this->handler);
     }
-
+    /**
+     * Get Curl Info
+     * @return type
+     */
     public function getInfo() {
         return curl_getinfo($this->handler);
     }
 
-//    public function getConnectionUrl() {
-//        return $this->svea_connection_url;
-//    }
-
-//    /**
-//     * Get the URL of the resource
-//     *
-//     * @return string
-//     */
-//    public function getLocation() {
-//        return $this->location;
-//    }
-//
-//    /**
-//     * Set the URL of the resource
-//     *
-//     * @param string $location URL of the resource
-//     *
-//     * @return void
-//     */
-//    public function setLocation($location) {
-//        $this->location = strval($location);
-//    }
-//    /**
-//     * Replace data in curl object with order data
-//     * @param array $data
-//     */
-//    public function parse(array $data) {
-//        $this->_data = $data;
-//    }
 
 }

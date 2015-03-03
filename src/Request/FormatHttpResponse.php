@@ -41,16 +41,6 @@ class FormatHttpResponse {
             default:
                 break;
         }
-        //TODO: sätta in en switch beroende på vilket svar det är vi skall behandla?
-         // Update Data on resource
-//            $json = json_decode($result->getData(), true);
-//            if ($json === null) {
-//                throw new Klarna_Checkout_ConnectorException(
-//                    'Bad format on response content.',
-//                    -2
-//                );
-//            }
-//            $resource->parse($json);
 
          $this->request = $resource;
 //        $this->headers = array();
