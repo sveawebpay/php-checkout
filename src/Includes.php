@@ -11,7 +11,7 @@ if (!defined('SVEA_REQUEST_DIR'))
 //include_once(SVEA_REQUEST_DIR . "/WebPayAdmin.php");
 //include_once(SVEA_REQUEST_DIR . "/WebPayItem.php");
 //
-foreach (glob(SVEA_REQUEST_DIR . "/Connector/*.php") as $config)
+foreach (glob(SVEA_REQUEST_DIR . "/Request/*.php") as $config)
     include_once($config);
 foreach (glob(SVEA_REQUEST_DIR . "/Order/*.php") as $config)
     include_once($config);
