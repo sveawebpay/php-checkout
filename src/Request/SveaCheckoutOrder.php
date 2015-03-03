@@ -1,5 +1,8 @@
 <?php
-
+/**
+ * Do REST calls for the order
+ * implements ArrayAccess interface to access the data containing the order as Array
+ */
 class SveaCheckoutOrder implements ArrayAccess {
 
     /**
@@ -8,35 +11,32 @@ class SveaCheckoutOrder implements ArrayAccess {
      */
     public $connector;
 
-    private $location;
+    private $orderUrl;
 
-    private $_data = array();
+    private $data = array();
 
 
-    public function __construct(SveaCheckoutConnector $connector, $uri = null) {
+    public function __construct(SveaCheckoutConnector $connector) {
         $this->connector = $connector;
-         if ($uri !== null) {
-            $this->setLocation($uri);
-        }
     }
     /**
      * Get the URL of the resource
      *
      * @return string
      */
-    public function getLocation() {
-        return $this->location;
+    public function getOrderUrl() {
+        return $this->orderUrl;
     }
 
     /**
      * Set the URL of the resource
      *
-     * @param string $location URL of the resource
+     * @param string $orderUrl URL of the resource
      *
      * @return void
      */
-    public function setLocation($location) {
-        $this->location = strval($location);
+    public function setOrderUrl($orderUrl) {
+        $this->orderUrl = strval($orderUrl);
     }
     /**
      *
@@ -48,13 +48,11 @@ class SveaCheckoutOrder implements ArrayAccess {
     }
 
     public function get() {
-//        $resource = $this->connector->getResource();
-//        print_r(gettype($resource));
-        return $this->connector->apply('GET', $this, $this->location);
+        return $this->connector->apply('GET', $this, $this->orderUrl);
     }
 
     public function parse(array $data) {
-        $this->_data = $data;
+        $this->data = $data;
     }
     /**
      * Abstract ArrayAccess method
@@ -62,7 +60,7 @@ class SveaCheckoutOrder implements ArrayAccess {
      * @return type
      */
     public function offsetExists($key) {
-         return array_key_exists($key, $this->_data);
+         return array_key_exists($key, $this->data);
     }
 
     /**
@@ -76,7 +74,7 @@ class SveaCheckoutOrder implements ArrayAccess {
             throw new Exception("Key must be string");
         }
 
-        return $this->_data[$key];
+        return $this->data[$key];
     }
     /**
      * Abstract ArrayAccess method
@@ -97,11 +95,11 @@ class SveaCheckoutOrder implements ArrayAccess {
     }
     /**
      * Abstract ArrayAccess method
-     * @param type $offset
+     * @param type $key
      * @throws Exception
      */
-    public function offsetUnset($offset) {
-        throw new Exception("Unset of array not supported.");
+    public function offsetUnset($key) {
+        throw new Exception("Unset of $key not supported.");
     }
 
 }

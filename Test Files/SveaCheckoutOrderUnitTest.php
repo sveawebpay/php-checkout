@@ -58,7 +58,7 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $connector = SveaConnector::create();
         $order = new SveaCheckoutOrder($connector);
         $order->create($data);
-        $orderUrl = $order->getLocation();
+        $orderUrl = $order->getOrderUrl();
         $http = strpos($orderUrl, 'http://');//is http
         $service = strpos($orderUrl, 'sveawebpaycheckoutws.dev.svea.com/checkout/orders');
 
@@ -73,7 +73,7 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $order->create($data);
         $curl_info = $order->get();
         $snippet_exists = sizeof($order['Gui']['Snippet']) > 0 ? TRUE : FALSE;
-        
+
         $this->assertEquals(200, $curl_info->getStatus());//Statuscode 200 means success
         $this->assertTrue($snippet_exists);//Statuscode 200 means success
     }

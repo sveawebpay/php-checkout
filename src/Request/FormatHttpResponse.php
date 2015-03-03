@@ -23,9 +23,6 @@ class FormatHttpResponse {
         $this->headers = array();
     }
 
-
-
-//    public function handleResponse( $resource, array $headers, $status, $data) {
     public function handleResponse( $resource, $status, $data) {
         switch ($status) {
             case 200: //The order was created successfully
@@ -38,15 +35,15 @@ class FormatHttpResponse {
 
                 break;
 
+                case 201:
+                    //TODO
+                break;
+
             default:
                 break;
         }
 
-         $this->request = $resource;
-//        $this->headers = array();
-//        foreach ($headers as $key => $value) {
-//            $this->headers[strtolower($key)] = $value;
-//        }
+        $this->resource = $resource;
         $this->status = $status;
         $this->data = $data;
 
@@ -56,14 +53,14 @@ class FormatHttpResponse {
         return $this->status;
     }
     public function getRequest() {
-        return $this->request;
+        return $this->resource;
     }
     public function getData() {
         return $this->data;
     }
 
     /**
-     * Set headers array
+     * Callback function for curl. Sets the headers array as key - value pairs.
      * @param type curl result
      * @return int the number of bytes handled.
      */
@@ -96,16 +93,6 @@ class FormatHttpResponse {
                 return $value;
             }
         }
-    }
-
-    /**
-     * Gets the accumulated headers.
-     *
-     * @return array
-     */
-    public function getHeaders($key = NULL)
-    {
-        return $this->headers;
     }
 }
 

@@ -5,7 +5,6 @@ require_once $root . '/../../src/Includes.php';
 class SveaConnector {
 
     public static function create() {
-        $curl = new SveaCurlHandler();
-        return new SveaCheckoutConnector($curl);
+        return new SveaCheckoutConnector();
     }
 }
