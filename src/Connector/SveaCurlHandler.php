@@ -11,6 +11,8 @@ class SveaCurlHandler {
 
     private $location;
 
+    private $_data;
+
 //    public $svea_connection_url = 'http://sveawebpaycheckoutws.dev.svea.com/checkout/orders';
     /**
      * cUrl handler
@@ -62,24 +64,31 @@ class SveaCurlHandler {
 //        return $this->svea_connection_url;
 //    }
 
-    /**
-     * Get the URL of the resource
-     *
-     * @return string
-     */
-    public function getLocation() {
-        return $this->location;
-    }
-
-    /**
-     * Set the URL of the resource
-     *
-     * @param string $location URL of the resource
-     *
-     * @return void
-     */
-    public function setLocation($location) {
-        $this->location = strval($location);
-    }
+//    /**
+//     * Get the URL of the resource
+//     *
+//     * @return string
+//     */
+//    public function getLocation() {
+//        return $this->location;
+//    }
+//
+//    /**
+//     * Set the URL of the resource
+//     *
+//     * @param string $location URL of the resource
+//     *
+//     * @return void
+//     */
+//    public function setLocation($location) {
+//        $this->location = strval($location);
+//    }
+//    /**
+//     * Replace data in curl object with order data
+//     * @param array $data
+//     */
+//    public function parse(array $data) {
+//        $this->_data = $data;
+//    }
 
 }

@@ -50,7 +50,7 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $order = new SveaCheckoutOrder($connector);
         $curl_info = $order->create($data);
 
-        $this->assertEquals(201, $curl_info->getStatus());//Statuscode 201 means success
+        $this->assertEquals(201, $curl_info->getStatus());//Statuscode 201 means order recieved
     }
 
     function test_get_orderid_from_http_header_response() {
@@ -72,7 +72,9 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $order = new SveaCheckoutOrder($connector);
         $order->create($data);
         $curl_info = $order->get();
-       $data = $curl_info->getData();
-        $this->assertEquals(200, $curl_info->getStatus());//Statuscode 201 means success
+        $snippet_exists = sizeof($order['Gui']['Snippet']) > 0 ? TRUE : FALSE;
+        
+        $this->assertEquals(200, $curl_info->getStatus());//Statuscode 200 means success
+        $this->assertTrue($snippet_exists);//Statuscode 200 means success
     }
 }

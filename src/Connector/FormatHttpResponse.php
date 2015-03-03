@@ -12,7 +12,7 @@ class FormatHttpResponse {
     * @var array
     */
    private $headers;
-   private $request;
+   private $resource;
    private $status;
    private $data;
 
@@ -25,9 +25,34 @@ class FormatHttpResponse {
 
 
 
-//    public function handleResponse( $request, array $headers, $status, $data) {
-    public function handleResponse( $request, $status, $data) {
-         $this->request = $request;
+//    public function handleResponse( $resource, array $headers, $status, $data) {
+    public function handleResponse( $resource, $status, $data) {
+        switch ($status) {
+            case 200: //The order was created successfully
+                 $json = json_decode($data,TRUE);
+                if ($json === null) {
+                    throw new Exception('Could not read format as Json');
+                }
+//                print_r(get_class($resource));
+                $resource->parse($json);
+
+                break;
+
+            default:
+                break;
+        }
+        //TODO: sätta in en switch beroende på vilket svar det är vi skall behandla?
+         // Update Data on resource
+//            $json = json_decode($result->getData(), true);
+//            if ($json === null) {
+//                throw new Klarna_Checkout_ConnectorException(
+//                    'Bad format on response content.',
+//                    -2
+//                );
+//            }
+//            $resource->parse($json);
+
+         $this->request = $resource;
 //        $this->headers = array();
 //        foreach ($headers as $key => $value) {
 //            $this->headers[strtolower($key)] = $value;

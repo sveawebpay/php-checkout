@@ -35,7 +35,7 @@ class SveaCheckoutConnector {
              curl_setopt($curl, CURLOPT_URL, $data);
         }
         curl_setopt($curl,CURLOPT_HTTPHEADER , array('Content-Type: application/json'));
-        curl_setopt($curl, CURLOPT_HEADER, true);//to get headers in response
+//        curl_setopt($curl, CURLOPT_HEADER, true);//to get headers in response. Messes with the json message. Not needed?
 
 
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);//set to get response
@@ -48,8 +48,14 @@ class SveaCheckoutConnector {
         $info = $this->handler->getInfo();
         $error = $this->handler->getError();
         $this->handler->close();
-        if($method == 'GET')
-//            print_r($response);
+        //TODO: don't have the if here
+        if($method == 'GET') {
+//               print_r($response);
+//             $res = file_get_contents($response);
+//                 $json = json_decode($response);
+//                print_r($json);
+        }
+
 
         if ($response === false || $info === false) {
             throw new Exception(
@@ -60,7 +66,8 @@ class SveaCheckoutConnector {
 //        $this->orderUrl = $curlHeaders->getHeaderValue('Location');
 //        $this->handler->setLocation($curlHeaders->getHeaderValue('Location'));
         $resource->setLocation($curlResponse->getHeaderValue('Location'));
-        $result = $curlResponse->handleResponse(  $this->handler, intval($info['http_code']), strval($response));
+//        $result = $curlResponse->handleResponse(  $this->handler, intval($info['http_code']), strval($response));
+        $result = $curlResponse->handleResponse(  $resource, intval($info['http_code']), strval($response));
 //        print_r($result);
 //        print_r($location);
         return $result;
