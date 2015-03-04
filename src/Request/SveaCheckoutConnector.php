@@ -54,7 +54,6 @@ class SveaCheckoutConnector {
             "Connection to '{$this->svea_connection_url}' failed: {$error}"
             );
         }
-
         $resource->setOrderUrl($curlResponse->getHeaderValue('Location'));
         $result = $curlResponse->handleResponse(  $resource, intval($info['http_code']), strval($response));
 

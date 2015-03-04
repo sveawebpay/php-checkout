@@ -1,7 +1,6 @@
 <?php
 
 /**
- * TODO: use this class?
  * Format http response to readable format
  */
 class FormatHttpResponse {
@@ -30,7 +29,6 @@ class FormatHttpResponse {
                 if ($json === null) {
                     throw new Exception('Could not read format as Json');
                 }
-//                print_r(get_class($resource));
                 $resource->parse($json);
 
                 break;

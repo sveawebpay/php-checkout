@@ -6,12 +6,7 @@ require_once $root . '/../src/Includes.php';
 class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
 
     private function get_request_data_array() {
-        $data["MerchantSettings"] = array(
-            "termsuri" => "http://svea.com/terms.aspx",
-            "checkouturi" => "https://svea.com/checkout.aspx",
-            "confirmationuri" => "https://svea.com/thankyou.aspx?sid=123&svea_order={checkout.order.uri}",
-            "pushuri" => "https://svea.com/push.aspx?sid=123&svea_order={checkout.order.uri}"
-        );
+
         $cart["items"] = array(
             array(
                 "articlenumber" => "123456789",
@@ -30,6 +25,12 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
                 "discountpercent" => 1000,
                 "vatpercent" => 2500
         )
+        );
+         $data["MerchantSettings"] = array(
+            "termsuri" => "http://svea.com/terms.aspx",
+            "checkouturi" => "https://svea.com/checkout.aspx",
+            "confirmationuri" => "https://svea.com/thankyou.aspx?sid=123&svea_order={checkout.order.uri}",
+            "pushuri" => "https://svea.com/push.aspx?sid=123&svea_order={checkout.order.uri}"
         );
         $data["cart"] = $cart;
         $data["Locale"] = 'Sv';
@@ -77,4 +78,5 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(200, $curl_info->getStatus());//Statuscode 200 means success
         $this->assertTrue($snippet_exists);//Statuscode 200 means success
     }
+
 }
