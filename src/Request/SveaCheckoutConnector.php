@@ -17,7 +17,10 @@ class SveaCheckoutConnector {
      * @return type
      * @throws Exception
      */
-    public function apply($method, $resource, $data = NULL) {
+    public function apply($method, $resource, $data = NULL, $url = NULL) {
+        if($url)
+             $this->svea_connection_url = $url;
+
          $this->handler = new SveaCurlHandler();
 
                 // Set HTTP Headers wich ones to set?
@@ -34,8 +37,6 @@ class SveaCheckoutConnector {
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_HTTPHEADER , array('Content-Type: application/json'));
         //get order
-        } elseif ($method == 'GET') {
-            $this->svea_connection_url = $data;
         }
         curl_setopt($curl, CURLOPT_URL, $this->svea_connection_url);
 //        curl_setopt($curl, CURLOPT_HEADER, true);//to get headers in response. Messes with the json message. Not needed?

@@ -39,7 +39,7 @@ class SveaCheckoutOrder implements ArrayAccess {
         $this->orderUrl = strval($orderUrl);
     }
     /**
-     *
+     * Create order
      * @param type array of data
      * @return type http info
      */
@@ -47,8 +47,17 @@ class SveaCheckoutOrder implements ArrayAccess {
         return $this->connector->apply('POST', $this, $data);
     }
 
+    /**
+     * Get order
+     * @return type
+     */
     public function get() {
-        return $this->connector->apply('GET', $this, $this->orderUrl);
+        return $this->connector->apply('GET', $this, NULL, $this->orderUrl);
+    }
+
+     public function update($data, $orderUrl) {
+         $this->orderUrl = $orderUrl;
+         $this->connector->apply('POST', $this, $data, $this->orderUrl);
     }
 
     public function parse(array $data) {

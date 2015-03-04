@@ -39,7 +39,15 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         return $data;
     }
 
-     function test_get_order_object() {
+    function helper_create() {
+        $data = $this->get_request_data_array();
+        $connector = SveaConnector::create();
+        $order = new SveaCheckoutOrder($connector);
+        $order->create($data);
+        return $order;
+    }
+
+    function test_get_order_object() {
         $connector = SveaConnector::create();
         $order = new SveaCheckoutOrder($connector);
         $this->assertEquals(get_class($order),'SveaCheckoutOrder');
@@ -77,6 +85,40 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
 
         $this->assertEquals(200, $curl_info->getStatus());//Statuscode 200 means success
         $this->assertTrue($snippet_exists);//Statuscode 200 means success
+    }
+
+    function test_update_cart() {
+        $cart["items"] = array(
+            array(
+                "articlenumber" => "123456789",
+                "name" => "Dator",
+                "quantity" => 2,
+                "unitprice" => 12300,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+        ),
+             array(
+                "type" => "shipping_fee",
+                "articlenumber" => "SHIPPING",
+                "name" => "Shipping Fee",
+                "quantity" => 100,
+                "unitprice" => 4900,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+        )
+        );
+        //create an order
+        $order = $this->helper_create();
+        $orderUrl = $order->getOrderUrl();
+        //create a new order object by its orderUrl
+//        $order = new SveaCheckoutOrder($connector, $orderUrl);
+//        $order->get();
+        $data['cart'] = $cart;
+        //borde se ut så här, logiskt
+        //testa om det går. objektet order finns nog inte då
+        $order->update($data,$orderUrl);
+
+
     }
 
 }
