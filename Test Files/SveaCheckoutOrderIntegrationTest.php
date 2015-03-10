@@ -3,7 +3,7 @@
 $root = realpath(dirname(__FILE__));
 require_once $root . '/../src/Includes.php';
 
-class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
+class SveaCheckoutOrderIntegrationTest extends PHPUnit_Framework_TestCase {
 
     private function get_request_data_array() {
 
