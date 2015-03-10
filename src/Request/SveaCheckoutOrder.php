@@ -6,18 +6,18 @@
 class SveaCheckoutOrder implements ArrayAccess {
 
     /**
-     * Connector
-     * @var Svea_Connector
+     * CheckoutConnection
+     * @var SveaCheckoutConnection
      */
-    public $connector;
+    public $connection;
 
     private $orderUrl;
 
     private $data = array();
 
 
-    public function __construct(SveaCheckoutConnector $connector) {
-        $this->connector = $connector;
+    public function __construct(SveaCheckoutConnection $connection) {
+        $this->connection = $connection;
     }
     /**
      * Get the URL of the resource
@@ -44,7 +44,7 @@ class SveaCheckoutOrder implements ArrayAccess {
      * @return type http info
      */
     public function create($data) {
-        return $this->connector->apply('POST', $this, $data);
+        return $this->connection->transfer('POST', $this, $data);
     }
 
     /**
@@ -52,12 +52,12 @@ class SveaCheckoutOrder implements ArrayAccess {
      * @return type
      */
     public function get() {
-        return $this->connector->apply('GET', $this, NULL, $this->orderUrl);
+        return $this->connection->transfer('GET', $this, NULL, $this->orderUrl);
     }
 
      public function update($data, $orderUrl) {
          $this->orderUrl = $orderUrl;
-         return $this->connector->apply('POST', $this, $data, $this->orderUrl);
+         return $this->connection->transfer('POST', $this, $data, $this->orderUrl);
     }
 
     public function parse(array $data) {

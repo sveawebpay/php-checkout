@@ -4,20 +4,20 @@ require_once $root . '/../../src/Includes.php';
 /**
  * Connect to Svea REST API
  */
-class SveaCheckoutConnector {
+class SveaCheckoutConnection {
 
     private $handler;
     public $svea_connection_url = 'http://sveawebpaycheckoutws.test.svea.com/checkout/orders';
 
     /**
-     * Apply curl
+     * transfer curl
      * @param type $method
      * @param type $resource
      * @param type $data
      * @return type
      * @throws Exception
      */
-    public function apply($method, $resource, $data = NULL, $url = NULL) {
+    public function transfer($method, $resource, $data = NULL, $url = NULL) {
         if($url)
              $this->svea_connection_url = $url;
 

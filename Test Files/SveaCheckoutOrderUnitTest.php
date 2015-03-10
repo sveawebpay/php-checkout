@@ -39,25 +39,25 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         return $data;
     }
 
-    function helper_create($connector = NULL) {
+    function helper_create($connection = NULL) {
         $data = $this->get_request_data_array();
-        if(!$connector)
-            $connector = SveaConnector::create();
-        $order = new SveaCheckoutOrder($connector);
+        if(!$connection)
+            $connection = SveaCheckout::connect();
+        $order = new SveaCheckoutOrder($connection);
         $order->create($data);
         return $order;
     }
 
     function test_get_order_object() {
-        $connector = SveaConnector::create();
-        $order = new SveaCheckoutOrder($connector);
+        $connection = SveaCheckout::connect();
+        $order = new SveaCheckoutOrder($connection);
         $this->assertEquals(get_class($order),'SveaCheckoutOrder');
     }
 
     function test_create() {
         $data = $this->get_request_data_array();
-        $connector = SveaConnector::create();
-        $order = new SveaCheckoutOrder($connector);
+        $connection = SveaCheckout::connect();
+        $order = new SveaCheckoutOrder($connection);
         $curl_info = $order->create($data);
 
         $this->assertEquals(201, $curl_info->getStatus());//Statuscode 201 means order recieved
@@ -65,8 +65,8 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
 
     function test_get_orderid_from_http_header_response() {
         $data = $this->get_request_data_array();
-        $connector = SveaConnector::create();
-        $order = new SveaCheckoutOrder($connector);
+        $connection = SveaCheckout::connect();
+        $order = new SveaCheckoutOrder($connection);
         $order->create($data);
         $orderUrl = $order->getOrderUrl();
         $http = strpos($orderUrl, 'http://');//is http
@@ -78,8 +78,8 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
 
     function test_get_order() {
         $data = $this->get_request_data_array();
-        $connector = SveaConnector::create();
-        $order = new SveaCheckoutOrder($connector);
+        $connection = SveaCheckout::connect();
+        $order = new SveaCheckoutOrder($connection);
         $order->create($data);
         $curl_info = $order->get();
 //        print_r($order);
@@ -110,12 +110,12 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         )
         );
         //create an order
-        $connector = SveaConnector::create();
-        $order = $this->helper_create($connector);
+        $connection = SveaCheckout::connect();
+        $order = $this->helper_create($connection);
         $orderUrl = $order->getOrderUrl();
         //orderUrl har sparats i session
         //create a new order object by its orderUrl
-        $orderupdate = new SveaCheckoutOrder($connector, $orderUrl);
+        $orderupdate = new SveaCheckoutOrder($connection, $orderUrl);
 //        $order->get();
         $data['cart'] = $cart;
         $curl_info = $orderupdate->update($data,$orderUrl);
@@ -144,17 +144,17 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         )
         );
         //create an order
-        $connector = SveaConnector::create();
-        $order = $this->helper_create($connector);
+        $connection = SveaCheckout::connect();
+        $order = $this->helper_create($connection);
         $orderUrl = $order->getOrderUrl();
         //orderUrl har sparats i session
         //create a new order object by its orderUrl
-        $orderupdate = new SveaCheckoutOrder($connector, $orderUrl);
+        $orderupdate = new SveaCheckoutOrder($connection, $orderUrl);
 //        $order->get();
         $data['cart'] = $cart;
         $orderupdate->update($data,$orderUrl);
         $orderupdate->get();
-        
+
         $this->assertEquals(2, $orderupdate['Cart']['Items'][0]['Quantity']);//Check quantity was changed
 
     }
