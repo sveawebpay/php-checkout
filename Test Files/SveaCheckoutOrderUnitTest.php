@@ -33,15 +33,16 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
             "pushuri" => "https://svea.com/push.aspx?sid=123&svea_order={checkout.order.uri}"
         );
         $data["cart"] = $cart;
-        $data["Locale"] = 'Sv';
+        $data["Locale"] = 'sv-SE';
         $data["MerchantId"] = 1;
 
         return $data;
     }
 
-    function helper_create() {
+    function helper_create($connector = NULL) {
         $data = $this->get_request_data_array();
-        $connector = SveaConnector::create();
+        if(!$connector)
+            $connector = SveaConnector::create();
         $order = new SveaCheckoutOrder($connector);
         $order->create($data);
         return $order;
@@ -69,7 +70,7 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $order->create($data);
         $orderUrl = $order->getOrderUrl();
         $http = strpos($orderUrl, 'http://');//is http
-        $service = strpos($orderUrl, 'sveawebpaycheckoutws.dev.svea.com/checkout/orders');
+        $service = strpos($orderUrl, 'sveawebpaycheckoutws.test.svea.com/checkout/orders');
 
          $this->assertEquals(0,$http);
          $this->assertEquals(7,$service);//what comes after http://
@@ -81,6 +82,7 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         $order = new SveaCheckoutOrder($connector);
         $order->create($data);
         $curl_info = $order->get();
+//        print_r($order);
         $snippet_exists = sizeof($order['Gui']['Snippet']) > 0 ? TRUE : FALSE;
 
         $this->assertEquals(200, $curl_info->getStatus());//Statuscode 200 means success
@@ -92,7 +94,7 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
             array(
                 "articlenumber" => "123456789",
                 "name" => "Dator",
-                "quantity" => 2,
+                "quantity" => 2,//quantity changed
                 "unitprice" => 12300,
                 "discountpercent" => 1000,
                 "vatpercent" => 2500
@@ -108,16 +110,52 @@ class SveaCheckoutOrderUnitTest extends PHPUnit_Framework_TestCase {
         )
         );
         //create an order
-        $order = $this->helper_create();
+        $connector = SveaConnector::create();
+        $order = $this->helper_create($connector);
         $orderUrl = $order->getOrderUrl();
+        //orderUrl har sparats i session
         //create a new order object by its orderUrl
-//        $order = new SveaCheckoutOrder($connector, $orderUrl);
+        $orderupdate = new SveaCheckoutOrder($connector, $orderUrl);
 //        $order->get();
         $data['cart'] = $cart;
-        //borde se ut så här, logiskt
-        //testa om det går. objektet order finns nog inte då
-        $order->update($data,$orderUrl);
+        $curl_info = $orderupdate->update($data,$orderUrl);
 
+         $this->assertEquals(201, $curl_info->getStatus());//Statuscode 201 means created
+
+    }
+    function test_cart_gets_updated() {
+        $cart["items"] = array(
+            array(
+                "articlenumber" => "123456789",
+                "name" => "Dator",
+                "quantity" => 2,//quantity changed
+                "unitprice" => 12300,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+        ),
+             array(
+                "type" => "shipping_fee",
+                "articlenumber" => "SHIPPING",
+                "name" => "Shipping Fee",
+                "quantity" => 100,
+                "unitprice" => 4900,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+        )
+        );
+        //create an order
+        $connector = SveaConnector::create();
+        $order = $this->helper_create($connector);
+        $orderUrl = $order->getOrderUrl();
+        //orderUrl har sparats i session
+        //create a new order object by its orderUrl
+        $orderupdate = new SveaCheckoutOrder($connector, $orderUrl);
+//        $order->get();
+        $data['cart'] = $cart;
+        $orderupdate->update($data,$orderUrl);
+        $orderupdate->get();
+        
+        $this->assertEquals(2, $orderupdate['Cart']['Items'][0]['Quantity']);//Check quantity was changed
 
     }
 

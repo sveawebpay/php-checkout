@@ -7,7 +7,7 @@ require_once $root . '/../../src/Includes.php';
 class SveaCheckoutConnector {
 
     private $handler;
-    public $svea_connection_url = 'http://sveawebpaycheckoutws.dev.svea.com/checkout/orders';
+    public $svea_connection_url = 'http://sveawebpaycheckoutws.test.svea.com/checkout/orders';
 
     /**
      * Apply curl
@@ -50,12 +50,13 @@ class SveaCheckoutConnector {
         $info = $this->handler->getInfo();
         $error = $this->handler->getError();
         $this->handler->close();
+
         if ($response === false || $info === false) {
             throw new Exception(
             "Connection to '{$this->svea_connection_url}' failed: {$error}"
             );
         }
-        $resource->setOrderUrl($curlResponse->getHeaderValue('Location'));
+        
         $result = $curlResponse->handleResponse(  $resource, intval($info['http_code']), strval($response));
 
         return $result;

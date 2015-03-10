@@ -57,7 +57,7 @@ class SveaCheckoutOrder implements ArrayAccess {
 
      public function update($data, $orderUrl) {
          $this->orderUrl = $orderUrl;
-         $this->connector->apply('POST', $this, $data, $this->orderUrl);
+         return $this->connector->apply('POST', $this, $data, $this->orderUrl);
     }
 
     public function parse(array $data) {

@@ -24,7 +24,7 @@ class FormatHttpResponse {
 
     public function handleResponse( $resource, $status, $data) {
         switch ($status) {
-            case 200: //The order was created successfully
+            case 200: //Created. Returns orderobject
                  $json = json_decode($data,TRUE);
                 if ($json === null) {
                     throw new Exception('Could not read format as Json');
@@ -33,8 +33,8 @@ class FormatHttpResponse {
 
                 break;
 
-                case 201:
-                    //TODO
+                case 201: //Ok. Returns orderurl.
+                   $resource->setOrderUrl($this->getHeaderValue('Location'));
                 break;
 
             default:
