@@ -1,0 +1,24 @@
+{
+  "name": "svea/checkout-php",
+  "description": "The officially supported php library for Svea Checkout",
+  "type": "library",
+  "license": "Apache-2.0",
+  "authors": [
+    {
+      "name": "Svea Ekonomi",
+      "email": "integration@svea.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Svea\\Checkout\\": "src/"
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8"
+  }
+}
