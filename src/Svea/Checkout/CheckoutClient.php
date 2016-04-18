@@ -6,7 +6,7 @@
  * Time: 10:12 AM
  */
 
-namespace Svea\Checkout\Model;
+namespace Svea\Checkout;
 
 
 class CheckoutClient
