@@ -7,28 +7,36 @@ use Svea\Checkout\Request\RequestInterface;
 
 class Connector implements ConnectorInterface
 {
+    private $merchantId;
+    private $sharedSecret;
+    private $apiUrl;
+    private $client;
 
     /**
-     * Create a request object
-     *
-     * @param $url
-     * @param string $method
-     * @param array $option
-     *
-     * @return RequestInterface
+     * Connector constructor.
+     * @param ClientInterface
+     * @param $merchantId
+     * @param $sharedSecret
+     * @param $apiUrl
      */
-    public static function create( )
+    public function __construct($client, $merchantId, $sharedSecret, $apiUrl)
     {
-        // TODO: Implement createRequest() method.
+        $this->client = $client;
+        $this->merchantId = $merchantId;
+        $this->sharedSecret = $sharedSecret;
+        $this->apiUrl = $apiUrl;
     }
 
-    /**
-     * Sends the request
-     *
-     * @param RequestInterface $request
-     *
-     * @return ResponseInterface
-     */
+
+    public static function create($merchantId, $sharedSecret, $apiUrl)
+    {
+        // @todo Client is class for calling API
+        $client = null;
+
+        return new static($client, $merchantId, $sharedSecret, $apiUrl);
+    }
+
+
     public function send(RequestInterface $request)
     {
         // TODO: Implement send() method.
