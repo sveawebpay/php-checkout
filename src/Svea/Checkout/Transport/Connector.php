@@ -59,10 +59,7 @@ class Connector
         try {
             return $this->client->call($request);
         } catch (Exception $e) {
-            var_dump($request);
             throw $e;
-//            return $e->getMessage();
-
         }
     }
 
