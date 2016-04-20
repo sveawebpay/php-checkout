@@ -2,8 +2,7 @@
 
 namespace Svea\Checkout\Transport;
 
-
-use Svea\Checkout\Request\RequestInterface;
+use \Exception;
 
 class Connector implements ConnectorInterface
 {
@@ -27,18 +26,106 @@ class Connector implements ConnectorInterface
         $this->apiUrl = $apiUrl;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMerchantId()
+    {
+        return $this->merchantId;
+    }
+
+    /**
+     * @param mixed $merchantId
+     */
+    public function setMerchantId($merchantId)
+    {
+        $this->merchantId = $merchantId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSharedSecret()
+    {
+        return $this->sharedSecret;
+    }
+
+    /**
+     * @param mixed $sharedSecret
+     */
+    public function setSharedSecret($sharedSecret)
+    {
+        $this->sharedSecret = $sharedSecret;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApiUrl()
+    {
+        return $this->apiUrl;
+    }
+
+    /**
+     * @param mixed $apiUrl
+     */
+    public function setApiUrl($apiUrl)
+    {
+        $this->apiUrl = $apiUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getClient()
+    {
+        return $this->client;
+    }
+
+    /**
+     * @param mixed $client
+     */
+    public function setClient($client)
+    {
+        $this->client = $client;
+    }
+
 
     public static function create($merchantId, $sharedSecret, $apiUrl)
     {
         // @todo Client is class for calling API
-        $client = null;
+        $client = new Client();
 
         return new static($client, $merchantId, $sharedSecret, $apiUrl);
     }
 
 
-    public function send(RequestInterface $request)
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function send(Request $request)
     {
-        // TODO: Implement send() method.
+        try {
+            return $this->client->call($request);
+        } catch (Exception $e) {
+            var_dump($request);
+            echo $e->getMessage();
+        }
+    }
+
+    /**
+     * Create a request object
+     *
+     * @param $url
+     * @param string $method
+     * @param array $option
+     *
+     * @return Request
+     */
+    public static function createRequest($url, $method = 'GET', array $option = [])
+    {
+        // TODO: Implement createRequest() method.
     }
 }

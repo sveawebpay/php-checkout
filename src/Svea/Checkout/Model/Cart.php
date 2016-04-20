@@ -27,5 +27,10 @@ class Cart
         $this->items = $items;
     }
 
+    public function addItem($item)
+    {
+        $this->items[] = $item;
+    }
+
 
 }

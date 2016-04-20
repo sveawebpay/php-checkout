@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rs-janstev-01
- * Date: 4/18/2016
- * Time: 3:54 PM
- */
 
 namespace Svea\Checkout\Transport;
 
-use Svea\Checkout\Request\RequestInterface;
+use \Exception;
 
 class Client
 {
@@ -17,33 +11,51 @@ class Client
      *
      * @return ResponseInterface
      * */
-    public function call(RequestInterface $request) {
+    public function call(Request $request)
+    {
+        $curl = curl_init();
 
-        $ch = curl_init($request->getUrl());
+        curl_setopt($curl, CURLOPT_URL, $request->getApiUrl());
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        if ($request->getMethod() == 'POST') {
+            curl_setopt($curl, CURLOPT_POST, 1);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $request->getBody());
+        }
 
-        /*if($request->getMethod() == 'POST')
-        {
-            curl_setopt($ch, CURLOPT_POST, 1);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $request->getPostData());
-        }*/
+        $header = array();
+        $header[] = 'Content-length: 0';
+        $header[] = 'Content-type: application/json';
+        $header[] = 'Authorization: Svea ' . $request->getAuthorizationToken();
 
-        $response = curl_exec($ch);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
 
-        return $response;
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        //curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+
+        //$curlResponse = new FormatHttpResponse();
+
+        //curl_setopt($curl, CURLOPT_HEADERFUNCTION, array(&$curlResponse, 'processHeader'));
+
+        $response = curl_exec($curl);
+
+        $info = curl_getinfo($curl);
+        $error = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($response === false || $info === false) {
+            throw new Exception(
+                "Connection to '{$request->getApiUrl()}' failed: {$error}"
+            );
+        }
+
+        // @todo ser resource / treba da se vidi sta ce ovde da bude
+        //$result = $curlResponse->handleResponse($resource, intval($info['http_code']), strval($response));
+
+        $result = '';
+
+        return $result;
     }
 }
 
-
-class Request
-{
-    public function __construct() { }
-
-    public function setHeader() { }
-
-    public function setBody() { }
-
-    public function setMethod() { }
-}

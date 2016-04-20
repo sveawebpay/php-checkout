@@ -1,8 +1,6 @@
 <?php
 
 namespace Svea\Checkout\Transport;
-use Svea\Checkout\Request\RequestInterface;
-
 
 /**
  * Interface IConnector
@@ -11,14 +9,14 @@ use Svea\Checkout\Request\RequestInterface;
 interface ConnectorInterface
 {
     /**
-     *  Test API URL for Sweden
+     *  Test API URL
      */
-    const SVE_TEST_URL = 'api.svea.com';
+    const TEST_BASE_URL = 'api.test.svea.com/';
 
     /**
-     *  Base API URL for Sweden
+     *  Base API URL
      */
-    const SVE_BASE_URL = 'api.test.svea.com';
+    const BASE_URL = 'api.svea.com/';
 
 
     /**
@@ -36,10 +34,10 @@ interface ConnectorInterface
     /**
      * Sends the request
      *
-     * @param RequestInterface $request
+     * @param Request $request
      *
-     * @return ResponseInterface
+     * @return Response
      */
-    public function send(RequestInterface $request);
+    public function send(Request $request);
 
 }
