@@ -8,7 +8,6 @@ use Svea\Checkout\Model\Cart;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\MerchantSettings;
 use Svea\Checkout\Model\OrderRow;
-use Svea\Checkout\Transport\Client;
 use Svea\Checkout\Transport\Request;
 
 class CreateOrder extends ImplementationManager
@@ -99,15 +98,14 @@ class CreateOrder extends ImplementationManager
         $preparedData['countrycode'] = $checkoutData->getCountryCode();
         $preparedData['currency'] = $checkoutData->getCurrency();
 
-        $this->preparedData = json_encode($preparedData);
+        $this->requestBodyData = json_encode($preparedData);
     }
 
     public function invoke()
     {
         $request = new Request();
         $request->setPostMethod();
-        $request->setBody($this->preparedData);
-        $request->setAuthorizationToken($this->authorizationToken);
+        $request->setBody($this->requestBodyData);
         $request->setApiUrl($this->connector->getApiUrl() . self::API_URL);
 
         $this->response = $this->connector->send($request);
@@ -116,18 +114,6 @@ class CreateOrder extends ImplementationManager
     public function mapDataBack()
     {
         // TODO: Implement mapDataBack() method.
-    }
-
-
-    /*d
-     *
-     * ---------------------------------------------------------------------------------     *
-     *
-     * */
-
-    private function formatData($data)
-    {
-
     }
 
 }

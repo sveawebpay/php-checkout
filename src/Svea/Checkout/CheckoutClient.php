@@ -35,13 +35,3 @@ class CheckoutClient
 
     }
 }
-
-
-class Response
-{
-    public static function validate($response)
-    {
-
-    }
-
-}

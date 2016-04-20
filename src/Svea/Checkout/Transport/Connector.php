@@ -4,11 +4,25 @@ namespace Svea\Checkout\Transport;
 
 use \Exception;
 
-class Connector implements ConnectorInterface
+class Connector
 {
+    /**
+     *  Test API URL
+     */
+    const TEST_BASE_URL = 'api.test.svea.com/';
+
+    /**
+     *  Base API URL
+     */
+    const BASE_URL = 'api.svea.com/';
+
     private $merchantId;
     private $sharedSecret;
     private $apiUrl;
+
+    /**
+     * @var Client $client
+     */
     private $client;
 
     /**
@@ -24,6 +38,38 @@ class Connector implements ConnectorInterface
         $this->merchantId = $merchantId;
         $this->sharedSecret = $sharedSecret;
         $this->apiUrl = $apiUrl;
+    }
+
+    public static function create($merchantId, $sharedSecret, $apiUrl)
+    {
+        $client = new Client();
+
+        return new static($client, $merchantId, $sharedSecret, $apiUrl);
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws Exception
+     */
+    public function send(Request $request)
+    {
+        $this->createAuthorizationToken($request);
+
+        try {
+            return $this->client->call($request);
+        } catch (Exception $e) {
+            var_dump($request);
+            throw $e;
+//            return $e->getMessage();
+
+        }
+    }
+
+    private function createAuthorizationToken(Request $request)
+    {
+        $authToken = base64_encode($this->merchantId . ':' . hash('sha512', $request->getBody() . $this->sharedSecret));
+        $request->setAuthorizationToken($authToken);
     }
 
     /**
@@ -88,44 +134,5 @@ class Connector implements ConnectorInterface
     public function setClient($client)
     {
         $this->client = $client;
-    }
-
-
-    public static function create($merchantId, $sharedSecret, $apiUrl)
-    {
-        // @todo Client is class for calling API
-        $client = new Client();
-
-        return new static($client, $merchantId, $sharedSecret, $apiUrl);
-    }
-
-
-    /**
-     * @param Request $request
-     * @return mixed
-     * @throws Exception
-     */
-    public function send(Request $request)
-    {
-        try {
-            return $this->client->call($request);
-        } catch (Exception $e) {
-            var_dump($request);
-            echo $e->getMessage();
-        }
-    }
-
-    /**
-     * Create a request object
-     *
-     * @param $url
-     * @param string $method
-     * @param array $option
-     *
-     * @return Request
-     */
-    public static function createRequest($url, $method = 'GET', array $option = [])
-    {
-        // TODO: Implement createRequest() method.
     }
 }

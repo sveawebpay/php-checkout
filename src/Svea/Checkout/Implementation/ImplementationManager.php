@@ -15,9 +15,7 @@ abstract class ImplementationManager implements ImplementationInterface
     protected $response;
 
     // - body data
-    protected $preparedData;
-
-    protected $authorizationToken;
+    protected $requestBodyData;
 
     /**
      * @param Connector $connector
@@ -29,35 +27,10 @@ abstract class ImplementationManager implements ImplementationInterface
 
     public function execute($data)
     {
-        try
-        {
-            $this->validateData();
-        }
-        catch (\Exception $e)
-        {
-            return ReponseError($e);
-        }
-
         $this->mapData($data);
         $this->prepareData();
 
-        $this->createAuthorizationToken();
-
         $this->invoke();
         $this->mapDataBack();
-    }
-
-    private function createAuthorizationToken()
-    {
-        // TODO - implement concrete algorithm
-        $this->authorizationToken = md5($this->connector->getMerchantId() . $this->connector->getSharedSecret() . $this->preparedData);
-    }
-
-    public function validateData()
-    {
-        if($b !== 1)
-        {
-            throw new \ValidationException("Nije dobar $b", 1234);
-        }
     }
 }
