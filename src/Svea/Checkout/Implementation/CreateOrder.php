@@ -113,7 +113,10 @@ class CreateOrder extends ImplementationManager
 
     public function mapDataBack()
     {
+        return $this->response->getContent();
+
         // TODO: Implement mapDataBack() method.
+
     }
 
 }

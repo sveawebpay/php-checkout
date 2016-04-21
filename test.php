@@ -3,12 +3,6 @@
 require_once 'vendor/autoload.php';
 
 
-$conn = \Svea\Checkout\Transport\Connector::create(
-    'merchant123',
-    'SomeSecretWord',
-    \Svea\Checkout\Transport\Connector::TEST_BASE_URL
-);
-
 $data = array(
     "purchase_country" => "gb",
     "purchase_currency" => "gbp",
@@ -48,6 +42,24 @@ $data = array(
     )
 );
 
-$cc = new \Svea\Checkout\CheckoutClient($conn);
 
-$cc->create($data);
+try {
+    $conn = \Svea\Checkout\Transport\Connector::create(
+        'merchant1',
+        'SomeSecretWord',
+        \Svea\Checkout\Transport\Connector::TEST_BASE_URL
+    );
+    $cc = new \Svea\Checkout\CheckoutClient($conn);
+    $response = $cc->create($data);
+    var_dump($response->getContent());
+} catch (\Svea\Checkout\Transport\Exception\SveaApiException $ex) {
+    var_dump("---------Api errors---------");
+    var_dump($ex->getMessage());
+} catch (\Svea\Checkout\Transport\Exception\SveaConnectorException $e) {
+    var_dump("---------Conn errors---------");
+    var_dump($e->getMessage());
+} catch (Exception $e) {
+    var_dump("---------General errors---------");
+    var_dump($e->getMessage());
+}
+

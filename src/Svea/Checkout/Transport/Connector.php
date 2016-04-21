@@ -3,21 +3,38 @@
 namespace Svea\Checkout\Transport;
 
 use \Exception;
+use Svea\Checkout\Transport\Exception\SveaApiException;
+use Svea\Checkout\Transport\Exception\SveaConnectorException;
 
+/**
+ * Class Connector
+ * @package Svea\Checkout\Transport
+ */
 class Connector
 {
     /**
-     *  Test API URL
+     * Base URL For Svea Checkout test server
      */
-    const TEST_BASE_URL = 'api.test.svea.com/';
+    const TEST_BASE_URL = 'http://sveawebpaycheckoutws.test.svea.com/';
 
     /**
-     *  Base API URL
+     * Base URL For Svea Checkout production server
      */
     const BASE_URL = 'api.svea.com/';
 
+    /**
+     * @var string $merchantId
+     */
     private $merchantId;
+
+    /**
+     * @var string $sharedSecret
+     */
     private $sharedSecret;
+
+    /**
+     * @var string $apiUrl
+     */
     private $apiUrl;
 
     /**
@@ -25,14 +42,15 @@ class Connector
      */
     private $client;
 
+
     /**
      * Connector constructor.
-     * @param ClientInterface
+     * @param $client
      * @param $merchantId
      * @param $sharedSecret
      * @param $apiUrl
      */
-    public function __construct($client, $merchantId, $sharedSecret, $apiUrl)
+    private function __construct($client, $merchantId, $sharedSecret, $apiUrl)
     {
         $this->client = $client;
         $this->merchantId = $merchantId;
@@ -40,29 +58,52 @@ class Connector
         $this->apiUrl = $apiUrl;
     }
 
+    /**
+     * @param $merchantId
+     * @param $sharedSecret
+     * @param $apiUrl
+     * @return static
+     * @throws SveaConnectorException
+     */
     public static function create($merchantId, $sharedSecret, $apiUrl)
     {
         $client = new Client();
+
+        if (empty($merchantId)) {
+            throw new SveaConnectorException('Merchant Id is missing', 2001);
+        }
+        if (empty($sharedSecret)) {
+            throw new SveaConnectorException('Shared secret is missing', 2002);
+        }
+        if (empty($apiUrl)) {
+            throw new SveaConnectorException('API Url is missing', 2003);
+        }
 
         return new static($client, $merchantId, $sharedSecret, $apiUrl);
     }
 
     /**
      * @param Request $request
-     * @return mixed
-     * @throws Exception
+     * @return ResponseHandler
+     * @throws SveaApiException
      */
     public function send(Request $request)
     {
         $this->createAuthorizationToken($request);
 
         try {
-            return $this->client->call($request);
-        } catch (Exception $e) {
+            $response = $this->client->request($request);
+            return $response;
+        } catch (SveaApiException $e) {
             throw $e;
+        } catch (Exception $e) {
+            throw new SveaApiException('API communication error', 1010);
         }
     }
 
+    /**
+     * @param Request $request
+     */
     private function createAuthorizationToken(Request $request)
     {
         $authToken = base64_encode($this->merchantId . ':' . hash('sha512', $request->getBody() . $this->sharedSecret));
@@ -70,7 +111,7 @@ class Connector
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMerchantId()
     {
@@ -78,15 +119,7 @@ class Connector
     }
 
     /**
-     * @param mixed $merchantId
-     */
-    public function setMerchantId($merchantId)
-    {
-        $this->merchantId = $merchantId;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getSharedSecret()
     {
@@ -94,15 +127,7 @@ class Connector
     }
 
     /**
-     * @param mixed $sharedSecret
-     */
-    public function setSharedSecret($sharedSecret)
-    {
-        $this->sharedSecret = $sharedSecret;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getApiUrl()
     {
@@ -110,15 +135,7 @@ class Connector
     }
 
     /**
-     * @param mixed $apiUrl
-     */
-    public function setApiUrl($apiUrl)
-    {
-        $this->apiUrl = $apiUrl;
-    }
-
-    /**
-     * @return mixed
+     * @return Client
      */
     public function getClient()
     {
@@ -126,7 +143,7 @@ class Connector
     }
 
     /**
-     * @param mixed $client
+     * @param $client
      */
     public function setClient($client)
     {

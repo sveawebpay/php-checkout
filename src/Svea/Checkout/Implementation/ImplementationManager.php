@@ -3,6 +3,7 @@
 
 namespace Svea\Checkout\Implementation;
 
+use Svea\Checkout\Transport\ResponseHandler;
 use Svea\Checkout\Transport\Connector;
 
 abstract class ImplementationManager implements ImplementationInterface
@@ -12,6 +13,9 @@ abstract class ImplementationManager implements ImplementationInterface
      */
     protected $connector;
 
+    /**
+     * @var ResponseHandler $response
+     */
     protected $response;
 
     // - body data
@@ -32,5 +36,7 @@ abstract class ImplementationManager implements ImplementationInterface
 
         $this->invoke();
         $this->mapDataBack();
+
+        return $this->response;
     }
 }

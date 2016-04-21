@@ -4,14 +4,18 @@ namespace Svea\Checkout\Transport;
 
 use \Exception;
 
+/**
+ * Class Client
+ * @package Svea\Checkout\Transport
+ */
 class Client
 {
-    /*
-     * Call Api
-     *
-     * @return ResponseInterface
-     * */
-    public function call(Request $request)
+    /**
+     * @param Request $request
+     * @return ResponseHandler
+     * @throws Exception
+     */
+    public function request(Request $request)
     {
         $curl = curl_init();
 
@@ -23,7 +27,6 @@ class Client
         }
 
         $header = array();
-        $header[] = 'Content-length: 0';
         $header[] = 'Content-type: application/json';
         $header[] = 'Authorization: Svea ' . $request->getAuthorizationToken();
 
@@ -37,25 +40,21 @@ class Client
 
         //curl_setopt($curl, CURLOPT_HEADERFUNCTION, array(&$curlResponse, 'processHeader'));
 
-        $response = curl_exec($curl);
+        $curlResponse = curl_exec($curl);
 
-        $info = curl_getinfo($curl);
-        $error = curl_error($curl);
+        $curlInfo = curl_getinfo($curl);
+        $curlError = curl_error($curl);
 
         curl_close($curl);
 
-        if ($response === false || $info === false) {
-            throw new Exception(
-                "Connection to '{$request->getApiUrl()}' failed: {$error}"
-            );
+        if ($curlResponse === false || $curlInfo === false) {
+            throw new Exception("Connection to '{$request->getApiUrl()}' failed: {$curlError}");
         }
 
-        // @todo ser resource / treba da se vidi sta ce ovde da bude
-        //$result = $curlResponse->handleResponse($resource, intval($info['http_code']), strval($response));
+        $clientResponse = new ResponseHandler();
+        $clientResponse->handleClientResponse($curlResponse, $curlInfo, $curlError);
 
-        $result = '';
-
-        return $result;
+        return $clientResponse;
     }
 }
 
