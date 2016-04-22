@@ -6,7 +6,7 @@ namespace Svea\Checkout\Tests\Unit\Transport;
 use \Exception;
 use Svea\Checkout\Tests\Unit\TestCase;
 use Svea\Checkout\Transport\Connector;
-use Svea\Checkout\Transport\Exception\SveaApiException;
+use Svea\Checkout\Exception\SveaApiException;
 
 class ConnectorTest extends TestCase
 {
@@ -21,7 +21,7 @@ class ConnectorTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaConnectorException
+     * @expectedException \Svea\Checkout\Exception\SveaConnectorException
      * @expectedExceptionMessage Merchant Id is missing
      */
     public function testCreateMissingMerchantId()
@@ -31,7 +31,7 @@ class ConnectorTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaConnectorException
+     * @expectedException \Svea\Checkout\Exception\SveaConnectorException
      * @expectedExceptionMessage Shared secret is missing
      */
     public function testCreateMissingSharedSecret()
@@ -41,7 +41,7 @@ class ConnectorTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaConnectorException
+     * @expectedException \Svea\Checkout\Exception\SveaConnectorException
      * @expectedExceptionMessage API Url is missing
      */
     public function testCreateMissingApiUrlSecret()
@@ -63,7 +63,7 @@ class ConnectorTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaApiException
+     * @expectedException \Svea\Checkout\Exception\SveaApiException
      * @expectedExceptionMessage The input data was bad
      */
     public function testSendRequestSveaApiExceptionThrown()
@@ -81,7 +81,7 @@ class ConnectorTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaApiException
+     * @expectedException \Svea\Checkout\Exception\SveaApiException
      * @expectedExceptionMessage API communication error
      */
     public function testSendRequestExceptionThrown()

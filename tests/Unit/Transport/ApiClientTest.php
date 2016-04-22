@@ -36,7 +36,7 @@ class ApiClientTest extends TestCase
         $response = $this->apiClient->sendRequest($this->request);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
-        $this->assertEquals($this->responseContent, $response->getContent());
+        $this->assertEquals($this->jsonResponseContent, $response->getContent());
     }
 
     public function testSendRequestWithCreatedStatusResponse()
@@ -59,12 +59,12 @@ class ApiClientTest extends TestCase
         $response = $this->apiClient->sendRequest($this->request);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
-        $this->assertEquals($this->responseContent, $response->getContent());
+        $this->assertEquals($this->jsonResponseContent, $response->getContent());
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaApiException
-     * @expectedExceptionMessage The input data was bad
+     * @expectedException \Svea\Checkout\Exception\SveaApiException
+     * @expectedExceptionCode 400
      */
     public function testSendRequestWithBadRequestStatusResponse()
     {
@@ -83,8 +83,8 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaApiException
-     * @expectedExceptionMessage No order with requested ID was found.
+     * @expectedException \Svea\Checkout\Exception\SveaApiException
+     * @expectedExceptionCode 404
      */
     public function testSendRequestWithNotFoundStatusResponse()
     {
@@ -103,8 +103,8 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaApiException
-     * @expectedExceptionMessage Unauthorized: Missing or incorrect Authorization token in header.
+     * @expectedException \Svea\Checkout\Exception\SveaApiException
+     * @expectedExceptionCode 401
      */
     public function testSendRequestWithUnauthorizedStatusResponse()
     {
@@ -123,7 +123,7 @@ class ApiClientTest extends TestCase
     }
 
     /**
-     * @expectedException \Svea\Checkout\Transport\Exception\SveaApiException
+     * @expectedException \Svea\Checkout\Exception\SveaApiException
      * @expectedExceptionMessage Undefined error.
      */
     public function testSendRequestWithUndefinedStatusResponse()
