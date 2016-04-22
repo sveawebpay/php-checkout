@@ -26,7 +26,6 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue($this->jsonResponseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->with(CURLINFO_HTTP_CODE)
             ->will($this->returnValue(200));
 
         $this->setHttpClient();
@@ -50,7 +49,6 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue($this->jsonResponseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->with(CURLINFO_HTTP_CODE)
             ->will($this->returnValue(201));
 
         $this->setHttpClient();
@@ -78,7 +76,6 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue($this->jsonResponseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->with(CURLINFO_HTTP_CODE)
             ->will($this->returnValue(400));
 
         $this->setHttpClient();
@@ -99,7 +96,6 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue($this->jsonResponseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->with(CURLINFO_HTTP_CODE)
             ->will($this->returnValue(404));
 
         $this->setHttpClient();
@@ -120,7 +116,6 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue($this->jsonResponseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->with(CURLINFO_HTTP_CODE)
             ->will($this->returnValue(401));
 
         $this->setHttpClient();
@@ -141,7 +136,6 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue($this->jsonResponseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->with(CURLINFO_HTTP_CODE)
             ->will($this->returnValue(''));
 
         $this->setHttpClient();
@@ -159,6 +153,9 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue('Could not resolve host: rarafsafsafasfas.com'));
 
         $this->setHttpClient();
+
+        // Use GET method for request
+        $this->request->setGetMethod();
         $this->apiClient->sendRequest($this->request);
     }
 }
