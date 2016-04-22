@@ -8,21 +8,20 @@ class ResponseHandler
 {
     private $content;
 
-    public function handleClientResponse($content, $responseInfo, $error)
+    public function handleClientResponse($content, $httpCode, $error)
     {
         if ($error !== '') {
             throw new SveaApiException($error, 1011);
         } else {
-            $this->handleStatusCodes($responseInfo, $content);
+            $this->handleStatusCodes($httpCode, $content);
         }
     }
 
-    private function handleStatusCodes($responseInfo, $content)
+    private function handleStatusCodes($httpCode, $content)
     {
         // TODO - finish statuses
-        $statusCode = $responseInfo['http_code'];
 
-        switch ($statusCode) {
+        switch ($httpCode) {
             case 200:
             case 201:
             case 302:

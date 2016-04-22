@@ -5,6 +5,7 @@ namespace Svea\Checkout\Transport;
 use \Exception;
 use Svea\Checkout\Transport\Exception\SveaApiException;
 use Svea\Checkout\Transport\Exception\SveaConnectorException;
+use Svea\Checkout\Transport\Http\CurlRequest;
 
 /**
  * Class Connector
@@ -38,7 +39,7 @@ class Connector
     private $apiUrl;
 
     /**
-     * @var Client $client
+     * @var ApiClient $client
      */
     private $client;
 
@@ -67,7 +68,7 @@ class Connector
      */
     public static function create($merchantId, $sharedSecret, $apiUrl)
     {
-        $client = new Client();
+        $client = new ApiClient(new CurlRequest());
 
         if (empty($merchantId)) {
             throw new SveaConnectorException('Merchant Id is missing', 2001);
@@ -92,7 +93,7 @@ class Connector
         $this->createAuthorizationToken($request);
 
         try {
-            $response = $this->client->request($request);
+            $response = $this->client->sendRequest($request);
             return $response;
         } catch (SveaApiException $e) {
             throw $e;
@@ -135,7 +136,7 @@ class Connector
     }
 
     /**
-     * @return Client
+     * @return ApiClient
      */
     public function getClient()
     {

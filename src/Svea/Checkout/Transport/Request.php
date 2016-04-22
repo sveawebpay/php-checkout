@@ -65,14 +65,6 @@ class Request
     }
 
     /**
-     * @param mixed $method
-     */
-    public function setMethod($method)
-    {
-        $this->method = $method;
-    }
-
-    /**
      * @return mixed
      */
     public function getApiUrl()

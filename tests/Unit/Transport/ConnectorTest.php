@@ -6,6 +6,7 @@ namespace Unit\Transport;
 use \Exception;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Transport\Exception\SveaApiException;
+use Svea\Checkout\Transport\Http\CurlRequest;
 use Svea\Checkout\Transport\Request;
 
 class ConnectorTest extends \PHPUnit_Framework_TestCase
@@ -56,7 +57,7 @@ class ConnectorTest extends \PHPUnit_Framework_TestCase
     {
         $connector = Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
 
-        $this->assertInstanceOf('Svea\Checkout\Transport\Client', $connector->getClient());
+        $this->assertInstanceOf('Svea\Checkout\Transport\ApiClient', $connector->getClient());
         $this->assertEquals($this->merchantId, $connector->getMerchantId());
         $this->assertEquals($this->sharedSecret, $connector->getSharedSecret());
         $this->assertEquals($this->apiUrl, $connector->getApiUrl());
@@ -93,10 +94,13 @@ class ConnectorTest extends \PHPUnit_Framework_TestCase
         $request->setBody(json_encode($this->orderData));
 
         $connector = Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $curlRequest = new CurlRequest();
 
-        $apiClient = $this->getMockBuilder('Svea\Checkout\Transport\Client')->getMock();
+        $apiClient = $this->getMockBuilder('Svea\Checkout\Transport\ApiClient')
+            ->setConstructorArgs(array($curlRequest))
+            ->getMock();
         $apiClient->expects($this->once())
-            ->method('request')
+            ->method('sendRequest')
             ->with($this->identicalTo($request))
             ->will($this->returnValue('1'));
 
@@ -114,10 +118,14 @@ class ConnectorTest extends \PHPUnit_Framework_TestCase
         $connector = Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
 
         $sveaApiException = new SveaApiException('The input data was bad', 1000);
+        $curlRequest = new CurlRequest();
 
-        $apiClient = $this->getMockBuilder('Svea\Checkout\Transport\Client')->getMock();
+        $apiClient = $this->getMockBuilder('Svea\Checkout\Transport\ApiClient')
+            ->setConstructorArgs(array($curlRequest))
+            ->getMock();
+
         $apiClient->expects($this->once())
-            ->method('request')
+            ->method('sendRequest')
             ->with($this->identicalTo($request))
             ->will($this->throwException($sveaApiException));
 
@@ -139,9 +147,13 @@ class ConnectorTest extends \PHPUnit_Framework_TestCase
 
         $ex = new Exception('General error');
 
-        $apiClient = $this->getMockBuilder('Svea\Checkout\Transport\Client')->getMock();
+        $curlRequest = new CurlRequest();
+        $apiClient = $this->getMockBuilder('Svea\Checkout\Transport\ApiClient')
+            ->setConstructorArgs(array($curlRequest))
+            ->getMock();
+
         $apiClient->expects($this->once())
-            ->method('request')
+            ->method('sendRequest')
             ->with($this->identicalTo($request))
             ->will($this->throwException($ex));
 
