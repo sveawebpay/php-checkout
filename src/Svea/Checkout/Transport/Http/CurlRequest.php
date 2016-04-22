@@ -15,7 +15,6 @@ class CurlRequest implements HttpRequestInterface
      */
     private $handle = null;
 
-
     /**
      * CurlRequest constructor.
      */
@@ -23,7 +22,6 @@ class CurlRequest implements HttpRequestInterface
     {
         $this->handle = curl_init();
     }
-
 
     /**
      * @param $name
@@ -51,6 +49,13 @@ class CurlRequest implements HttpRequestInterface
         return curl_getinfo($this->handle, $name);
     }
 
+    /**
+     * @return mixed
+     */
+    public function getFullInfo()
+    {
+        return curl_getinfo($this->handle);
+    }
 
     /**
      * @return string
@@ -58,6 +63,11 @@ class CurlRequest implements HttpRequestInterface
     public function getError()
     {
         return curl_error($this->handle);
+    }
+
+    public function getErrorNumber()
+    {
+        return curl_errno($this->handle);
     }
 
     /**

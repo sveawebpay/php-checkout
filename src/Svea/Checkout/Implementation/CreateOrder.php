@@ -41,13 +41,21 @@ class CreateOrder extends ImplementationManager
         $orderLines = $data['order_lines'];
         foreach ($orderLines as $orderLine) {
             $orderRow = new OrderRow();
-            $orderRow->setArticleNumber($orderLine['reference']);
-            $orderRow->setDiscountPercent('10');       // @todo check value
+            /*
+             *  "articlenumber" => "123456789",
+                "name" => "Dator",
+                "quantity" => 200,
+                "unitprice" => 12300,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+             * */
+
+            $orderRow->setArticleNumber($orderLine['articlenumber']);
+            $orderRow->setDiscountPercent('discountpercent');       // @todo check value
             $orderRow->setName($orderLine['name']);
             $orderRow->setQuantity($orderLine['quantity']);
-            $orderRow->setUnit($orderLine['quantity_unit']);
-            $orderRow->setUnitPrice($orderLine['unit_price']);
-            $orderRow->setVatPercent('20');       // @todo check value
+            $orderRow->setUnitPrice($orderLine['unitprice']);
+            $orderRow->setVatPercent('vatpercent');       // @todo check value
 
             $cart->addItem($orderRow);
         }

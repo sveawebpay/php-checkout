@@ -29,6 +29,9 @@ abstract class ImplementationManager implements ImplementationInterface
         $this->connector = $connector;
     }
 
+    /**
+     * @param $data
+     */
     public function execute($data)
     {
         $this->mapData($data);
@@ -37,6 +40,11 @@ abstract class ImplementationManager implements ImplementationInterface
         $this->invoke();
         $this->mapDataBack();
 
-        return $this->response;
+        $this->returnResponse();
+    }
+
+    public function returnResponse()
+    {
+        return $this->response();
     }
 }

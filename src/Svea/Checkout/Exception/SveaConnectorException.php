@@ -1,10 +1,9 @@
 <?php
 
 
-namespace Svea\Checkout\Transport\Exception;
+namespace Svea\Checkout\Exception;
 
 
 class SveaConnectorException extends \Exception
 {
-
 }

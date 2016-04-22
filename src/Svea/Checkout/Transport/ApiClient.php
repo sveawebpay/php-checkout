@@ -3,6 +3,8 @@
 namespace Svea\Checkout\Transport;
 
 use \Exception;
+use Svea\Checkout\Exception\SveaApiException;
+use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
 
 /**
@@ -39,22 +41,26 @@ class ApiClient
         $this->httpClient->setOption(CURLOPT_URL, $request->getApiUrl());
         $this->httpClient->setOption(CURLOPT_HTTPHEADER, $header);
         $this->httpClient->setOption(CURLOPT_RETURNTRANSFER, 1);
+
         if ($request->getMethod() == 'POST') {
             $this->httpClient->setOption(CURLOPT_POST, 1);
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
         }
 
-        $curlResponse = $this->httpClient->execute();
+        $httpResponse = $this->httpClient->execute();
         $httpCode = $this->httpClient->getInfo(CURLINFO_HTTP_CODE);
-        $curlError = $this->httpClient->getError();
+
+        $httpError = $this->httpClient->getError();
+        $errorNumber = $this->httpClient->getErrorNumber();
+
         $this->httpClient->close();
 
-        if (!empty($curlError)) {
-            throw new Exception("Connection to '{$request->getApiUrl()}' failed: {$curlError}");
+        if ($errorNumber > 0) {
+            throw new Exception($httpError, ExceptionCodeList::CLIENT_API_ERROR);
         }
 
         $clientResponse = new ResponseHandler();
-        $clientResponse->handleClientResponse($curlResponse, $httpCode, $curlError);
+        $clientResponse->handleClientResponse($httpResponse, $httpCode);
 
         return $clientResponse;
     }

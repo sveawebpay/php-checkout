@@ -3,8 +3,9 @@
 namespace Svea\Checkout\Transport;
 
 use \Exception;
-use Svea\Checkout\Transport\Exception\SveaApiException;
-use Svea\Checkout\Transport\Exception\SveaConnectorException;
+use Svea\Checkout\Exception\SveaApiException;
+use Svea\Checkout\Exception\ExceptionCodeList;
+use Svea\Checkout\Exception\SveaConnectorException;
 use Svea\Checkout\Transport\Http\CurlRequest;
 
 /**
@@ -71,13 +72,13 @@ class Connector
         $client = new ApiClient(new CurlRequest());
 
         if (empty($merchantId)) {
-            throw new SveaConnectorException('Merchant Id is missing', 2001);
+            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_MERCHANT_ID), ExceptionCodeList::MISSING_MERCHANT_ID);
         }
         if (empty($sharedSecret)) {
-            throw new SveaConnectorException('Shared secret is missing', 2002);
+            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET), ExceptionCodeList::MISSING_SHARED_SECRET);
         }
         if (empty($apiUrl)) {
-            throw new SveaConnectorException('API Url is missing', 2003);
+            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET), ExceptionCodeList::MISSING_SHARED_SECRET);
         }
 
         return new static($client, $merchantId, $sharedSecret, $apiUrl);

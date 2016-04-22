@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Svea\Checkout\Transport\Exception;
+namespace Svea\Checkout\Exception;
 
 
 class SveaApiException extends \Exception
