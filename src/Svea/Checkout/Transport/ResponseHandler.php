@@ -4,11 +4,17 @@ namespace Svea\Checkout\Transport;
 
 use Svea\Checkout\Exception\SveaApiException;
 
-
 class ResponseHandler
 {
     private $content;
 
+    /**
+     * Handle response
+     *
+     * @param $content
+     * @param $httpCode
+     * @throws SveaApiException
+     */
     public function handleClientResponse($content, $httpCode)
     {
         switch ($httpCode) {
@@ -23,34 +29,12 @@ class ResponseHandler
         }
     }
 
-    /* private function handleResponse($httpCode, $content)
-     {
-         switch ($httpCode) {
-             case 200:
-             case 201:
-             case 302:
-                 $this->content = json_decode($content, true);
-                 break;
-             case 400:
-                 $error = 'The input data was bad';
-                 throw new SveaApiException($error, 1000);
-                 break;
-             case 401:
-                 $error = 'Unauthorized: Missing or incorrect Authorization token in header. ' .
-                     'Please verify that you used the correct Merchant ID and Shared secret when you constructed your client.';
-                 throw new SveaApiException($error, 1001);
-                 break;
-             case 404:
-                 $error = 'No order with requested ID was found.';
-                 throw new SveaApiException($error, 1004);
-                 break;
-             default:
-                 $error = 'Undefined error.';
-                 throw new SveaApiException($error, 1005);
-                 break;
-         }
-     }*/
-
+    /**
+     * Return error message from json response
+     *
+     * @param $jsonContent
+     * @return string
+     */
     private function getResponseErrorMessage($jsonContent)
     {
         $content = json_decode($jsonContent, true);
@@ -64,6 +48,8 @@ class ResponseHandler
 
 
     /**
+     * Return response content
+     *
      * @return mixed
      */
     public function getContent()
