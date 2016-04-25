@@ -3,7 +3,6 @@
 namespace Svea\Checkout\Transport;
 
 use \Exception;
-use Svea\Checkout\Exception\SveaApiException;
 use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
 

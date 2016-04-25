@@ -22,7 +22,7 @@ class ConnectorTest extends TestCase
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionMessage Merchant Id is missing
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_MERCHANT_ID
      */
     public function testCreateMissingMerchantId()
     {
@@ -32,7 +32,7 @@ class ConnectorTest extends TestCase
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionMessage Shared secret is missing
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_SHARED_SECRET
      */
     public function testCreateMissingSharedSecret()
     {
@@ -42,7 +42,7 @@ class ConnectorTest extends TestCase
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionMessage API Url is missing
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_API_BASE_URL
      */
     public function testCreateMissingApiUrlSecret()
     {

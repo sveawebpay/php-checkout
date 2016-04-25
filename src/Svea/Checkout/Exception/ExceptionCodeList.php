@@ -10,7 +10,7 @@ class ExceptionCodeList
 
     const MISSING_MERCHANT_ID = 2001;
     const MISSING_SHARED_SECRET = 2002;
-    const MISSING_BASE_URL = 2003;
+    const MISSING_API_BASE_URL = 2003;
 
     public static function getErrorMessage($exceptionCode)
     {
@@ -22,7 +22,7 @@ class ExceptionCodeList
 
             2001 => "Missing Merchant Id",
             2002 => 'Missing Shared Secret',
-            2003 => "Missing API URL",
+            2003 => "Missing API Base URL",
 
         );
 

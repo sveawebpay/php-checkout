@@ -46,6 +46,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $sharedSecret = '80e3a905e597ca428f4e25200433263c';
     protected $apiUrl = Connector::TEST_BASE_URL;
 
+    // Request body data - Mock
     protected $orderData = array(
         "purchase_country" => "gb",
         "purchase_currency" => "gbp",
@@ -87,7 +88,10 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->responseContent = array('data' => 'This is content');
+        $this->responseContent = array(
+            'data' => 'This is content',
+            'Message' => 'Error message'
+        );
         $this->jsonResponseContent = json_encode($this->responseContent);
 
         $this->setRequest();

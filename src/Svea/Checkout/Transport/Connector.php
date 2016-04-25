@@ -78,7 +78,7 @@ class Connector
             throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET), ExceptionCodeList::MISSING_SHARED_SECRET);
         }
         if (empty($apiUrl)) {
-            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET), ExceptionCodeList::MISSING_SHARED_SECRET);
+            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_API_BASE_URL), ExceptionCodeList::MISSING_API_BASE_URL);
         }
 
         return new static($client, $merchantId, $sharedSecret, $apiUrl);

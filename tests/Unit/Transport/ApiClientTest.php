@@ -124,7 +124,7 @@ class ApiClientTest extends TestCase
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaApiException
-     * @expectedExceptionMessage Undefined error.
+     * @expectedExceptionCode 404
      */
     public function testSendRequestWithUndefinedStatusResponse()
     {
@@ -136,7 +136,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue($this->jsonResponseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->will($this->returnValue(''));
+            ->will($this->returnValue(404));
 
         $this->setHttpClient();
         $this->apiClient->sendRequest($this->request);
@@ -151,11 +151,14 @@ class ApiClientTest extends TestCase
         $this->httpClientMock->expects($this->once())
             ->method('getError')
             ->will($this->returnValue('Could not resolve host: rarafsafsafasfas.com'));
+        $this->httpClientMock->expects($this->once())
+            ->method('getErrorNumber')
+            ->will($this->returnValue(2));
 
         $this->setHttpClient();
 
         // Use GET method for request
-        $this->request->setGetMethod();
+        $this->request->setPostMethod();
         $this->apiClient->sendRequest($this->request);
     }
 }
