@@ -85,11 +85,11 @@ class Connector
     }
 
     /**
-     * @param Request $request
+     * @param RequestHandler $request
      * @return ResponseHandler
      * @throws SveaApiException
      */
-    public function send(Request $request)
+    public function send(RequestHandler $request)
     {
         $this->createAuthorizationToken($request);
 
@@ -104,9 +104,9 @@ class Connector
     }
 
     /**
-     * @param Request $request
+     * @param RequestHandler $request
      */
-    private function createAuthorizationToken(Request $request)
+    private function createAuthorizationToken(RequestHandler $request)
     {
         $authToken = base64_encode($this->merchantId . ':' . hash('sha512', $request->getBody() . $this->sharedSecret));
         $request->setAuthorizationToken($authToken);

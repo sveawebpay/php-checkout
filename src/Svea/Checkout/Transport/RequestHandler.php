@@ -4,7 +4,7 @@
 namespace Svea\Checkout\Transport;
 
 
-class Request
+class RequestHandler
 {
     private $authorizationToken;
 

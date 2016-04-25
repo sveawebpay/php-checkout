@@ -7,7 +7,7 @@ namespace Svea\Checkout\Tests\Unit;
 use Svea\Checkout\Transport\ApiClient;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
-use Svea\Checkout\Transport\Request;
+use Svea\Checkout\Transport\RequestHandler;
 use Svea\Checkout\Transport\ResponseHandler;
 
 class TestCase extends \PHPUnit_Framework_TestCase
@@ -18,9 +18,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $response;
 
     /**
-     * @var Request $request
+     * @var RequestHandler $requestHandler
      */
-    protected $request;
+    protected $requestHandler;
 
     /**
      * @var Connector $connector
@@ -102,11 +102,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     private function setRequest()
     {
-        $this->request = new Request();
-        $this->request->setApiUrl($this->apiUrl);
-        $this->request->setBody(json_encode($this->orderData));
-        $this->request->setPostMethod();
-        $this->request->setAuthorizationToken('123456789');
+        $this->requestHandler = new RequestHandler();
+        $this->requestHandler->setApiUrl($this->apiUrl);
+        $this->requestHandler->setBody(json_encode($this->orderData));
+        $this->requestHandler->setPostMethod();
+        $this->requestHandler->setAuthorizationToken('123456789');
     }
 
     private function setCurlRequest()

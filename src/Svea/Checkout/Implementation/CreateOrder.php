@@ -8,7 +8,7 @@ use Svea\Checkout\Model\Cart;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\MerchantSettings;
 use Svea\Checkout\Model\OrderRow;
-use Svea\Checkout\Transport\Request;
+use Svea\Checkout\Transport\RequestHandler;
 
 class CreateOrder extends ImplementationManager
 {
@@ -111,7 +111,7 @@ class CreateOrder extends ImplementationManager
 
     public function invoke()
     {
-        $request = new Request();
+        $request = new RequestHandler();
         $request->setPostMethod();
         $request->setBody($this->requestBodyData);
         $request->setApiUrl($this->connector->getApiUrl() . self::API_URL);

@@ -33,7 +33,7 @@ class ApiClientTest extends TestCase
         /**
          * @var ResponseHandler $response
          */
-        $response = $this->apiClient->sendRequest($this->request);
+        $response = $this->apiClient->sendRequest($this->requestHandler);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
         $this->assertEquals($this->jsonResponseContent, $response->getContent());
@@ -56,7 +56,7 @@ class ApiClientTest extends TestCase
         /**
          * @var ResponseHandler $response
          */
-        $response = $this->apiClient->sendRequest($this->request);
+        $response = $this->apiClient->sendRequest($this->requestHandler);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
         $this->assertEquals($this->jsonResponseContent, $response->getContent());
@@ -79,7 +79,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(400));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->request);
+        $this->apiClient->sendRequest($this->requestHandler);
     }
 
     /**
@@ -99,7 +99,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(404));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->request);
+        $this->apiClient->sendRequest($this->requestHandler);
     }
 
     /**
@@ -119,7 +119,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(401));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->request);
+        $this->apiClient->sendRequest($this->requestHandler);
     }
 
     /**
@@ -139,7 +139,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(404));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->request);
+        $this->apiClient->sendRequest($this->requestHandler);
     }
 
     /**
@@ -158,7 +158,7 @@ class ApiClientTest extends TestCase
         $this->setHttpClient();
 
         // Use GET method for request
-        $this->request->setPostMethod();
-        $this->apiClient->sendRequest($this->request);
+        $this->requestHandler->setPostMethod();
+        $this->apiClient->sendRequest($this->requestHandler);
     }
 }

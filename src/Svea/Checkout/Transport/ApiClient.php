@@ -27,11 +27,11 @@ class ApiClient
     }
 
     /**
-     * @param Request $request
+     * @param RequestHandler $request
      * @return ResponseHandler
      * @throws Exception
      */
-    public function sendRequest(Request $request)
+    public function sendRequest(RequestHandler $request)
     {
         $header = array();
         $header[] = 'Content-type: application/json';

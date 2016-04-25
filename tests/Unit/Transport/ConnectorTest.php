@@ -54,12 +54,12 @@ class ConnectorTest extends TestCase
     {
         $this->apiClient->expects($this->once())
             ->method('sendRequest')
-            ->with($this->identicalTo($this->request))
+            ->with($this->identicalTo($this->requestHandler))
             ->will($this->returnValue('1'));
 
         $this->connector->setClient($this->apiClient);
 
-        $this->assertEquals('1', $this->connector->send($this->request));
+        $this->assertEquals('1', $this->connector->send($this->requestHandler));
     }
 
     /**
@@ -72,12 +72,12 @@ class ConnectorTest extends TestCase
 
         $this->apiClient->expects($this->once())
             ->method('sendRequest')
-            ->with($this->identicalTo($this->request))
+            ->with($this->identicalTo($this->requestHandler))
             ->will($this->throwException($sveaApiException));
 
         $this->connector->setClient($this->apiClient);
 
-        $this->connector->send($this->request);
+        $this->connector->send($this->requestHandler);
     }
 
     /**
@@ -90,22 +90,22 @@ class ConnectorTest extends TestCase
 
         $this->apiClient->expects($this->once())
             ->method('sendRequest')
-            ->with($this->identicalTo($this->request))
+            ->with($this->identicalTo($this->requestHandler))
             ->will($this->throwException($ex));
 
         $this->connector->setClient($this->apiClient);
 
-        $this->connector->send($this->request);
+        $this->connector->send($this->requestHandler);
     }
 
     public function testCreateAuthorizationToken()
     {
-        $expectedAuthToken = base64_encode($this->merchantId . ':' . hash('sha512', $this->request->getBody() . $this->sharedSecret));
+        $expectedAuthToken = base64_encode($this->merchantId . ':' . hash('sha512', $this->requestHandler->getBody() . $this->sharedSecret));
 
         $method = $this->getPrivateMethod('Svea\Checkout\Transport\Connector', 'createAuthorizationToken');
-        $method->invokeArgs($this->connector, array($this->request));
+        $method->invokeArgs($this->connector, array($this->requestHandler));
 
-        $this->assertEquals($expectedAuthToken, $this->request->getAuthorizationToken());
+        $this->assertEquals($expectedAuthToken, $this->requestHandler->getAuthorizationToken());
     }
 
     public function getPrivateMethod($className, $methodName)
