@@ -11,20 +11,20 @@ class ResponseHandler
     /**
      * Handle response
      *
-     * @param $content
-     * @param $httpCode
+     * @param  $content
+     * @param  $httpCode
      * @throws SveaApiException
      */
     public function handleClientResponse($content, $httpCode)
     {
         switch ($httpCode) {
-        case 200:
-        case 201:
-        case 302:
-            $this->content = $content;
-            break;
-        default:
-            throw new SveaApiException($this->getResponseErrorMessage($content), $httpCode);
+            case 200:
+            case 201:
+            case 302:
+                $this->content = $content;
+                break;
+            default:
+                throw new SveaApiException($this->getResponseErrorMessage($content), $httpCode);
                 break;
         }
     }
@@ -32,7 +32,7 @@ class ResponseHandler
     /**
      * Return error message from json response
      *
-     * @param $jsonContent
+     * @param  $jsonContent
      * @return string
      */
     private function getResponseErrorMessage($jsonContent)

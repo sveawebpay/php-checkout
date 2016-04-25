@@ -74,13 +74,22 @@ class Connector
         $client = new ApiClient(new CurlRequest());
 
         if (empty($merchantId)) {
-            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_MERCHANT_ID), ExceptionCodeList::MISSING_MERCHANT_ID);
+            throw new SveaConnectorException(
+                ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_MERCHANT_ID),
+                ExceptionCodeList::MISSING_MERCHANT_ID
+            );
         }
         if (empty($sharedSecret)) {
-            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET), ExceptionCodeList::MISSING_SHARED_SECRET);
+            throw new SveaConnectorException(
+                ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET),
+                ExceptionCodeList::MISSING_SHARED_SECRET
+            );
         }
         if (empty($apiUrl)) {
-            throw new SveaConnectorException(ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_API_BASE_URL), ExceptionCodeList::MISSING_API_BASE_URL);
+            throw new SveaConnectorException(
+                ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_API_BASE_URL),
+                ExceptionCodeList::MISSING_API_BASE_URL
+            );
         }
 
         return new static($client, $merchantId, $sharedSecret, $apiUrl);

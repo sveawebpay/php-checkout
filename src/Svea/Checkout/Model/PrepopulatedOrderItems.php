@@ -183,7 +183,4 @@ class PrepopulatedOrderItems
     {
         $this->lockPhoneNumber = $lockPhoneNumber;
     }
-
-    
-
 }

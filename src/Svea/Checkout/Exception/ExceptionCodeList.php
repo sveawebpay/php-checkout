@@ -12,7 +12,8 @@ class ExceptionCodeList
 
     /**
      * Return Message for given exception code
-     * @param $exceptionCode
+     *
+     * @param  $exceptionCode
      * @return mixed|string
      */
     public static function getErrorMessage($exceptionCode)
@@ -30,7 +31,7 @@ class ExceptionCodeList
         );
 
         if (in_array($exceptionCode, $exceptionMessageList)) {
-            return $exceptionMessageList[$exceptionCode]; 
+            return $exceptionMessageList[$exceptionCode];
         }
 
         return "Unknown code error";
