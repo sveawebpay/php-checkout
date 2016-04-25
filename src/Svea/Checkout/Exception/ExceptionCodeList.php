@@ -10,6 +10,11 @@ class ExceptionCodeList
     const MISSING_SHARED_SECRET = 2002;
     const MISSING_API_BASE_URL = 2003;
 
+    /**
+     * Return Message for given exception code
+     * @param $exceptionCode
+     * @return mixed|string
+     */
     public static function getErrorMessage($exceptionCode)
     {
         $exceptionCode = intval($exceptionCode);

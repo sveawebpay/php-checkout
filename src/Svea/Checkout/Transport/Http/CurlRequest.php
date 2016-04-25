@@ -66,6 +66,10 @@ class CurlRequest implements HttpRequestInterface
 
     public function getErrorNumber()
     {
+        /*
+         * 0    - no error
+         * > 0  - some error occurred
+         * */
         return curl_errno($this->handle);
     }
 
