@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Transport\ResponseHandler;

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Exception;
-
 
 class ExceptionCodeList
 {
@@ -26,8 +24,9 @@ class ExceptionCodeList
 
         );
 
-        if (in_array($exceptionCode, $exceptionMessageList))
-            return $exceptionMessageList[$exceptionCode];
+        if (in_array($exceptionCode, $exceptionMessageList)) {
+            return $exceptionMessageList[$exceptionCode]; 
+        }
 
         return "Unknown code error";
     }

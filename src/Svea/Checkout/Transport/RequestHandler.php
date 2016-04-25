@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Transport;
-
 
 class RequestHandler
 {
@@ -79,6 +77,4 @@ class RequestHandler
     {
         $this->apiUrl = $apiUrl;
     }
-
-
 }

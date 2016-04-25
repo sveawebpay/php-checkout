@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Model;
 
-
 class Address
 {
     /**
@@ -235,6 +234,4 @@ class Address
     {
         $this->countryCode = $countryCode;
     }
-
-
 }

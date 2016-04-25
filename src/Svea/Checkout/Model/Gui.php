@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Model;
 
-
 class Gui
 {
     /**
@@ -46,6 +45,4 @@ class Gui
     {
         $this->snippet = $snippet;
     }
-
-
 }

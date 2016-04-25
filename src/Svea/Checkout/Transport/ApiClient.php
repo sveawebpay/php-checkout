@@ -8,6 +8,7 @@ use Svea\Checkout\Transport\Http\HttpRequestInterface;
 
 /**
  * Class Client
+ *
  * @package Svea\Checkout\Transport
  */
 class ApiClient
@@ -19,6 +20,7 @@ class ApiClient
 
     /**
      * Client constructor.
+     *
      * @param $httpClient
      */
     public function __construct(HttpRequestInterface $httpClient)
@@ -80,4 +82,3 @@ class ApiClient
         $this->httpClient = $httpClient;
     }
 }
-

@@ -1,11 +1,10 @@
 <?php
 
-
 namespace Svea\Checkout\Transport\Http;
-
 
 /**
  * Class CurlRequest
+ *
  * @package Svea\Checkout\Transport
  */
 class CurlRequest implements HttpRequestInterface

@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Model;
 
-
 class MerchantSettings
 {
     /**
@@ -89,6 +88,4 @@ class MerchantSettings
     {
         $this->pushUri = $pushUri;
     }
-
-
 }

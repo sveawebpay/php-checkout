@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Model;
 
-
 class OrderRow
 {
     /**
@@ -152,6 +151,4 @@ class OrderRow
     {
         $this->unit = $unit;
     }
-
-
 }

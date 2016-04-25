@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Model;
-
 
 class CheckoutData
 {
@@ -278,7 +276,4 @@ class CheckoutData
     {
         $this->status = $status;
     }
-
-
-
 }

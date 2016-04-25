@@ -4,7 +4,6 @@ namespace Svea\Checkout\Transport;
 
 use Svea\Checkout\Exception\SveaApiException;
 
-
 class ResponseHandler
 {
     private $content;
@@ -12,13 +11,13 @@ class ResponseHandler
     public function handleClientResponse($content, $httpCode)
     {
         switch ($httpCode) {
-            case 200:
-            case 201:
-            case 302:
-                $this->content = $content;
-                break;
-            default:
-                throw new SveaApiException($this->getResponseErrorMessage($content), $httpCode);
+        case 200:
+        case 201:
+        case 302:
+            $this->content = $content;
+            break;
+        default:
+            throw new SveaApiException($this->getResponseErrorMessage($content), $httpCode);
                 break;
         }
     }
@@ -70,5 +69,4 @@ class ResponseHandler
     {
         return $this->content;
     }
-
 }

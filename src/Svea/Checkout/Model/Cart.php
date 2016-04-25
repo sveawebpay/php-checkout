@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Model;
 
-
 class Cart
 {
     /**
@@ -31,6 +30,4 @@ class Cart
     {
         $this->items[] = $item;
     }
-
-
 }

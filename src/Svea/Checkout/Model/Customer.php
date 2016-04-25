@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Model;
 
-
 class Customer
 {
     /**
@@ -88,6 +87,4 @@ class Customer
     {
         $this->dateOfBirth = $dateOfBirth;
     }
-
-
 }

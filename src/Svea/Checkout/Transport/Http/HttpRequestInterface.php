@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Transport\Http;
-
 
 interface HttpRequestInterface
 {

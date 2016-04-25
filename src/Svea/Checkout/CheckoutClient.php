@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout;
 
-
 use Svea\Checkout\Implementation\CreateOrder;
 use Svea\Checkout\Transport\Connector;
 
@@ -12,6 +11,7 @@ class CheckoutClient
 
     /**
      * CheckoutClient constructor.
+     *
      * @param Connector $connector
      */
     public function __construct(Connector $connector)

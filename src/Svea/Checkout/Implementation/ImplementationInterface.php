@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Implementation;
 
-
 interface ImplementationInterface
 {
     public function prepareData();

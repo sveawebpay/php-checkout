@@ -10,6 +10,7 @@ use Svea\Checkout\Transport\Http\CurlRequest;
 
 /**
  * Class Connector
+ *
  * @package Svea\Checkout\Transport
  */
 class Connector
@@ -47,6 +48,7 @@ class Connector
 
     /**
      * Connector constructor.
+     *
      * @param $client
      * @param $merchantId
      * @param $sharedSecret

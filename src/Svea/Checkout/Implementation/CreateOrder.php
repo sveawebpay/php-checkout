@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Implementation;
-
 
 use Svea\Checkout\Model\Cart;
 use Svea\Checkout\Model\CheckoutData;
@@ -126,5 +124,4 @@ class CreateOrder extends ImplementationManager
         // TODO: Implement mapDataBack() method.
 
     }
-
 }
