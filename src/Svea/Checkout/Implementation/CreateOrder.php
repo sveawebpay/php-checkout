@@ -10,7 +10,7 @@ use Svea\Checkout\Transport\RequestHandler;
 
 class CreateOrder extends ImplementationManager
 {
-    const API_URL = 'api/orders/';
+    const API_URL = '/api/orders/';
 
     /**
      * @var CheckoutData
@@ -49,11 +49,11 @@ class CreateOrder extends ImplementationManager
              * */
 
             $orderRow->setArticleNumber($orderLine['articlenumber']);
-            $orderRow->setDiscountPercent('discountpercent');       // @todo check value
+            $orderRow->setDiscountPercent($orderLine['discountpercent']);
             $orderRow->setName($orderLine['name']);
             $orderRow->setQuantity($orderLine['quantity']);
             $orderRow->setUnitPrice($orderLine['unitprice']);
-            $orderRow->setVatPercent('vatpercent');       // @todo check value
+            $orderRow->setVatPercent($orderLine['vatpercent']);
 
             $cart->addItem($orderRow);
         }
@@ -88,15 +88,25 @@ class CreateOrder extends ImplementationManager
         );
 
         $cartItems = $cart->getItems();
+        $preparedData['cart'] = array();
         foreach ($cartItems as $item) {
             /* @var $item OrderRow */
-            $preparedData['cart'][] = array(
+            $preparedData['cart']['items'][] = array(
                 'articlenumber' => $item->getArticleNumber(),
                 'name' => $item->getName(),
                 'quantity' => $item->getQuantity(),
                 'unitprice' => $item->getUnitPrice(),
                 'discountpercent' => $item->getDiscountPercent(),
                 'vatpercent' => $item->getVatPercent()
+            );
+            // TODO implement shopping item
+            $preparedData['cart']['items'][] = array(
+                'type' => 'shipping_fee',
+                'articlenumber' => "SHIPPING",
+                'name' => 'Shipping Fee',
+                'quantity' => 100,
+                'unitprice' => 4900,
+                'vatpercent' => 2500
             );
         }
 
