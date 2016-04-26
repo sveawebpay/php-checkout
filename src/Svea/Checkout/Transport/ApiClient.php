@@ -14,6 +14,8 @@ use Svea\Checkout\Transport\Http\HttpRequestInterface;
 class ApiClient
 {
     /**
+     * Implementation of Http client interface.
+     *
      * @var HttpRequestInterface $httpClient
      */
     private $httpClient;
@@ -29,6 +31,8 @@ class ApiClient
     }
 
     /**
+     * Send request to Svea Checkout API.
+     *
      * @param RequestHandler $request
      * @return ResponseHandler
      * @throws Exception

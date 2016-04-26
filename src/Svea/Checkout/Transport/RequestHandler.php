@@ -2,18 +2,46 @@
 
 namespace Svea\Checkout\Transport;
 
+/**
+ * Class RequestHandler
+ * Request model
+ *
+ * @package Svea\Checkout\Transport
+ */
 class RequestHandler
 {
+    /**
+     * Authorization token, sent trough authorization header in request.
+     *
+     * @var string $authorizationToken
+     */
     private $authorizationToken;
 
+    /**
+     * Request body - json encoded.
+     *
+     * @var string $body
+     */
     private $body;
 
+    /**
+     * Request method.
+     *
+     * @var string $method
+     */
     private $method;
 
+    /**
+     * Svea Checkout API Url.
+     *
+     * @var string $apiUrl
+     */
     private $apiUrl;
 
     /**
-     * @return mixed
+     * Return authorization token.
+     *
+     * @return string
      */
     public function getAuthorizationToken()
     {
@@ -21,7 +49,9 @@ class RequestHandler
     }
 
     /**
-     * @param mixed $authorizationToken
+     * Set authorization token.
+     *
+     * @param string $authorizationToken
      */
     public function setAuthorizationToken($authorizationToken)
     {
@@ -29,7 +59,9 @@ class RequestHandler
     }
 
     /**
-     * @return mixed
+     * Return request body data as json encoded array.
+     *
+     * @return string
      */
     public function getBody()
     {
@@ -37,7 +69,9 @@ class RequestHandler
     }
 
     /**
-     * @param mixed $body
+     * Set request body data as json encoded array
+     *
+     * @param string $body
      */
     public function setBody($body)
     {
@@ -45,25 +79,33 @@ class RequestHandler
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMethod()
     {
         return $this->method;
     }
 
+    /**
+     * Set POST method to the request.
+     */
     public function setPostMethod()
     {
         $this->method = 'POST';
     }
 
+    /**
+     * Set GET method to the request.
+     */
     public function setGetMethod()
     {
         $this->method = 'GET';
     }
 
     /**
-     * @return mixed
+     * Return full request API url.
+     *
+     * @return string
      */
     public function getApiUrl()
     {
@@ -71,7 +113,9 @@ class RequestHandler
     }
 
     /**
-     * @param mixed $apiUrl
+     * Set API url.
+     *
+     * @param string $apiUrl
      */
     public function setApiUrl($apiUrl)
     {

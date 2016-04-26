@@ -4,12 +4,22 @@ namespace Svea\Checkout\Transport;
 
 use Svea\Checkout\Exception\SveaApiException;
 
+/**
+ * Class ResponseHandler - HTTP response handler
+ * @package Svea\Checkout\Transport
+ */
 class ResponseHandler
 {
+
+    /**
+     * Svea Checkout Api response content.
+     *
+     * @var mixed $content
+     */
     private $content;
 
     /**
-     * Handle response
+     * Handle Svea Checkout API response
      *
      * @param  $content
      * @param  $httpCode

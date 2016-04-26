@@ -9,7 +9,7 @@ use Svea\Checkout\Exception\SveaConnectorException;
 use Svea\Checkout\Transport\Http\CurlRequest;
 
 /**
- * Class Connector
+ * Class Connector - Transport connector used to make HTTP request to Svea Checkout API.
  *
  * @package Svea\Checkout\Transport
  */
@@ -26,21 +26,29 @@ class Connector
     const BASE_URL = 'api.svea.com/';
 
     /**
+     * Merchant identifier assigned to client by Svea.
+     *
      * @var string $merchantId
      */
     private $merchantId;
 
     /**
+     * Secret key assigned to Merchant Id by Svea.
+     *
      * @var string $sharedSecret
      */
     private $sharedSecret;
 
     /**
+     * Base Checkout API url.
+     *
      * @var string $apiUrl
      */
     private $apiUrl;
 
     /**
+     * Svea Checkout Api client.
+     *
      * @var ApiClient $client
      */
     private $client;
@@ -63,6 +71,8 @@ class Connector
     }
 
     /**
+     * Static function to create Svea Checkout connector instance with proper credentials.
+     *
      * @param $merchantId
      * @param $sharedSecret
      * @param $apiUrl
@@ -96,6 +106,8 @@ class Connector
     }
 
     /**
+     * Create request to the API client.
+     *
      * @param RequestHandler $request
      * @return ResponseHandler
      * @throws SveaApiException
@@ -115,6 +127,8 @@ class Connector
     }
 
     /**
+     * Create Authorization Token.
+     *
      * @param RequestHandler $request
      */
     private function createAuthorizationToken(RequestHandler $request)

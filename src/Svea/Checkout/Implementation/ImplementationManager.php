@@ -8,16 +8,24 @@ use Svea\Checkout\Transport\Connector;
 abstract class ImplementationManager implements ImplementationInterface
 {
     /**
+     * Transport connector used to make HTTP request to Svea Checkout API.
+     *
      * @var Connector $connector
      */
     protected $connector;
 
     /**
+     * HTTP response handler.
+     *
      * @var ResponseHandler $response
      */
     protected $response;
 
-    // - body data
+    /**
+     * Request body - json encoded.
+     *
+     * @var string $requestBodyData
+     */
     protected $requestBodyData;
 
     /**
