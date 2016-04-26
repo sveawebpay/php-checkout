@@ -14,5 +14,5 @@ interface HttpRequestInterface
 
     public function getErrorNumber();
 
-    public function close();
+    public function close(); 
 }

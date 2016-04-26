@@ -14,6 +14,7 @@ class CurlRequest implements HttpRequestInterface
      */
     private $handle = null;
 
+
     /**
      * CurlRequest constructor.
      */
@@ -38,7 +39,7 @@ class CurlRequest implements HttpRequestInterface
     {
         return curl_exec($this->handle);
     }
-
+    
     /**
      * @param $name
      * @return mixed

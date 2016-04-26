@@ -18,44 +18,40 @@ class ResponseHandler
      */
     private $content;
 
+    private $header;
+
+    private $body;
+
+    private $httpCode;
+
+
+    public function __construct($content, $httpCode)
+    {
+        $this->content = $content;
+        $this->httpCode = $httpCode;
+
+        $this->setHeader($content);
+        $this->setBody($content);
+    }
+
     /**
      * Handle Svea Checkout API response
      *
-     * @param  $content
-     * @param  $httpCode
      * @throws SveaApiException
      */
-    public function handleClientResponse($content, $httpCode)
+    public function handleClientResponse()
     {
-        switch ($httpCode) {
+        switch ($this->httpCode) {
             case 200:
             case 201:
             case 302:
-                $this->content = $content;
+                //$this->content = $content;
                 break;
             default:
-                throw new SveaApiException($this->getResponseErrorMessage($content), $httpCode);
-            break;
+                throw new SveaApiException($this->header['ErrorMessage'], $this->httpCode);
+                break;
         }
     }
-
-    /**
-     * Return error message from json response
-     *
-     * @param  $jsonContent
-     * @return string
-     */
-    private function getResponseErrorMessage($jsonContent)
-    {
-        $content = json_decode($jsonContent, true);
-
-        if (isset($content['Message'])) {
-            return $content['Message'];
-        }
-
-        return "Undefined error occurred";
-    }
-
 
     /**
      * Return response content
@@ -64,6 +60,32 @@ class ResponseHandler
      */
     public function getContent()
     {
-        return $this->content;
+        return $this->body;
+    }
+
+    public function setHeader($response)
+    {
+        $headers = array();
+
+        // Split the string on every "double" new line.
+        $arrRequests = explode("\r\n\r\n", $response);
+
+        foreach (explode("\r\n", $arrRequests[0]) as $i => $line) {
+            if ($i === 0) {
+                $headers['http_code'] = $line;
+            } else {
+                list ($key, $value) = explode(': ', $line);
+                $headers[$key] = $value;
+            }
+        }
+
+        $this->header = $headers;
+    }
+
+    public function setBody($response)
+    {
+        $arrRequests = explode("\r\n\r\n", $response);
+
+        $this->body = $arrRequests[1];
     }
 }

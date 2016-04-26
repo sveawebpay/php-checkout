@@ -46,10 +46,14 @@ class ApiClient
         $this->httpClient->setOption(CURLOPT_URL, $request->getApiUrl());
         $this->httpClient->setOption(CURLOPT_HTTPHEADER, $header);
         $this->httpClient->setOption(CURLOPT_RETURNTRANSFER, 1);
+        $this->httpClient->setOption(CURLOPT_HEADER, 1);
 
         if ($request->getMethod() == 'POST') {
             $this->httpClient->setOption(CURLOPT_POST, 1);
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
+
+            echo "<pre>" . print_r(json_decode($request->getBody(), true), true)."</pre>";
+
         }
 
         $httpResponse = $this->httpClient->execute();
@@ -64,8 +68,8 @@ class ApiClient
             throw new Exception($httpError, ExceptionCodeList::CLIENT_API_ERROR);
         }
 
-        $clientResponse = new ResponseHandler();
-        $clientResponse->handleClientResponse($httpResponse, $httpCode);
+        $clientResponse = new ResponseHandler($httpResponse, $httpCode);
+        $clientResponse->handleClientResponse();
 
         return $clientResponse;
     }
