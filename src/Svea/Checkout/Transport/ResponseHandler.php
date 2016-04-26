@@ -25,7 +25,7 @@ class ResponseHandler
                 break;
             default:
                 throw new SveaApiException($this->getResponseErrorMessage($content), $httpCode);
-                break;
+            break;
         }
     }
 

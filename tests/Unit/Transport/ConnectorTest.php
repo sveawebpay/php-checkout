@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Svea\Checkout\Tests\Unit\Transport;
 
 use \Exception;
@@ -100,7 +99,15 @@ class ConnectorTest extends TestCase
 
     public function testCreateAuthorizationToken()
     {
-        $expectedAuthToken = base64_encode($this->merchantId . ':' . hash('sha512', $this->requestHandler->getBody() . $this->sharedSecret));
+        $expectedAuthToken = base64_encode(
+            $this->merchantId .
+            ':' .
+            hash(
+                'sha512',
+                $this->requestHandler->getBody() .
+                $this->sharedSecret
+            )
+        );
 
         $method = $this->getPrivateMethod('Svea\Checkout\Transport\Connector', 'createAuthorizationToken');
         $method->invokeArgs($this->connector, array($this->requestHandler));

@@ -1,6 +1,5 @@
 <?php
 /**
- *
  * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
@@ -11,6 +10,6 @@
  *
  * File containing the test bootstrap script.
  */
-$loader = require dirname(__DIR__) . '/vendor/autoload.php';
+$loader = include dirname(__DIR__) . '/vendor/autoload.php';
 $loader->addPsr4('Svea\\Checkout\\Tests\\', __DIR__ . '/');
 date_default_timezone_set('UTC');

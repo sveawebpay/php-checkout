@@ -22,6 +22,21 @@
     "phpunit/phpunit": "^4.8",
     "phpdocumentor/phpdocumentor": "2.*",
     "satooshi/php-coveralls": "~1.0",
-    "squizlabs/php_codesniffer": "2.*"
+    "squizlabs/php_codesniffer": "2.*",
+    "phpmd/phpmd": "^2.4",
+    "phploc/phploc": "^2.0.1",
+    "sebastian/phpcpd": "^2.0.4"
+  },
+  "scripts": {
+    "test": ".\\vendor\\bin\\phpunit --colors",
+    "reference": ".\\vendor\\bin\\phpdoc -d src -t docs/api",
+    "analyze": [
+      "IF NOT EXIST .\\build\\logs md .\\build\\logs",
+      ".\\vendor\\bin\\phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet",
+      ".\\vendor\\bin\\phpcpd --log-pmd build/logs/pmd-cpd.xml src/ --quiet || true",
+      ".\\vendor\\bin\\phpcs --standard=PSR2 --report=checkstyle --report-file=build/logs/checkstyle.xml --extensions=php src/ tests/ || true",
+      ".\\vendor\\bin\\phpmd src/ xml phpmd.xml --reportfile build/logs/pmd.xml --quiet || true"
+    ],
+    "fix-sniff-violations": ".\\vendor\\bin\\phpcbf --standard=PSR2 src/ tests/ --no-patch --quiet || true"
   }
 }

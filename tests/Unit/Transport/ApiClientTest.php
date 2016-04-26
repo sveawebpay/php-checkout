@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Tests\Unit\Transport;
-
 
 use Svea\Checkout\Tests\Unit\TestCase;
 use Svea\Checkout\Transport\ApiClient;
