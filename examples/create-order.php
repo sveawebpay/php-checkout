@@ -1,7 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php';
-
+require_once '../vendor/autoload.php';
 
 $data = array(
     "purchase_country" => "gb",
@@ -35,24 +34,24 @@ $data = array(
     )
 );
 
-
 try {
-    $conn = \Svea\Checkout\Transport\Connector::create(
-        '1',
-        'sharedSecret',
-        \Svea\Checkout\Transport\Connector::TEST_BASE_URL
-    );
-    $cc = new \Svea\Checkout\CheckoutClient($conn);
-    $response = $cc->create($data);
+    $merchantId = '1';
+    $sharedSecret = 'sharedSecret';
+    $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
+
+    $conn = \Svea\Checkout\Transport\Connector::create($merchantId, $sharedSecret, $baseUrl);
+
+    $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
+    $response = $checkoutClient->create($data);
+
     var_dump($response->getContent());
-} catch (\Svea\Checkout\Transport\Exception\SveaApiException $ex) {
+} catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("---------Api errors---------");
     var_dump($ex->getMessage());
-} catch (\Svea\Checkout\Transport\Exception\SveaConnectorException $e) {
+} catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
     var_dump("---------Conn errors---------");
-    var_dump($e->getMessage());
-} catch (Exception $e) {
+    var_dump($ex->getMessage());
+} catch (Exception $ex) {
     var_dump("---------General errors---------");
-    var_dump($e->getMessage());
+    var_dump($ex->getMessage());
 }
-
