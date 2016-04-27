@@ -10,7 +10,6 @@ use Svea\Checkout\Exception\SveaApiException;
  */
 class ResponseHandler
 {
-
     /**
      * Svea Checkout Api response content.
      *
@@ -18,13 +17,30 @@ class ResponseHandler
      */
     private $content;
 
+    /**
+     * @var array $header
+     */
     private $header;
 
+    /**
+     * Json string
+     *
+     * @var string $body
+     */
     private $body;
 
+    /**
+     * @var int $httpCode
+     */
     private $httpCode;
 
 
+    /**
+     * ResponseHandler constructor.
+     *
+     * @param $content
+     * @param $httpCode
+     */
     public function __construct($content, $httpCode)
     {
         $this->content = $content;
@@ -45,15 +61,23 @@ class ResponseHandler
             case 200:
             case 201:
             case 302:
-                //$this->content = $content;
                 break;
             default:
-                $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Some message';
-                if(isset($this->header['ErrorMessage']))
-                    $errorMessage = $this->header['ErrorMessage'];
-                throw new SveaApiException($errorMessage, $this->httpCode);
+                $this->throwError();
                 break;
         }
+    }
+
+    /**
+     * @throws SveaApiException
+     */
+    public function throwError()
+    {
+        $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Some message';
+        if (isset($this->header['ErrorMessage']))
+            $errorMessage = $this->header['ErrorMessage'];
+
+        throw new SveaApiException($errorMessage, $this->httpCode);
     }
 
     /**
@@ -63,9 +87,14 @@ class ResponseHandler
      */
     public function getContent()
     {
-        return $this->body;
+        return json_decode($this->body, true);
     }
 
+    /**
+     * Create array of header information
+     *
+     * @param $response
+     */
     public function setHeader($response)
     {
         $headers = array();
