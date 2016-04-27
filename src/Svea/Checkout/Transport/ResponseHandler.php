@@ -73,7 +73,7 @@ class ResponseHandler
      */
     public function throwError()
     {
-        $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Some message';
+        $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Undefined error occurred.';
         if (isset($this->header['ErrorMessage']))
             $errorMessage = $this->header['ErrorMessage'];
 
