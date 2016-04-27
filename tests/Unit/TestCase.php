@@ -44,47 +44,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $apiUrl = Connector::TEST_BASE_URL;
 
     // Request body data - Mock
-    protected $orderData = array(
-        "purchase_country" => "gb",
-        "purchase_currency" => "gbp",
-        "locale" => "en-gb",
-        "order_amount" => 10000,
-        "order_tax_amount" => 2000,
-        "order_lines" => array(
-            array(
-                "type" => "physical",
-                "reference" => "123050",
-                "name" => "Tomatoes",
-                "quantity" => 10,
-                "quantity_unit" => "kg",
-                "unit_price" => 600,
-                "tax_rate" => 2500,
-                "total_amount" => 6000,
-                "total_tax_amount" => 1200
-            ),
-            array(
-                "type" => "physical",
-                "reference" => "543670",
-                "name" => "Bananas",
-                "quantity" => 1,
-                "quantity_unit" => "bag",
-                "unit_price" => 5000,
-                "tax_rate" => 2500,
-                "total_amount" => 4000,
-                "total_discount_amount" => 1000,
-                "total_tax_amount" => 800
-            )
-        ),
-        "merchant_urls" => array(
-            "terms" => "http://www.merchant.com/toc",
-            "checkout" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
-            "confirmation" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
-            "push" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
-        )
-    );
+    protected $orderData;
 
     protected function setUp()
     {
+        $this->setOrderData();
         $this->setApiResponse();
         $this->setRequest();
         $this->setCurlRequest();
@@ -117,6 +81,48 @@ class TestCase extends \PHPUnit_Framework_TestCase
     private function setConnector()
     {
         $this->connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+    }
+
+    private function setOrderData()
+    {
+        $this->orderData = array(
+            "purchase_country" => "gb",
+            "purchase_currency" => "gbp",
+            "locale" => "en-gb",
+            "order_amount" => 10000,
+            "order_tax_amount" => 2000,
+            "order_lines" => array(
+                array(
+                    "type" => "physical",
+                    "reference" => "123050",
+                    "name" => "Tomatoes",
+                    "quantity" => 10,
+                    "quantity_unit" => "kg",
+                    "unit_price" => 600,
+                    "tax_rate" => 2500,
+                    "total_amount" => 6000,
+                    "total_tax_amount" => 1200
+                ),
+                array(
+                    "type" => "physical",
+                    "reference" => "543670",
+                    "name" => "Bananas",
+                    "quantity" => 1,
+                    "quantity_unit" => "bag",
+                    "unit_price" => 5000,
+                    "tax_rate" => 2500,
+                    "total_amount" => 4000,
+                    "total_discount_amount" => 1000,
+                    "total_tax_amount" => 800
+                )
+            ),
+            "merchant_urls" => array(
+                "terms" => "http://www.merchant.com/toc",
+                "checkout" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
+                "confirmation" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
+                "push" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
+            )
+        );
     }
 
     private function setApiResponse()
@@ -156,7 +162,31 @@ class TestCase extends \PHPUnit_Framework_TestCase
             "BillingAddress":null,
             "Gui":{
                 "Layout":"desktop",
-                "Snippet":"<div id="svea-checkout-container" style="overflow-x: hidden;"> <script type="text/javascript"> /* <![CDATA[ */ setTimeout((function(window, key ,containerId, document){ window[key] = window[key] || function () { (window[key].q = window[key].q || []).push(arguments); }; window[key].config = { container: window.document.getElementById(containerId), ORDERID: '13', AUTHTOKEN:'SveaCheckout EH+0k2KjPEKvD16ObMmm8svZLZo=', //TESTDRIVE:true, //LAYOUT:'desktop', //LOCALE:'sv-se', //ORDER_STATUS:'checkout_incomplete', MERCHANTTERMSURI: '', MERCHANTTERMSTITLE: '', MERCHANTNAME: '', //GUI_OPTIONS:[], //ALLOW_SEPARATE_SHIPPING_ADDRESS: //false, //NATIONAL_IDENTIFICATION_NUMBER_MANDATORY: //false, //ANALYTICS:'UA-36053137-1', //PHONE_MANDATORY:false, //PACKSTATION_ENABLED:false, //PURCHASE_COUNTRY:'swe', //PURCHASE_CURRENCY:'sek', //BOOTSTRAP_SRC: 'http://testwpyweb01.sveaweb.se/checkout_test_mvc/scripts/checkout/checkout-loader.js' //BOOTSTRAP_SRC: 'http://localhost:51925/scripts/checkout/checkout-loader.js' BOOTSTRAP_SRC: 'http://webpaycheckout.test.svea.com//scripts/checkout/checkout-loader.js' }; var scriptTag = document.createElement('script'); var container = document.getElementById(containerId); scriptTag.async = true; scriptTag.src = window[key].config.BOOTSTRAP_SRC; container.insertBefore(scriptTag, container.firstChild); // TODO: keep track of times when snippet loads for order... //try{ // p = w[k].config.BOOTSTRAP_SRC.split('/'); // p = p.slice(0, p.length - 1); // l = p.join('/') + // '/api/_tracking/v1/snippet/load?orderUrl=' + // w.encodeURIComponent(w[k].config.ORDER_URL) + '&' + // (new Date).getTime(); // ((w.Image && (new w.Image))||(d.createElement&&d.createElement('img'))||{}).src=l; //}catch(e){} })(this,'_sveaCheckout','svea-checkout-container',document), 7000); /* ]]> */ </script> <noscript> Please <a href="http://enable-javascript.com">enable JavaScript</a>. </noscript> </div> "
+                "Snippet":"<div id="svea-checkout-container" style="overflow-x: hidden;">
+                <script type="text/javascript"> /* <![CDATA[ */ setTimeout((function(window, key ,containerId, document)
+                { window[key] = window[key] || function () { (window[key].q = window[key].q || []).push(arguments); };
+                window[key].config = { container: window.document.getElementById(containerId), ORDERID: '13',
+                AUTHTOKEN:'SveaCheckout EH+0k2KjPEKvD16ObMmm8svZLZo=', //TESTDRIVE:true,
+                //LAYOUT:'desktop', //LOCALE:'sv-se',
+                //ORDER_STATUS:'checkout_incomplete', MERCHANTTERMSURI: '', MERCHANTTERMSTITLE: '', MERCHANTNAME: '',
+                //GUI_OPTIONS:[], //ALLOW_SEPARATE_SHIPPING_ADDRESS: //false,
+                //NATIONAL_IDENTIFICATION_NUMBER_MANDATORY: //false, //ANALYTICS:'UA-36053137-1',
+                //PHONE_MANDATORY:false, //PACKSTATION_ENABLED:false, //PURCHASE_COUNTRY:'swe',
+                //PURCHASE_CURRENCY:'sek',
+                //BOOTSTRAP_SRC: 'http://testwpyweb01.sveaweb.se/checkout_test_mvc/scripts/checkout/checkout-loader.js'
+                //BOOTSTRAP_SRC: 'http://localhost:51925/scripts/checkout/checkout-loader.js'
+                BOOTSTRAP_SRC: 'http://webpaycheckout.test.svea.com//scripts/checkout/checkout-loader.js' };
+                var scriptTag = document.createElement('script'); var container = document.getElementById(containerId);
+                scriptTag.async = true; scriptTag.src = window[key].config.BOOTSTRAP_SRC;
+                container.insertBefore(scriptTag, container.firstChild);
+                // TODO: keep track of times when snippet loads for order...
+                //try{ // p = w[k].config.BOOTSTRAP_SRC.split('/'); // p = p.slice(0, p.length - 1);
+                // l = p.join('/') + // '/api/_tracking/v1/snippet/load?orderUrl=' +
+                // w.encodeURIComponent(w[k].config.ORDER_URL) + '&' + // (new Date).getTime();
+                // ((w.Image && (new w.Image))||(d.createElement&&d.createElement('img'))||{}).src=l; //}
+                catch(e){} })(this,'_sveaCheckout','svea-checkout-container',document), 7000); /* ]]>
+                */ </script> <noscript> Please
+                <a href="http://enable-javascript.com">enable JavaScript</a>. </noscript> </div> "
             },
             "Locale":"sv-SE",
             "Currency":null,
@@ -166,7 +196,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
             "Status":"Created"
         }
 JSON;
-
 
         $this->apiResponse = "
             HTTP/1.1 201 Created
