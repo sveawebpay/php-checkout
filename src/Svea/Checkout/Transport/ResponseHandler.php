@@ -67,13 +67,16 @@ class ResponseHandler
     {
         $headers = array();
 
-        // Split the string on every "double" new line.
+        /**
+         * Split the string on every "double" new line.
+         * First is header data, second is body content
+         */
         $arrRequests = explode("\r\n\r\n", $response);
+        $headerLines = explode("\r\n", $arrRequests[0]);
+        $headers['http_code'] = $headerLines[0];
 
-        foreach (explode("\r\n", $arrRequests[0]) as $i => $line) {
-            if ($i === 0) {
-                $headers['http_code'] = $line;
-            } else {
+        foreach ($headerLines as $i => $line) {
+            if ($i > 0) {
                 list ($key, $value) = explode(': ', $line);
                 $headers[$key] = $value;
             }
