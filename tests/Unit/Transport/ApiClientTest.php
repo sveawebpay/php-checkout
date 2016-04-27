@@ -16,51 +16,50 @@ class ApiClientTest extends TestCase
 
     public function testSendRequestWithOkStatusResponse()
     {
+        $httpCode = 200;
         $this->httpClientMock->expects($this->once())
             ->method('getError')
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->responseContent));
+            ->will($this->returnValue($this->apiResponse));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->will($this->returnValue(201));
+            ->will($this->returnValue($httpCode));
 
         $this->setHttpClient();
 
         /**
-         * @var ResponseHandler $response
+         * @var ResponseHandler $responseHandler
          */
-        $response = $this->apiClient->sendRequest($this->requestHandler);
+        $responseHandler = $this->apiClient->sendRequest($this->requestHandler);
 
-        $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
-
-
-
-        $this->assertEquals($this->responseContent, $response->getContent());
+        $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
+        $this->assertEquals($httpCode, $responseHandler->getHttpCode());
     }
 
     public function testSendRequestWithCreatedStatusResponse()
     {
+        $httpCode = 201;
         $this->httpClientMock->expects($this->once())
             ->method('getError')
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->responseContent));
+            ->will($this->returnValue($this->apiResponse));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
-            ->will($this->returnValue(201));
+            ->will($this->returnValue($httpCode));
 
         $this->setHttpClient();
 
         /**
-         * @var ResponseHandler $response
+         * @var ResponseHandler $responseHandler
          */
-        $response = $this->apiClient->sendRequest($this->requestHandler);
+        $responseHandler = $this->apiClient->sendRequest($this->requestHandler);
 
-        $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
-        $this->assertEquals($this->responseContent, $response);
+        $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
+        $this->assertEquals($httpCode, $responseHandler->getHttpCode());
     }
 
     /**
@@ -74,7 +73,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->responseContent));
+            ->will($this->returnValue($this->apiResponse));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(400));
@@ -94,7 +93,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->responseContent));
+            ->will($this->returnValue($this->apiResponse));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(404));
@@ -114,7 +113,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->responseContent));
+            ->will($this->returnValue($this->apiResponse));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(401));
@@ -127,14 +126,14 @@ class ApiClientTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaApiException
      * @expectedExceptionCode 404
      */
-    public function testSendRequestWithUndefinedStatusResponse()
+    public function testSendRequestWith404StatusResponse()
     {
         $this->httpClientMock->expects($this->once())
             ->method('getError')
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->responseContent));
+            ->will($this->returnValue($this->apiResponse));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(404));
