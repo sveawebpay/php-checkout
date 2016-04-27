@@ -23,7 +23,7 @@ class Connector
     /**
      * Base URL For Svea Checkout production server
      */
-    const BASE_URL = 'api.svea.com/';
+    const PROD_BASE_URL = 'api.svea.com/';
 
     /**
      * Merchant identifier assigned to client by Svea.
@@ -57,52 +57,78 @@ class Connector
     /**
      * Connector constructor.
      *
-     * @param $client
      * @param $merchantId
      * @param $sharedSecret
      * @param $apiUrl
      */
-    private function __construct($client, $merchantId, $sharedSecret, $apiUrl)
+    public function __construct($merchantId, $sharedSecret, $apiUrl)
     {
-        $this->client = $client;
         $this->merchantId = $merchantId;
         $this->sharedSecret = $sharedSecret;
         $this->apiUrl = $apiUrl;
+        $this->client = new ApiClient(new CurlRequest());
+
+        $this->validateData();
     }
 
     /**
-     * Static function to create Svea Checkout connector instance with proper credentials.
+     * Validate all input data.
+     */
+    private function validateData()
+    {
+        $this->validateMerchantId();
+        $this->validateSharedSecret();
+        $this->validateApiUrl();
+    }
+
+    /**
+     * Validate shared secret
      *
-     * @param $merchantId
-     * @param $sharedSecret
-     * @param $apiUrl
-     * @return static
      * @throws SveaConnectorException
      */
-    public static function create($merchantId, $sharedSecret, $apiUrl)
+    private function validateSharedSecret()
     {
-        $client = new ApiClient(new CurlRequest());
-
-        if (empty($merchantId)) {
-            throw new SveaConnectorException(
-                ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_MERCHANT_ID),
-                ExceptionCodeList::MISSING_MERCHANT_ID
-            );
-        }
-        if (empty($sharedSecret)) {
+        if (empty($this->sharedSecret)) {
             throw new SveaConnectorException(
                 ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET),
                 ExceptionCodeList::MISSING_SHARED_SECRET
             );
         }
-        if (empty($apiUrl)) {
+    }
+
+    /**
+     * Validate client merchant ID
+     *
+     * @throws SveaConnectorException
+     */
+    private function validateMerchantId()
+    {
+        if (empty($this->merchantId)) {
+            throw new SveaConnectorException(
+                ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_MERCHANT_ID),
+                ExceptionCodeList::MISSING_MERCHANT_ID
+            );
+        }
+    }
+
+    /**
+     * Validate API base url.
+     *
+     * @throws SveaConnectorException
+     */
+    private function validateApiUrl()
+    {
+        if (empty($this->apiUrl)) {
             throw new SveaConnectorException(
                 ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_API_BASE_URL),
                 ExceptionCodeList::MISSING_API_BASE_URL
             );
+        } elseif ($this->apiUrl !== self::TEST_BASE_URL && $this->apiUrl !== self::PROD_BASE_URL) {
+            throw new SveaConnectorException(
+                ExceptionCodeList::getErrorMessage(ExceptionCodeList::INCORRECT_API_BASE_URL),
+                ExceptionCodeList::INCORRECT_API_BASE_URL
+            );
         }
-
-        return new static($client, $merchantId, $sharedSecret, $apiUrl);
     }
 
     /**
@@ -117,8 +143,13 @@ class Connector
         $this->createAuthorizationToken($request);
 
         try {
+
+            /**
+             * @var ResponseHandler $response
+             */
             $response = $this->client->sendRequest($request);
-            return $response;
+
+            return $response->getContent();
         } catch (SveaApiException $e) {
             throw $e;
         } catch (Exception $e) {

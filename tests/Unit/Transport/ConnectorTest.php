@@ -11,7 +11,7 @@ class ConnectorTest extends TestCase
 {
     public function testCreateMatchesDataGiven()
     {
-        Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $this->connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
 
         $this->assertInstanceOf('\Svea\Checkout\Transport\ApiClient', $this->connector->getClient());
         $this->assertEquals($this->merchantId, $this->connector->getMerchantId());
@@ -26,7 +26,7 @@ class ConnectorTest extends TestCase
     public function testCreateMissingMerchantId()
     {
         $this->merchantId = '';
-        Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
     }
 
     /**
@@ -36,7 +36,7 @@ class ConnectorTest extends TestCase
     public function testCreateMissingSharedSecret()
     {
         $this->sharedSecret = '';
-        Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
     }
 
     /**
@@ -46,7 +46,7 @@ class ConnectorTest extends TestCase
     public function testCreateMissingApiUrlSecret()
     {
         $this->apiUrl = '';
-        Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
     }
 
     public function testSendRequestAndReceiveResponse()

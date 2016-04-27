@@ -15,18 +15,11 @@ abstract class ImplementationManager implements ImplementationInterface
     protected $connector;
 
     /**
-     * HTTP response handler.
+     * API response content - json
      *
-     * @var ResponseHandler $response
+     * @var string $response
      */
     protected $response;
-
-    /**
-     * Request body - json encoded.
-     *
-     * @var string $requestBodyData
-     */
-    protected $requestBodyData;
 
     /**
      * @param Connector $connector
@@ -45,13 +38,16 @@ abstract class ImplementationManager implements ImplementationInterface
         $this->prepareData();
 
         $this->invoke();
-        $this->mapDataBack();
-
-        $this->returnResponse();
+//        $this->mapDataBack();
     }
 
-    public function returnResponse()
+    /**
+     * Return API response content
+     *
+     * @return string
+     */
+    public function getResponse()
     {
-        return $this->response();
+        return $this->response;
     }
 }

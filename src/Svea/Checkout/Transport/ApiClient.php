@@ -51,8 +51,6 @@ class ApiClient
         if ($request->getMethod() == 'POST') {
             $this->httpClient->setOption(CURLOPT_POST, 1);
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
-
-            echo "<pre>" . print_r(json_decode($request->getBody(), true), true) . "</pre>"; // @todo remove this line
         }
 
         $httpResponse = $this->httpClient->execute();

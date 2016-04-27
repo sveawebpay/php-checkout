@@ -9,6 +9,7 @@ class ExceptionCodeList
     const MISSING_MERCHANT_ID = 2001;
     const MISSING_SHARED_SECRET = 2002;
     const MISSING_API_BASE_URL = 2003;
+    const INCORRECT_API_BASE_URL = 2004;
 
     /**
      * Return Message for given exception code
@@ -21,13 +22,12 @@ class ExceptionCodeList
         $exceptionCode = intval($exceptionCode);
 
         $exceptionMessageList = array(
-
             1000 => "Api Client Error",
 
             2001 => "Missing Merchant Id",
             2002 => 'Missing Shared Secret',
             2003 => "Missing API Base URL",
-
+            2004 => "Incorrect API Base URL",
         );
 
         if (in_array($exceptionCode, $exceptionMessageList)) {

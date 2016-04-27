@@ -46,11 +46,13 @@ class CheckoutClient
      * Create new Svea Checkout order.
      *
      * @param array $data
+     * @return string
      */
     public function create(array $data)
     {
         $co = new CreateOrder($this->connector);
-        return $co->execute($data);
+        $co->execute($data);
+        return $co->getResponse();
     }
 
     /**

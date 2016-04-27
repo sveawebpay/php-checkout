@@ -37,7 +37,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     // Response
     protected $responseContent;
-    protected $jsonResponseContent;
 
     // Client Credentials
     protected $merchantId = '123456';
@@ -86,11 +85,68 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->responseContent = array(
-            'data' => 'This is content',
-            'Message' => 'Error message'
-        );
-        $this->jsonResponseContent = json_encode($this->responseContent);
+        $json = <<<JSON
+        {
+            "MerchantSettings":{
+                "TermsUri":"http://localhost:51898/terms",
+                "CheckoutUri":"http://localhost:51925/",
+                "ConfirmationUri":"http://localhost:51925/checkout/confirm",
+                "PushUri":"https://svea.com/push.aspx?sid=123&svea_order=123"
+            },
+            "Cart":{
+                "Items":[
+                    {
+                        "ArticleNumber":"123456789",
+                        "Name":"Dator",
+                        "Quantity":200,
+                        "UnitPrice":12300,
+                        "DiscountPercent":1000,
+                        "VatPercent":2500,
+                        "Unit":null
+                    },
+                    {
+                        "ArticleNumber":"SHIPPING",
+                        "Name":"Shipping Fee",
+                        "Quantity":100,
+                        "UnitPrice":4900,
+                        "DiscountPercent":0,
+                        "VatPercent":2500,
+                        "Unit":null
+                    }
+                ]
+            },
+            "Customer":null,
+            "ShippingAddress":null,
+            "BillingAddress":null,
+            "Gui":{
+                "Layout":"desktop",
+                "Snippet":"<div id="svea-checkout-container" style="overflow-x: hidden;"> <script type="text/javascript"> /* <![CDATA[ */ setTimeout((function(window, key ,containerId, document){ window[key] = window[key] || function () { (window[key].q = window[key].q || []).push(arguments); }; window[key].config = { container: window.document.getElementById(containerId), ORDERID: '13', AUTHTOKEN:'SveaCheckout EH+0k2KjPEKvD16ObMmm8svZLZo=', //TESTDRIVE:true, //LAYOUT:'desktop', //LOCALE:'sv-se', //ORDER_STATUS:'checkout_incomplete', MERCHANTTERMSURI: '', MERCHANTTERMSTITLE: '', MERCHANTNAME: '', //GUI_OPTIONS:[], //ALLOW_SEPARATE_SHIPPING_ADDRESS: //false, //NATIONAL_IDENTIFICATION_NUMBER_MANDATORY: //false, //ANALYTICS:'UA-36053137-1', //PHONE_MANDATORY:false, //PACKSTATION_ENABLED:false, //PURCHASE_COUNTRY:'swe', //PURCHASE_CURRENCY:'sek', //BOOTSTRAP_SRC: 'http://testwpyweb01.sveaweb.se/checkout_test_mvc/scripts/checkout/checkout-loader.js' //BOOTSTRAP_SRC: 'http://localhost:51925/scripts/checkout/checkout-loader.js' BOOTSTRAP_SRC: 'http://webpaycheckout.test.svea.com//scripts/checkout/checkout-loader.js' }; var scriptTag = document.createElement('script'); var container = document.getElementById(containerId); scriptTag.async = true; scriptTag.src = window[key].config.BOOTSTRAP_SRC; container.insertBefore(scriptTag, container.firstChild); // TODO: keep track of times when snippet loads for order... //try{ // p = w[k].config.BOOTSTRAP_SRC.split('/'); // p = p.slice(0, p.length - 1); // l = p.join('/') + // '/api/_tracking/v1/snippet/load?orderUrl=' + // w.encodeURIComponent(w[k].config.ORDER_URL) + '&' + // (new Date).getTime(); // ((w.Image && (new w.Image))||(d.createElement&&d.createElement('img'))||{}).src=l; //}catch(e){} })(this,'_sveaCheckout','svea-checkout-container',document), 7000); /* ]]> */ </script> <noscript> Please <a href="http://enable-javascript.com">enable JavaScript</a>. </noscript> </div> "
+            },
+            "Locale":"sv-SE",
+            "Currency":null,
+            "CountryCode":null,
+            "PresetValues":null,
+            "OrderId":13,
+            "Status":"Created"
+        }
+JSON;
+
+
+        $this->responseContent = "
+            HTTP/1.1 201 Created
+            Cache-Control: no-cache
+            Pragma: no-cache
+            Content-Length: 3469
+            Content-Type: application/json; charset=utf-8
+            Expires: -1
+            Server: Microsoft-IIS/8.5
+            X-AspNet-Version: 4.0.30319
+            X-Powered-By: ASP.NET
+            X-Powered-By: ARR/2.5
+            X-Powered-By: ASP.NET
+            Date: Wed, 27 Apr 2016 09:42:19 GMT
+        ";
+        $this->responseContent .= PHP_EOL . PHP_EOL . $json;
 
         $this->setRequest();
         $this->setCurlRequest();
@@ -122,6 +178,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     private function setConnector()
     {
-        $this->connector = Connector::create($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $this->connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
     }
 }

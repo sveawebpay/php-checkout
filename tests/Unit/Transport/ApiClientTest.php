@@ -21,30 +21,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->jsonResponseContent));
-        $this->httpClientMock->expects($this->once())
-            ->method('getInfo')
-            ->will($this->returnValue(200));
-
-        $this->setHttpClient();
-
-        /**
-         * @var ResponseHandler $response
-         */
-        $response = $this->apiClient->sendRequest($this->requestHandler);
-
-        $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
-        $this->assertEquals($this->jsonResponseContent, $response->getContent());
-    }
-
-    public function testSendRequestWithCreatedStatusResponse()
-    {
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue(''));
-        $this->httpClientMock->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($this->jsonResponseContent));
+            ->will($this->returnValue($this->responseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(201));
@@ -57,7 +34,33 @@ class ApiClientTest extends TestCase
         $response = $this->apiClient->sendRequest($this->requestHandler);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
-        $this->assertEquals($this->jsonResponseContent, $response->getContent());
+
+
+
+        $this->assertEquals($this->responseContent, $response->getContent());
+    }
+
+    public function testSendRequestWithCreatedStatusResponse()
+    {
+        $this->httpClientMock->expects($this->once())
+            ->method('getError')
+            ->will($this->returnValue(''));
+        $this->httpClientMock->expects($this->once())
+            ->method('execute')
+            ->will($this->returnValue($this->responseContent));
+        $this->httpClientMock->expects($this->once())
+            ->method('getInfo')
+            ->will($this->returnValue(201));
+
+        $this->setHttpClient();
+
+        /**
+         * @var ResponseHandler $response
+         */
+        $response = $this->apiClient->sendRequest($this->requestHandler);
+
+        $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $response);
+        $this->assertEquals($this->responseContent, $response);
     }
 
     /**
@@ -71,7 +74,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->jsonResponseContent));
+            ->will($this->returnValue($this->responseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(400));
@@ -91,7 +94,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->jsonResponseContent));
+            ->will($this->returnValue($this->responseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(404));
@@ -111,7 +114,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->jsonResponseContent));
+            ->will($this->returnValue($this->responseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(401));
@@ -131,7 +134,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(''));
         $this->httpClientMock->expects($this->once())
             ->method('execute')
-            ->will($this->returnValue($this->jsonResponseContent));
+            ->will($this->returnValue($this->responseContent));
         $this->httpClientMock->expects($this->once())
             ->method('getInfo')
             ->will($this->returnValue(404));

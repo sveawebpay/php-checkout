@@ -74,8 +74,8 @@ class ResponseHandler
          * Split the string on every "double" new line.
          * First is header data, second is body content
          */
-        $arrRequests = explode("\r\n\r\n", $response);
-        $headerLines = explode("\r\n", $arrRequests[0]);
+        $arrRequests = explode(PHP_EOL . PHP_EOL, $response);
+        $headerLines = explode(PHP_EOL, $arrRequests[0]);
         $headers['http_code'] = $headerLines[0];
 
         foreach ($headerLines as $i => $line) {
@@ -90,7 +90,7 @@ class ResponseHandler
 
     public function setBody($response)
     {
-        $arrRequests = explode("\r\n\r\n", $response);
+        $arrRequests = explode(PHP_EOL . PHP_EOL, $response);
 
         $this->body = $arrRequests[1];
     }

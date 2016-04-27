@@ -17,6 +17,13 @@ class CreateOrder extends ImplementationManager
      */
     private $checkoutData;
 
+    /**
+     * Request body - JSON
+     *
+     * @var string $requestBodyData
+     */
+    private $requestBodyData;
+
 
     public function mapData($data)
     {
@@ -33,21 +40,11 @@ class CreateOrder extends ImplementationManager
 
         $checkoutData->setMerchantSettings($merchantSettings);
 
-        // - cart and order rows setting
         $cart = new Cart();
 
         $orderLines = $data['order_lines'];
         foreach ($orderLines as $orderLine) {
             $orderRow = new OrderRow();
-            /*
-             *  "articlenumber" => "123456789",
-                "name" => "Dator",
-                "quantity" => 200,
-                "unitprice" => 12300,
-                "discountpercent" => 1000,
-                "vatpercent" => 2500
-             * */
-
             $orderRow->setArticleNumber($orderLine['articlenumber']);
             $orderRow->setDiscountPercent($orderLine['discountpercent']);
             $orderRow->setName($orderLine['name']);

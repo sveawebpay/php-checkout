@@ -31,12 +31,12 @@ try {
     $sharedSecret = 'sharedSecret';
     $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-    $conn = \Svea\Checkout\Transport\Connector::create($merchantId, $sharedSecret, $baseUrl);
+    $conn = new \Svea\Checkout\Transport\Connector($merchantId, $sharedSecret, $baseUrl);
 
     $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
     $response = $checkoutClient->create($data);
 
-    var_dump($response->getContent());
+    echo $response;
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("---------Api errors---------");
     var_dump($ex->getMessage());
