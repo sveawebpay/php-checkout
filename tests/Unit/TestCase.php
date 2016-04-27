@@ -11,9 +11,9 @@ use Svea\Checkout\Transport\ResponseHandler;
 class TestCase extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var ResponseHandler $response
+     * @var ResponseHandler $responseHandler
      */
-    protected $response;
+    protected $responseHandler;
 
     /**
      * @var RequestHandler $requestHandler
@@ -36,7 +36,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $httpClientMock;
 
     // Response
-    protected $responseContent;
+    protected $apiResponse;
 
     // Client Credentials
     protected $merchantId = '123456';
@@ -85,6 +85,42 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
+        $this->setApiResponse();
+        $this->setRequest();
+        $this->setCurlRequest();
+        $this->setApiClient();
+        $this->setConnector();
+    }
+
+    private function setRequest()
+    {
+        $this->requestHandler = new RequestHandler();
+        $this->requestHandler->setApiUrl($this->apiUrl);
+        $this->requestHandler->setBody(json_encode($this->orderData));
+        $this->requestHandler->setPostMethod();
+        $this->requestHandler->setAuthorizationToken('123456789');
+    }
+
+    private function setCurlRequest()
+    {
+        $this->httpClientMock = $this->getMockBuilder('Svea\Checkout\Transport\Http\HttpRequestInterface')->getMock();
+    }
+
+    private function setApiClient()
+    {
+        $httpClientMock = $this->getMockBuilder('Svea\Checkout\Transport\Http\HttpRequestInterface')->getMock();
+        $this->apiClient = $this->getMockBuilder('\Svea\Checkout\Transport\ApiClient')
+            ->setConstructorArgs(array($httpClientMock))
+            ->getMock();
+    }
+
+    private function setConnector()
+    {
+        $this->connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+    }
+
+    private function setApiResponse()
+    {
         $json = <<<JSON
         {
             "MerchantSettings":{
@@ -132,7 +168,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 JSON;
 
 
-        $this->responseContent = "
+        $this->apiResponse = "
             HTTP/1.1 201 Created
             Cache-Control: no-cache
             Pragma: no-cache
@@ -146,38 +182,7 @@ JSON;
             X-Powered-By: ASP.NET
             Date: Wed, 27 Apr 2016 09:42:19 GMT
         ";
-        $this->responseContent .= PHP_EOL . PHP_EOL . $json;
 
-        $this->setRequest();
-        $this->setCurlRequest();
-        $this->setApiClient();
-        $this->setConnector();
-    }
-
-    private function setRequest()
-    {
-        $this->requestHandler = new RequestHandler();
-        $this->requestHandler->setApiUrl($this->apiUrl);
-        $this->requestHandler->setBody(json_encode($this->orderData));
-        $this->requestHandler->setPostMethod();
-        $this->requestHandler->setAuthorizationToken('123456789');
-    }
-
-    private function setCurlRequest()
-    {
-        $this->httpClientMock = $this->getMockBuilder('Svea\Checkout\Transport\Http\HttpRequestInterface')->getMock();
-    }
-
-    private function setApiClient()
-    {
-        $httpClientMock = $this->getMockBuilder('Svea\Checkout\Transport\Http\HttpRequestInterface')->getMock();
-        $this->apiClient = $this->getMockBuilder('\Svea\Checkout\Transport\ApiClient')
-            ->setConstructorArgs(array($httpClientMock))
-            ->getMock();
-    }
-
-    private function setConnector()
-    {
-        $this->connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $this->apiResponse .= PHP_EOL . PHP_EOL . $json;
     }
 }

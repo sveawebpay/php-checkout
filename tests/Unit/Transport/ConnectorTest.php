@@ -6,6 +6,7 @@ use \Exception;
 use Svea\Checkout\Tests\Unit\TestCase;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Exception\SveaApiException;
+use Svea\Checkout\Transport\ResponseHandler;
 
 class ConnectorTest extends TestCase
 {
@@ -51,14 +52,21 @@ class ConnectorTest extends TestCase
 
     public function testSendRequestAndReceiveResponse()
     {
+        $content = $this->apiResponse;
+        $httpCode = 201;
+        $responseHandler = $this->getMockBuilder('\Svea\Checkout\Transport\ResponseHandler')
+            ->setConstructorArgs(array($content, $httpCode))
+            ->getMock();
+
+        $responseHandler->expects($this->once())
+            ->method('getContent');
+
         $this->apiClient->expects($this->once())
             ->method('sendRequest')
-            ->with($this->identicalTo($this->requestHandler))
-            ->will($this->returnValue('1'));
+            ->will($this->returnValue($responseHandler));
 
         $this->connector->setClient($this->apiClient);
-
-        $this->assertEquals('1', $this->connector->send($this->requestHandler));
+        $this->connector->send($this->requestHandler);
     }
 
     /**

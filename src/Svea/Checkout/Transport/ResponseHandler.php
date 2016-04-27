@@ -94,4 +94,20 @@ class ResponseHandler
 
         $this->body = $arrRequests[1];
     }
+
+    /**
+     * @return mixed
+     */
+    public function getHttpCode()
+    {
+        return $this->httpCode;
+    }
+
+    /**
+     * @param mixed $httpCode
+     */
+    public function setHttpCode($httpCode)
+    {
+        $this->httpCode = $httpCode;
+    }
 }
