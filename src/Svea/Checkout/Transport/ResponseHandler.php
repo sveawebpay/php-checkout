@@ -48,7 +48,10 @@ class ResponseHandler
                 //$this->content = $content;
                 break;
             default:
-                throw new SveaApiException($this->header['ErrorMessage'], $this->httpCode);
+                $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Some message';
+                if(isset($this->header['ErrorMessage']))
+                    $errorMessage = $this->header['ErrorMessage'];
+                throw new SveaApiException($errorMessage, $this->httpCode);
                 break;
         }
     }
