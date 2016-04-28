@@ -11,6 +11,12 @@ use Svea\Checkout\Exception\SveaApiException;
 class ResponseHandler
 {
     /**
+     * API response successful http codes
+     * @var array
+     */
+    private $httpSuccessfulCodes = array(200, 201, 302);
+
+    /**
      * Svea Checkout Api response content.
      *
      * @var mixed $content
@@ -46,8 +52,8 @@ class ResponseHandler
         $this->content = $content;
         $this->httpCode = $httpCode;
 
-        $this->setHeader($content);
-        $this->setBody($content);
+        $this->setHeader();
+        $this->setBody();
     }
 
     /**
@@ -57,14 +63,8 @@ class ResponseHandler
      */
     public function handleClientResponse()
     {
-        switch ($this->httpCode) {
-            case 200:
-            case 201:
-            case 302:
-                break;
-            default:
-                $this->throwError();
-                break;
+        if (!in_array($this->httpCode, $this->httpSuccessfulCodes)) {
+            $this->throwError();
         }
     }
 
@@ -74,8 +74,9 @@ class ResponseHandler
     public function throwError()
     {
         $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Undefined error occurred.';
-        if (isset($this->header['ErrorMessage']))
+        if (isset($this->header['ErrorMessage'])) {
             $errorMessage = $this->header['ErrorMessage'];
+        }
 
         throw new SveaApiException($errorMessage, $this->httpCode);
     }
@@ -92,10 +93,8 @@ class ResponseHandler
 
     /**
      * Create array of header information
-     *
-     * @param $response
      */
-    public function setHeader($response)
+    public function setHeader()
     {
         $headers = array();
 
@@ -103,7 +102,7 @@ class ResponseHandler
          * Split the string on every "double" new line.
          * First is header data, second is body content
          */
-        $arrRequests = explode(PHP_EOL . PHP_EOL, $response);
+        $arrRequests = explode(PHP_EOL . PHP_EOL, $this->content);
         $headerLines = explode(PHP_EOL, $arrRequests[0]);
         $headers['http_code'] = $headerLines[0];
 
@@ -117,9 +116,17 @@ class ResponseHandler
         $this->header = $headers;
     }
 
-    public function setBody($response)
+    /**
+     * @return string
+     */
+    public function getBody()
     {
-        $arrRequests = explode(PHP_EOL . PHP_EOL, $response);
+        return $this->body;
+    }
+
+    public function setBody()
+    {
+        $arrRequests = explode(PHP_EOL . PHP_EOL, $this->content);
 
         $this->body = $arrRequests[1];
     }
@@ -138,5 +145,13 @@ class ResponseHandler
     public function setHttpCode($httpCode)
     {
         $this->httpCode = $httpCode;
+    }
+
+    /**
+     * @return array
+     */
+    public function getHeader()
+    {
+        return $this->header;
     }
 }

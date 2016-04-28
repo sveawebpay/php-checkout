@@ -197,20 +197,16 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }
 JSON;
 
-        $this->apiResponse = "
-            HTTP/1.1 201 Created
-            Cache-Control: no-cache
-            Pragma: no-cache
-            Content-Length: 3469
-            Content-Type: application/json; charset=utf-8
-            Expires: -1
-            Server: Microsoft-IIS/8.5
-            X-AspNet-Version: 4.0.30319
-            X-Powered-By: ASP.NET
-            X-Powered-By: ARR/2.5
-            X-Powered-By: ASP.NET
-            Date: Wed, 27 Apr 2016 09:42:19 GMT
-        ";
+        $this->apiResponse = 'HTTP/1.1 201 Created' . PHP_EOL;
+        $this->apiResponse .= 'Cache-Control: no-cache' . PHP_EOL;
+        $this->apiResponse .= 'Pragma: no-cache' . PHP_EOL;
+        $this->apiResponse .= 'Content-Length: 3469' . PHP_EOL;
+        $this->apiResponse .= 'Content-Type: application/json; charset=utf-8' . PHP_EOL;
+        $this->apiResponse .= 'Expires: -1' . PHP_EOL;
+        $this->apiResponse .= 'Server: Microsoft-IIS/8.5' . PHP_EOL;
+        $this->apiResponse .= 'X-AspNet-Version: 4.0.30319' . PHP_EOL;
+        $this->apiResponse .= 'X-Powered-By: ASP.NET' . PHP_EOL;
+        $this->apiResponse .= 'Date: Wed, 27 Apr 2016 09:42:19 GMT';
 
         $this->apiResponse .= PHP_EOL . PHP_EOL . $json;
     }

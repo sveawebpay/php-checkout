@@ -36,7 +36,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
     $response = $checkoutClient->create($data);
 
-    echo $response;
+    print_r($response['Gui']['Snippet']);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("---------Api errors---------");
     var_dump($ex->getMessage());
