@@ -5,14 +5,19 @@ namespace Svea\Checkout\Implementation;
 class UpdateOrder extends ImplementationManager
 {
 
-    public function prepareData()
+    public function returnResponse()
     {
-        // TODO: Implement prepareData() method.
+        // TODO: Implement returnResponse() method.
     }
 
     public function mapData($data)
     {
         // TODO: Implement mapData() method.
+    }
+
+    public function prepareData()
+    {
+        // TODO: Implement prepareData() method.
     }
 
     public function invoke()

@@ -29,14 +29,23 @@ abstract class ImplementationManager implements ImplementationInterface
     }
 
     /**
-     * @param $data
+     * @param array $data
      */
     public function execute($data)
     {
+        $this->validateData($data);
         $this->mapData($data);
         $this->prepareData();
         $this->invoke();
     }
+
+    public abstract function validateData($data);
+
+    public abstract function mapData($data);
+
+    public abstract function prepareData();
+
+    public abstract function invoke();
 
     /**
      * Return API response content

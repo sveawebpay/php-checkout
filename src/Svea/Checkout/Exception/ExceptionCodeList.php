@@ -11,6 +11,9 @@ class ExceptionCodeList
     const MISSING_API_BASE_URL = 2003;
     const INCORRECT_API_BASE_URL = 2004;
 
+    const INPUT_VALIDATION_ERROR = 3000;
+
+
     /**
      * Return Message for given exception code
      *
@@ -22,12 +25,15 @@ class ExceptionCodeList
         $exceptionCode = intval($exceptionCode);
 
         $exceptionMessageList = array(
-            1000 => "Api Client Error",
+            1000 => 'Api Client Error',
 
-            2001 => "Missing Merchant Id",
+            2001 => 'Missing Merchant Id',
             2002 => 'Missing Shared Secret',
-            2003 => "Missing API Base URL",
-            2004 => "Incorrect API Base URL",
+            2003 => 'Missing API Base URL',
+            2004 => 'Incorrect API Base URL',
+
+            3000 => 'Input Validation Error'
+
         );
 
         if (in_array($exceptionCode, $exceptionMessageList)) {

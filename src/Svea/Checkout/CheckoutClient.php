@@ -2,8 +2,7 @@
 
 namespace Svea\Checkout;
 
-use Svea\Checkout\Implementation\CreateOrder;
-use Svea\Checkout\Implementation\GetOrder;
+use Svea\Checkout\Implementation\OrderFactory;
 use Svea\Checkout\Transport\Connector;
 
 /**
@@ -51,9 +50,9 @@ class CheckoutClient
      */
     public function create(array $data)
     {
-        $co = new CreateOrder($this->connector);
+        $co = OrderFactory::returnCreateOrderClass($this->connector);
         $co->execute($data);
-
+                
         return $co->getResponse();
     }
 
@@ -75,9 +74,9 @@ class CheckoutClient
      */
     public function get($data)
     {
-       /* $go = new GetOrder($this->connector);
-        $go->execute($data);
+        /* $go = new GetOrder($this->connector);
+         $go->execute($data);
 
-        return $go->getResponse();*/
+         return $go->getResponse();*/
     }
 }

@@ -8,9 +8,7 @@ namespace Svea\Checkout\Implementation;
  */
 interface ImplementationInterface
 {
-    public function prepareData();
+    public function execute($data);
 
-    public function mapData($data);
-
-    public function invoke();
+    public function getResponse();
 }
