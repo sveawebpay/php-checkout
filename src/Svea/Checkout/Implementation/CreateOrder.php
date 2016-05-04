@@ -2,15 +2,12 @@
 
 namespace Svea\Checkout\Implementation;
 
-use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Model\Cart;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\MerchantSettings;
 use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Transport\RequestHandler;
-use Svea\Checkout\Exception\SveaOrderException;
 use Svea\Checkout\Validation\ValidateCreateOrderData;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 class CreateOrder extends ImplementationManager
 {

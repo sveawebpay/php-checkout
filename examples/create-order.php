@@ -38,12 +38,15 @@ try {
 
     print_r($response['Gui']['Snippet']);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
-    var_dump("---------Api errors---------");
+    var_dump("--------- Api errors ---------");
     var_dump($ex->getMessage());
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
-    var_dump("---------Conn errors---------");
+    var_dump("--------- Conn errors ---------");
+    var_dump($ex->getMessage());
+} catch (\Svea\Checkout\Exception\SveaInputValidationException $ex) {
+    var_dump("--------- Input data errors ---------");
     var_dump($ex->getMessage());
 } catch (Exception $ex) {
-    var_dump("---------General errors---------");
+    var_dump("--------- General errors ---------");
     var_dump($ex->getMessage());
 }

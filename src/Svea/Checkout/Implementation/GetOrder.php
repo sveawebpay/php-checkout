@@ -4,12 +4,6 @@ namespace Svea\Checkout\Implementation;
 
 class GetOrder extends ImplementationManager
 {
-
-    public function returnResponse()
-    {
-        // TODO: Implement returnResponse() method.
-    }
-
     public function mapData($data)
     {
         // TODO: Implement mapData() method.
@@ -23,5 +17,10 @@ class GetOrder extends ImplementationManager
     public function invoke()
     {
         // TODO: Implement invoke() method.
+    }
+
+    public function validateData($data)
+    {
+        // TODO: Implement validateData() method.
     }
 }

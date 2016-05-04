@@ -4,6 +4,10 @@ namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Transport\Connector;
 
+/**
+ * Class ImplementationManager
+ * @package Svea\Checkout\Implementation
+ */
 abstract class ImplementationManager implements ImplementationInterface
 {
     /**
@@ -39,13 +43,27 @@ abstract class ImplementationManager implements ImplementationInterface
         $this->invoke();
     }
 
-    public abstract function validateData($data);
+    /**
+     * @param $data
+     * @return mixed
+     */
+    abstract public function validateData($data);
 
-    public abstract function mapData($data);
+    /**
+     * @param $data
+     * @return mixed
+     */
+    abstract public function mapData($data);
 
-    public abstract function prepareData();
+    /**
+     * @return mixed
+     */
+    abstract public function prepareData();
 
-    public abstract function invoke();
+    /**
+     * @return mixed
+     */
+    abstract public function invoke();
 
     /**
      * Return API response content

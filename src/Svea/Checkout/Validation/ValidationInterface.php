@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Validation;
-
 
 interface ValidationInterface
 {

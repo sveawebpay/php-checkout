@@ -3,77 +3,111 @@
 namespace Svea\Checkout\Validation;
 
 use Svea\Checkout\Exception\ExceptionCodeList;
-use Svea\Checkout\Exception\SveaOrderException;
+use Svea\Checkout\Exception\SveaInputValidationException;
 
 class ValidateCreateOrderData implements ValidationInterface
 {
 
     /**
      * @param $data
-     * @throws SveaOrderException
+     * @throws SveaInputValidationException
      */
     public function validate($data)
     {
+        $this->validateGeneralData($data);
+        $this->validateMerchant($data);
+        $this->validateOrderItems($data);
+    }
+
+    private function validateGeneralData($data)
+    {
         if (!is_array($data)) {
-            throw new SveaOrderException('Order data should be array !', ExceptionCodeList::INPUT_VALIDATION_ERROR);
+            throw new SveaInputValidationException(
+                'Order data should be array!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
         }
 
-        // - merchant url check
+        $requiredFields = array('locale', 'purchase_currency', 'purchase_country');
+
+        foreach ($requiredFields as $field) {
+            if (!isset($data[$field])) {
+                throw new SveaInputValidationException(
+                    "Order \"$field\" should be passed!",
+                    ExceptionCodeList::INPUT_VALIDATION_ERROR
+                );
+            }
+        }
+    }
+
+
+    /**
+     * @param $data
+     * @throws SveaInputValidationException
+     */
+    private function validateMerchant($data)
+    {
         if (!isset($data['merchant_urls'])) {
-            throw new SveaOrderException('"merchant_urls" array should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-        }
-        if (!isset($data['merchant_urls']['terms'])) {
-            throw new SveaOrderException('Merchant "terms" url should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-        }
-        if (!isset($data['merchant_urls']['checkout'])) {
-            throw new SveaOrderException('Merchant "checkout" url should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-        }
-        if (!isset($data['merchant_urls']['confirmation'])) {
-            throw new SveaOrderException('Merchant "confirmation" url should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-        }
-        if (!isset($data['merchant_urls']['push'])) {
-            throw new SveaOrderException('Merchant "push" url should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
+            throw new SveaInputValidationException(
+                'Merchant "merchant_urls" array should be passed!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
         }
 
+        $merchantData = $data['merchant_urls'];
+        $requiredFields = array('terms', 'checkout', 'confirmation', 'push');
 
-        // - order data check
+        foreach ($requiredFields as $field) {
+            if (!isset($merchantData[$field])) {
+                throw new SveaInputValidationException(
+                    "Merchant \"$field\" url should be passed!",
+                    ExceptionCodeList::INPUT_VALIDATION_ERROR
+                );
+            }
+        }
+    }
+
+
+    /**
+     * @param $data
+     * @throws SveaInputValidationException
+     */
+    private function validateOrderItems($data)
+    {
         if (!isset($data['order_lines']) || !is_array($data['order_lines'])) {
-            throw new SveaOrderException('Order lines should be passed as array!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
+            throw new SveaInputValidationException(
+                'Order lines should be passed as array!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
         }
 
-        // - row items check
-        $orderLines = $data['order_lines'];
-        foreach ($orderLines as $row) {
+        foreach ($data['order_lines'] as $row) {
+            $this->validateOrderItem($row);
+        }
+    }
 
-            if (!isset($row['articlenumber'])) {
-                throw new SveaOrderException('Order row "articlenumber" should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-            }
-            if (!isset($row['discountpercent'])) {
-                throw new SveaOrderException('Order row "discountpercent" should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-            }
-            if (!isset($row['name'])) {
-                throw new SveaOrderException('Order row "name" should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-            }
-            if (!isset($row['quantity'])) {
-                throw new SveaOrderException('Order row "quantity" should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-            }
-            if (!isset($row['unitprice'])) {
-                throw new SveaOrderException('Order row "unitprice" should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-            }
-            if (!isset($row['vatpercent'])) {
-                throw new SveaOrderException('Order row "vatpercent" should be passed!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-            }
+    /**
+     * @param $itemData
+     * @throws SveaInputValidationException
+     */
+    private function validateOrderItem($itemData)
+    {
+        if (!isset($itemData) || !is_array($itemData)) {
+            throw new SveaInputValidationException(
+                'Order item should be passed as array!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
         }
 
+        $requiredFields = array('articlenumber', 'discountpercent', 'name', 'quantity', 'unitprice', 'vatpercent');
 
-        // - localization check
-        if (!isset($data['locale']))
-            throw new SveaOrderException('"locale should be passed"!', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-
-        if (!isset($data['purchase_currency']))
-            throw new SveaOrderException('"purchase_currency" should be passed', ExceptionCodeList::INPUT_VALIDATION_ERROR);
-
-        if (!isset($data['purchase_country']))
-            throw new SveaOrderException('"purchase_country" should be passed', ExceptionCodeList::INPUT_VALIDATION_ERROR);
+        foreach ($requiredFields as $field) {
+            if (!isset($itemData[$field])) {
+                throw new SveaInputValidationException(
+                    "Order row \"$field\" should be passed!",
+                    ExceptionCodeList::INPUT_VALIDATION_ERROR
+                );
+            }
+        }
     }
 }

@@ -50,9 +50,4 @@ class CreateOrderTest extends TestCase
             $this->assertEquals($orderLine['vatpercent'], $orderRow->getVatPercent());
         }
     }
-
-//    public function testPrepareData()
-//    {
-//
-//    }
 }
