@@ -35,6 +35,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $httpClientMock;
 
+    /**
+     * @var array $inputData
+     */
+    protected $inputData;
+
     // Response
     protected $apiResponse;
 
@@ -54,6 +59,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->setCurlRequest();
         $this->setApiClient();
         $this->setConnector();
+        $this->setInputData();
     }
 
     private function setRequest()
@@ -209,5 +215,32 @@ JSON;
         $this->apiResponse .= 'Date: Wed, 27 Apr 2016 09:42:19 GMT';
 
         $this->apiResponse .= PHP_EOL . PHP_EOL . $json;
+    }
+
+    private function setInputData()
+    {
+        $this->inputData = array(
+            "purchase_country" => "SE",
+            "purchase_currency" => "SEK",
+            "locale" => "sv-SE",
+            "order_amount" => 10000,
+            "order_tax_amount" => 2000,
+            "order_lines" => array(
+                array(
+                    "articlenumber" => "123456789",
+                    "name" => "Dator",
+                    "quantity" => 200,
+                    "unitprice" => 12300,
+                    "discountpercent" => 1000,
+                    "vatpercent" => 2500
+                )
+            ),
+            "merchant_urls" => array(
+                "terms" => "http://localhost:51898/terms",
+                "checkout" => "http://localhost:51925/",
+                "confirmation" => "http://localhost:51925/checkout/confirm",
+                "push" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+            )
+        );
     }
 }

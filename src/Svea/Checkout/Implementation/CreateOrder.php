@@ -123,4 +123,20 @@ class CreateOrder extends ImplementationManager
 
         $this->response = $this->connector->send($request);
     }
+
+    /**
+     * @return CheckoutData
+     */
+    public function getCheckoutData()
+    {
+        return $this->checkoutData;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRequestBodyData()
+    {
+        return $this->requestBodyData;
+    }
 }
