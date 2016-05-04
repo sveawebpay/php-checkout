@@ -19,9 +19,4 @@ class GetOrder extends ImplementationManager
     {
         // TODO: Implement invoke() method.
     }
-
-    public function mapDataBack()
-    {
-        // TODO: Implement mapDataBack() method.
-    }
 }

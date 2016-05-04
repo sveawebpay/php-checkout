@@ -123,12 +123,4 @@ class CreateOrder extends ImplementationManager
 
         $this->response = $this->connector->send($request);
     }
-
-    public function mapDataBack()
-    {
-        return $this->response->getContent();
-
-        // TODO: Implement mapDataBack() method.
-
-    }
 }

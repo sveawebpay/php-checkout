@@ -140,14 +140,6 @@ class ResponseHandler
     }
 
     /**
-     * @param mixed $httpCode
-     */
-    public function setHttpCode($httpCode)
-    {
-        $this->httpCode = $httpCode;
-    }
-
-    /**
      * @return array
      */
     public function getHeader()

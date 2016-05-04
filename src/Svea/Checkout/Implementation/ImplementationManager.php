@@ -2,7 +2,6 @@
 
 namespace Svea\Checkout\Implementation;
 
-use Svea\Checkout\Transport\ResponseHandler;
 use Svea\Checkout\Transport\Connector;
 
 abstract class ImplementationManager implements ImplementationInterface
@@ -36,9 +35,7 @@ abstract class ImplementationManager implements ImplementationInterface
     {
         $this->mapData($data);
         $this->prepareData();
-
         $this->invoke();
-//        $this->mapDataBack();
     }
 
     /**

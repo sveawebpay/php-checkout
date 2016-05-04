@@ -6,7 +6,6 @@ use \Exception;
 use Svea\Checkout\Tests\Unit\TestCase;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Exception\SveaApiException;
-use Svea\Checkout\Transport\ResponseHandler;
 
 class ConnectorTest extends TestCase
 {
@@ -47,6 +46,16 @@ class ConnectorTest extends TestCase
     public function testCreateMissingApiUrlSecret()
     {
         $this->apiUrl = '';
+        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaConnectorException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INCORRECT_API_BASE_URL
+     */
+    public function testCreateBadApiUrlSecret()
+    {
+        $this->apiUrl = 'http://svea.com';
         new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
     }
 

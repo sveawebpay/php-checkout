@@ -13,6 +13,4 @@ interface ImplementationInterface
     public function mapData($data);
 
     public function invoke();
-
-    public function mapDataBack();
 }

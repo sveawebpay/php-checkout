@@ -72,14 +72,6 @@ class ApiClient
     }
 
     /**
-     * @return HttpRequestInterface
-     */
-    public function getHttpClient()
-    {
-        return $this->httpClient;
-    }
-
-    /**
      * @param HttpRequestInterface $httpClient
      */
     public function setHttpClient($httpClient)
