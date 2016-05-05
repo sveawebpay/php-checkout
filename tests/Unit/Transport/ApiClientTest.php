@@ -158,7 +158,7 @@ class ApiClientTest extends TestCase
         $this->setHttpClient();
 
         // Use GET method for request
-        $this->requestModel->setPostMethod();
+        $this->requestModel->setGetMethod();
         $this->apiClientMock->sendRequest($this->requestModel);
     }
 }
