@@ -33,5 +33,4 @@ class OrderFactory
     {
         return new UpdateOrder($connector);
     }
-
 }
