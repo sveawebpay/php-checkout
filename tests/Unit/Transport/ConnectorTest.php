@@ -74,8 +74,9 @@ class ConnectorTest extends TestCase
             ->method('sendRequest')
             ->will($this->returnValue($responseHandler));
 
-        $this->connector->setClient($this->apiClient);
-        $this->connector->send($this->requestHandler);
+        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector->setClient($this->apiClient);
+        $connector->sendRequest($this->requestHandler);
     }
 
     /**
@@ -91,9 +92,9 @@ class ConnectorTest extends TestCase
             ->with($this->identicalTo($this->requestHandler))
             ->will($this->throwException($sveaApiException));
 
-        $this->connector->setClient($this->apiClient);
-
-        $this->connector->send($this->requestHandler);
+        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector->setClient($this->apiClient);
+        $connector->sendRequest($this->requestHandler);
     }
 
     /**
@@ -109,9 +110,9 @@ class ConnectorTest extends TestCase
             ->with($this->identicalTo($this->requestHandler))
             ->will($this->throwException($ex));
 
-        $this->connector->setClient($this->apiClient);
-
-        $this->connector->send($this->requestHandler);
+        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector->setClient($this->apiClient);
+        $connector->sendRequest($this->requestHandler);
     }
 
     public function testCreateAuthorizationToken()

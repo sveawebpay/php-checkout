@@ -44,6 +44,16 @@ abstract class ImplementationManager implements ImplementationInterface
     }
 
     /**
+     * Return API response content
+     *
+     * @return string
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
      * @param $data
      * @return mixed
      */
@@ -64,14 +74,4 @@ abstract class ImplementationManager implements ImplementationInterface
      * @return mixed
      */
     abstract public function invoke();
-
-    /**
-     * Return API response content
-     *
-     * @return string
-     */
-    public function getResponse()
-    {
-        return $this->response;
-    }
 }

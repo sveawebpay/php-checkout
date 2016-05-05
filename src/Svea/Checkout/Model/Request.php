@@ -1,14 +1,14 @@
 <?php
 
-namespace Svea\Checkout\Transport;
+namespace Svea\Checkout\Model;
 
 /**
  * Class RequestHandler
  * Request model
  *
- * @package Svea\Checkout\Transport
+ * @package Svea\Checkout\Model
  */
-class RequestHandler
+class Request
 {
     /**
      * Authorization token, sent trough authorization header in request.

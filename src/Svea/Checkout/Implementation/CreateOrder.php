@@ -6,7 +6,7 @@ use Svea\Checkout\Model\Cart;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\MerchantSettings;
 use Svea\Checkout\Model\OrderRow;
-use Svea\Checkout\Transport\RequestHandler;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Validation\ValidateCreateOrderData;
 
 class CreateOrder extends ImplementationManager
@@ -122,12 +122,12 @@ class CreateOrder extends ImplementationManager
 
     public function invoke()
     {
-        $request = new RequestHandler();
+        $request = new Request();
         $request->setPostMethod();
         $request->setBody($this->requestBodyData);
         $request->setApiUrl($this->connector->getApiUrl() . self::API_URL);
 
-        $this->response = $this->connector->send($request);
+        $this->response = $this->connector->sendRequest($request);
     }
 
     /**
@@ -139,10 +139,26 @@ class CreateOrder extends ImplementationManager
     }
 
     /**
+     * @param CheckoutData $checkoutData
+     */
+    public function setCheckoutData($checkoutData)
+    {
+        $this->checkoutData = $checkoutData;
+    }
+
+    /**
      * @return string
      */
     public function getRequestBodyData()
     {
         return $this->requestBodyData;
+    }
+
+    /**
+     * @param string $requestBodyData
+     */
+    public function setRequestBodyData($requestBodyData)
+    {
+        $this->requestBodyData = $requestBodyData;
     }
 }
