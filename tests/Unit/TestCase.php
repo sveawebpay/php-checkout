@@ -30,9 +30,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $connectorMock;
 
     /**
-     * @var ApiClient $apiClient
+     * @var ApiClient $apiClientMock
      */
-    protected $apiClient;
+    protected $apiClientMock;
 
     /**
      * @var HttpRequestInterface $httpClientMock
@@ -107,7 +107,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     private function setApiClient()
     {
         $httpClientMock = $this->getMockBuilder('Svea\Checkout\Transport\Http\HttpRequestInterface')->getMock();
-        $this->apiClient = $this->getMockBuilder('\Svea\Checkout\Transport\ApiClient')
+        $this->apiClientMock = $this->getMockBuilder('\Svea\Checkout\Transport\ApiClient')
             ->setConstructorArgs(array($httpClientMock))
             ->getMock();
     }
@@ -115,7 +115,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     private function setConnector()
     {
         $this->connectorMock = $this->getMockBuilder('Svea\Checkout\Transport\Connector')
-            ->setConstructorArgs(array($this->merchantId, $this->sharedSecret, $this->apiUrl))
+            ->setConstructorArgs(array($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl))
             ->getMock();
     }
 

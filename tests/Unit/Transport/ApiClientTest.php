@@ -10,8 +10,8 @@ class ApiClientTest extends TestCase
 {
     protected function setHttpClient()
     {
-        $this->apiClient = new ApiClient($this->httpClientMock);
-        $this->apiClient->setHttpClient($this->httpClientMock);
+        $this->apiClientMock = new ApiClient($this->httpClientMock);
+        $this->apiClientMock->setHttpClient($this->httpClientMock);
     }
 
     public function testSendRequestWithOkStatusResponse()
@@ -32,7 +32,7 @@ class ApiClientTest extends TestCase
         /**
          * @var ResponseHandler $responseHandler
          */
-        $responseHandler = $this->apiClient->sendRequest($this->requestModel);
+        $responseHandler = $this->apiClientMock->sendRequest($this->requestModel);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
         $this->assertEquals($httpCode, $responseHandler->getHttpCode());
@@ -56,7 +56,7 @@ class ApiClientTest extends TestCase
         /**
          * @var ResponseHandler $responseHandler
          */
-        $responseHandler = $this->apiClient->sendRequest($this->requestModel);
+        $responseHandler = $this->apiClientMock->sendRequest($this->requestModel);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
         $this->assertEquals($httpCode, $responseHandler->getHttpCode());
@@ -79,7 +79,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(400));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -99,7 +99,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(404));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -119,7 +119,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(401));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -139,7 +139,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(404));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -159,6 +159,6 @@ class ApiClientTest extends TestCase
 
         // Use GET method for request
         $this->requestModel->setPostMethod();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 }

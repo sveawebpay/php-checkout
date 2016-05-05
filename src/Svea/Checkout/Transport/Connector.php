@@ -50,24 +50,25 @@ class Connector
     /**
      * Svea Checkout Api client.
      *
-     * @var ApiClient $client
+     * @var ApiClient $apiClient
      */
-    private $client;
+    private $apiClient;
 
 
     /**
      * Connector constructor.
      *
-     * @param $merchantId
-     * @param $sharedSecret
-     * @param $apiUrl
+     * @param ApiClient $apiClient
+     * @param string $merchantId
+     * @param string $sharedSecret
+     * @param string $apiUrl
      */
-    public function __construct($merchantId, $sharedSecret, $apiUrl)
+    public function __construct($apiClient, $merchantId, $sharedSecret, $apiUrl)
     {
         $this->merchantId = $merchantId;
         $this->sharedSecret = $sharedSecret;
         $this->apiUrl = $apiUrl;
-        $this->client = new ApiClient(new CurlRequest());
+        $this->apiClient = $apiClient;
 
         $this->validateData();
     }
@@ -148,7 +149,7 @@ class Connector
             /**
              * @var ResponseHandler $response
              */
-            $response = $this->client->sendRequest($request);
+            $response = $this->apiClient->sendRequest($request);
 
             return $response->getContent();
         } catch (SveaApiException $e) {
@@ -156,6 +157,21 @@ class Connector
         } catch (Exception $e) {
             throw new SveaApiException('API communication error', 1010, $e);
         }
+    }
+
+    /**
+     * Initializes connector instance
+     *
+     * @param string $merchantId
+     * @param string $sharedSecret
+     * @param string $apiUrl
+     * @return Connector
+     */
+    public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
+    {
+        $httpClient = new ApiClient(new CurlRequest());
+
+        return new static($httpClient, $merchantId, $sharedSecret, $apiUrl);
     }
 
     /**
@@ -196,16 +212,8 @@ class Connector
     /**
      * @return ApiClient
      */
-    public function getClient()
+    public function getApiClient()
     {
-        return $this->client;
-    }
-
-    /**
-     * @param $client
-     */
-    public function setClient($client)
-    {
-        $this->client = $client;
+        return $this->apiClient;
     }
 }

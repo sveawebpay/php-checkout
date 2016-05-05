@@ -10,7 +10,7 @@ try {
     $sharedSecret = 'sharedSecret';
     $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-    $conn = new \Svea\Checkout\Transport\Connector($merchantId, $sharedSecret, $baseUrl);
+    $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
 
     $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
     $response = $checkoutClient->get($data);
