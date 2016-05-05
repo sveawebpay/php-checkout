@@ -2,7 +2,7 @@
 
 require_once '../vendor/autoload.php';
 
-// - order ID sample
+// Order ID sample
 $data = 20;
 
 try {

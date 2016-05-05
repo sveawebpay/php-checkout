@@ -2,26 +2,26 @@
 
 namespace Svea\Checkout\Tests\Unit\Implementation;
 
-use Svea\Checkout\Implementation\OrderFactory;
+use Svea\Checkout\Implementation\ImplementationFactory;
 use Svea\Checkout\Tests\Unit\TestCase;
 
-class OrderFactoryTest extends TestCase
+class ImplementationFactoryTest extends TestCase
 {
     public function testReturnCreateOrderClass()
     {
-        $co = OrderFactory::returnCreateOrderClass($this->connectorMock);
+        $co = ImplementationFactory::returnCreateOrderClass($this->connectorMock);
         $this->assertInstanceOf('\Svea\Checkout\Implementation\CreateOrder', $co);
     }
 
     public function testReturnGetOrderClass()
     {
-        $co = OrderFactory::returnGetOrderClass($this->connectorMock);
+        $co = ImplementationFactory::returnGetOrderClass($this->connectorMock);
         $this->assertInstanceOf('\Svea\Checkout\Implementation\GetOrder', $co);
     }
 
     public function testReturnUpdateOrderClass()
     {
-        $co = OrderFactory::returnUpdateOrderClass($this->connectorMock);
+        $co = ImplementationFactory::returnUpdateOrderClass($this->connectorMock);
         $this->assertInstanceOf('\Svea\Checkout\Implementation\UpdateOrder', $co);
     }
 }

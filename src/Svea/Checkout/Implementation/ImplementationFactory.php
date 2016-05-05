@@ -4,7 +4,7 @@ namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Transport\Connector;
 
-class OrderFactory
+class ImplementationFactory
 {
 
     /**
