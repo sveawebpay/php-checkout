@@ -50,10 +50,10 @@ class CheckoutClient
      */
     public function create(array $data)
     {
-        $co = OrderFactory::returnCreateOrderClass($this->connector);
-        $co->execute($data);
+        $createOrder = OrderFactory::returnCreateOrderClass($this->connector);
+        $createOrder->execute($data);
                 
-        return $co->getResponse();
+        return $createOrder->getResponse();
     }
 
     /**
@@ -74,9 +74,9 @@ class CheckoutClient
      */
     public function get($data)
     {
-        /* $go = new GetOrder($this->connector);
-         $go->execute($data);
+         $getOrder = new GetOrder($this->connector);
+         $getOrder->execute($data);
 
-         return $go->getResponse();*/
+         return $getOrder->getResponse();
     }
 }

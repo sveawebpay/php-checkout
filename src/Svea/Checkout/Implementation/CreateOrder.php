@@ -73,8 +73,6 @@ class CreateOrder extends ImplementationManager
         $this->checkoutData = $checkoutData;
     }
 
-    // - @todo rename it to validateData
-
     public function prepareData()
     {
         $checkoutData = $this->checkoutData;
@@ -120,6 +118,12 @@ class CreateOrder extends ImplementationManager
         $this->requestBodyData = json_encode($preparedData);
     }
 
+
+    /**
+     * Invoke request call
+     *
+     * @throws \Svea\Checkout\Exception\SveaApiException
+     */
     public function invoke()
     {
         $request = new RequestHandler();

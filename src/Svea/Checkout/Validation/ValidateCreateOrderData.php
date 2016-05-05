@@ -7,7 +7,6 @@ use Svea\Checkout\Exception\SveaInputValidationException;
 
 class ValidateCreateOrderData implements ValidationInterface
 {
-
     /**
      * @param $data
      * @throws SveaInputValidationException
@@ -19,6 +18,10 @@ class ValidateCreateOrderData implements ValidationInterface
         $this->validateOrderItems($data);
     }
 
+    /**
+     * @param $data
+     * @throws SveaInputValidationException
+     */
     private function validateGeneralData($data)
     {
         if (!is_array($data)) {
