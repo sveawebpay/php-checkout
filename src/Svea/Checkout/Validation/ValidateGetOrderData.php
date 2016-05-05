@@ -14,10 +14,11 @@ class ValidateGetOrderData implements ValidationInterface
     public function validate($data)
     {
         $id = intval($data);
-        if($id === 0)
+        if ($id === 0) {
             throw new SveaInputValidationException(
                 'Order ID should be passed like integer!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
+        }
     }
 }
