@@ -31,7 +31,6 @@ class OrderFactory
      */
     public static function returnUpdateOrderClass(Connector $connector)
     {
-        return new GetOrder($connector);
+        return new UpdateOrder($connector);
     }
-
 }

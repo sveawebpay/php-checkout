@@ -2,10 +2,14 @@
 
 namespace Svea\Checkout\Tests\Unit;
 
+use Svea\Checkout\Model\Cart;
+use Svea\Checkout\Model\CheckoutData;
+use Svea\Checkout\Model\MerchantSettings;
+use Svea\Checkout\Model\OrderRow;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\ApiClient;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
-use Svea\Checkout\Transport\RequestHandler;
 use Svea\Checkout\Transport\ResponseHandler;
 
 class TestCase extends \PHPUnit_Framework_TestCase
@@ -16,14 +20,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $responseHandler;
 
     /**
-     * @var RequestHandler $requestHandler
+     * @var Request $requestModel
      */
-    protected $requestHandler;
+    protected $requestModel;
 
     /**
-     * @var Connector $connector
+     * @var Connector $connectorMock
      */
-    protected $connector;
+    protected $connectorMock;
 
     /**
      * @var ApiClient $apiClient
@@ -39,6 +43,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
      * @var array $inputData
      */
     protected $inputData;
+
+    /**
+     * @var CheckoutData $checkoutData
+     */
+    protected $checkoutData;
 
     // Response
     protected $apiResponse;
@@ -60,15 +69,34 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->setApiClient();
         $this->setConnector();
         $this->setInputData();
+        $this->setCheckoutData();
+    }
+
+    /**
+     * Call protected/private method of a class.
+     *
+     * @param object &$object    Instantiated object that we will run method on.
+     * @param string $methodName Method name to call
+     * @param array  $parameters Array of parameters to pass into method.
+     *
+     * @return mixed Method return.
+     */
+    protected function invokeMethod(&$object, $methodName, array $parameters = array())
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
     }
 
     private function setRequest()
     {
-        $this->requestHandler = new RequestHandler();
-        $this->requestHandler->setApiUrl($this->apiUrl);
-        $this->requestHandler->setBody(json_encode($this->orderData));
-        $this->requestHandler->setPostMethod();
-        $this->requestHandler->setAuthorizationToken('123456789');
+        $this->requestModel = new Request();
+        $this->requestModel->setApiUrl($this->apiUrl);
+        $this->requestModel->setBody(json_encode($this->orderData));
+        $this->requestModel->setPostMethod();
+        $this->requestModel->setAuthorizationToken('123456789');
     }
 
     private function setCurlRequest()
@@ -86,7 +114,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     private function setConnector()
     {
-        $this->connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $this->connectorMock = $this->getMockBuilder('Svea\Checkout\Transport\Connector')
+            ->setConstructorArgs(array($this->merchantId, $this->sharedSecret, $this->apiUrl))
+            ->getMock();
     }
 
     private function setOrderData()
@@ -242,5 +272,42 @@ JSON;
                 "push" => "https://svea.com/push.aspx?sid=123&svea_order=123"
             )
         );
+    }
+
+    private function setCheckoutData()
+    {
+        $this->checkoutData = new CheckoutData();
+
+        $merchantData = $this->inputData['merchant_urls'];
+        $merchantSettings = new MerchantSettings();
+        $merchantSettings->setTermsUri($merchantData['terms']);
+        $merchantSettings->setCheckoutUri($merchantData['checkout']);
+        $merchantSettings->setConfirmationUri($merchantData['confirmation']);
+        $merchantSettings->setPushUri($merchantData['push']);
+
+        $this->checkoutData->setMerchantSettings($merchantSettings);
+
+        $cart = new Cart();
+
+        $orderLines = $this->inputData['order_lines'];
+        foreach ($orderLines as $orderLine) {
+            $orderRow = new OrderRow();
+            $orderRow->setArticleNumber($orderLine['articlenumber']);
+            $orderRow->setDiscountPercent($orderLine['discountpercent']);
+            $orderRow->setName($orderLine['name']);
+            $orderRow->setQuantity($orderLine['quantity']);
+            $orderRow->setUnitPrice($orderLine['unitprice']);
+            $orderRow->setVatPercent($orderLine['vatpercent']);
+
+            $cart->addItem($orderRow);
+        }
+
+        $this->checkoutData->setCart($cart);
+
+        $this->checkoutData->setLocale($this->inputData['locale']);
+
+        $this->checkoutData->setCurrency($this->inputData['purchase_currency']);
+
+        $this->checkoutData->setCountryCode($this->inputData['purchase_country']);
     }
 }

@@ -4,6 +4,7 @@ namespace Svea\Checkout\Transport;
 
 use \Exception;
 use Svea\Checkout\Exception\ExceptionCodeList;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
 
 /**
@@ -33,11 +34,11 @@ class ApiClient
     /**
      * Send request to Svea Checkout API.
      *
-     * @param RequestHandler $request
+     * @param Request $request
      * @return ResponseHandler
      * @throws Exception
      */
-    public function sendRequest(RequestHandler $request)
+    public function sendRequest(Request $request)
     {
         $header = array();
         $header[] = 'Content-type: application/json';

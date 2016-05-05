@@ -6,6 +6,7 @@ use \Exception;
 use Svea\Checkout\Exception\SveaApiException;
 use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Exception\SveaConnectorException;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Http\CurlRequest;
 
 /**
@@ -134,11 +135,11 @@ class Connector
     /**
      * Create request to the API client.
      *
-     * @param RequestHandler $request
+     * @param Request $request
      * @return ResponseHandler
      * @throws SveaApiException
      */
-    public function send(RequestHandler $request)
+    public function sendRequest(Request $request)
     {
         $this->createAuthorizationToken($request);
 
@@ -160,9 +161,9 @@ class Connector
     /**
      * Create Authorization Token.
      *
-     * @param RequestHandler $request
+     * @param Request $request
      */
-    private function createAuthorizationToken(RequestHandler $request)
+    private function createAuthorizationToken(Request $request)
     {
         $authToken = base64_encode($this->merchantId . ':' . hash('sha512', $request->getBody() . $this->sharedSecret));
         $request->setAuthorizationToken($authToken);
