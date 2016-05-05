@@ -1,6 +1,6 @@
 <?php
 
-namespace Svea\Checkout\Tests\Unit\Transport;
+namespace Svea\Checkout\Tests\Unit\Implementation;
 
 use Svea\Checkout\Implementation\CreateOrder;
 use Svea\Checkout\Model\CheckoutData;
@@ -11,7 +11,7 @@ class CreateOrderTest extends TestCase
 {
     public function testMapData()
     {
-        $createOrder = new CreateOrder($this->connector);
+        $createOrder = new CreateOrder($this->connectorMock);
         $createOrder->mapData($this->inputData);
 
         /**
@@ -52,7 +52,7 @@ class CreateOrderTest extends TestCase
 
     public function testPrepareData()
     {
-        $createOrder = new CreateOrder($this->connector);
+        $createOrder = new CreateOrder($this->connectorMock);
         $createOrder->setCheckoutData($this->checkoutData);
 
         $createOrder->prepareData();
@@ -79,9 +79,19 @@ class CreateOrderTest extends TestCase
         $this->assertEquals($merchantSettings['pushuri'], $expectedMerchantSettings->getPushUri());
     }
 
-//    public function testInvoke()
-//    {
-//        $createOrder = new CreateOrder($this->connector);
-//        $createOrder->setRequestBodyData(json_encode($this->checkoutData));
-//    }
+    public function testInvoke()
+    {
+        $fakeResponse = 'Test response!!!';
+        $this->connectorMock->expects($this->once())
+            ->method('getApiUrl');
+        $this->connectorMock->expects($this->once())
+            ->method('sendRequest')
+            ->will($this->returnValue($fakeResponse));
+
+        $createOrder = new CreateOrder($this->connectorMock);
+        $createOrder->setRequestBodyData(json_encode($this->checkoutData));
+        $createOrder->invoke();
+
+        $this->assertEquals($fakeResponse, $createOrder->getResponse());
+    }
 }

@@ -3,7 +3,7 @@
 namespace Svea\Checkout\Model;
 
 /**
- * Class RequestHandler
+ * Class Request
  * Request model
  *
  * @package Svea\Checkout\Model

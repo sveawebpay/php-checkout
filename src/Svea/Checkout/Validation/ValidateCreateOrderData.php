@@ -31,7 +31,7 @@ class ValidateCreateOrderData implements ValidationInterface
         $requiredFields = array('locale', 'purchase_currency', 'purchase_country');
 
         foreach ($requiredFields as $field) {
-            if (!isset($data[$field])) {
+            if (!isset($data[$field]) || $data[$field] === '') {
                 throw new SveaInputValidationException(
                     "Order \"$field\" should be passed!",
                     ExceptionCodeList::INPUT_VALIDATION_ERROR
@@ -58,7 +58,7 @@ class ValidateCreateOrderData implements ValidationInterface
         $requiredFields = array('terms', 'checkout', 'confirmation', 'push');
 
         foreach ($requiredFields as $field) {
-            if (!isset($merchantData[$field])) {
+            if (!isset($merchantData[$field]) || $merchantData[$field] === '') {
                 throw new SveaInputValidationException(
                     "Merchant \"$field\" url should be passed!",
                     ExceptionCodeList::INPUT_VALIDATION_ERROR
@@ -102,7 +102,7 @@ class ValidateCreateOrderData implements ValidationInterface
         $requiredFields = array('articlenumber', 'discountpercent', 'name', 'quantity', 'unitprice', 'vatpercent');
 
         foreach ($requiredFields as $field) {
-            if (!isset($itemData[$field])) {
+            if (!isset($itemData[$field]) || $itemData[$field] === '') {
                 throw new SveaInputValidationException(
                     "Order row \"$field\" should be passed!",
                     ExceptionCodeList::INPUT_VALIDATION_ERROR

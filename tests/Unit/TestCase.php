@@ -20,14 +20,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $responseHandler;
 
     /**
-     * @var Request $requestHandler
+     * @var Request $requestModel
      */
-    protected $requestHandler;
+    protected $requestModel;
 
     /**
-     * @var Connector $connector
+     * @var Connector $connectorMock
      */
-    protected $connector;
+    protected $connectorMock;
 
     /**
      * @var ApiClient $apiClient
@@ -72,13 +72,31 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->setCheckoutData();
     }
 
+    /**
+     * Call protected/private method of a class.
+     *
+     * @param object &$object    Instantiated object that we will run method on.
+     * @param string $methodName Method name to call
+     * @param array  $parameters Array of parameters to pass into method.
+     *
+     * @return mixed Method return.
+     */
+    protected function invokeMethod(&$object, $methodName, array $parameters = array())
+    {
+        $reflection = new \ReflectionClass(get_class($object));
+        $method = $reflection->getMethod($methodName);
+        $method->setAccessible(true);
+
+        return $method->invokeArgs($object, $parameters);
+    }
+
     private function setRequest()
     {
-        $this->requestHandler = new Request();
-        $this->requestHandler->setApiUrl($this->apiUrl);
-        $this->requestHandler->setBody(json_encode($this->orderData));
-        $this->requestHandler->setPostMethod();
-        $this->requestHandler->setAuthorizationToken('123456789');
+        $this->requestModel = new Request();
+        $this->requestModel->setApiUrl($this->apiUrl);
+        $this->requestModel->setBody(json_encode($this->orderData));
+        $this->requestModel->setPostMethod();
+        $this->requestModel->setAuthorizationToken('123456789');
     }
 
     private function setCurlRequest()
@@ -96,9 +114,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     private function setConnector()
     {
-        $this->connector = $this->getMockBuilder('Svea\Checkout\Transport\Connector')
+        $this->connectorMock = $this->getMockBuilder('Svea\Checkout\Transport\Connector')
             ->setConstructorArgs(array($this->merchantId, $this->sharedSecret, $this->apiUrl))
-//            ->method('getError')
             ->getMock();
     }
 

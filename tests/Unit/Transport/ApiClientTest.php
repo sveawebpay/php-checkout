@@ -32,7 +32,7 @@ class ApiClientTest extends TestCase
         /**
          * @var ResponseHandler $responseHandler
          */
-        $responseHandler = $this->apiClient->sendRequest($this->requestHandler);
+        $responseHandler = $this->apiClient->sendRequest($this->requestModel);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
         $this->assertEquals($httpCode, $responseHandler->getHttpCode());
@@ -56,7 +56,7 @@ class ApiClientTest extends TestCase
         /**
          * @var ResponseHandler $responseHandler
          */
-        $responseHandler = $this->apiClient->sendRequest($this->requestHandler);
+        $responseHandler = $this->apiClient->sendRequest($this->requestModel);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
         $this->assertEquals($httpCode, $responseHandler->getHttpCode());
@@ -79,7 +79,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(400));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestHandler);
+        $this->apiClient->sendRequest($this->requestModel);
     }
 
     /**
@@ -99,7 +99,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(404));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestHandler);
+        $this->apiClient->sendRequest($this->requestModel);
     }
 
     /**
@@ -119,7 +119,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(401));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestHandler);
+        $this->apiClient->sendRequest($this->requestModel);
     }
 
     /**
@@ -139,7 +139,7 @@ class ApiClientTest extends TestCase
             ->will($this->returnValue(404));
 
         $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestHandler);
+        $this->apiClient->sendRequest($this->requestModel);
     }
 
     /**
@@ -158,7 +158,7 @@ class ApiClientTest extends TestCase
         $this->setHttpClient();
 
         // Use GET method for request
-        $this->requestHandler->setPostMethod();
-        $this->apiClient->sendRequest($this->requestHandler);
+        $this->requestModel->setPostMethod();
+        $this->apiClient->sendRequest($this->requestModel);
     }
 }

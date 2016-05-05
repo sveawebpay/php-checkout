@@ -11,12 +11,12 @@ class ConnectorTest extends TestCase
 {
     public function testCreateMatchesDataGiven()
     {
-        $this->connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $this->connectorMock = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
 
-        $this->assertInstanceOf('\Svea\Checkout\Transport\ApiClient', $this->connector->getClient());
-        $this->assertEquals($this->merchantId, $this->connector->getMerchantId());
-        $this->assertEquals($this->sharedSecret, $this->connector->getSharedSecret());
-        $this->assertEquals($this->apiUrl, $this->connector->getApiUrl());
+        $this->assertInstanceOf('\Svea\Checkout\Transport\ApiClient', $this->connectorMock->getClient());
+        $this->assertEquals($this->merchantId, $this->connectorMock->getMerchantId());
+        $this->assertEquals($this->sharedSecret, $this->connectorMock->getSharedSecret());
+        $this->assertEquals($this->apiUrl, $this->connectorMock->getApiUrl());
     }
 
     /**
@@ -76,7 +76,7 @@ class ConnectorTest extends TestCase
 
         $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
         $connector->setClient($this->apiClient);
-        $connector->sendRequest($this->requestHandler);
+        $connector->sendRequest($this->requestModel);
     }
 
     /**
@@ -89,12 +89,12 @@ class ConnectorTest extends TestCase
 
         $this->apiClient->expects($this->once())
             ->method('sendRequest')
-            ->with($this->identicalTo($this->requestHandler))
+            ->with($this->identicalTo($this->requestModel))
             ->will($this->throwException($sveaApiException));
 
         $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
         $connector->setClient($this->apiClient);
-        $connector->sendRequest($this->requestHandler);
+        $connector->sendRequest($this->requestModel);
     }
 
     /**
@@ -107,12 +107,12 @@ class ConnectorTest extends TestCase
 
         $this->apiClient->expects($this->once())
             ->method('sendRequest')
-            ->with($this->identicalTo($this->requestHandler))
+            ->with($this->identicalTo($this->requestModel))
             ->will($this->throwException($ex));
 
         $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
         $connector->setClient($this->apiClient);
-        $connector->sendRequest($this->requestHandler);
+        $connector->sendRequest($this->requestModel);
     }
 
     public function testCreateAuthorizationToken()
@@ -122,23 +122,14 @@ class ConnectorTest extends TestCase
             ':' .
             hash(
                 'sha512',
-                $this->requestHandler->getBody() .
+                $this->requestModel->getBody() .
                 $this->sharedSecret
             )
         );
 
-        $method = $this->getPrivateMethod('Svea\Checkout\Transport\Connector', 'createAuthorizationToken');
-        $method->invokeArgs($this->connector, array($this->requestHandler));
+        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $this->invokeMethod($connector, 'createAuthorizationToken', array($this->requestModel));
 
-        $this->assertEquals($expectedAuthToken, $this->requestHandler->getAuthorizationToken());
-    }
-
-    public function getPrivateMethod($className, $methodName)
-    {
-        $reflector = new \ReflectionClass($className);
-        $method = $reflector->getMethod($methodName);
-        $method->setAccessible(true);
-
-        return $method;
+        $this->assertEquals($expectedAuthToken, $this->requestModel->getAuthorizationToken());
     }
 }

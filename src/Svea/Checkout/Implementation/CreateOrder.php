@@ -122,12 +122,12 @@ class CreateOrder extends ImplementationManager
 
     public function invoke()
     {
-        $request = new Request();
-        $request->setPostMethod();
-        $request->setBody($this->requestBodyData);
-        $request->setApiUrl($this->connector->getApiUrl() . self::API_URL);
+        $requestModel = new Request();
+        $requestModel->setPostMethod();
+        $requestModel->setBody($this->requestBodyData);
+        $requestModel->setApiUrl($this->connector->getApiUrl() . self::API_URL);
 
-        $this->response = $this->connector->sendRequest($request);
+        $this->response = $this->connector->sendRequest($requestModel);
     }
 
     /**
