@@ -57,12 +57,12 @@ abstract class ImplementationManager implements ImplementationInterface
     }
 
     /**
-     * @param array $data Input data to Svea Checkout Library
+     * @param mixed $data Input data to Svea Checkout Library
      */
     abstract public function validateData($data);
 
     /**
-     * @param array $data Input data to Svea Checkout Library
+     * @param mixed $data Input data to Svea Checkout Library
      */
     abstract public function mapData($data);
 
