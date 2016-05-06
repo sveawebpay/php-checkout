@@ -51,12 +51,7 @@ class CreateOrder extends ImplementationManager
         $orderLines = $data['order_lines'];
         foreach ($orderLines as $orderLine) {
             $orderRow = new OrderRow();
-            $orderRow->setArticleNumber($orderLine['articlenumber']);
-            $orderRow->setDiscountPercent($orderLine['discountpercent']);
-            $orderRow->setName($orderLine['name']);
-            $orderRow->setQuantity($orderLine['quantity']);
-            $orderRow->setUnitPrice($orderLine['unitprice']);
-            $orderRow->setVatPercent($orderLine['vatpercent']);
+            $orderRow->setItemParameters($orderLine);
 
             $cart->addItem($orderRow);
         }
@@ -64,11 +59,8 @@ class CreateOrder extends ImplementationManager
         $checkoutData->setCart($cart);
 
         $checkoutData->setLocale($data['locale']);
-
         $checkoutData->setCurrency($data['purchase_currency']);
-
         $checkoutData->setCountryCode($data['purchase_country']);
-
 
         $this->checkoutData = $checkoutData;
     }
@@ -92,23 +84,7 @@ class CreateOrder extends ImplementationManager
         $preparedData['cart'] = array();
         foreach ($cartItems as $item) {
             /* @var $item OrderRow */
-            $preparedData['cart']['items'][] = array(
-                'articlenumber' => $item->getArticleNumber(),
-                'name' => $item->getName(),
-                'quantity' => $item->getQuantity(),
-                'unitprice' => $item->getUnitPrice(),
-                'discountpercent' => $item->getDiscountPercent(),
-                'vatpercent' => $item->getVatPercent()
-            );
-            // TODO implement shopping item
-            $preparedData['cart']['items'][] = array(
-                'type' => 'shipping_fee',
-                'articlenumber' => "SHIPPING",
-                'name' => 'Shipping Fee',
-                'quantity' => 100,
-                'unitprice' => 4900,
-                'vatpercent' => 2500
-            );
+            $preparedData['cart']['items'][] = $item->getItemParameters();
         }
 
         $preparedData['locale'] = $checkoutData->getLocale();

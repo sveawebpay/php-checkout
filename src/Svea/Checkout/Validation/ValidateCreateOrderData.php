@@ -8,7 +8,7 @@ use Svea\Checkout\Exception\SveaInputValidationException;
 class ValidateCreateOrderData implements ValidationInterface
 {
     /**
-     * @param $data
+     * @param array $data
      * @throws SveaInputValidationException
      */
     public function validate($data)
@@ -19,7 +19,7 @@ class ValidateCreateOrderData implements ValidationInterface
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @throws SveaInputValidationException
      */
     private function validateGeneralData($data)
@@ -43,9 +43,8 @@ class ValidateCreateOrderData implements ValidationInterface
         }
     }
 
-
     /**
-     * @param $data
+     * @param array $data
      * @throws SveaInputValidationException
      */
     private function validateMerchant($data)
@@ -70,9 +69,8 @@ class ValidateCreateOrderData implements ValidationInterface
         }
     }
 
-
     /**
-     * @param $data
+     * @param array $data
      * @throws SveaInputValidationException
      */
     private function validateOrderItems($data)
@@ -90,7 +88,7 @@ class ValidateCreateOrderData implements ValidationInterface
     }
 
     /**
-     * @param $itemData
+     * @param array $itemData
      * @throws SveaInputValidationException
      */
     private function validateOrderItem($itemData)
@@ -102,7 +100,7 @@ class ValidateCreateOrderData implements ValidationInterface
             );
         }
 
-        $requiredFields = array('articlenumber', 'discountpercent', 'name', 'quantity', 'unitprice', 'vatpercent');
+        $requiredFields = array('articlenumber', 'name', 'quantity', 'unitprice', 'vatpercent');
 
         foreach ($requiredFields as $field) {
             if (!isset($itemData[$field]) || $itemData[$field] === '') {

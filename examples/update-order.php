@@ -3,11 +3,7 @@
 require_once '../vendor/autoload.php';
 
 $data = array(
-    "purchase_country" => "SE",
-    "purchase_currency" => "SEK",
-    "locale" => "sv-SE",
-    "order_amount" => 10000,
-    "order_tax_amount" => 2000,
+    "id" => 20,
     "order_lines" => array(
         array(
             "articlenumber" => "123456789",
@@ -18,28 +14,13 @@ $data = array(
             "vatpercent" => 2500
         ),
         array(
-            "articlenumber" => "987654321",
-            "name" => "Fork",
-            "quantity" => 300,
-            "unitprice" => 15800,
-            "discountpercent" => 2000,
-            "vatpercent" => 2500
-        ),
-        array(
             "type" => "shipping_fee",
             "articlenumber" => "SHIPPING",
-            "name" => "Shipping fee",
+            "name" => "Shipping Fee Updated",
             "quantity" => 100,
             "unitprice" => 4900,
             "vatpercent" => 2500
-        ),
-        
-    ),
-    "merchant_urls" => array(
-        "terms" => "http://localhost:51898/terms",
-        "checkout" => "http://localhost:51925/",
-        "confirmation" => "http://localhost:51925/checkout/confirm",
-        "push" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+        )
     )
 );
 
@@ -51,7 +32,7 @@ try {
     $conn = new \Svea\Checkout\Transport\Connector($merchantId, $sharedSecret, $baseUrl);
 
     $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
-    $response = $checkoutClient->create($data);
+    $response = $checkoutClient->update($data);
 
     print_r($response['Gui']['Snippet']);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {

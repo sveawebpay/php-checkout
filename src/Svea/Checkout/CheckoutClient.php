@@ -63,13 +63,16 @@ class CheckoutClient
      */
     public function update(array $data)
     {
+        $updateOrder = ImplementationFactory::returnUpdateOrderClass($this->connector);
+        $updateOrder->execute($data);
 
+        return $updateOrder->getResponse();
     }
 
     /**
      * Return Svea Checkout order data.
      *
-     * @param $data
+     * @param array $data
      * @return string
      */
     public function get($data)

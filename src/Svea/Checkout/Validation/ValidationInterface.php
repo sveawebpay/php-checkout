@@ -5,7 +5,7 @@ namespace Svea\Checkout\Validation;
 interface ValidationInterface
 {
     /**
-     * @param $data
+     * @param mixed $data
      */
     public function validate($data);
 }

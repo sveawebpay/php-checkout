@@ -39,6 +39,11 @@ class OrderRow
      */
     private $unit;
 
+    /**
+     * @var string
+     */
+    private $type;
+
 
     /**
      * @return string
@@ -150,5 +155,96 @@ class OrderRow
     public function setUnit($unit)
     {
         $this->unit = $unit;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
+     * @param string $type
+     */
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    /**
+     * Set class parameters for existing parameters in passed list
+     * @param array $data
+     */
+    public function setItemParameters($data)
+    {
+        if (isset($data['articlenumber'])) {
+            $this->articleNumber = $data['articlenumber'];
+        }
+
+        if (isset($data['name'])) {
+            $this->name = $data['name'];
+        }
+
+        if (isset($data['quantity'])) {
+            $this->quantity = $data['quantity'];
+        }
+
+        if (isset($data['unitprice'])) {
+            $this->unitPrice = $data['unitprice'];
+        }
+
+        if (isset($data['discountpercent'])) {
+            $this->discountPercent = $data['discountpercent'];
+        }
+
+        if (isset($data['vatpercent'])) {
+            $this->vatPercent = $data['vatpercent'];
+        }
+
+        if (isset($data['type'])) {
+            $this->type = $data['type'];
+        }
+    }
+
+
+    /**
+     * Return array of set class items
+     * @return array
+     */
+    public function getItemParameters()
+    {
+        $preparedData = array();
+
+        if ($this->articleNumber != null) {
+            $preparedData['articlenumber'] = $this->articleNumber;
+        }
+
+        if ($this->name != null) {
+            $preparedData['name'] = $this->name;
+        }
+
+        if ($this->quantity != null) {
+            $preparedData['quantity'] = $this->quantity;
+        }
+
+        if ($this->unitPrice != null) {
+            $preparedData['unitprice'] = $this->unitPrice;
+        }
+
+        if ($this->discountPercent != null) {
+            $preparedData['discountpercent'] = $this->discountPercent;
+        }
+
+        if ($this->vatPercent != null) {
+            $preparedData['vatpercent'] = $this->vatPercent;
+        }
+
+        if ($this->type != null) {
+            $preparedData['type'] = $this->type;
+        }
+
+        return $preparedData;
     }
 }
