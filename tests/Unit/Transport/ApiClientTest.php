@@ -8,31 +8,15 @@ use Svea\Checkout\Transport\ResponseHandler;
 
 class ApiClientTest extends TestCase
 {
-    protected function setHttpClient()
-    {
-        $this->apiClient = new ApiClient($this->httpClientMock);
-        $this->apiClient->setHttpClient($this->httpClientMock);
-    }
-
     public function testSendRequestWithOkStatusResponse()
     {
         $httpCode = 200;
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue(''));
-        $this->httpClientMock->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($this->apiResponse));
-        $this->httpClientMock->expects($this->once())
-            ->method('getInfo')
-            ->will($this->returnValue($httpCode));
-
-        $this->setHttpClient();
+        $this->mockHttpClient($this->apiResponse, $httpCode);
 
         /**
          * @var ResponseHandler $responseHandler
          */
-        $responseHandler = $this->apiClient->sendRequest($this->requestModel);
+        $responseHandler = $this->apiClientMock->sendRequest($this->requestModel);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
         $this->assertEquals($httpCode, $responseHandler->getHttpCode());
@@ -41,22 +25,12 @@ class ApiClientTest extends TestCase
     public function testSendRequestWithCreatedStatusResponse()
     {
         $httpCode = 201;
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue(''));
-        $this->httpClientMock->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($this->apiResponse));
-        $this->httpClientMock->expects($this->once())
-            ->method('getInfo')
-            ->will($this->returnValue($httpCode));
-
-        $this->setHttpClient();
+        $this->mockHttpClient($this->apiResponse, $httpCode);
 
         /**
          * @var ResponseHandler $responseHandler
          */
-        $responseHandler = $this->apiClient->sendRequest($this->requestModel);
+        $responseHandler = $this->apiClientMock->sendRequest($this->requestModel);
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
         $this->assertEquals($httpCode, $responseHandler->getHttpCode());
@@ -68,18 +42,9 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWithBadRequestStatusResponse()
     {
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue(''));
-        $this->httpClientMock->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($this->apiResponse));
-        $this->httpClientMock->expects($this->once())
-            ->method('getInfo')
-            ->will($this->returnValue(400));
+        $this->mockHttpClient($this->apiResponse, 400);
 
-        $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -88,18 +53,9 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWithNotFoundStatusResponse()
     {
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue(''));
-        $this->httpClientMock->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($this->apiResponse));
-        $this->httpClientMock->expects($this->once())
-            ->method('getInfo')
-            ->will($this->returnValue(404));
+        $this->mockHttpClient($this->apiResponse, 404);
 
-        $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -108,18 +64,9 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWithUnauthorizedStatusResponse()
     {
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue(''));
-        $this->httpClientMock->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($this->apiResponse));
-        $this->httpClientMock->expects($this->once())
-            ->method('getInfo')
-            ->will($this->returnValue(401));
+        $this->mockHttpClient($this->apiResponse, 401);
 
-        $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -128,18 +75,9 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWith404StatusResponse()
     {
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue(''));
-        $this->httpClientMock->expects($this->once())
-            ->method('execute')
-            ->will($this->returnValue($this->apiResponse));
-        $this->httpClientMock->expects($this->once())
-            ->method('getInfo')
-            ->will($this->returnValue(404));
+        $this->mockHttpClient($this->apiResponse, 404);
 
-        $this->setHttpClient();
-        $this->apiClient->sendRequest($this->requestModel);
+        $this->apiClientMock->sendRequest($this->requestModel);
     }
 
     /**
@@ -148,17 +86,41 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWithHttpClientError()
     {
-        $this->httpClientMock->expects($this->once())
-            ->method('getError')
-            ->will($this->returnValue('Could not resolve host: rarafsafsafasfas.com'));
-        $this->httpClientMock->expects($this->once())
-            ->method('getErrorNumber')
-            ->will($this->returnValue(2));
+        $error = 'Could not resolve host: rarafsafsafasfas.com';
+        $this->mockHttpClient(null, null, $error, 2);
+
+        $this->requestModel->setGetMethod();
+        $this->apiClientMock->sendRequest($this->requestModel);
+    }
+
+    private function mockHttpClient($executeValue, $infoValue, $errorValue = null, $errorNumber = null)
+    {
+        if ($executeValue !== null) {
+            $this->httpClientMock->expects($this->once())
+                ->method('execute')
+                ->will($this->returnValue($executeValue));
+        }
+        if ($infoValue !== null) {
+            $this->httpClientMock->expects($this->once())
+                ->method('getInfo')
+                ->will($this->returnValue($infoValue));
+        }
+        if ($errorValue !== null) {
+            $this->httpClientMock->expects($this->once())
+                ->method('getError')
+                ->will($this->returnValue($errorValue));
+        }
+        if ($errorNumber !== null) {
+            $this->httpClientMock->expects($this->once())
+                ->method('getErrorNumber')
+                ->will($this->returnValue($errorNumber));
+        }
 
         $this->setHttpClient();
+    }
 
-        // Use GET method for request
-        $this->requestModel->setPostMethod();
-        $this->apiClient->sendRequest($this->requestModel);
+    private function setHttpClient()
+    {
+        $this->apiClientMock = new ApiClient($this->httpClientMock);
     }
 }

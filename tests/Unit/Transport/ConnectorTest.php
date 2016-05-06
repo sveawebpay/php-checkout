@@ -11,72 +11,111 @@ class ConnectorTest extends TestCase
 {
     public function testCreateMatchesDataGiven()
     {
-        $this->connectorMock = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector = new Connector(
+            $this->apiClientMock,
+            $this->merchantId,
+            $this->sharedSecret,
+            $this->apiUrl
+        );
 
-        $this->assertInstanceOf('\Svea\Checkout\Transport\ApiClient', $this->connectorMock->getClient());
-        $this->assertEquals($this->merchantId, $this->connectorMock->getMerchantId());
-        $this->assertEquals($this->sharedSecret, $this->connectorMock->getSharedSecret());
-        $this->assertEquals($this->apiUrl, $this->connectorMock->getApiUrl());
+        $this->assertInstanceOf('\Svea\Checkout\Transport\ApiClient', $connector->getApiClient());
+        $this->assertEquals($this->merchantId, $connector->getMerchantId());
+        $this->assertEquals($this->sharedSecret, $connector->getSharedSecret());
+        $this->assertEquals($this->apiUrl, $connector->getBaseApiUrl());
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_MERCHANT_ID
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::MISSING_MERCHANT_ID
      */
-    public function testCreateMissingMerchantId()
+    public function testValidateMerchantIdWithInvalidMerchantId()
     {
         $this->merchantId = '';
-        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->invokeMethod($connector, 'validateMerchantId');
+    }
+
+    public function testValidateMerchantIdWithValidMerchantId()
+    {
+        $this->merchantId = '123';
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->invokeMethod($connector, 'validateMerchantId');
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_SHARED_SECRET
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::MISSING_SHARED_SECRET
      */
-    public function testCreateMissingSharedSecret()
+    public function testValidateSharedSecretWithInvalidSharedSecret()
     {
         $this->sharedSecret = '';
-        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->invokeMethod($connector, 'validateSharedSecret');
+    }
+
+    public function testValidateSharedSecretWithValidSharedSecret()
+    {
+        $this->sharedSecret = 'sharedSecret';
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->invokeMethod($connector, 'validateSharedSecret');
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_API_BASE_URL
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::MISSING_API_BASE_URL
      */
-    public function testCreateMissingApiUrlSecret()
+    public function testValidateBaseApiUrlWithoutApiUrl()
     {
         $this->apiUrl = '';
-        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->invokeMethod($connector, 'validateBaseApiUrl');
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INCORRECT_API_BASE_URL
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::INCORRECT_API_BASE_URL
      */
-    public function testCreateBadApiUrlSecret()
+    public function testValidateBaseApiUrlWithBadApiUrl()
     {
-        $this->apiUrl = 'http://svea.com';
-        new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $this->apiUrl = 'http://invalid.url.svea.com';
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->invokeMethod($connector, 'validateBaseApiUrl');
     }
 
-    public function testSendRequestAndReceiveResponse()
+    public function testValidateBaseApiUrlWithValidApiUrl()
     {
-        $content = $this->apiResponse;
+        $this->apiUrl = Connector::TEST_BASE_URL;
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->invokeMethod($connector, 'validateBaseApiUrl');
+    }
+
+    public function testSendRequestAndReceiveSuccessfulResponse()
+    {
+        $responseContent = $this->apiResponse;
         $httpCode = 201;
         $responseHandler = $this->getMockBuilder('\Svea\Checkout\Transport\ResponseHandler')
-            ->setConstructorArgs(array($content, $httpCode))
+            ->setConstructorArgs(array($responseContent, $httpCode))
             ->getMock();
 
         $responseHandler->expects($this->once())
-            ->method('getContent');
+            ->method('getContent')
+            ->will($this->returnValue($responseContent));
 
-        $this->apiClient->expects($this->once())
+        $this->apiClientMock->expects($this->once())
             ->method('sendRequest')
             ->will($this->returnValue($responseHandler));
 
-        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
-        $connector->setClient($this->apiClient);
-        $connector->sendRequest($this->requestModel);
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $response = $connector->sendRequest($this->requestModel);
+
+        $this->assertEquals($responseContent, $response);
     }
 
     /**
@@ -87,13 +126,12 @@ class ConnectorTest extends TestCase
     {
         $sveaApiException = new SveaApiException('The input data was bad', 1000);
 
-        $this->apiClient->expects($this->once())
+        $this->apiClientMock->expects($this->once())
             ->method('sendRequest')
             ->with($this->identicalTo($this->requestModel))
             ->will($this->throwException($sveaApiException));
 
-        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
-        $connector->setClient($this->apiClient);
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
         $connector->sendRequest($this->requestModel);
     }
 
@@ -101,33 +139,26 @@ class ConnectorTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaApiException
      * @expectedExceptionMessage API communication error
      */
-    public function testSendRequestExceptionThrown()
+    public function testSendRequestGeneralExceptionThrown()
     {
         $ex = new Exception('General error');
 
-        $this->apiClient->expects($this->once())
+        $this->apiClientMock->expects($this->once())
             ->method('sendRequest')
             ->with($this->identicalTo($this->requestModel))
             ->will($this->throwException($ex));
 
-        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
-        $connector->setClient($this->apiClient);
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
         $connector->sendRequest($this->requestModel);
     }
 
     public function testCreateAuthorizationToken()
     {
-        $expectedAuthToken = base64_encode(
-            $this->merchantId .
-            ':' .
-            hash(
-                'sha512',
-                $this->requestModel->getBody() .
-                $this->sharedSecret
-            )
-        );
+        $expectedAuthToken = 'MTIzNDU2OjEyZGVkNGUxYzFhODY3Nzc5ZDVmMTRjMjU0YzRmMmYzYjM4NTE2';
+        $expectedAuthToken .= 'MjZiNGI4MGJmOWVkYmJiMTliODdkMmZmMWZhODFiZTliYWNkNmI3ZTE3ZjJh';
+        $expectedAuthToken .= 'ODllMGQzMmQwODE3Mjc0YmMzYjcwOTYzYTNmNGE5YzY0MWJiYWUzNmVkODc1';
 
-        $connector = new Connector($this->merchantId, $this->sharedSecret, $this->apiUrl);
+        $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
         $this->invokeMethod($connector, 'createAuthorizationToken', array($this->requestModel));
 
         $this->assertEquals($expectedAuthToken, $this->requestModel->getAuthorizationToken());

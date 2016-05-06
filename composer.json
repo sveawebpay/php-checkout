@@ -35,7 +35,7 @@
       ".\\vendor\\bin\\phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet",
       ".\\vendor\\bin\\phpcpd --log-pmd build/logs/pmd-cpd.xml src/ --quiet || true",
       ".\\vendor\\bin\\phpcs --standard=PSR2 --report=checkstyle --report-file=build/logs/checkstyle.xml --extensions=php src/ tests/ || true",
-      ".\\vendor\\bin\\phpmd src/ xml phpmd.xml --reportfile build/logs/pmd.xml --quiet || true"
+      ".\\vendor\\bin\\phpmd src/,tests/ xml phpmd.xml --reportfile build/logs/pmd.xml --quiet || true"
     ],
     "fix-sniff-violations": ".\\vendor\\bin\\phpcbf --standard=PSR2 src/ tests/ --no-patch --quiet || true"
   }

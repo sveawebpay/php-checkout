@@ -105,7 +105,7 @@ class CreateOrder extends ImplementationManager
         $requestModel = new Request();
         $requestModel->setPostMethod();
         $requestModel->setBody($this->requestBodyData);
-        $requestModel->setApiUrl($this->connector->getApiUrl() . self::API_URL);
+        $requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL);
 
         $this->response = $this->connector->sendRequest($requestModel);
     }

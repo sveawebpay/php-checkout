@@ -24,6 +24,7 @@
             <directory suffix=".php">./src/</directory>
             <exclude>
                 <file>./src/Svea/Checkout/CheckoutClient.php</file>
+                <directory suffix=".php">./src/Svea/Checkout/Transport/Http/</directory>
             </exclude>
         </whitelist>
     </filter>

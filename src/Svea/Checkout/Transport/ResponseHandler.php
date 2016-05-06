@@ -6,6 +6,7 @@ use Svea\Checkout\Exception\SveaApiException;
 
 /**
  * Class ResponseHandler - HTTP response handler
+ *
  * @package Svea\Checkout\Transport
  */
 class ResponseHandler

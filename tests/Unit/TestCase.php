@@ -10,32 +10,26 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\ApiClient;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
-use Svea\Checkout\Transport\ResponseHandler;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var ResponseHandler $responseHandler
-     */
-    protected $responseHandler;
-
     /**
      * @var Request $requestModel
      */
     protected $requestModel;
 
     /**
-     * @var Connector $connectorMock
+     * @var Connector|\PHPUnit_Framework_MockObject_MockObject $connectorMock
      */
     protected $connectorMock;
 
     /**
-     * @var ApiClient $apiClient
+     * @var ApiClient|\PHPUnit_Framework_MockObject_MockObject $apiClientMock
      */
-    protected $apiClient;
+    protected $apiClientMock;
 
     /**
-     * @var HttpRequestInterface $httpClientMock
+     * @var HttpRequestInterface|\PHPUnit_Framework_MockObject_MockObject $httpClientMock
      */
     protected $httpClientMock;
 
@@ -49,16 +43,36 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $checkoutData;
 
-    // Response
+    /**
+     * @var string $apiResponse
+     */
     protected $apiResponse;
 
-    // Client Credentials
+    /**
+     * Client credential data
+     *
+     * @var string $merchantId
+     */
     protected $merchantId = '123456';
+
+    /**
+     * Client credential data
+     *
+     * @var string $sharedSecret
+     */
     protected $sharedSecret = '80e3a905e597ca428f4e25200433263c';
+
+    /**
+     * @var string $apiUrl
+     */
     protected $apiUrl = Connector::TEST_BASE_URL;
 
-    // Request body data - Mock
-    protected $orderData;
+    /**
+     * Request body data for create Svea Order - Mock
+     *
+     * @var array $createOrderRequestData
+     */
+    protected $createOrderRequestData;
 
     protected function setUp()
     {
@@ -75,13 +89,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Call protected/private method of a class.
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object $object    Instantiated object that we will run method on.
      * @param string $methodName Method name to call
      * @param array  $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
      */
-    protected function invokeMethod(&$object, $methodName, array $parameters = array())
+    protected function invokeMethod($object, $methodName, array $parameters = array())
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
@@ -94,7 +108,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         $this->requestModel = new Request();
         $this->requestModel->setApiUrl($this->apiUrl);
-        $this->requestModel->setBody(json_encode($this->orderData));
+        $this->requestModel->setBody(json_encode($this->createOrderRequestData));
         $this->requestModel->setPostMethod();
         $this->requestModel->setAuthorizationToken('123456789');
     }
@@ -107,7 +121,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     private function setApiClient()
     {
         $httpClientMock = $this->getMockBuilder('Svea\Checkout\Transport\Http\HttpRequestInterface')->getMock();
-        $this->apiClient = $this->getMockBuilder('\Svea\Checkout\Transport\ApiClient')
+        $this->apiClientMock = $this->getMockBuilder('\Svea\Checkout\Transport\ApiClient')
             ->setConstructorArgs(array($httpClientMock))
             ->getMock();
     }
@@ -115,13 +129,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
     private function setConnector()
     {
         $this->connectorMock = $this->getMockBuilder('Svea\Checkout\Transport\Connector')
-            ->setConstructorArgs(array($this->merchantId, $this->sharedSecret, $this->apiUrl))
+            ->setConstructorArgs(array($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl))
             ->getMock();
     }
 
     private function setOrderData()
     {
-        $this->orderData = array(
+        $this->createOrderRequestData = array(
             "purchase_country" => "gb",
             "purchase_currency" => "gbp",
             "locale" => "en-gb",

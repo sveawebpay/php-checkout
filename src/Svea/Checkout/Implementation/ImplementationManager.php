@@ -25,7 +25,7 @@ abstract class ImplementationManager implements ImplementationInterface
     protected $response;
 
     /**
-     * @param Connector $connector
+     * @param Connector $connector Used for authentication and connect with Svea Checkout API
      */
     public function __construct(Connector $connector)
     {
@@ -33,7 +33,10 @@ abstract class ImplementationManager implements ImplementationInterface
     }
 
     /**
-     * @param array $data
+     * Template pattern for all implementations.
+     * These are necessary steps for all implementations.
+     *
+     * @param array $data Input data to Svea Checkout Library
      */
     public function execute($data)
     {
@@ -46,7 +49,7 @@ abstract class ImplementationManager implements ImplementationInterface
     /**
      * Return API response content
      *
-     * @return string
+     * @return mixed
      */
     public function getResponse()
     {
@@ -54,24 +57,16 @@ abstract class ImplementationManager implements ImplementationInterface
     }
 
     /**
-     * @param $data
-     * @return mixed
+     * @param array $data Input data to Svea Checkout Library
      */
     abstract public function validateData($data);
 
     /**
-     * @param $data
-     * @return mixed
+     * @param array $data Input data to Svea Checkout Library
      */
     abstract public function mapData($data);
 
-    /**
-     * @return mixed
-     */
     abstract public function prepareData();
 
-    /**
-     * @return mixed
-     */
     abstract public function invoke();
 }

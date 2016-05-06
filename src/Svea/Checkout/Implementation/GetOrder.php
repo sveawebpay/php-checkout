@@ -61,8 +61,9 @@ class GetOrder extends ImplementationManager
         $request = new Request();
         $request->setGetMethod();
         $request->setBody($this->requestBodyData);
-        $request->setApiUrl($this->connector->getApiUrl() . self::API_URL . $this->orderId);
+        $request->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
 
+        $this->response = $this->connector->sendRequest($request);
         $this->response = $this->connector->sendRequest($request);
     }
 

@@ -11,7 +11,7 @@
 
     <rule ref="rulesets/design.xml"/>
 
-    <!-- Import entire naming rule set and exclude rules -->
+    <!-- Import naming rule set and exclude rules -->
     <rule ref="rulesets/naming.xml">
         <exclude name="ShortVariable"/>
         <exclude name="LongVariable" />
@@ -20,24 +20,27 @@
     <!-- Import the entire unused code rule set -->
     <rule ref="rulesets/unusedcode.xml"/>
 
+    <!-- Import codesize rule -->
     <rule ref="rulesets/codesize.xml">
         <exclude name="TooManyMethods"/>
+        <exclude name="TooManyPublicMethods"/>
+    </rule>
+
+    <!--Code size CUSTOM rules - start -->
+    <rule ref="rulesets/codesize.xml/TooManyPublicMethods">
+        <priority>1</priority>
+        <properties>
+            <property name="maxmethods" value="20"/>
+        </properties>
     </rule>
 
     <rule ref="rulesets/codesize.xml/TooManyMethods">
         <priority>1</priority>
         <properties>
-            <property name="maxmethods" value="18"/>
+            <property name="maxmethods" value="25"/>
         </properties>
     </rule>
-
-    <!-- Import the cyclomatic complexity rule -->
-    <rule ref="rulesets/codesize.xml/CyclomaticComplexity">
-        <priority>1</priority>
-        <properties>
-            <property name="reportLevel" value="6" />
-        </properties>
-    </rule>
+    <!--Code size CUSTOM rules - end -->
 
     <!-- Import the clean code rule -->
     <rule ref="rulesets/cleancode.xml">
