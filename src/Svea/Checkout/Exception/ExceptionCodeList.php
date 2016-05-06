@@ -13,12 +13,13 @@ class ExceptionCodeList
 
     const INPUT_VALIDATION_ERROR = 3000;
 
+    const UNKNOWN_CODE_MESSAGE = 'Unknown code error';
 
     /**
      * Return Message for given exception code
      *
      * @param  $exceptionCode
-     * @return mixed|string
+     * @return string
      */
     public static function getErrorMessage($exceptionCode)
     {
@@ -33,13 +34,12 @@ class ExceptionCodeList
             2004 => 'Incorrect API Base URL',
 
             3000 => 'Input Validation Error'
-
         );
 
-        if (in_array($exceptionCode, $exceptionMessageList)) {
+        if (isset($exceptionMessageList[$exceptionCode])) {
             return $exceptionMessageList[$exceptionCode];
         }
 
-        return "Unknown code error";
+        return self::UNKNOWN_CODE_MESSAGE;
     }
 }
