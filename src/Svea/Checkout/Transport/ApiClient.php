@@ -8,7 +8,7 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
 
 /**
- * Class Client
+ * Class ApiClient - Used to make a request to Svea Checkout API
  *
  * @package Svea\Checkout\Transport
  */
@@ -24,7 +24,7 @@ class ApiClient
     /**
      * Client constructor.
      *
-     * @param $httpClient
+     * @param HttpRequestInterface $httpClient   PHP HTTP client that makes it easy to send HTTP requests
      */
     public function __construct(HttpRequestInterface $httpClient)
     {
@@ -34,9 +34,9 @@ class ApiClient
     /**
      * Send request to Svea Checkout API.
      *
-     * @param Request $request
+     * @param Request $request  Request model
+     * @throws Exception        When an error is encountered
      * @return ResponseHandler
-     * @throws Exception
      */
     public function sendRequest(Request $request)
     {

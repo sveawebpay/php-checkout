@@ -43,16 +43,36 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $checkoutData;
 
-    // Response
+    /**
+     * @var string $apiResponse
+     */
     protected $apiResponse;
 
-    // Client Credentials
+    /**
+     * Client credential data
+     *
+     * @var string $merchantId
+     */
     protected $merchantId = '123456';
+
+    /**
+     * Client credential data
+     *
+     * @var string $sharedSecret
+     */
     protected $sharedSecret = '80e3a905e597ca428f4e25200433263c';
+
+    /**
+     * @var string $apiUrl
+     */
     protected $apiUrl = Connector::TEST_BASE_URL;
 
-    // Request body data - Mock
-    protected $orderData;
+    /**
+     * Request body data for create Svea Order - Mock
+     *
+     * @var array $createOrderRequestData
+     */
+    protected $createOrderRequestData;
 
     protected function setUp()
     {
@@ -69,7 +89,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Call protected/private method of a class.
      *
-     * @param object &$object    Instantiated object that we will run method on.
+     * @param object $object    Instantiated object that we will run method on.
      * @param string $methodName Method name to call
      * @param array  $parameters Array of parameters to pass into method.
      *
@@ -88,7 +108,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         $this->requestModel = new Request();
         $this->requestModel->setApiUrl($this->apiUrl);
-        $this->requestModel->setBody(json_encode($this->orderData));
+        $this->requestModel->setBody(json_encode($this->createOrderRequestData));
         $this->requestModel->setPostMethod();
         $this->requestModel->setAuthorizationToken('123456789');
     }
@@ -115,7 +135,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     private function setOrderData()
     {
-        $this->orderData = array(
+        $this->createOrderRequestData = array(
             "purchase_country" => "gb",
             "purchase_currency" => "gbp",
             "locale" => "en-gb",

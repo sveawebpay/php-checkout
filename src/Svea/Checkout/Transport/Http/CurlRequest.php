@@ -67,6 +67,7 @@ class CurlRequest implements HttpRequestInterface
 
     /**
      * Return error number (If error exist error number will be grater than 0)
+     *
      * @return int
      */
     public function getErrorNumber()
@@ -75,7 +76,7 @@ class CurlRequest implements HttpRequestInterface
     }
 
     /**
-     *
+     * Close a cURL session
      */
     public function close()
     {

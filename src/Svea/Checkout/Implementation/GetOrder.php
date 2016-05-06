@@ -2,7 +2,7 @@
 
 namespace Svea\Checkout\Implementation;
 
-use Svea\Checkout\Transport\RequestHandler;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Validation\ValidateGetOrderData;
 
 class GetOrder extends ImplementationManager
@@ -58,11 +58,11 @@ class GetOrder extends ImplementationManager
      */
     public function invoke()
     {
-        $request = new RequestHandler();
+        $request = new Request();
         $request->setGetMethod();
         $request->setBody($this->requestBodyData);
-        $request->setApiUrl($this->connector->getApiUrl() . self::API_URL . $this->orderId);
+        $request->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
 
-        $this->response = $this->connector->send($request);
+        $this->response = $this->connector->sendRequest($request);
     }
 }

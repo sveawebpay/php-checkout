@@ -21,12 +21,12 @@ class ConnectorTest extends TestCase
         $this->assertInstanceOf('\Svea\Checkout\Transport\ApiClient', $connector->getApiClient());
         $this->assertEquals($this->merchantId, $connector->getMerchantId());
         $this->assertEquals($this->sharedSecret, $connector->getSharedSecret());
-        $this->assertEquals($this->apiUrl, $connector->getApiUrl());
+        $this->assertEquals($this->apiUrl, $connector->getBaseApiUrl());
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_MERCHANT_ID
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::MISSING_MERCHANT_ID
      */
     public function testValidateMerchantIdWithInvalidMerchantId()
     {
@@ -46,7 +46,7 @@ class ConnectorTest extends TestCase
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_SHARED_SECRET
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::MISSING_SHARED_SECRET
      */
     public function testValidateSharedSecretWithInvalidSharedSecret()
     {
@@ -66,34 +66,34 @@ class ConnectorTest extends TestCase
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::MISSING_API_BASE_URL
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::MISSING_API_BASE_URL
      */
-    public function testValidateApiUrlWithoutApiUrl()
+    public function testValidateBaseApiUrlWithoutApiUrl()
     {
         $this->apiUrl = '';
         $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
 
-        $this->invokeMethod($connector, 'validateApiUrl');
+        $this->invokeMethod($connector, 'validateBaseApiUrl');
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaConnectorException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INCORRECT_API_BASE_URL
+     * @expectedExceptionCode \Svea\Checkout\Exception\ExceptionCodeList::INCORRECT_API_BASE_URL
      */
-    public function testValidateApiUrlWithBadApiUrl()
+    public function testValidateBaseApiUrlWithBadApiUrl()
     {
         $this->apiUrl = 'http://invalid.url.svea.com';
         $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
 
-        $this->invokeMethod($connector, 'validateApiUrl');
+        $this->invokeMethod($connector, 'validateBaseApiUrl');
     }
 
-    public function testValidateApiUrlWithValidApiUrl()
+    public function testValidateBaseApiUrlWithValidApiUrl()
     {
         $this->apiUrl = Connector::TEST_BASE_URL;
         $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
 
-        $this->invokeMethod($connector, 'validateApiUrl');
+        $this->invokeMethod($connector, 'validateBaseApiUrl');
     }
 
     public function testSendRequestAndReceiveSuccessfulResponse()

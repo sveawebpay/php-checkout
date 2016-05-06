@@ -10,7 +10,7 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Http\CurlRequest;
 
 /**
- * Class Connector - Transport connector used to make HTTP request to Svea Checkout API.
+ * Class Connector - Used for authentication and connect with Svea Checkout API over HTTP.
  *
  * @package Svea\Checkout\Transport
  */
@@ -43,9 +43,9 @@ class Connector
     /**
      * Base Checkout API url.
      *
-     * @var string $apiUrl
+     * @var string $baseApiUrl
      */
-    private $apiUrl;
+    private $baseApiUrl;
 
     /**
      * Svea Checkout Api client.
@@ -58,35 +58,35 @@ class Connector
     /**
      * Connector constructor.
      *
-     * @param ApiClient $apiClient
-     * @param string $merchantId
-     * @param string $sharedSecret
-     * @param string $apiUrl
+     * @param ApiClient $apiClient      HTTP transport client
+     * @param string    $merchantId     Merchant Id
+     * @param string    $sharedSecret   Shared secret
+     * @param string    $baseApiUrl     Base URL for HTTP request to Svea Checkout API
      */
-    public function __construct($apiClient, $merchantId, $sharedSecret, $apiUrl)
+    public function __construct($apiClient, $merchantId, $sharedSecret, $baseApiUrl)
     {
         $this->merchantId = $merchantId;
         $this->sharedSecret = $sharedSecret;
-        $this->apiUrl = $apiUrl;
+        $this->baseApiUrl = $baseApiUrl;
         $this->apiClient = $apiClient;
 
         $this->validateData();
     }
 
     /**
-     * Validate all input data.
+     * Validate Client credentials data.
      */
     private function validateData()
     {
         $this->validateMerchantId();
         $this->validateSharedSecret();
-        $this->validateApiUrl();
+        $this->validateBaseApiUrl();
     }
 
     /**
      * Validate client merchant ID
      *
-     * @throws SveaConnectorException
+     * @throws SveaConnectorException    If merchant ID is empty
      */
     private function validateMerchantId()
     {
@@ -101,7 +101,7 @@ class Connector
     /**
      * Validate shared secret
      *
-     * @throws SveaConnectorException
+     * @throws SveaConnectorException   If shared secret is empty
      */
     private function validateSharedSecret()
     {
@@ -116,16 +116,16 @@ class Connector
     /**
      * Validate API base url.
      *
-     * @throws SveaConnectorException
+     * @throws SveaConnectorException   If base API URL is empty or if not valid
      */
-    private function validateApiUrl()
+    private function validateBaseApiUrl()
     {
-        if (empty($this->apiUrl)) {
+        if (empty($this->baseApiUrl)) {
             throw new SveaConnectorException(
                 ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_API_BASE_URL),
                 ExceptionCodeList::MISSING_API_BASE_URL
             );
-        } elseif ($this->apiUrl !== self::TEST_BASE_URL && $this->apiUrl !== self::PROD_BASE_URL) {
+        } elseif ($this->baseApiUrl !== self::TEST_BASE_URL && $this->baseApiUrl !== self::PROD_BASE_URL) {
             throw new SveaConnectorException(
                 ExceptionCodeList::getErrorMessage(ExceptionCodeList::INCORRECT_API_BASE_URL),
                 ExceptionCodeList::INCORRECT_API_BASE_URL
@@ -136,9 +136,9 @@ class Connector
     /**
      * Create request to the API client.
      *
-     * @param Request $request
+     * @param Request   $request    Request model contains all data for request to the Svea Checkout API
+     * @throws SveaApiException     If some error is encountered or If API responds with some error
      * @return ResponseHandler
-     * @throws SveaApiException
      */
     public function sendRequest(Request $request)
     {
@@ -162,9 +162,9 @@ class Connector
     /**
      * Initializes connector instance
      *
-     * @param string $merchantId
-     * @param string $sharedSecret
-     * @param string $apiUrl
+     * @param string $merchantId    Merchant Id
+     * @param string $sharedSecret  Shared secret
+     * @param string $apiUrl        Base URL for HTTP request to Svea Checkout API
      * @return Connector
      */
     public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
@@ -175,9 +175,12 @@ class Connector
     }
 
     /**
-     * Create Authorization Token.
+     * Create Authorization Token from Request model.
+     * Every request to the API must be authenticated by using the Authorization HTTP request-header.
+     * Only a proprietary Svea authentication scheme is supported.
+     * base64 ({merchantId}:sha512 (requestBody + sharedSecret))
      *
-     * @param Request $request
+     * @param Request $request  Request model with all necessary data for HTTP request
      */
     private function createAuthorizationToken(Request $request)
     {
@@ -204,9 +207,9 @@ class Connector
     /**
      * @return string
      */
-    public function getApiUrl()
+    public function getBaseApiUrl()
     {
-        return $this->apiUrl;
+        return $this->baseApiUrl;
     }
 
     /**
