@@ -83,7 +83,7 @@ class CreateOrderTest extends TestCase
     {
         $fakeResponse = 'Test response!!!';
         $this->connectorMock->expects($this->once())
-            ->method('getApiUrl');
+            ->method('getBaseApiUrl');
         $this->connectorMock->expects($this->once())
             ->method('sendRequest')
             ->will($this->returnValue($fakeResponse));
