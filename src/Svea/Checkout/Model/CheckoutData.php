@@ -32,7 +32,7 @@ class CheckoutData
     /**
      * @var
      */
-    private $shippigAddress;
+    private $shippingAddress;
 
     /**
      * @var
@@ -152,17 +152,17 @@ class CheckoutData
     /**
      * @return mixed
      */
-    public function getShippigAddress()
+    public function getShippingAddress()
     {
-        return $this->shippigAddress;
+        return $this->shippingAddress;
     }
 
     /**
-     * @param mixed $shippigAddress
+     * @param mixed $shippingAddress
      */
-    public function setShippigAddress($shippigAddress)
+    public function setShippingAddress($shippingAddress)
     {
-        $this->shippigAddress = $shippigAddress;
+        $this->shippingAddress = $shippingAddress;
     }
 
     /**

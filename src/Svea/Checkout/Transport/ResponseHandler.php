@@ -65,21 +65,13 @@ class ResponseHandler
     public function handleClientResponse()
     {
         if (!in_array($this->httpCode, $this->httpSuccessfulCodes)) {
-            $this->throwError();
-        }
-    }
+            $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Undefined error occurred.';
+            if (isset($this->header['ErrorMessage'])) {
+                $errorMessage = $this->header['ErrorMessage'];
+            }
 
-    /**
-     * @throws SveaApiException
-     */
-    public function throwError()
-    {
-        $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Undefined error occurred.';
-        if (isset($this->header['ErrorMessage'])) {
-            $errorMessage = $this->header['ErrorMessage'];
+            throw new SveaApiException($errorMessage, $this->httpCode);
         }
-
-        throw new SveaApiException($errorMessage, $this->httpCode);
     }
 
     /**
