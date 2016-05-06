@@ -64,7 +64,6 @@ class GetOrder extends ImplementationManager
         $request->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
 
         $this->response = $this->connector->sendRequest($request);
-        $this->response = $this->connector->sendRequest($request);
     }
 
     /**

@@ -39,6 +39,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $inputData;
 
     /**
+     * @var array @inputUpdateData
+     */
+    protected $inputUpdateData;
+
+    /**
      * @var CheckoutData $checkoutData
      */
     protected $checkoutData;
@@ -133,6 +138,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
+    // @todo rename this function
     private function setOrderData()
     {
         $this->createOrderRequestData = array(
