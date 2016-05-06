@@ -10,32 +10,26 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\ApiClient;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
-use Svea\Checkout\Transport\ResponseHandler;
 
 class TestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var ResponseHandler $responseHandler
-     */
-    protected $responseHandler;
-
     /**
      * @var Request $requestModel
      */
     protected $requestModel;
 
     /**
-     * @var Connector $connectorMock
+     * @var Connector|\PHPUnit_Framework_MockObject_MockObject $connectorMock
      */
     protected $connectorMock;
 
     /**
-     * @var ApiClient $apiClientMock
+     * @var ApiClient|\PHPUnit_Framework_MockObject_MockObject $apiClientMock
      */
     protected $apiClientMock;
 
     /**
-     * @var HttpRequestInterface $httpClientMock
+     * @var HttpRequestInterface|\PHPUnit_Framework_MockObject_MockObject $httpClientMock
      */
     protected $httpClientMock;
 
@@ -81,7 +75,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      *
      * @return mixed Method return.
      */
-    protected function invokeMethod(&$object, $methodName, array $parameters = array())
+    protected function invokeMethod($object, $methodName, array $parameters = array())
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);

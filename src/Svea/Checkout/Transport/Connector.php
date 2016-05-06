@@ -84,21 +84,6 @@ class Connector
     }
 
     /**
-     * Validate shared secret
-     *
-     * @throws SveaConnectorException
-     */
-    private function validateSharedSecret()
-    {
-        if (empty($this->sharedSecret)) {
-            throw new SveaConnectorException(
-                ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET),
-                ExceptionCodeList::MISSING_SHARED_SECRET
-            );
-        }
-    }
-
-    /**
      * Validate client merchant ID
      *
      * @throws SveaConnectorException
@@ -109,6 +94,21 @@ class Connector
             throw new SveaConnectorException(
                 ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_MERCHANT_ID),
                 ExceptionCodeList::MISSING_MERCHANT_ID
+            );
+        }
+    }
+
+    /**
+     * Validate shared secret
+     *
+     * @throws SveaConnectorException
+     */
+    private function validateSharedSecret()
+    {
+        if (empty($this->sharedSecret)) {
+            throw new SveaConnectorException(
+                ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_SHARED_SECRET),
+                ExceptionCodeList::MISSING_SHARED_SECRET
             );
         }
     }

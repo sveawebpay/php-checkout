@@ -66,17 +66,9 @@ class ApiClient
             throw new Exception($httpError, ExceptionCodeList::CLIENT_API_ERROR);
         }
 
-        $clientResponse = new ResponseHandler($httpResponse, $httpCode);
-        $clientResponse->handleClientResponse();
+        $responseHandler = new ResponseHandler($httpResponse, $httpCode);
+        $responseHandler->handleClientResponse();
 
-        return $clientResponse;
-    }
-
-    /**
-     * @param HttpRequestInterface $httpClient
-     */
-    public function setHttpClient($httpClient)
-    {
-        $this->httpClient = $httpClient;
+        return $responseHandler;
     }
 }
