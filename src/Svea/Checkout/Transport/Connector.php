@@ -74,6 +74,21 @@ class Connector
     }
 
     /**
+     * Initializes connector instance
+     *
+     * @param string $merchantId    Merchant Id
+     * @param string $sharedSecret  Shared secret
+     * @param string $apiUrl        Base URL for HTTP request to Svea Checkout API
+     * @return Connector
+     */
+    public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
+    {
+        $httpClient = new ApiClient(new CurlRequest());
+
+        return new static($httpClient, $merchantId, $sharedSecret, $apiUrl);
+    }
+
+    /**
      * Validate Client credentials data.
      */
     private function validateData()
@@ -157,21 +172,6 @@ class Connector
         } catch (Exception $e) {
             throw new SveaApiException('API communication error', 1010, $e);
         }
-    }
-
-    /**
-     * Initializes connector instance
-     *
-     * @param string $merchantId    Merchant Id
-     * @param string $sharedSecret  Shared secret
-     * @param string $apiUrl        Base URL for HTTP request to Svea Checkout API
-     * @return Connector
-     */
-    public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
-    {
-        $httpClient = new ApiClient(new CurlRequest());
-
-        return new static($httpClient, $merchantId, $sharedSecret, $apiUrl);
     }
 
     /**

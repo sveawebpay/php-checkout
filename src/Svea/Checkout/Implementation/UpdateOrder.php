@@ -70,7 +70,7 @@ class UpdateOrder extends ImplementationManager
         $requestModel = new Request();
         $requestModel->setPostMethod();
         $requestModel->setBody($this->requestBodyData);
-        $requestModel->setApiUrl($this->connector->getApiUrl() . self::API_URL . $this->orderId);
+        $requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
 
         $this->response = $this->connector->sendRequest($requestModel);
     }

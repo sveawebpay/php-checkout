@@ -37,7 +37,7 @@ class ResponseHandlerTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaApiException
      * @expectedExceptionMessage Bad request message
      */
-    public function testThrowErrorWithErrorMessageFromApiResponse()
+    public function testHandleClientResponseWithErrorMessageFromApiResponse()
     {
         $body = '';
         $content = 'HTTP/1.1 400 Bad request' . PHP_EOL;
@@ -46,21 +46,21 @@ class ResponseHandlerTest extends TestCase
         $httpCode = 400;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
-        $responseHandler->throwError();
+        $responseHandler->handleClientResponse();
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaApiException
      * @expectedExceptionMessage HTTP/1.1 401 Unauthorized
      */
-    public function testThrowErrorWithGeneralResponseMessage()
+    public function testHandleClientResponseWithGeneralResponseMessageFromApiResponse()
     {
         $body = '';
         $content = 'HTTP/1.1 401 Unauthorized' . PHP_EOL . PHP_EOL . $body;
         $httpCode = 401;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
-        $responseHandler->throwError();
+        $responseHandler->handleClientResponse();
     }
 
     public function testGetContent()

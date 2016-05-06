@@ -152,6 +152,16 @@ class ConnectorTest extends TestCase
         $connector->sendRequest($this->requestModel);
     }
 
+    public function testInit()
+    {
+        $connector = Connector::init($this->merchantId, $this->sharedSecret, $this->apiUrl);
+
+        $this->assertInstanceOf('\Svea\Checkout\Transport\ApiClient', $connector->getApiClient());
+        $this->assertEquals($this->merchantId, $connector->getMerchantId());
+        $this->assertEquals($this->sharedSecret, $connector->getSharedSecret());
+        $this->assertEquals($this->apiUrl, $connector->getBaseApiUrl());
+    }
+
     public function testCreateAuthorizationToken()
     {
         $expectedAuthToken = 'MTIzNDU2OjEyZGVkNGUxYzFhODY3Nzc5ZDVmMTRjMjU0YzRmMmYzYjM4NTE2';
