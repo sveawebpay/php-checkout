@@ -4,6 +4,7 @@ namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Validation\ValidateGetOrderData;
+use Svea\Checkout\Validation\ValidationInterface;
 
 class GetOrder extends ImplementationManager
 {
@@ -27,14 +28,14 @@ class GetOrder extends ImplementationManager
      */
     public function validateData($data)
     {
-        $validation = new ValidateGetOrderData();
-        $validation->validate($data);
+        $validator = $this->validator;
+        $validator->validate($data);
     }
 
     /**
      * Map input data
      *
-     * @param $data
+     * @param mixed $data
      */
     public function mapData($data)
     {

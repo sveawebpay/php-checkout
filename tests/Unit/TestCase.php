@@ -34,12 +34,12 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $httpClientMock;
 
     /**
-     * @var array $inputData
+     * @var array $inputCreateData
      */
-    protected $inputData;
+    protected $inputCreateData;
 
     /**
-     * @var array @inputUpdateData
+     * @var array $inputUpdateData
      */
     protected $inputUpdateData;
 
@@ -87,7 +87,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->setCurlRequest();
         $this->setApiClient();
         $this->setConnector();
-        $this->setInputData();
+        $this->setInputCreateData();
+        $this->setInputUpdateData();
         $this->setCheckoutData();
     }
 
@@ -267,9 +268,9 @@ JSON;
         $this->apiResponse .= PHP_EOL . PHP_EOL . $json;
     }
 
-    private function setInputData()
+    private function setInputCreateData()
     {
-        $this->inputData = array(
+        $this->inputCreateData = array(
             "purchase_country" => "SE",
             "purchase_currency" => "SEK",
             "locale" => "sv-SE",
@@ -294,11 +295,36 @@ JSON;
         );
     }
 
+    private function setInputUpdateData()
+    {
+        $this->inputUpdateData = array(
+            "id" => 4,
+            "order_lines" => array(
+                array(
+                    "articlenumber" => "123456789",
+                    "name" => "Dator",
+                    "quantity" => 200,
+                    "unitprice" => 12300,
+                    "discountpercent" => 1000,
+                    "vatpercent" => 2500
+                ),
+                array(
+                    "type" => "shipping_fee",
+                    "articlenumber" => "SHIPPING",
+                    "name" => "Shipping fee",
+                    "quantity" => 100,
+                    "unitprice" => 4900,
+                    "vatpercent" => 2500
+                ),
+            )
+        );
+    }
+
     private function setCheckoutData()
     {
         $this->checkoutData = new CheckoutData();
 
-        $merchantData = $this->inputData['merchant_urls'];
+        $merchantData = $this->inputCreateData['merchant_urls'];
         $merchantSettings = new MerchantSettings();
         $merchantSettings->setTermsUri($merchantData['terms']);
         $merchantSettings->setCheckoutUri($merchantData['checkout']);
@@ -309,7 +335,7 @@ JSON;
 
         $cart = new Cart();
 
-        $orderLines = $this->inputData['order_lines'];
+        $orderLines = $this->inputCreateData['order_lines'];
         foreach ($orderLines as $orderLine) {
             $orderRow = new OrderRow();
             $orderRow->setArticleNumber($orderLine['articlenumber']);
@@ -324,10 +350,10 @@ JSON;
 
         $this->checkoutData->setCart($cart);
 
-        $this->checkoutData->setLocale($this->inputData['locale']);
+        $this->checkoutData->setLocale($this->inputCreateData['locale']);
 
-        $this->checkoutData->setCurrency($this->inputData['purchase_currency']);
+        $this->checkoutData->setCurrency($this->inputCreateData['purchase_currency']);
 
-        $this->checkoutData->setCountryCode($this->inputData['purchase_country']);
+        $this->checkoutData->setCountryCode($this->inputCreateData['purchase_country']);
     }
 }

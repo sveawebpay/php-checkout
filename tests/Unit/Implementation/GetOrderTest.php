@@ -4,12 +4,31 @@ namespace Svea\Checkout\Tests\Unit\Implementation;
 
 use Svea\Checkout\Implementation\GetOrder;
 use Svea\Checkout\Tests\Unit\TestCase;
+use Svea\Checkout\Validation\ValidationInterface;
 
 class GetOrderTest extends TestCase
 {
+    /**
+     * @var ValidationInterface|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     */
+    protected $validatorMock;
+
+    /**
+     * @var GetOrder
+     */
+    protected $order;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\ValidateGetOrderData')->getMock();
+        $this->order = new GetOrder($this->connectorMock, $this->validatorMock);
+    }
+
     public function testMapData()
     {
-        $getOrder = new GetOrder($this->connectorMock);
+        $getOrder = $this->order;
 
         $orderId = 2;
 
@@ -20,7 +39,7 @@ class GetOrderTest extends TestCase
 
     public function testPrepareData()
     {
-        $getOrder = new GetOrder($this->connectorMock);
+        $getOrder = $this->order;
 
         $orderId = 2;
         $getOrder->setOrderId($orderId);
@@ -42,30 +61,20 @@ class GetOrderTest extends TestCase
             ->method('sendRequest')
             ->will($this->returnValue(($fakeResponse)));
 
-        $getOrder = new GetOrder($this->connectorMock);
+        $getOrder = $this->order;
         $getOrder->invoke();
 
         $this->assertEquals($fakeResponse, $getOrder->getResponse());
     }
 
-    public function testValidateWithValidOrderId()
+    public function testValidate()
     {
-        $getOrder = new GetOrder($this->connectorMock);
+        $orderId = 3;
 
-        $orderId = 2;
+        $this->validatorMock->expects($this->once())
+            ->method('validate');
 
-        $getOrder->validateData($orderId);
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithInvalidOrderId()
-    {
-        $getOrder = new GetOrder($this->connectorMock);
-
-        $orderId = 'two';
+        $getOrder = $this->order;
 
         $getOrder->validateData($orderId);
     }

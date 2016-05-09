@@ -4,6 +4,7 @@ namespace Svea\Checkout;
 
 use Svea\Checkout\Implementation\ImplementationFactory;
 use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Validation\ValidateGetOrderData;
 
 /**
  * ### Namespaces
@@ -52,7 +53,7 @@ class CheckoutClient
     {
         $createOrder = ImplementationFactory::returnCreateOrderClass($this->connector);
         $createOrder->execute($data);
-                
+
         return $createOrder->getResponse();
     }
 
@@ -77,9 +78,9 @@ class CheckoutClient
      */
     public function get($data)
     {
-         $getOrder = ImplementationFactory::returnGetOrderClass($this->connector);
-         $getOrder->execute($data);
+        $getOrder = ImplementationFactory::returnGetOrderClass($this->connector);
+        $getOrder->execute($data);
 
-         return $getOrder->getResponse();
+        return $getOrder->getResponse();
     }
 }

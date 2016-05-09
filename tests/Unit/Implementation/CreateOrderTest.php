@@ -6,32 +6,51 @@ use Svea\Checkout\Implementation\CreateOrder;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Tests\Unit\TestCase;
+use Svea\Checkout\Validation\ValidationInterface;
 
 class CreateOrderTest extends TestCase
 {
+    /**
+     * @var CreateOrder
+     */
+    protected $order;
+
+    /**
+     * @var ValidationInterface|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     */
+    protected $validatorMock;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\ValidateCreateOrderData')->getMock();
+        $this->order = new CreateOrder($this->connectorMock, $this->validatorMock);
+    }
+
     public function testMapData()
     {
-        $createOrder = new CreateOrder($this->connectorMock);
-        $createOrder->mapData($this->inputData);
+        $createOrder = $this->order;
+        $createOrder->mapData($this->inputCreateData);
 
         /**
          * @var CheckoutData $checkoutData
          */
         $checkoutData = $createOrder->getCheckoutData();
 
-        $this->assertEquals($this->inputData['locale'], $checkoutData->getLocale());
-        $this->assertEquals($this->inputData['purchase_country'], $checkoutData->getCountryCode());
-        $this->assertEquals($this->inputData['purchase_currency'], $checkoutData->getCurrency());
+        $this->assertEquals($this->inputCreateData['locale'], $checkoutData->getLocale());
+        $this->assertEquals($this->inputCreateData['purchase_country'], $checkoutData->getCountryCode());
+        $this->assertEquals($this->inputCreateData['purchase_currency'], $checkoutData->getCurrency());
 
         $merchantSettings = $checkoutData->getMerchantSettings();
-        $merchantData = $this->inputData['merchant_urls'];
+        $merchantData = $this->inputCreateData['merchant_urls'];
 
         $this->assertEquals($merchantData['terms'], $merchantSettings->getTermsUri());
         $this->assertEquals($merchantData['checkout'], $merchantSettings->getCheckoutUri());
         $this->assertEquals($merchantData['confirmation'], $merchantSettings->getConfirmationUri());
         $this->assertEquals($merchantData['push'], $merchantSettings->getPushUri());
 
-        $orderLines = $this->inputData['order_lines'];
+        $orderLines = $this->inputCreateData['order_lines'];
         $cart = $checkoutData->getCart();
         $items = $cart->getItems();
 
@@ -52,7 +71,7 @@ class CreateOrderTest extends TestCase
 
     public function testPrepareData()
     {
-        $createOrder = new CreateOrder($this->connectorMock);
+        $createOrder = $this->order;
         $createOrder->setCheckoutData($this->checkoutData);
 
         $createOrder->prepareData();
@@ -88,10 +107,20 @@ class CreateOrderTest extends TestCase
             ->method('sendRequest')
             ->will($this->returnValue($fakeResponse));
 
-        $createOrder = new CreateOrder($this->connectorMock);
+        $createOrder = $this->order;
         $createOrder->setRequestBodyData(json_encode($this->checkoutData));
         $createOrder->invoke();
 
         $this->assertEquals($fakeResponse, $createOrder->getResponse());
+    }
+
+    public function testValidate()
+    {
+        $this->validatorMock->expects($this->once())
+            ->method('validate');
+
+        $getOrder = $this->order;
+
+        $getOrder->validateData($this->inputCreateData);
     }
 }

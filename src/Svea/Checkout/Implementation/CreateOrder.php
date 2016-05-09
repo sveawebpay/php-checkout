@@ -27,8 +27,8 @@ class CreateOrder extends ImplementationManager
 
     public function validateData($data)
     {
-        $validation = new ValidateCreateOrderData();
-        $validation->validate($data);
+        $validator = $this->validator;
+        $validator->validate($data);
     }
 
     public function mapData($data)

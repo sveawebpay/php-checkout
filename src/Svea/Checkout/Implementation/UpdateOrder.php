@@ -3,6 +3,7 @@
 namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Model\Cart;
+use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Validation\ValidateUpdateOrderData;
@@ -17,7 +18,7 @@ class UpdateOrder extends ImplementationManager
     private $orderId;
 
     /**
-     * @var Cart
+     * @var CheckoutData
      */
     private $checkoutData;
 
@@ -28,14 +29,20 @@ class UpdateOrder extends ImplementationManager
      */
     private $requestBodyData;
 
+    /**
+     * @param $data
+     * @throws \Svea\Checkout\Exception\SveaInputValidationException
+     */
     public function validateData($data)
     {
-        $validation = new ValidateUpdateOrderData();
-        $validation->validate($data);
+        $validator = $this->validator;
+        $validator->validate($data);
     }
 
     public function mapData($data)
     {
+        $checkoutData = new CheckoutData();
+
         $this->orderId = $data['id'];
 
         $cart = new Cart();
@@ -48,12 +55,14 @@ class UpdateOrder extends ImplementationManager
             $cart->addItem($orderRow);
         }
 
-        $this->checkoutData = $cart;
+        $checkoutData->setCart($cart);
+
+        $this->checkoutData = $checkoutData;
     }
 
     public function prepareData()
     {
-        $cart = $this->checkoutData;
+        $cart = $this->checkoutData->getCart();
         
         $cartItems = $cart->getItems();
         $preparedData['cart'] = array();
