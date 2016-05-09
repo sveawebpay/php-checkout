@@ -4,7 +4,6 @@ namespace Svea\Checkout;
 
 use Svea\Checkout\Implementation\ImplementationFactory;
 use Svea\Checkout\Transport\Connector;
-use Svea\Checkout\Validation\ValidateGetOrderData;
 
 /**
  * ### Namespaces
