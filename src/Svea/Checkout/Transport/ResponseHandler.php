@@ -65,7 +65,11 @@ class ResponseHandler
     public function handleClientResponse()
     {
         if (!in_array($this->httpCode, $this->httpSuccessfulCodes)) {
-            $errorMessage = isset($this->header['http_code']) ? $this->header['http_code'] : 'Undefined error occurred.';
+            $errorMessage = 'Undefined error occurred.';
+
+            if (isset($this->header['http_code'])) {
+                $errorMessage = $this->header['http_code'];
+            }
             if (isset($this->header['ErrorMessage'])) {
                 $errorMessage = $this->header['ErrorMessage'];
             }
