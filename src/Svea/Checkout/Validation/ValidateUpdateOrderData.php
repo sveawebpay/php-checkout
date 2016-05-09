@@ -17,7 +17,7 @@ class ValidateUpdateOrderData implements ValidationInterface
     }
 
     /**
-     * @param $data
+     * @param array $data
      * @throws SveaInputValidationException
      */
     public function validateOrderId($data)
