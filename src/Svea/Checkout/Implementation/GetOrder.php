@@ -3,8 +3,9 @@
 namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Model\Request;
-use Svea\Checkout\Validation\ValidateGetOrderData;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Exception\SveaApiException;
+use Svea\Checkout\Exception\SveaInputValidationException;
+
 
 class GetOrder extends ImplementationManager
 {
@@ -24,7 +25,7 @@ class GetOrder extends ImplementationManager
 
     /**
      * @param $data
-     * @throws \Svea\Checkout\Exception\SveaInputValidationException
+     * @throws SveaInputValidationException
      */
     public function validateData($data)
     {
@@ -55,7 +56,7 @@ class GetOrder extends ImplementationManager
     /**
      * Invoke request call
      *
-     * @throws \Svea\Checkout\Exception\SveaApiException
+     * @throws SveaApiException
      */
     public function invoke()
     {

@@ -47,7 +47,7 @@ class CheckoutClient
      * Create new Svea Checkout order.
      *
      * @param array $data
-     * @return string
+     * @return mixed
      */
     public function create(array $data)
     {
@@ -61,6 +61,7 @@ class CheckoutClient
      * Update existing Svea Checkout order.
      *
      * @param array $data
+     * @return mixed
      */
     public function update(array $data)
     {
@@ -74,7 +75,7 @@ class CheckoutClient
      * Return Svea Checkout order data.
      *
      * @param array $data
-     * @return string
+     * @return mixed
      */
     public function get($data)
     {

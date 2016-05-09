@@ -7,7 +7,6 @@ use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\MerchantSettings;
 use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Model\Request;
-use Svea\Checkout\Validation\ValidateCreateOrderData;
 
 class CreateOrder extends ImplementationManager
 {
@@ -25,12 +24,22 @@ class CreateOrder extends ImplementationManager
      */
     private $requestBodyData;
 
+    /**
+     * Validate passed data
+     *
+     * @param mixed $data
+     */
     public function validateData($data)
     {
         $validator = $this->validator;
         $validator->validate($data);
     }
 
+    /**
+     * Map passed data for later usage
+     *
+     * @param mixed $data
+     */
     public function mapData($data)
     {
         // - checkout data
@@ -65,6 +74,9 @@ class CreateOrder extends ImplementationManager
         $this->checkoutData = $checkoutData;
     }
 
+    /**
+     * Prepare date for request
+     */
     public function prepareData()
     {
         $checkoutData = $this->checkoutData;
