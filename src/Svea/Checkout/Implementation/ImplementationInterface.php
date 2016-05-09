@@ -7,8 +7,14 @@ namespace Svea\Checkout\Implementation;
  * @package Svea\Checkout\Implementation
  */
 interface ImplementationInterface
-{
+{ 
+    /**
+     * @param mixed $data
+     */
     public function execute($data);
 
+    /**
+     * @return mixed
+     */
     public function getResponse();
 }
