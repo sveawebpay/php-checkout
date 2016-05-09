@@ -20,7 +20,7 @@ class ValidateUpdateOrderData implements ValidationInterface
      * @param array $data
      * @throws SveaInputValidationException
      */
-    public function validateOrderId($data)
+    private function validateOrderId($data)
     {
         if (!isset($data['id'])) {
             throw new SveaInputValidationException(
