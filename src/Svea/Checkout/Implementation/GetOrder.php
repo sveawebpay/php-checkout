@@ -45,10 +45,7 @@ class GetOrder extends ImplementationManager
     /**
      * Prepare data for request
      */
-    public function prepareData()
-    {
-      return;
-    }
+    public function prepareData(){}
 
     /**
      * Invoke request call
@@ -66,26 +63,10 @@ class GetOrder extends ImplementationManager
     }
 
     /**
-     * @return string
-     */
-    public function getRequestBodyData()
-    {
-        return $this->requestBodyData;
-    }
-
-    /**
      * @return int
      */
     public function getOrderId()
     {
         return $this->orderId;
-    }
-
-    /**
-     * @param int $orderId
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
     }
 }

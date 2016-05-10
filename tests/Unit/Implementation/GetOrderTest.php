@@ -29,32 +29,15 @@ class GetOrderTest extends TestCase
     public function testMapData()
     {
         $getOrder = $this->order;
-
         $orderId = 2;
-
         $getOrder->mapData($orderId);
 
         $this->assertEquals($orderId, $getOrder->getOrderId());
     }
 
-    public function testPrepareData()
-    {
-        $getOrder = $this->order;
-
-        $orderId = 2;
-        $getOrder->setOrderId($orderId);
-
-        $getOrder->prepareData();
-
-        $requestBodyData = json_decode($getOrder->getRequestBodyData(), true);
-
-        $this->assertEquals($requestBodyData['Id'], $orderId);
-    }
-
     public function testInvoke()
     {
         $fakeResponse = 'Test response!!!';
-
         $this->connectorMock->expects($this->once())
             ->method('getBaseApiUrl');
         $this->connectorMock->expects($this->once())
@@ -70,10 +53,8 @@ class GetOrderTest extends TestCase
     public function testValidate()
     {
         $orderId = 3;
-
         $this->validatorMock->expects($this->once())
             ->method('validate');
-
         $getOrder = $this->order;
 
         $getOrder->validateData($orderId);

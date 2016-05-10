@@ -43,6 +43,7 @@ class ApiClientTest extends TestCase
     public function testSendRequestWithBadRequestStatusResponse()
     {
         $this->mockHttpClient($this->apiResponse, 400);
+        $this->requestModel->setPutMethod();
 
         $this->apiClientMock->sendRequest($this->requestModel);
     }
