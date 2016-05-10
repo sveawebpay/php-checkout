@@ -3,7 +3,7 @@
 require_once '../vendor/autoload.php';
 
 $data = array(
-    "id" => 20,
+    "id" => 9,
     "order_lines" => array(
         array(
             "articlenumber" => "123456789",
@@ -29,12 +29,12 @@ try {
     $sharedSecret = 'sharedSecret';
     $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-    $conn = new \Svea\Checkout\Transport\Connector($merchantId, $sharedSecret, $baseUrl);
+    $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
 
     $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
     $response = $checkoutClient->update($data);
 
-    print_r($response['Gui']['Snippet']);
+    echo "<pre>" . print_r($response, true) . "</pre>";
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump($ex->getMessage());

@@ -63,7 +63,7 @@ class UpdateOrder extends ImplementationManager
     public function prepareData()
     {
         $cart = $this->checkoutData->getCart();
-        
+
         $cartItems = $cart->getItems();
         $preparedData['cart'] = array();
         foreach ($cartItems as $item) {
@@ -77,7 +77,7 @@ class UpdateOrder extends ImplementationManager
     public function invoke()
     {
         $requestModel = new Request();
-        $requestModel->setPostMethod();
+        $requestModel->setPutMethod();
         $requestModel->setBody($this->requestBodyData);
         $requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
 

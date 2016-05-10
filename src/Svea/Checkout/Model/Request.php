@@ -103,6 +103,14 @@ class Request
     }
 
     /**
+     * Set PUT method to the request.
+     */
+    public function setPutMethod()
+    {
+        $this->method = 'PUT';
+    }
+
+    /**
      * Return full request API url.
      *
      * @return string
