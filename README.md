@@ -2,7 +2,7 @@
 
 Integration lib for Svea checkout
 
-
+Add curl extension to your php
 
 @todo define which php module should be enabled for this library to works
 
