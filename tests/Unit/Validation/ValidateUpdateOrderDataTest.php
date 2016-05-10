@@ -8,16 +8,24 @@ use Svea\Checkout\Validation\ValidateUpdateOrderData;
 class ValidateUpdateOrderDataTest extends TestCase
 {
     /**
+     * @var ValidateUpdateOrderData $validateUpdateOrderData
+     */
+    private $validateUpdateOrderData;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
+    }
+
+    /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
     public function testValidateOrderIdWithUnsetField()
     {
         unset($this->inputUpdateData['id']);
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
     }
 
     /**
@@ -27,10 +35,7 @@ class ValidateUpdateOrderDataTest extends TestCase
     public function testValidateOrderIdWithEmptyStringFiled()
     {
         $this->inputUpdateData['id'] = '';
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
     }
 
     /**
@@ -40,19 +45,13 @@ class ValidateUpdateOrderDataTest extends TestCase
     public function testValidateOrderIdWithFalseValueField()
     {
         $this->inputUpdateData['id'] = false;
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
     }
 
     public function testValidateOrderIdWithZeroValueField()
     {
         $this->inputUpdateData['id'] = 1230;
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
     }
 
 
@@ -63,26 +62,18 @@ class ValidateUpdateOrderDataTest extends TestCase
     public function testValidateOrderItemsWithNoArrayData()
     {
         $this->inputUpdateData['order_lines'] = '';
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
     }
 
     public function testValidateOrderItemsWithEmptyArray()
     {
         $this->inputUpdateData['order_lines'] = array();
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
     }
 
     public function testValidateOrderItemsWithArray()
     {
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
     }
 
     /**
@@ -92,10 +83,7 @@ class ValidateUpdateOrderDataTest extends TestCase
     public function testValidateOrderItemWithNoArrayData()
     {
         $this->inputUpdateData = '';
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItem', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($this->inputUpdateData));
     }
 
     /**
@@ -105,10 +93,7 @@ class ValidateUpdateOrderDataTest extends TestCase
     public function testValidateOrderItemWithEmptyArrayData()
     {
         $this->inputUpdateData = array();
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItem', array($this->inputUpdateData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($this->inputUpdateData));
     }
 
     /**
@@ -119,10 +104,7 @@ class ValidateUpdateOrderDataTest extends TestCase
     {
         $orderItemData = $this->inputUpdateData['order_lines'][0];
         unset($orderItemData['name']);
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
     }
 
     /**
@@ -133,29 +115,25 @@ class ValidateUpdateOrderDataTest extends TestCase
     {
         $orderItemData = $this->inputUpdateData['order_lines'][0];
         $orderItemData['name'] = '';
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
     }
 
     public function testValidateOrderItemWithFalseValueField()
     {
         $orderItemData = $this->inputUpdateData['order_lines'][0];
         $orderItemData['name'] = false;
-
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
     }
 
     public function testValidateOrderItemWithZeroValueField()
     {
         $orderItemData = $this->inputUpdateData['order_lines'][0];
         $orderItemData['name'] = 0;
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
+    }
 
-        $validateUpdateOrderData = new ValidateUpdateOrderData($this->inputUpdateData);
-
-        $this->invokeMethod($validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
+    public function testValidateWithValidData()
+    {
+        $this->validateUpdateOrderData->validate($this->inputUpdateData);
     }
 }

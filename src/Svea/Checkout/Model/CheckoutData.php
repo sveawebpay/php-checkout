@@ -34,16 +34,6 @@ class CheckoutData
     private $countryCode;
 
     /**
-     * @var float $orderId
-     */
-    private $orderId;
-
-    /**
-     * @var mixed $status
-     */
-    private $status;
-
-    /**
      * @return MerchantSettings
      */
     public function getMerchantSettings()
@@ -121,37 +111,5 @@ class CheckoutData
     public function setCountryCode($countryCode)
     {
         $this->countryCode = $countryCode;
-    }
-
-    /**
-     * @return float
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
-    }
-
-    /**
-     * @param float $orderId
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-
-    /**
-     * @param mixed $status
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
     }
 }
