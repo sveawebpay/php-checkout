@@ -29,15 +29,15 @@
     "sebastian/phpcpd": "^2.0.4"
   },
   "scripts": {
-    "test": ".\\vendor\\bin\\phpunit --colors",
-    "reference": ".\\vendor\\bin\\phpdoc -d src -t docs/api",
+    "test": "vendor/bin/phpunit --colors",
+    "php-doc": "vendor/bin/phpdoc -d src -t docs/api",
     "analyse": [
-      "Svea\\Checkout\\Util\\ScriptHandler::createLogFolder",
-      ".\\vendor\\bin\\phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet",
-      ".\\vendor\\bin\\phpcpd --log-pmd build/logs/pmd-cpd.xml src/ --quiet || true",
-      ".\\vendor\\bin\\phpcs --standard=.\\cs-ruleset.xml --report=checkstyle --report-file=build/logs/checkstyle.xml --extensions=php src/ tests/ || true",
-      ".\\vendor\\bin\\phpmd src/,tests/ xml phpmd.xml --reportfile build/logs/pmd.xml --quiet || true"
+      "mkdir -p build/logs",
+      "vendor/bin/phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet",
+      "vendor/bin/phpcpd --log-pmd build/logs/pmd-cpd.xml src/ --quiet || true",
+      "vendor/bin/phpcs --standard=cs-ruleset.xml --report=checkstyle --report-file=build/logs/checkstyle.xml --extensions=php src/ tests/ || true",
+      "vendor/bin/phpmd src/,tests/ xml phpmd.xml --reportfile build/logs/pmd.xml --quiet || true"
     ],
-    "fix-sniff-violations": ".\\vendor\\bin\\phpcbf --standard=PSR2 src/ tests/ --no-patch --quiet || true"
+    "fix-sniff-violations": "vendor/bin/phpcbf --standard=PSR2 src/ tests/ --no-patch --quiet || true"
   }
 }
