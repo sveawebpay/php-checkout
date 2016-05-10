@@ -2,8 +2,6 @@
 
 require_once '../vendor/autoload.php';
 
-echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>';
-
 $data = array(
     "purchase_country" => "SE",
     "purchase_currency" => "SEK",
@@ -35,7 +33,7 @@ $data = array(
             "unitprice" => 4900,
             "vatpercent" => 2500
         ),
-        
+
     ),
     "merchant_urls" => array(
         "terms" => "http://localhost:51898/terms",
@@ -45,27 +43,20 @@ $data = array(
     )
 );
 
-try {
-    $merchantId = '1';
-    $sharedSecret = 'sharedSecret';
-    $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-    $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
+$merchantId = '1';
+$sharedSecret = 'sharedSecret';
+$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-    $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
-    $response = $checkoutClient->create($data);
+$conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
 
-    echo "<pre>" . print_r($response, true) . "</pre>";
-} catch (\Svea\Checkout\Exception\SveaApiException $ex) {
-    var_dump("--------- Api errors ---------");
-    var_dump($ex->getMessage());
-} catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
-    var_dump("--------- Conn errors ---------");
-    var_dump($ex->getMessage());
-} catch (\Svea\Checkout\Exception\SveaInputValidationException $ex) {
-    var_dump("--------- Input data errors ---------");
-    var_dump($ex->getMessage());
-} catch (Exception $ex) {
-    var_dump("--------- General errors ---------");
-    var_dump($ex->getMessage());
-}
+$checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
+$response = $checkoutClient->create($data);
+
+/*
+ * 
+ *
+ * */
+
+echo "<pre>" . print_r($response, true) . "</pre>";
+
