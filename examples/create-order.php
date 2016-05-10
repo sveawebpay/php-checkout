@@ -2,6 +2,8 @@
 
 require_once '../vendor/autoload.php';
 
+echo '<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>';
+
 $data = array(
     "purchase_country" => "SE",
     "purchase_currency" => "SEK",
@@ -53,7 +55,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
     $response = $checkoutClient->create($data);
 
-    print_r($response['Gui']['Snippet']);
+    echo "<pre>" . print_r($response, true) . "</pre>";
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump($ex->getMessage());

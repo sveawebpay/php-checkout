@@ -61,7 +61,7 @@ class CheckoutClient
     /**
      * Return Svea Checkout order data.
      *
-     * @param array $data
+     * @param mixed $data
      * @return mixed
      */
     public function get($data)

@@ -47,9 +47,7 @@ class GetOrder extends ImplementationManager
      */
     public function prepareData()
     {
-        $preparedData['Id'] = $this->orderId;
-
-        $this->requestBodyData = json_encode($preparedData);
+      return;
     }
 
     /**

@@ -24,7 +24,7 @@ class ApiClient
     /**
      * Client constructor.
      *
-     * @param HttpRequestInterface $httpClient   PHP HTTP client that makes it easy to send HTTP requests
+     * @param HttpRequestInterface $httpClient PHP HTTP client that makes it easy to send HTTP requests
      */
     public function __construct(HttpRequestInterface $httpClient)
     {
@@ -34,7 +34,7 @@ class ApiClient
     /**
      * Send request to Svea Checkout API.
      *
-     * @param Request $request  Request model
+     * @param Request $request Request model
      * @throws Exception        When an error is encountered
      * @return ResponseHandler
      */
@@ -49,8 +49,13 @@ class ApiClient
         $this->httpClient->setOption(CURLOPT_RETURNTRANSFER, 1);
         $this->httpClient->setOption(CURLOPT_HEADER, 1);
 
-        if ($request->getMethod() == 'POST') {
+        if ($request->getMethod() === 'POST') {
             $this->httpClient->setOption(CURLOPT_POST, 1);
+            $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
+        }
+
+        if ($request->getMethod() === 'PUT') {
+            $this->httpClient->setOption(CURLOPT_CUSTOMREQUEST, "PUT");
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
         }
 

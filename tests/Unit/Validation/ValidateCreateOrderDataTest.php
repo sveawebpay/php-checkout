@@ -187,4 +187,22 @@ class ValidateCreateOrderDataTest extends TestCase
     {
         $this->validateCreateOrderData->validate($this->inputCreateData);
     }
+
+
+
+    public function testValitation()
+    {
+        $val = $this->getMockBuilder('\Svea\Checkout\Validation\ValidateCreateOrderData')->getMock();
+
+        $val->expects($this->once())
+            ->method('validateGeneralData');
+
+        $val->expects($this->once())
+            ->method('validateMerchant');
+
+        $val->expects($this->once())
+            ->method('validateOrderItems');
+
+        $val->validate(array());
+    }
 }
