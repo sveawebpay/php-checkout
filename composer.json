@@ -16,7 +16,8 @@
   },
   "minimum-stability": "stable",
   "require": {
-    "php": ">=5.3.0"
+    "php": ">=5.3.0",
+    "ext-curl": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^4.8",
@@ -30,8 +31,8 @@
   "scripts": {
     "test": ".\\vendor\\bin\\phpunit --colors",
     "reference": ".\\vendor\\bin\\phpdoc -d src -t docs/api",
-    "analyze": [
-      "IF NOT EXIST .\\build\\logs md .\\build\\logs",
+    "analyse": [
+      "Svea\\Checkout\\Util\\ScriptHandler::createLogFolder",
       ".\\vendor\\bin\\phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet",
       ".\\vendor\\bin\\phpcpd --log-pmd build/logs/pmd-cpd.xml src/ --quiet || true",
       ".\\vendor\\bin\\phpcs --standard=.\\cs-ruleset.xml --report=checkstyle --report-file=build/logs/checkstyle.xml --extensions=php src/ tests/ || true",
