@@ -19,11 +19,6 @@ class CheckoutData
     private $cart;
 
     /**
-     * @var string $pushUri
-     */
-    private $pushUri;
-
-    /**
      * @var string $locale
      */
     private $locale;
@@ -78,22 +73,6 @@ class CheckoutData
     public function setCart($cart)
     {
         $this->cart = $cart;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPushUri()
-    {
-        return $this->pushUri;
-    }
-
-    /**
-     * @param string $pushUri
-     */
-    public function setPushUri($pushUri)
-    {
-        $this->pushUri = $pushUri;
     }
 
     /**
