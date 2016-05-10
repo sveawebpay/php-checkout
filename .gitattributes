@@ -1,5 +1,5 @@
 # Auto detect text files and perform LF normalization
-* text eol=lf
+* text auto
 
 # These files are text and should be normalized (Convert crlf => lf)
 *.php text
