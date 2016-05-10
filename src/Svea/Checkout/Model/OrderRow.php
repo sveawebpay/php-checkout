@@ -10,26 +10,36 @@ class OrderRow
     private $articleNumber;
 
     /**
+     * Name of the product
+     *
      * @var string $name
      */
     private $name;
 
     /**
+     * Quantity of the product.
+     *
      * @var int $quantity
      */
     private $quantity;
 
     /**
+     * Price of the product, given in minor currency.
+     *
      * @var int $unitPrice
      */
     private $unitPrice;
 
     /**
+     * The discount of the product, given in minor currency.
+     *
      * @var int $discountPercent
      */
     private $discountPercent;
 
     /**
+     * The VAT percentage of the current product.
+     *
      * @var int $vatPercent
      */
     private $vatPercent;

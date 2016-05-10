@@ -58,7 +58,8 @@ class ResponseHandler
     }
 
     /**
-     * Handle Svea Checkout API response
+     * Handle Svea Checkout API response.
+     * Prepare error message if response is not successful.
      *
      * @throws SveaApiException
      */
@@ -89,14 +90,14 @@ class ResponseHandler
     }
 
     /**
-     * Create array of header information
+     * Create array of header information from response.
      */
     public function setHeader()
     {
         $headers = array();
 
         /**
-         * Split the string on every "double" new line.
+         * Split the string on "double" new line.
          * First is header data, second is body content
          */
         $arrRequests = explode(PHP_EOL . PHP_EOL, $this->content);
@@ -120,9 +121,16 @@ class ResponseHandler
     {
         return $this->body;
     }
-
+    
+    /**
+     * Prepare body data from response.
+     */
     public function setBody()
     {
+        /**
+         * Split the string on "double" new line.
+         * First is header data, second is body content
+         */
         $arrRequests = explode(PHP_EOL . PHP_EOL, $this->content);
 
         $this->body = $arrRequests[1];

@@ -5,10 +5,14 @@ namespace Svea\Checkout\Validation;
 use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Exception\SveaInputValidationException;
 
+/**
+ * Class ValidateUpdateOrderData
+ * @package Svea\Checkout\Validation
+ */
 class ValidateUpdateOrderData implements ValidationInterface
 {
     /**
-     * @param $data
+     * @param array $data
      */
     public function validate($data)
     {

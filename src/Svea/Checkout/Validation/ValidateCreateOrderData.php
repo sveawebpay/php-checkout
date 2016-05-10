@@ -5,11 +5,15 @@ namespace Svea\Checkout\Validation;
 use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Exception\SveaInputValidationException;
 
+/**
+ * Class ValidateCreateOrderData
+ * @package Svea\Checkout\Validation
+ */
 class ValidateCreateOrderData implements ValidationInterface
 {
     /**
      * @param array $data
-     * @throws SveaInputValidationException
+     * @throws SveaInputValidationException If data is invalid
      */
     public function validate($data)
     {

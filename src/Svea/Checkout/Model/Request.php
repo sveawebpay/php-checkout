@@ -4,7 +4,7 @@ namespace Svea\Checkout\Model;
 
 /**
  * Class Request
- * Request model
+ * Request model - Containing all data necessary for request to the API.
  *
  * @package Svea\Checkout\Model
  */
