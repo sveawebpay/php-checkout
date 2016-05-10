@@ -43,8 +43,9 @@ class GetOrder extends ImplementationManager
     }
 
     /**
-     * Prepare data for request
+     * Prepare body data for Api call
      */
+    // @codingStandardsIgnoreLine
     public function prepareData(){}
 
     /**
