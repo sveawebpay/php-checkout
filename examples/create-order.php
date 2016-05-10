@@ -54,9 +54,7 @@ $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $ba
 $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 $response = $checkoutClient->create($data);
 
-/*
- * 
- *
+/* 
  * */
 
 echo "<pre>" . print_r($response, true) . "</pre>";
