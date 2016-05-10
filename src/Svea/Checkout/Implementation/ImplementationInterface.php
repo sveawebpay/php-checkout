@@ -7,7 +7,7 @@ namespace Svea\Checkout\Implementation;
  * @package Svea\Checkout\Implementation
  */
 interface ImplementationInterface
-{ 
+{
     /**
      * @param mixed $data
      */

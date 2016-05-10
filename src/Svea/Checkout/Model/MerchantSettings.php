@@ -2,24 +2,36 @@
 
 namespace Svea\Checkout\Model;
 
+/**
+ * Class MerchantSettings
+ * @package Svea\Checkout\Model
+ */
 class MerchantSettings
 {
     /**
+     * URI to the page with the terms.
+     *
      * @var string $termsUri
      */
     private $termsUri;
 
     /**
+     * URI to the page that contains the checkout.
+     *
      * @var string $checkoutUri
      */
     private $checkoutUri;
 
     /**
+     * URI to the page with the confirmation information for an order.
+     *
      * @var string $confirmationUri
      */
     private $confirmationUri;
 
     /**
+     * URI for Svea Callback service to post Created and Finished messages.
+     *
      * @var string $pushUri
      */
     private $pushUri;

@@ -6,7 +6,6 @@ use Svea\Checkout\Model\Cart;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Model\Request;
-use Svea\Checkout\Validation\ValidateUpdateOrderData;
 
 class UpdateOrder extends ImplementationManager
 {
@@ -93,7 +92,7 @@ class UpdateOrder extends ImplementationManager
     }
 
     /**
-     * @param Cart $checkoutData
+     * @param CheckoutData $checkoutData
      */
     public function setCheckoutData($checkoutData)
     {
@@ -122,13 +121,5 @@ class UpdateOrder extends ImplementationManager
     public function getOrderId()
     {
         return $this->orderId;
-    }
-
-    /**
-     * @param int $orderId
-     */
-    public function setOrderId($orderId)
-    {
-        $this->orderId = $orderId;
     }
 }

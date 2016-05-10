@@ -6,7 +6,7 @@ use Svea\Checkout\Implementation\CreateOrder;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidateCreateOrderData;
 
 class CreateOrderTest extends TestCase
 {
@@ -16,7 +16,7 @@ class CreateOrderTest extends TestCase
     protected $order;
 
     /**
-     * @var ValidationInterface|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateCreateOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
      */
     protected $validatorMock;
 

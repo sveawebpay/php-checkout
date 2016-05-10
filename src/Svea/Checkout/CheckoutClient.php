@@ -4,23 +4,10 @@ namespace Svea\Checkout;
 
 use Svea\Checkout\Implementation\ImplementationFactory;
 use Svea\Checkout\Transport\Connector;
-use Svea\Checkout\Validation\ValidateGetOrderData;
 
 /**
- * ### Namespaces
- * The package makes use of PHP namespaces, grouping most classes under the namespace Svea\Checkout.
- *
- * The underlying services and methods are contained in the Svea sub-namespaces WebService,
- * HostedService and AdminService, and may be accessed,
- * though their api and interfaces are subject to change in the future.
- *
- * ### Documentation format
- * See the provided README.md file for an overview and examples how to utilise the CheckoutClient class.
- *
- * ### Development environment
- * The Svea Checkout PHP integration library is developed and tested using PhpStorm 10.
- *
  * Class CheckoutClient
+ *
  * @package Svea\Checkout
  * @author Svea
  */

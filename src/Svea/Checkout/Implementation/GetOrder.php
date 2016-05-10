@@ -6,7 +6,6 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Exception\SveaApiException;
 use Svea\Checkout\Exception\SveaInputValidationException;
 
-
 class GetOrder extends ImplementationManager
 {
     const API_URL = '/api/orders/';
@@ -72,14 +71,6 @@ class GetOrder extends ImplementationManager
     public function getRequestBodyData()
     {
         return $this->requestBodyData;
-    }
-
-    /**
-     * @param string $requestBodyData
-     */
-    public function setRequestBodyData($requestBodyData)
-    {
-        $this->requestBodyData = $requestBodyData;
     }
 
     /**

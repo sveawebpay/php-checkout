@@ -4,12 +4,12 @@ namespace Svea\Checkout\Tests\Unit\Implementation;
 
 use Svea\Checkout\Implementation\GetOrder;
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidateGetOrderData;
 
 class GetOrderTest extends TestCase
 {
     /**
-     * @var ValidationInterface|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateGetOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
      */
     protected $validatorMock;
 

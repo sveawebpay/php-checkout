@@ -2,70 +2,44 @@
 
 namespace Svea\Checkout\Model;
 
+/**
+ * Class CheckoutData -  - Containing full Order information
+ * @package Svea\Checkout\Model
+ */
 class CheckoutData
 {
     /**
-     * @var
+     * @var MerchantSettings $merchantSettings
      */
     private $merchantSettings;
 
     /**
-     * @var
+     * @var Cart $cart
      */
     private $cart;
 
     /**
-     * @var
-     */
-    private $gui;
-
-    /**
-     * @var
-     */
-    private $pushUri;
-
-    /**
-     * @var
-     */
-    private $customer;
-
-    /**
-     * @var
-     */
-    private $shippingAddress;
-
-    /**
-     * @var
-     */
-    private $billingAddress;
-
-    /**
-     * @var
+     * @var string $locale
      */
     private $locale;
 
     /**
-     * @var
+     * @var string $currency
      */
     private $currency;
 
     /**
-     * @var
+     * @var string $countryCode
      */
     private $countryCode;
 
     /**
-     * @var
-     */
-    private $populatedOrderIdentifiers;
-
-    /**
-     * @var
+     * @var float $orderId
      */
     private $orderId;
 
     /**
-     * @var
+     * @var mixed $status
      */
     private $status;
 
@@ -78,7 +52,7 @@ class CheckoutData
     }
 
     /**
-     * @param mixed $merchantSettings
+     * @param $merchantSettings
      */
     public function setMerchantSettings($merchantSettings)
     {
@@ -94,7 +68,7 @@ class CheckoutData
     }
 
     /**
-     * @param mixed $cart
+     * @param Cart $cart
      */
     public function setCart($cart)
     {
@@ -102,87 +76,7 @@ class CheckoutData
     }
 
     /**
-     * @return mixed
-     */
-    public function getGui()
-    {
-        return $this->gui;
-    }
-
-    /**
-     * @param mixed $gui
-     */
-    public function setGui($gui)
-    {
-        $this->gui = $gui;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPushUri()
-    {
-        return $this->pushUri;
-    }
-
-    /**
-     * @param mixed $pushUri
-     */
-    public function setPushUri($pushUri)
-    {
-        $this->pushUri = $pushUri;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCustomer()
-    {
-        return $this->customer;
-    }
-
-    /**
-     * @param mixed $customer
-     */
-    public function setCustomer($customer)
-    {
-        $this->customer = $customer;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getShippingAddress()
-    {
-        return $this->shippingAddress;
-    }
-
-    /**
-     * @param mixed $shippingAddress
-     */
-    public function setShippingAddress($shippingAddress)
-    {
-        $this->shippingAddress = $shippingAddress;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getBillingAddress()
-    {
-        return $this->billingAddress;
-    }
-
-    /**
-     * @param mixed $billingAddress
-     */
-    public function setBillingAddress($billingAddress)
-    {
-        $this->billingAddress = $billingAddress;
-    }
-
-    /**
-     * @return mixed
+     * @return string
      */
     public function getLocale()
     {
@@ -190,7 +84,7 @@ class CheckoutData
     }
 
     /**
-     * @param mixed $locale
+     * @param string $locale
      */
     public function setLocale($locale)
     {
@@ -198,7 +92,7 @@ class CheckoutData
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCurrency()
     {
@@ -206,7 +100,7 @@ class CheckoutData
     }
 
     /**
-     * @param mixed $currency
+     * @param string $currency
      */
     public function setCurrency($currency)
     {
@@ -214,7 +108,7 @@ class CheckoutData
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCountryCode()
     {
@@ -222,7 +116,7 @@ class CheckoutData
     }
 
     /**
-     * @param mixed $countryCode
+     * @param string $countryCode
      */
     public function setCountryCode($countryCode)
     {
@@ -230,23 +124,7 @@ class CheckoutData
     }
 
     /**
-     * @return mixed
-     */
-    public function getPopulatedOrderIdentifiers()
-    {
-        return $this->populatedOrderIdentifiers;
-    }
-
-    /**
-     * @param mixed $populatedOrderIdentifiers
-     */
-    public function setPopulatedOrderIdentifiers($populatedOrderIdentifiers)
-    {
-        $this->populatedOrderIdentifiers = $populatedOrderIdentifiers;
-    }
-
-    /**
-     * @return mixed
+     * @return float
      */
     public function getOrderId()
     {
@@ -254,7 +132,7 @@ class CheckoutData
     }
 
     /**
-     * @param mixed $orderId
+     * @param float $orderId
      */
     public function setOrderId($orderId)
     {

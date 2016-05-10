@@ -6,7 +6,7 @@ use Svea\Checkout\Implementation\UpdateOrder;
 use Svea\Checkout\Model\CheckoutData;
 use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidateUpdateOrderData;
 
 class UpdateOrderTest extends TestCase
 {
@@ -16,7 +16,7 @@ class UpdateOrderTest extends TestCase
     protected $order;
 
     /**
-     * @var ValidationInterface|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateUpdateOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
      */
     protected $validatorMock;
 
@@ -24,7 +24,7 @@ class UpdateOrderTest extends TestCase
     {
         parent::setUp();
 
-        $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\ValidationInterface')->getMock();
+        $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\ValidateUpdateOrderData')->getMock();
         $this->order = new UpdateOrder($this->connectorMock, $this->validatorMock);
     }
 
