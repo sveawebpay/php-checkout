@@ -3,14 +3,8 @@
 // include the Svea Checkout autoload file if you are not using Composer
 require_once '../vendor/autoload.php';
 
-
 /*
- * Example of creating order and getting response data
- *
- * Possible Throw Exceptions are:
- *  - \Svea\Checkout\Exception\SveaApiException when ...
- *  - \Svea\Checkout\Exception\SveaInputValidationException
- *  - \Exception
+ * Example of creating the order and getting the response data
  *
  * */
 
@@ -59,9 +53,9 @@ $data = array(
 
 /*
  * Create connector for given
- *  - Merchant Id
- *  - Shared Secret
- *  - Base Url for SVEA Api
+ *  - Merchant Id - unique merchant ID
+ *  - Shared Secret - Shared Secret string between Svea and merchant
+ *  - Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
  * */
 $merchantId = '1';
 $sharedSecret = 'sharedSecret';
@@ -70,7 +64,7 @@ $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 /*
  * Create Connector object
  *
- * Possible Throw Exception is \Svea\Checkout\Exception\SveaConnectorException which will return exception if
+ * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
  * some of fields $merchantId, $sharedSecret and $baseUrl is missing
  * */
 $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
@@ -78,7 +72,15 @@ $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $ba
 // Create Checkout client with created Connector object
 $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 
-// Initialize creating order and receive response data
+/*
+ *  Initialize creating the order and receive the response data
+ *  Possible Exceptions are:
+ *  - \Svea\Checkout\Exception\SveaInputValidationException - if some of fields is missing
+ *  - \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
+ *      some error occurred with data validation on API side
+ *  - \Exception - for any other error
+ *
+ * */
 $response = $checkoutClient->create($data);
 
 /*
