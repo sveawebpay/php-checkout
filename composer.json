@@ -31,6 +31,10 @@
   "scripts": {
     "test": "vendor/bin/phpunit --colors",
     "php-doc": "vendor/bin/phpdoc -d src -t docs/api",
+    "pok": [
+      "Svea\\Checkout\\Util\\ScriptHandler::createLogFolder",
+      "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpLoc"
+    ],
     "analyse": [
       "mkdir -p build/logs",
       "vendor/bin/phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet",
