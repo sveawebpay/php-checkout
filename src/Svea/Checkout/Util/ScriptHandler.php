@@ -84,10 +84,11 @@ class ScriptHandler
     public static function fixSniffViolations()
     {
         $rootPath = getcwd();
+        $ruleSetFilePath = $rootPath . '/cs-ruleset.xml';
         $srcPath = $rootPath . self::SRC_PATH;
         $testsPath = $rootPath . self::TESTS_PATH;
 
-        self::executeScript('phpcbf', "--standard=PSR2 $srcPath $testsPath --no-patch --quiet");
+        self::executeScript('phpcbf', "--standard=$ruleSetFilePath $srcPath $testsPath --no-patch --quiet");
     }
 
     /**
