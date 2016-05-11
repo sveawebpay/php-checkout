@@ -18,22 +18,93 @@ class ScriptHandler
         }
     }
 
+    /**
+     * Measuring the size and analyzing the structure of a PHP project
+     */
     public static function codeAnalysisPhpLoc()
     {
         $rootPath = getcwd();
-        $targetPath = $rootPath . '/build/logs/phploc.csv';
+        $logDestinationPath = $rootPath . '/build/logs/phploc.csv';
         $srcPath = $rootPath . self::SRC_PATH;
         $testsPath = $rootPath . self::TESTS_PATH;
         
-        $command = $rootPath . self::VENDOR_BIN_PATH . "phploc  --log-csv $targetPath $srcPath $testsPath --quiet";
+        self::executeScript('phploc', "--log-csv $logDestinationPath $srcPath $testsPath --quiet");
+    }
 
+    /**
+     * Copy/Paste Detector (CPD) for PHP code.
+     */
+    public static function codeAnalysisPhpCpd()
+    {
+        $rootPath = getcwd();
+        $logDestinationPath = $rootPath . '/build/logs/pmd-cpd.xml';
+        $srcPath = $rootPath . self::SRC_PATH;
+
+        self::executeScript('phpcpd', "--log-pmd $logDestinationPath $srcPath --quiet");
+    }
+
+    /**
+     * Detect violations of a defined coding standard for PHP, JavaScript and CSS files
+     */
+    public static function codeAnalysisPhpCs()
+    {
+        $rootPath = getcwd();
+        $ruleSetFilePath = $rootPath . '/cs-ruleset.xml';
+        $logDestinationPath = $rootPath . '/build/logs/checkstyle.xml';
+        $srcPath = $rootPath . self::SRC_PATH;
+        $testsPath = $rootPath . self::TESTS_PATH;
+
+        $params = "--standard=$ruleSetFilePath --report=checkstyle --report-file=$logDestinationPath --extensions=php ";
+        $params .= "$srcPath $testsPath";
+
+        self::executeScript('phpcs', $params);
+    }
+
+    /**
+     * PHP Mess Detector Analyse a given PHP source code and look for several potential problems within that source.
+     * (Possible bugs, Suboptimal code, Overcomplicated expressions, Unused parameters, methods, properties)
+     */
+    public static function codeAnalysisPhpMd()
+    {
+        $rootPath = getcwd();
+        $ruleSetFilePath = $rootPath . '/phpmd.xml';
+        $logDestinationPath = $rootPath . '/build/logs/pmd.xml';
+        $srcPath = $rootPath . self::SRC_PATH;
+        $testsPath = $rootPath . self::TESTS_PATH;
+
+        $params = "$srcPath,$testsPath xml $ruleSetFilePath --reportfile $logDestinationPath --quiet";
+        self::executeScript('phpmd', $params);
+    }
+
+    /**
+     * Run All unit tests (phpUnit)
+     */
+    public static function runUnitTests()
+    {
+        $rootPath = getcwd();
+        $configurationFilePath = $rootPath . '/phpunit.xml.dist';
+
+        self::executeScript('phpunit', "--configuration $configurationFilePath");
+    }
+
+    /**
+     * Create documentation with phpDocumentor
+     */
+    public static function createPhpDocumentation()
+    {
+        $rootPath = getcwd();
+        $srcPath = $rootPath . self::SRC_PATH;
+        $documentationFolderPath = $rootPath . '/docs/api';
+        $cachePath = $documentationFolderPath . '/cache';
+
+        self::executeScript('phpdoc', "-d $srcPath -t $documentationFolderPath --cache-folder  $cachePath");
+    }
+
+    private static function executeScript($command, $params)
+    {
+        $rootPath = getcwd();
+        $command = $rootPath . self::VENDOR_BIN_PATH . "$command  $params";
+        
         exec($command);
-//        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-//            exec($command);
-//            echo 'This is a server using Windows!';
-//        } else {
-//            exec('vendor/bin/phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet');
-//            echo 'This is a server not using Windows!';
-//        }
     }
 }

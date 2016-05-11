@@ -29,19 +29,14 @@
     "sebastian/phpcpd": "^2.0.4"
   },
   "scripts": {
-    "test": "vendor/bin/phpunit --colors",
-    "php-doc": "vendor/bin/phpdoc -d src -t docs/api",
-    "pok": [
+    "test": "Svea\\Checkout\\Util\\ScriptHandler::runUnitTests",
+    "php-doc": "Svea\\Checkout\\Util\\ScriptHandler::createPhpDocumentation",
+    "code-analyse": [
       "Svea\\Checkout\\Util\\ScriptHandler::createLogFolder",
-      "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpLoc"
-    ],
-    "analyse": [
-      "mkdir -p build/logs",
-      "vendor/bin/phploc --log-csv build/logs/phploc.csv src/ tests/ --quiet",
-      "vendor/bin/phpcpd --log-pmd build/logs/pmd-cpd.xml src/ --quiet || true",
-      "vendor/bin/phpcs --standard=cs-ruleset.xml --report=checkstyle --report-file=build/logs/checkstyle.xml --extensions=php src/ tests/ || true",
-      "vendor/bin/phpmd src/,tests/ xml phpmd.xml --reportfile build/logs/pmd.xml --quiet || true"
-    ],
-    "fix-sniff-violations": "vendor/bin/phpcbf --standard=PSR2 src/ tests/ --no-patch --quiet || true"
+      "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpLoc",
+      "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpCpd",
+      "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpCs",
+      "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpMd"
+    ]
   }
 }
