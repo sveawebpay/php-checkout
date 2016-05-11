@@ -77,6 +77,20 @@ class ScriptHandler
     }
 
     /**
+     * PHP CodeSniffer is able to fix many errors and warnings automatically.
+     * Code Beautifier and Fixer (phpcbf) can be used in place of phpcs to automatically generate and
+     * apply the diff for you.
+     */
+    public static function fixSniffViolations()
+    {
+        $rootPath = getcwd();
+        $srcPath = $rootPath . self::SRC_PATH;
+        $testsPath = $rootPath . self::TESTS_PATH;
+
+        self::executeScript('phpcbf', "--standard=PSR2 $srcPath $testsPath --no-patch --quiet");
+    }
+
+    /**
      * Run All unit tests (phpUnit)
      */
     public static function runUnitTests()

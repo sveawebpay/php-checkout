@@ -37,6 +37,7 @@
       "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpCpd",
       "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpCs",
       "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpMd"
-    ]
+    ],
+    "fix-sniff-violations": "Svea\\Checkout\\Util\\ScriptHandler::fixSniffViolations"
   }
 }
