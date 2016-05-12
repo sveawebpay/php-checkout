@@ -1,7 +1,9 @@
 {
   "name": "svea/checkout-php",
-  "description": "The officially supported php library for Svea Checkout",
   "type": "library",
+  "description": "The officially supported php library for Svea Checkout",
+  "keywords": [],
+  "homepage": "http://svea.com",
   "license": "Apache-2.0",
   "repositories": [
     {
@@ -12,7 +14,8 @@
   "authors": [
     {
       "name": "Svea Ekonomi",
-      "email": "integration@svea.com"
+      "email": "integration@svea.com",
+      "homepage": "http://svea.com"
     }
   ],
   "autoload": {
