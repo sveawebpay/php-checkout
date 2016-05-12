@@ -47,7 +47,7 @@ class ValidateCreateOrderData implements ValidationInterface
         }
     }
 
-//    TODO - check if we need validate merchant settings uris
+//   TODO - check if we need validate merchant settings uris
 //    /**
 //     * @param array $data
 //     * @throws SveaInputValidationException
