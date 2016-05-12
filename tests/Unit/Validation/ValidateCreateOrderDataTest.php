@@ -60,15 +60,15 @@ class ValidateCreateOrderDataTest extends TestCase
         $this->invokeMethod($this->validateCreateOrderData, 'validateGeneralData', array($this->inputCreateData));
     }
 
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateMerchantWithoutData()
-    {
-        unset($this->inputCreateData['merchantSettings']);
-        $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
-    }
+//    /**
+//     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+//     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+//     */
+//    public function testValidateMerchantWithoutData()
+//    {
+//        unset($this->inputCreateData['merchantSettings']);
+//        $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
+//    }
 
 //    /**
 //     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException

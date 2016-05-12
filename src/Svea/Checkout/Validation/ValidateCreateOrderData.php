@@ -18,7 +18,7 @@ class ValidateCreateOrderData implements ValidationInterface
     public function validate($data)
     {
         $this->validateGeneralData($data);
-        $this->validateMerchant($data);
+//        $this->validateMerchant($data);
         $this->validateOrderCart($data);
     }
 
@@ -35,7 +35,7 @@ class ValidateCreateOrderData implements ValidationInterface
             );
         }
 
-        $requiredFields = array('locale', 'currency', 'countrycode');
+        $requiredFields = array('locale', 'currency', 'countrycode', 'merchantSettings');
 
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || $data[$field] === '') {
@@ -47,19 +47,20 @@ class ValidateCreateOrderData implements ValidationInterface
         }
     }
 
-    /**
-     * @param array $data
-     * @throws SveaInputValidationException
-     */
-    private function validateMerchant($data)
-    {
-        if (!isset($data['merchantSettings'])) {
-            throw new SveaInputValidationException(
-                'Merchant "merchantSettings" array should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
+//    TODO - check if we need validate merchant settings uris
+//    /**
+//     * @param array $data
+//     * @throws SveaInputValidationException
+//     */
+//    private function validateMerchant($data)
+//    {
+//        if (!isset($data['merchantSettings'])) {
+//            throw new SveaInputValidationException(
+//                'Merchant "merchantSettings" array should be passed!',
+//                ExceptionCodeList::INPUT_VALIDATION_ERROR
+//            );
+//        }
+//
 //        $merchantData = $data['merchantSettings'];
 //        $requiredFields = array('termsuri', 'checkouturi', 'confirmationuri', 'pushuri');
 //
@@ -71,7 +72,7 @@ class ValidateCreateOrderData implements ValidationInterface
 //                );
 //            }
 //        }
-    }
+//    }
 
     /**
      * @param array $data

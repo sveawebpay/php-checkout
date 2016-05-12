@@ -3,6 +3,12 @@
   "description": "The officially supported php library for Svea Checkout",
   "type": "library",
   "license": "Apache-2.0",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/sveawebpay/php-checkout-dev.git"
+    }
+  ],
   "authors": [
     {
       "name": "Svea Ekonomi",
