@@ -81,7 +81,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->setOrderData();
+        $this->setCreateOrderRequestData();
         $this->setApiResponse();
         $this->setRequest();
         $this->setCurlRequest();
@@ -95,9 +95,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
     /**
      * Call protected/private method of a class.
      *
-     * @param object $object    Instantiated object that we will run method on.
+     * @param object $object Instantiated object that we will run method on.
      * @param string $methodName Method name to call
-     * @param array  $parameters Array of parameters to pass into method.
+     * @param array $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
      */
@@ -139,45 +139,37 @@ class TestCase extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-    // @todo rename this function
-    private function setOrderData()
+    private function setCreateOrderRequestData()
     {
         $this->createOrderRequestData = array(
-            "purchase_country" => "gb",
-            "purchase_currency" => "gbp",
-            "locale" => "en-gb",
-            "order_amount" => 10000,
-            "order_tax_amount" => 2000,
-            "order_lines" => array(
-                array(
-                    "type" => "physical",
-                    "reference" => "123050",
-                    "name" => "Tomatoes",
-                    "quantity" => 10,
-                    "quantity_unit" => "kg",
-                    "unit_price" => 600,
-                    "tax_rate" => 2500,
-                    "total_amount" => 6000,
-                    "total_tax_amount" => 1200
-                ),
-                array(
-                    "type" => "physical",
-                    "reference" => "543670",
-                    "name" => "Bananas",
-                    "quantity" => 1,
-                    "quantity_unit" => "bag",
-                    "unit_price" => 5000,
-                    "tax_rate" => 2500,
-                    "total_amount" => 4000,
-                    "total_discount_amount" => 1000,
-                    "total_tax_amount" => 800
+            "countrycode" => "SE",
+            "currency" => "SEK",
+            "locale" => "sv-SE",
+            "cart" => array(
+                "items" => array(
+                    array(
+                        "articlenumber" => "123456",
+                        "name" => "Tomatoes",
+                        "quantity" => 10,
+                        "unitprice" => 600,
+                        "discountpercent" => 1000,
+                        "vatpercent" => 2500
+                    ),
+                    array(
+                        "articlenumber" => "654321",
+                        "name" => "Bananas",
+                        "quantity" => 1,
+                        "unitprice" => 500,
+                        "discountpercent" => 900,
+                        "vatpercent" => 2000
+                    )
                 )
             ),
-            "merchant_urls" => array(
-                "terms" => "http://www.merchant.com/toc",
-                "checkout" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
-                "confirmation" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
-                "push" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
+            "merchantSettings" => array(
+                "termsuri" => "http://www.merchant.com/toc",
+                "checkouturi" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
+                "confirmationuri" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
+                "pushuri" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
             )
         );
     }
@@ -336,6 +328,7 @@ JSON;
         $cart = new Cart();
 
         $orderLines = $this->inputCreateData['order_lines'];
+        $orderRows = array();
         foreach ($orderLines as $orderLine) {
             $orderRow = new OrderRow();
             $orderRow->setArticleNumber($orderLine['articlenumber']);
@@ -345,8 +338,9 @@ JSON;
             $orderRow->setUnitPrice($orderLine['unitprice']);
             $orderRow->setVatPercent($orderLine['vatpercent']);
 
-            $cart->addItem($orderRow);
+            $orderRows[] = $orderRow;
         }
+        $cart->setItems($orderRows);
 
         $this->checkoutData->setCart($cart);
 

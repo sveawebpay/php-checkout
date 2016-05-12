@@ -45,17 +45,6 @@ class OrderRow
     private $vatPercent;
 
     /**
-     * @var string $unit
-     */
-    private $unit;
-
-    /**
-     * @var string
-     */
-    private $type;
-
-
-    /**
      * @return string
      */
     public function getArticleNumber()
@@ -152,38 +141,6 @@ class OrderRow
     }
 
     /**
-     * @return string
-     */
-    public function getUnit()
-    {
-        return $this->unit;
-    }
-
-    /**
-     * @param string $unit
-     */
-    public function setUnit($unit)
-    {
-        $this->unit = $unit;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->type;
-    }
-
-    /**
-     * @param string $type
-     */
-    public function setType($type)
-    {
-        $this->type = $type;
-    }
-
-    /**
      * Set class parameters for existing parameters in passed list
      * @param array $data
      */
@@ -211,10 +168,6 @@ class OrderRow
 
         if (isset($data['vatpercent'])) {
             $this->vatPercent = $data['vatpercent'];
-        }
-
-        if (isset($data['type'])) {
-            $this->type = $data['type'];
         }
     }
 
@@ -249,10 +202,6 @@ class OrderRow
 
         if ($this->vatPercent != null) {
             $preparedData['vatpercent'] = $this->vatPercent;
-        }
-
-        if ($this->type != null) {
-            $preparedData['type'] = $this->type;
         }
 
         return $preparedData;
