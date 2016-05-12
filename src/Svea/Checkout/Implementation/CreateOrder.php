@@ -2,20 +2,11 @@
 
 namespace Svea\Checkout\Implementation;
 
-use Svea\Checkout\Model\Cart;
-use Svea\Checkout\Model\CheckoutData;
-use Svea\Checkout\Model\MerchantSettings;
-use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Model\Request;
 
 class CreateOrder extends ImplementationManager
 {
     const API_URL = '/api/orders/';
-
-    /**
-     * @var CheckoutData
-     */
-    private $checkoutData;
 
     /**
      * Request body - JSON
@@ -36,74 +27,13 @@ class CreateOrder extends ImplementationManager
     }
 
     /**
-     * Map passed data for later usage
+     * Prepare date for request
      *
      * @param mixed $data
      */
-    public function mapData($data)
+    public function prepareData($data)
     {
-        // - checkout data
-        $checkoutData = new CheckoutData();
-
-        // - merchant setting
-        $merchantData = $data['merchant_urls'];
-        $merchantSettings = new MerchantSettings();
-        $merchantSettings->setTermsUri($merchantData['terms']);
-        $merchantSettings->setCheckoutUri($merchantData['checkout']);
-        $merchantSettings->setConfirmationUri($merchantData['confirmation']);
-        $merchantSettings->setPushUri($merchantData['push']);
-
-        $checkoutData->setMerchantSettings($merchantSettings);
-
-        $cart = new Cart();
-
-        $orderLines = $data['order_lines'];
-        foreach ($orderLines as $orderLine) {
-            $orderRow = new OrderRow();
-            $orderRow->setItemParameters($orderLine);
-
-            $cart->addItem($orderRow);
-        }
-
-        $checkoutData->setCart($cart);
-
-        $checkoutData->setLocale($data['locale']);
-        $checkoutData->setCurrency($data['purchase_currency']);
-        $checkoutData->setCountryCode($data['purchase_country']);
-
-        $this->checkoutData = $checkoutData;
-    }
-
-    /**
-     * Prepare date for request
-     */
-    public function prepareData()
-    {
-        $checkoutData = $this->checkoutData;
-
-        $merchantSettings = $checkoutData->getMerchantSettings();
-        $cart = $checkoutData->getCart();
-
-        $preparedData = array();
-        $preparedData['merchantSettings'] = array(
-            'termsuri' => $merchantSettings->getTermsUri(),
-            'checkouturi' => $merchantSettings->getCheckoutUri(),
-            'confirmationuri' => $merchantSettings->getConfirmationUri(),
-            'pushuri' => $merchantSettings->getPushUri()
-        );
-
-        $cartItems = $cart->getItems();
-        $preparedData['cart'] = array();
-        foreach ($cartItems as $item) {
-            /* @var $item OrderRow */
-            $preparedData['cart']['items'][] = $item->getItemParameters();
-        }
-
-        $preparedData['locale'] = $checkoutData->getLocale();
-        $preparedData['countrycode'] = $checkoutData->getCountryCode();
-        $preparedData['currency'] = $checkoutData->getCurrency();
-
-        $this->requestBodyData = json_encode($preparedData);
+        $this->requestBodyData = json_encode($data);
     }
 
 
@@ -120,22 +50,6 @@ class CreateOrder extends ImplementationManager
         $requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL);
 
         $this->response = $this->connector->sendRequest($requestModel);
-    }
-
-    /**
-     * @return CheckoutData
-     */
-    public function getCheckoutData()
-    {
-        return $this->checkoutData;
-    }
-
-    /**
-     * @param CheckoutData $checkoutData
-     */
-    public function setCheckoutData($checkoutData)
-    {
-        $this->checkoutData = $checkoutData;
     }
 
     /**

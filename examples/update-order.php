@@ -11,22 +11,24 @@ require_once '../vendor/autoload.php';
 // - Add required information for creating order
 $data = array(
     "id" => 9,
-    "order_lines" => array(
-        array(
-            "articlenumber" => "123456789",
-            "name" => "Dator",
-            "quantity" => 200,
-            "unitprice" => 12300,
-            "discountpercent" => 1000,
-            "vatpercent" => 2500
-        ),
-        array(
-            "type" => "shipping_fee",
-            "articlenumber" => "SHIPPING",
-            "name" => "Shipping Fee Updated",
-            "quantity" => 100,
-            "unitprice" => 4900,
-            "vatpercent" => 2500
+    "cart" => array(
+        "items" => array(
+            array(
+                "articlenumber" => "123456789",
+                "name" => "Dator",
+                "quantity" => 200,
+                "unitprice" => 12300,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+            ),
+            array(
+                "type" => "shipping_fee",
+                "articlenumber" => "SHIPPING",
+                "name" => "Shipping Fee Updated",
+                "quantity" => 100,
+                "unitprice" => 4900,
+                "vatpercent" => 2500
+            )
         )
     )
 );

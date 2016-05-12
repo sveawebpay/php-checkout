@@ -33,20 +33,12 @@ class GetOrder extends ImplementationManager
     }
 
     /**
-     * Map input data
+     * Prepare body data for Api call
      *
      * @param mixed $data
      */
-    public function mapData($data)
-    {
-        $this->orderId = intval($data);
-    }
-
-    /**
-     * Prepare body data for Api call
-     */
     // @codingStandardsIgnoreLine
-    public function prepareData(){}
+    public function prepareData($data){}
 
     /**
      * Invoke request call
@@ -61,13 +53,5 @@ class GetOrder extends ImplementationManager
         $request->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
 
         $this->response = $this->connector->sendRequest($request);
-    }
-
-    /**
-     * @return int
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
     }
 }

@@ -2,9 +2,6 @@
 
 namespace Svea\Checkout\Implementation;
 
-use Svea\Checkout\Model\Cart;
-use Svea\Checkout\Model\CheckoutData;
-use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Model\Request;
 
 class UpdateOrder extends ImplementationManager
@@ -15,11 +12,6 @@ class UpdateOrder extends ImplementationManager
      * @var int
      */
     private $orderId;
-
-    /**
-     * @var CheckoutData
-     */
-    private $checkoutData;
 
     /**
      * Request body - JSON
@@ -38,39 +30,14 @@ class UpdateOrder extends ImplementationManager
         $validator->validate($data);
     }
 
-    public function mapData($data)
+    /**
+     * Prepare date for request
+     *
+     * @param mixed $data
+     */
+    public function prepareData($data)
     {
-        $checkoutData = new CheckoutData();
-
-        $this->orderId = $data['id'];
-
-        $cart = new Cart();
-
-        $orderLines = $data['order_lines'];
-        foreach ($orderLines as $orderLine) {
-            $orderRow = new OrderRow();
-            $orderRow->setItemParameters($orderLine);
-
-            $cart->addItem($orderRow);
-        }
-
-        $checkoutData->setCart($cart);
-
-        $this->checkoutData = $checkoutData;
-    }
-
-    public function prepareData()
-    {
-        $cart = $this->checkoutData->getCart();
-
-        $cartItems = $cart->getItems();
-        $preparedData['cart'] = array();
-        foreach ($cartItems as $item) {
-            /* @var $item OrderRow */
-            $preparedData['cart']['items'][] = $item->getItemParameters();
-        }
-
-        $this->requestBodyData = json_encode($preparedData);
+        $this->requestBodyData = json_encode($data);
     }
 
     public function invoke()
@@ -81,22 +48,6 @@ class UpdateOrder extends ImplementationManager
         $requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
 
         $this->response = $this->connector->sendRequest($requestModel);
-    }
-
-    /**
-     * @return Cart
-     */
-    public function getCheckoutData()
-    {
-        return $this->checkoutData;
-    }
-
-    /**
-     * @param CheckoutData $checkoutData
-     */
-    public function setCheckoutData($checkoutData)
-    {
-        $this->checkoutData = $checkoutData;
     }
 
     /**
@@ -113,13 +64,5 @@ class UpdateOrder extends ImplementationManager
     public function setRequestBodyData($requestBodyData)
     {
         $this->requestBodyData = $requestBodyData;
-    }
-
-    /**
-     * @return int
-     */
-    public function getOrderId()
-    {
-        return $this->orderId;
     }
 }

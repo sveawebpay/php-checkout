@@ -164,9 +164,9 @@ class ConnectorTest extends TestCase
 
     public function testCreateAuthorizationToken()
     {
-        $expectedAuthToken = 'MTIzNDU2OjQ3ZmY5YjQ4MGFlZmUxMDQ2Yzc5OWZhYzdhOTY4YjBlYTE3YzUyNzA2YjExYjkwODgzNz';
-        $expectedAuthToken .= 'dmZDk1YjcwOGU0ZjhlM2QwOTVjYmZjMmIyZDdjZTg3OTZmOGQyZjNhOWVmN';
-        $expectedAuthToken .= '2U4Nzc3NmJmZTUzOTMwYTBiMmNlOTBmNjVjNTY5Zjcy';
+        $expectedAuthToken = 'MTIzNDU2OmE0NGI0ZmZkY2U3NGI1M2UzZjk3NzM5YjQwYmJlY2VmMmQxMjlmOTQ5M2FjNGIyZTQ';
+        $expectedAuthToken .= '3ODU0ZTVkYjAxYTBlZGU1ZjI5OTc2ZmE2ZjE1NmYwYTM3YmE4ZmVm';
+        $expectedAuthToken .= 'MzE2MWI0MzEyNzNiZWI1ZDQ0ODFhNTZmM2I0YTk1OTI0OTI0YjAw';
 
         $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
         $this->invokeMethod($connector, 'createAuthorizationToken', array($this->requestModel));

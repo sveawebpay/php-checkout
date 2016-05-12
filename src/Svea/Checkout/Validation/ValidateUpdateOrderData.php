@@ -17,7 +17,7 @@ class ValidateUpdateOrderData implements ValidationInterface
     public function validate($data)
     {
         $this->validateOrderId($data);
-        $this->validateOrderItems($data);
+        $this->validateOrderCart($data);
     }
 
     /**
@@ -46,42 +46,20 @@ class ValidateUpdateOrderData implements ValidationInterface
      * @param array $data
      * @throws SveaInputValidationException
      */
-    private function validateOrderItems($data)
+    private function validateOrderCart($data)
     {
-        if (!isset($data['order_lines']) || !is_array($data['order_lines'])) {
+        if (!isset($data['cart']) || !is_array($data['cart'])) {
             throw new SveaInputValidationException(
                 'Order lines should be passed as array!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }
 
-        foreach ($data['order_lines'] as $row) {
-            $this->validateOrderItem($row);
-        }
-    }
-
-    /**
-     * @param array $itemData
-     * @throws SveaInputValidationException
-     */
-    private function validateOrderItem($itemData)
-    {
-        if (!isset($itemData) || !is_array($itemData)) {
+        if (!isset($data['cart']['items']) || !is_array($data['cart']['items'])) {
             throw new SveaInputValidationException(
-                'Order item should be passed as array!',
+                'Order lines should be passed as array!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
-        }
-
-        $requiredFields = array('articlenumber', 'name', 'quantity', 'unitprice', 'vatpercent');
-
-        foreach ($requiredFields as $field) {
-            if (!isset($itemData[$field]) || $itemData[$field] === '') {
-                throw new SveaInputValidationException(
-                    "Order row \"$field\" should be passed!",
-                    ExceptionCodeList::INPUT_VALIDATION_ERROR
-                );
-            }
         }
     }
 }

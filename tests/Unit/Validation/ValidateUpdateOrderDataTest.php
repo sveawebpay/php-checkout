@@ -54,82 +54,39 @@ class ValidateUpdateOrderDataTest extends TestCase
         $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderId', array($this->inputUpdateData));
     }
 
-
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateOrderItemsWithNoArrayData()
+    public function testValidateOrderCartWithCartNoArrayData()
     {
-        $this->inputUpdateData['order_lines'] = '';
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
-    }
-
-    public function testValidateOrderItemsWithEmptyArray()
-    {
-        $this->inputUpdateData['order_lines'] = array();
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
-    }
-
-    public function testValidateOrderItemsWithArray()
-    {
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItems', array($this->inputUpdateData));
+        $this->inputUpdateData['cart'] = '';
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderCart', array($this->inputUpdateData));
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateOrderItemWithNoArrayData()
+    public function testValidateOrderCartWithItemsNoArrayData()
     {
-        $this->inputUpdateData = '';
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($this->inputUpdateData));
+        $this->inputUpdateData['cart']['items'] = '';
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderCart', array($this->inputUpdateData));
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateOrderItemWithEmptyArrayData()
+    public function testValidateOrderCartWithCartEmptyArrayData()
     {
-        $this->inputUpdateData = array();
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($this->inputUpdateData));
+        $this->inputUpdateData['cart'] = array();
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderCart', array($this->inputUpdateData));
     }
 
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateOrderItemWithoutRequiredFields()
+    public function testValidateOrderCartWithValidData()
     {
-        $orderItemData = $this->inputUpdateData['order_lines'][0];
-        unset($orderItemData['name']);
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateOrderItemWithEmptyStringFiled()
-    {
-        $orderItemData = $this->inputUpdateData['order_lines'][0];
-        $orderItemData['name'] = '';
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
-    }
-
-    public function testValidateOrderItemWithFalseValueField()
-    {
-        $orderItemData = $this->inputUpdateData['order_lines'][0];
-        $orderItemData['name'] = false;
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
-    }
-
-    public function testValidateOrderItemWithZeroValueField()
-    {
-        $orderItemData = $this->inputUpdateData['order_lines'][0];
-        $orderItemData['name'] = 0;
-        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderItem', array($orderItemData));
+        $this->invokeMethod($this->validateUpdateOrderData, 'validateOrderCart', array($this->inputUpdateData));
     }
 
     public function testValidateWithValidData()

@@ -26,15 +26,6 @@ class GetOrderTest extends TestCase
         $this->order = new GetOrder($this->connectorMock, $this->validatorMock);
     }
 
-    public function testMapData()
-    {
-        $getOrder = $this->order;
-        $orderId = 2;
-        $getOrder->mapData($orderId);
-
-        $this->assertEquals($orderId, $getOrder->getOrderId());
-    }
-
     public function testInvoke()
     {
         $fakeResponse = 'Test response!!!';
