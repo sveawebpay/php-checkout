@@ -17,10 +17,9 @@ class ValidateGetOrderData implements ValidationInterface
      */
     public function validate($data)
     {
-        $id = intval($data);
-        if ($id === 0) {
+        if (is_numeric($data)) {
             throw new SveaInputValidationException(
-                'Order ID should be passed like integer!',
+                'Order ID should be passed like long integer(numeric value)!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }
