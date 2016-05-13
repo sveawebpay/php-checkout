@@ -69,16 +69,17 @@ $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $ba
 ```
 
 #####Creating Order
-CheckoutClint object is entry point for creating, getting and updating of order.
-To create Checkout object you need to provide Connector object as constructor property.
+CheckoutClient object is entry point for creating, getting and updating the order.
+To create CheckoutClient object you need to provide Connector object as constructor property.
 
 ```php
 $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 ```
 
 Information about new order must be provide as list. Required fields are given in table below:
+
  | Parameters IN                 | Required  | Type      | Description  |
- |---------------------------    |-----------|-----------|--------------|
+ |-------------------------------|-----------|-----------|--------------|
  | merchantSettings              |	*        | array     | List of Merchant urls |
  | cart                          |	*        | array     | List of cart items that should be passed through 'items' list|
  | locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
@@ -87,7 +88,7 @@ Information about new order must be provide as list. Required fields are given i
 
 
  | merchantSettings             | Required  | Type      | Description  |
- |---------------------------   |-----------|-----------|--------------|
+ |------------------------------|-----------|-----------|--------------|
  | termsuri                     |	*       | string    | See... @TODO |
  | checkouturi                  |	*       | string    | See... @TODO |
  | confirmationuri              |	*       | string    | See... @TODO |
@@ -95,7 +96,7 @@ Information about new order must be provide as list. Required fields are given i
 
 
  | cart > items                 | Required  | Type      | Description  |
- |---------------------------   |-----------|-----------|--------------|
+ |------------------------------|-----------|-----------|--------------|
  | type                         |	*       | string    | See... @TODO |
  | articlenumber                |	*       | string    | See... @TODO |
  | name                         |	*       | string    | See... @TODO |
