@@ -9,11 +9,6 @@ class UpdateOrder extends ImplementationManager
     const API_URL = '/api/orders/';
 
     /**
-     * @var int
-     */
-    private $orderId;
-
-    /**
      * Request body - JSON
      *
      * @var Request $requestModel
@@ -37,10 +32,13 @@ class UpdateOrder extends ImplementationManager
      */
     public function prepareData($data)
     {
+        $cart = array();
+        $cart['cart'] = $data['cart'];
+        $orderId = $data['id'];
         $this->requestModel = new Request();
         $this->requestModel->setPutMethod();
-        $this->requestModel->setBody(json_encode($data));
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
+        $this->requestModel->setBody(json_encode($cart));
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $orderId);
     }
 
     public function invoke()
