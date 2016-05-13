@@ -18,7 +18,7 @@ class ValidateCreateOrderData implements ValidationInterface
     public function validate($data)
     {
         $this->validateGeneralData($data);
-//        $this->validateMerchant($data);
+        $this->validateMerchant($data);
         $this->validateOrderCart($data);
     }
 
@@ -35,7 +35,7 @@ class ValidateCreateOrderData implements ValidationInterface
             );
         }
 
-        $requiredFields = array('locale', 'currency', 'countrycode', 'merchantSettings');
+        $requiredFields = array('merchantSettings',  'cart', 'locale', 'currency', 'countrycode');
 
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || $data[$field] === '') {
@@ -47,32 +47,31 @@ class ValidateCreateOrderData implements ValidationInterface
         }
     }
 
-//   TODO - check if we need validate merchant settings uris
-//    /**
-//     * @param array $data
-//     * @throws SveaInputValidationException
-//     */
-//    private function validateMerchant($data)
-//    {
-//        if (!isset($data['merchantSettings'])) {
-//            throw new SveaInputValidationException(
-//                'Merchant "merchantSettings" array should be passed!',
-//                ExceptionCodeList::INPUT_VALIDATION_ERROR
-//            );
-//        }
-//
-//        $merchantData = $data['merchantSettings'];
-//        $requiredFields = array('termsuri', 'checkouturi', 'confirmationuri', 'pushuri');
-//
-//        foreach ($requiredFields as $field) {
-//            if (!isset($merchantData[$field]) || $merchantData[$field] === '') {
-//                throw new SveaInputValidationException(
-//                    "Merchant \"$field\" url should be passed!",
-//                    ExceptionCodeList::INPUT_VALIDATION_ERROR
-//                );
-//            }
-//        }
-//    }
+    /**
+     * @param array $data
+     * @throws SveaInputValidationException
+     */
+    private function validateMerchant($data)
+    {
+        if (!isset($data['merchantSettings']) || !is_array($data['merchantSettings'])) {
+            throw new SveaInputValidationException(
+                'Merchant "merchantSettings" array should be passed as array!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+
+        $merchantData = $data['merchantSettings'];
+        $requiredFields = array('termsuri', 'checkouturi', 'confirmationuri', 'pushuri');
+
+        foreach ($requiredFields as $field) {
+            if (!isset($merchantData[$field]) || $merchantData[$field] === '') {
+                throw new SveaInputValidationException(
+                    "Merchant \"$field\" url should be passed!",
+                    ExceptionCodeList::INPUT_VALIDATION_ERROR
+                );
+            }
+        }
+    }
 
     /**
      * @param array $data

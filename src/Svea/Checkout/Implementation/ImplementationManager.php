@@ -64,6 +64,7 @@ abstract class ImplementationManager implements ImplementationInterface
     }
 
     /**
+     * Input data validation
      * @param mixed $data Input data to Svea Checkout Library
      */
     abstract public function validateData($data);
@@ -71,7 +72,6 @@ abstract class ImplementationManager implements ImplementationInterface
     /**
      * Prepare body data for Api call
      * @param mixed $data
-     * @return
      */
     abstract public function prepareData($data);
 

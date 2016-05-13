@@ -5,6 +5,7 @@ namespace Svea\Checkout\Tests\Unit\Implementation;
 use Svea\Checkout\Implementation\CreateOrder;
 use Svea\Checkout\Tests\Unit\TestCase;
 use Svea\Checkout\Validation\ValidateCreateOrderData;
+use Svea\Checkout\Model\Request;
 
 class CreateOrderTest extends TestCase
 {
@@ -28,39 +29,42 @@ class CreateOrderTest extends TestCase
 
     public function testPrepareData()
     {
+        $this->connectorMock->expects($this->once())
+            ->method('getBaseApiUrl');
+
         $this->createOrder->prepareData($this->inputCreateData);
 
-        $requestBodyData = json_decode($this->createOrder->getRequestBodyData(), true);
+        $requestModel = $this->createOrder->getRequestModel();
+        $requestBodyData = json_decode($requestModel->getBody(), true);
 
-        $this->assertEquals($requestBodyData['locale'], $this->inputCreateData['locale']);
-        $this->assertEquals($requestBodyData['countrycode'], $this->inputCreateData['countrycode']);
-        $this->assertEquals($requestBodyData['currency'], $this->inputCreateData['currency']);
+        $this->assertEquals(Request::METHOD_POST, $requestModel->getMethod());
+        $this->assertEquals($this->inputCreateData['locale'], $requestBodyData['locale']);
+        $this->assertEquals($this->inputCreateData['countrycode'], $requestBodyData['countrycode']);
+        $this->assertEquals($this->inputCreateData['currency'], $requestBodyData['currency']);
 
         $items = $requestBodyData['cart']['items'];
 
         $expectedItems = $requestBodyData['cart']['items'];
-        $this->assertEquals($items[0]['articlenumber'], $expectedItems[0]['articlenumber']);
-        $this->assertEquals($items[0]['quantity'], $expectedItems[0]['quantity']);
+        $this->assertEquals($expectedItems[0]['articlenumber'], $items[0]['articlenumber']);
+        $this->assertEquals($expectedItems[0]['quantity'], $items[0]['quantity']);
 
         $merchantSettings = $requestBodyData['merchantSettings'];
         $expectedMerchantSettings = $this->inputCreateData['merchantSettings'];
-        $this->assertEquals($merchantSettings['termsuri'], $expectedMerchantSettings['termsuri']);
-        $this->assertEquals($merchantSettings['checkouturi'], $expectedMerchantSettings['checkouturi']);
-        $this->assertEquals($merchantSettings['confirmationuri'], $expectedMerchantSettings['confirmationuri']);
-        $this->assertEquals($merchantSettings['pushuri'], $expectedMerchantSettings['pushuri']);
+        $this->assertEquals($expectedMerchantSettings['termsuri'], $merchantSettings['termsuri']);
+        $this->assertEquals($expectedMerchantSettings['checkouturi'], $merchantSettings['checkouturi']);
+        $this->assertEquals($expectedMerchantSettings['confirmationuri'], $merchantSettings['confirmationuri']);
+        $this->assertEquals($expectedMerchantSettings['pushuri'], $merchantSettings['pushuri']);
     }
 
     public function testInvoke()
     {
         $fakeResponse = 'Test response!!!';
         $this->connectorMock->expects($this->once())
-            ->method('getBaseApiUrl');
-        $this->connectorMock->expects($this->once())
             ->method('sendRequest')
             ->will($this->returnValue($fakeResponse));
 
         $createOrder = $this->createOrder;
-        $createOrder->setRequestBodyData(json_encode($this->inputCreateData));
+        $createOrder->setRequestModel($this->requestModel);
         $createOrder->invoke();
 
         $this->assertEquals($fakeResponse, $createOrder->getResponse());

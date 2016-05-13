@@ -3,6 +3,7 @@
 namespace Svea\Checkout\Tests\Unit\Implementation;
 
 use Svea\Checkout\Implementation\UpdateOrder;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Tests\Unit\TestCase;
 use Svea\Checkout\Validation\ValidateUpdateOrderData;
 
@@ -28,15 +29,21 @@ class UpdateOrderTest extends TestCase
 
     public function testPrepareData()
     {
+        $this->connectorMock->expects($this->once())
+            ->method('getBaseApiUrl');
+        
         $this->updateOrder->prepareData($this->inputUpdateData);
 
-        $requestBodyData = json_decode($this->updateOrder->getRequestBodyData(), true);
+        $requestModel = $this->updateOrder->getRequestModel();
+        $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $items = $requestBodyData['cart']['items'];
 
+        $this->assertEquals(Request::METHOD_PUT, $requestModel->getMethod());
+
         $expectedItems = $this->inputUpdateData['cart']['items'];
-        $this->assertEquals($items[0]['articlenumber'], $expectedItems[0]['articlenumber']);
-        $this->assertEquals($items[0]['quantity'], $expectedItems[0]['quantity']);
+        $this->assertEquals($expectedItems[0]['articlenumber'], $items[0]['articlenumber']);
+        $this->assertEquals($expectedItems[0]['quantity'], $items[0]['quantity']);
 
     }
 
@@ -44,13 +51,11 @@ class UpdateOrderTest extends TestCase
     {
         $fakeResponse = 'Test response!!!';
         $this->connectorMock->expects($this->once())
-            ->method('getBaseApiUrl');
-        $this->connectorMock->expects($this->once())
             ->method('sendRequest')
             ->will($this->returnValue($fakeResponse));
 
         $updateOrder = $this->updateOrder;
-        $updateOrder->setRequestBodyData(json_encode($this->inputUpdateData));
+        $updateOrder->setRequestModel($this->requestModel);
         $updateOrder->invoke();
 
         $this->assertEquals($fakeResponse, $updateOrder->getResponse());

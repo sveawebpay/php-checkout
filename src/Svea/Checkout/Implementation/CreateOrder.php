@@ -11,9 +11,9 @@ class CreateOrder extends ImplementationManager
     /**
      * Request body - JSON
      *
-     * @var string $requestBodyData
+     * @var Request $requestModel
      */
-    private $requestBodyData;
+    private $requestModel;
 
     /**
      * Validate passed data
@@ -33,7 +33,10 @@ class CreateOrder extends ImplementationManager
      */
     public function prepareData($data)
     {
-        $this->requestBodyData = json_encode($data);
+        $this->requestModel = new Request();
+        $this->requestModel->setPostMethod();
+        $this->requestModel->setBody(json_encode($data));
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL);
     }
 
 
@@ -44,27 +47,22 @@ class CreateOrder extends ImplementationManager
      */
     public function invoke()
     {
-        $requestModel = new Request();
-        $requestModel->setPostMethod();
-        $requestModel->setBody($this->requestBodyData);
-        $requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL);
-
-        $this->response = $this->connector->sendRequest($requestModel);
+        $this->response = $this->connector->sendRequest($this->requestModel);
     }
 
     /**
-     * @return string
+     * @return Request
      */
-    public function getRequestBodyData()
+    public function getRequestModel()
     {
-        return $this->requestBodyData;
+        return $this->requestModel;
     }
 
     /**
-     * @param string $requestBodyData
+     * @param Request $requestModel
      */
-    public function setRequestBodyData($requestBodyData)
+    public function setRequestModel($requestModel)
     {
-        $this->requestBodyData = $requestBodyData;
+        $this->requestModel = $requestModel;
     }
 }
