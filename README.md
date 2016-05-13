@@ -87,12 +87,14 @@ Information about new order must be provide as list. Required fields are given i
 | currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK"|
 
 
+
 | merchantSettings             | Required  | Type      | Description  |
 |------------------------------|-----------|-----------|--------------|
-| termsuri                     |	*       | string    | See... @TODO |
-| checkouturi                  |	*       | string    | See... @TODO |
-| confirmationuri              |	*       | string    | See... @TODO |
-| pushuri                      |	*       | string    | See... @TODO |
+| termsuri                     |	*      | string    | See... @TODO |
+| checkouturi                  |	*      | string    | See... @TODO |
+| confirmationuri              |	*      | string    | See... @TODO |
+| pushuri                      |	*      | string    | See... @TODO |
+
 
 
 | cart > items                 | Required  | Type      | Description  |
@@ -105,6 +107,54 @@ Information about new order must be provide as list. Required fields are given i
 | discountprice                |	*       | int       | See... @TODO |
 | vatpercent                   |	*       | int       | See... @TODO |
 
+
+Now, when CheckoutClient is created we can create order. Calling Api for creating order is done by passing data to
+method _create_.
+
+```php
+// - Add required information for creating order
+$data = array(
+    "countrycode" => "SE",
+    "currency" => "SEK",
+    "locale" => "sv-SE",
+    "cart" => array(
+        "items" => array(
+            array(
+                "articlenumber" => "123456789",
+                "name" => "Dator",
+                "quantity" => 200,
+                "unitprice" => 12300,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+            ),
+            array(
+                "articlenumber" => "987654321",
+                "name" => "Fork",
+                "quantity" => 300,
+                "unitprice" => 15800,
+                "discountpercent" => 2000,
+                "vatpercent" => 2500
+            ),
+            array(
+                "type" => "shipping_fee",
+                "articlenumber" => "SHIPPING",
+                "name" => "Shipping fee",
+                "quantity" => 100,
+                "unitprice" => 4900,
+                "vatpercent" => 2500
+            )
+        )
+    ),
+    "merchantSettings" => array(
+        "termsuri" => "http://localhost:51898/terms",
+        "checkouturi" => "http://localhost:51925/",
+        "confirmationuri" => "http://localhost:51925/checkout/confirm",
+        "pushuri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+    )
+);
+
+$response = $checkoutClient->create($data);
+```
 
 
 ### 4. Introduction <a id="get-order"></a>
