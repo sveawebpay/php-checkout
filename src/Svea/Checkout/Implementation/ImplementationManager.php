@@ -49,8 +49,7 @@ abstract class ImplementationManager implements ImplementationInterface
     public function execute($data)
     {
         $this->validateData($data);
-        $this->mapData($data);
-        $this->prepareData();
+        $this->prepareData($data);
         $this->invoke();
     }
 
@@ -65,19 +64,16 @@ abstract class ImplementationManager implements ImplementationInterface
     }
 
     /**
+     * Input data validation
      * @param mixed $data Input data to Svea Checkout Library
      */
     abstract public function validateData($data);
 
     /**
-     * @param mixed $data Input data to Svea Checkout Library
-     */
-    abstract public function mapData($data);
-
-    /**
      * Prepare body data for Api call
+     * @param mixed $data
      */
-    abstract public function prepareData();
+    abstract public function prepareData($data);
 
     /**
      * Invoke Api call

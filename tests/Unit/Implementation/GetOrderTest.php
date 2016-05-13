@@ -3,6 +3,7 @@
 namespace Svea\Checkout\Tests\Unit\Implementation;
 
 use Svea\Checkout\Implementation\GetOrder;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Tests\Unit\TestCase;
 use Svea\Checkout\Validation\ValidateGetOrderData;
 
@@ -16,38 +17,43 @@ class GetOrderTest extends TestCase
     /**
      * @var GetOrder
      */
-    protected $order;
+    protected $getOrder;
 
     public function setUp()
     {
         parent::setUp();
 
         $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\ValidateGetOrderData')->getMock();
-        $this->order = new GetOrder($this->connectorMock, $this->validatorMock);
+        $this->getOrder = new GetOrder($this->connectorMock, $this->validatorMock);
     }
 
-    public function testMapData()
+    public function testPrepareData()
     {
-        $getOrder = $this->order;
-        $orderId = 2;
-        $getOrder->mapData($orderId);
+        $this->connectorMock->expects($this->once())
+            ->method('getBaseApiUrl');
 
-        $this->assertEquals($orderId, $getOrder->getOrderId());
+        $this->getOrder->prepareData(5);
+
+        $requestModel = $this->getOrder->getRequestModel();
+
+        $this->assertInstanceOf('\Svea\Checkout\Model\Request', $requestModel);
+        $this->assertEquals(Request::METHOD_GET, $requestModel->getMethod());
     }
 
     public function testInvoke()
     {
         $fakeResponse = 'Test response!!!';
         $this->connectorMock->expects($this->once())
-            ->method('getBaseApiUrl');
-        $this->connectorMock->expects($this->once())
             ->method('sendRequest')
             ->will($this->returnValue(($fakeResponse)));
 
-        $getOrder = $this->order;
-        $getOrder->invoke();
+        $this->requestModel->setGetMethod();
+        $this->requestModel->setBody(null);
+        $this->getOrder->setRequestModel($this->requestModel);
 
-        $this->assertEquals($fakeResponse, $getOrder->getResponse());
+        $this->getOrder->invoke();
+
+        $this->assertEquals($fakeResponse, $this->getOrder->getResponse());
     }
 
     public function testValidate()
@@ -55,8 +61,7 @@ class GetOrderTest extends TestCase
         $orderId = 3;
         $this->validatorMock->expects($this->once())
             ->method('validate');
-        $getOrder = $this->order;
 
-        $getOrder->validateData($orderId);
+        $this->getOrder->validateData($orderId);
     }
 }

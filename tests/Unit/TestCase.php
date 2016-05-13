@@ -2,10 +2,6 @@
 
 namespace Svea\Checkout\Tests\Unit;
 
-use Svea\Checkout\Model\Cart;
-use Svea\Checkout\Model\CheckoutData;
-use Svea\Checkout\Model\MerchantSettings;
-use Svea\Checkout\Model\OrderRow;
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\ApiClient;
 use Svea\Checkout\Transport\Connector;
@@ -44,11 +40,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $inputUpdateData;
 
     /**
-     * @var CheckoutData $checkoutData
-     */
-    protected $checkoutData;
-
-    /**
      * @var string $apiResponse
      */
     protected $apiResponse;
@@ -72,16 +63,8 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $apiUrl = Connector::TEST_BASE_URL;
 
-    /**
-     * Request body data for create Svea Order - Mock
-     *
-     * @var array $createOrderRequestData
-     */
-    protected $createOrderRequestData;
-
     protected function setUp()
     {
-        $this->setOrderData();
         $this->setApiResponse();
         $this->setRequest();
         $this->setCurlRequest();
@@ -89,15 +72,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->setConnector();
         $this->setInputCreateData();
         $this->setInputUpdateData();
-        $this->setCheckoutData();
     }
 
     /**
      * Call protected/private method of a class.
      *
-     * @param object $object    Instantiated object that we will run method on.
+     * @param object $object Instantiated object that we will run method on.
      * @param string $methodName Method name to call
-     * @param array  $parameters Array of parameters to pass into method.
+     * @param array $parameters Array of parameters to pass into method.
      *
      * @return mixed Method return.
      */
@@ -114,7 +96,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     {
         $this->requestModel = new Request();
         $this->requestModel->setApiUrl($this->apiUrl);
-        $this->requestModel->setBody(json_encode($this->createOrderRequestData));
+        $this->requestModel->setBody(json_encode($this->inputCreateData));
         $this->requestModel->setPostMethod();
         $this->requestModel->setAuthorizationToken('123456789');
     }
@@ -137,49 +119,6 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->connectorMock = $this->getMockBuilder('Svea\Checkout\Transport\Connector')
             ->setConstructorArgs(array($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl))
             ->getMock();
-    }
-
-    // @todo rename this function
-    private function setOrderData()
-    {
-        $this->createOrderRequestData = array(
-            "purchase_country" => "gb",
-            "purchase_currency" => "gbp",
-            "locale" => "en-gb",
-            "order_amount" => 10000,
-            "order_tax_amount" => 2000,
-            "order_lines" => array(
-                array(
-                    "type" => "physical",
-                    "reference" => "123050",
-                    "name" => "Tomatoes",
-                    "quantity" => 10,
-                    "quantity_unit" => "kg",
-                    "unit_price" => 600,
-                    "tax_rate" => 2500,
-                    "total_amount" => 6000,
-                    "total_tax_amount" => 1200
-                ),
-                array(
-                    "type" => "physical",
-                    "reference" => "543670",
-                    "name" => "Bananas",
-                    "quantity" => 1,
-                    "quantity_unit" => "bag",
-                    "unit_price" => 5000,
-                    "tax_rate" => 2500,
-                    "total_amount" => 4000,
-                    "total_discount_amount" => 1000,
-                    "total_tax_amount" => 800
-                )
-            ),
-            "merchant_urls" => array(
-                "terms" => "http://www.merchant.com/toc",
-                "checkout" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
-                "confirmation" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
-                "push" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
-            )
-        );
     }
 
     private function setApiResponse()
@@ -271,26 +210,34 @@ JSON;
     private function setInputCreateData()
     {
         $this->inputCreateData = array(
-            "purchase_country" => "SE",
-            "purchase_currency" => "SEK",
+            "countrycode" => "SE",
+            "currency" => "SEK",
             "locale" => "sv-SE",
-            "order_amount" => 10000,
-            "order_tax_amount" => 2000,
-            "order_lines" => array(
-                array(
-                    "articlenumber" => "123456789",
-                    "name" => "Dator",
-                    "quantity" => 200,
-                    "unitprice" => 12300,
-                    "discountpercent" => 1000,
-                    "vatpercent" => 2500
+            "cart" => array(
+                "items" => array(
+                    array(
+                        "articlenumber" => "123456",
+                        "name" => "Tomatoes",
+                        "quantity" => 10,
+                        "unitprice" => 600,
+                        "discountpercent" => 1000,
+                        "vatpercent" => 2500
+                    ),
+                    array(
+                        "articlenumber" => "654321",
+                        "name" => "Bananas",
+                        "quantity" => 1,
+                        "unitprice" => 500,
+                        "discountpercent" => 900,
+                        "vatpercent" => 2000
+                    )
                 )
             ),
-            "merchant_urls" => array(
-                "terms" => "http://localhost:51898/terms",
-                "checkout" => "http://localhost:51925/",
-                "confirmation" => "http://localhost:51925/checkout/confirm",
-                "push" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+            "merchantSettings" => array(
+                "termsuri" => "http://www.merchant.com/toc",
+                "checkouturi" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
+                "confirmationuri" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
+                "pushuri" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
             )
         );
     }
@@ -299,61 +246,26 @@ JSON;
     {
         $this->inputUpdateData = array(
             "id" => 4,
-            "order_lines" => array(
-                array(
-                    "articlenumber" => "123456789",
-                    "name" => "Dator",
-                    "quantity" => 200,
-                    "unitprice" => 12300,
-                    "discountpercent" => 1000,
-                    "vatpercent" => 2500
-                ),
-                array(
-                    "type" => "shipping_fee",
-                    "articlenumber" => "SHIPPING",
-                    "name" => "Shipping fee",
-                    "quantity" => 100,
-                    "unitprice" => 4900,
-                    "vatpercent" => 2500
-                ),
+            "cart" => array(
+                "items" => array(
+                    array(
+                        "articlenumber" => "123456789",
+                        "name" => "Dator",
+                        "quantity" => 200,
+                        "unitprice" => 12300,
+                        "discountpercent" => 1000,
+                        "vatpercent" => 2500
+                    ),
+                    array(
+                        "type" => "shipping_fee",
+                        "articlenumber" => "SHIPPING",
+                        "name" => "Shipping fee",
+                        "quantity" => 100,
+                        "unitprice" => 4900,
+                        "vatpercent" => 2500
+                    )
+                )
             )
         );
-    }
-
-    private function setCheckoutData()
-    {
-        $this->checkoutData = new CheckoutData();
-
-        $merchantData = $this->inputCreateData['merchant_urls'];
-        $merchantSettings = new MerchantSettings();
-        $merchantSettings->setTermsUri($merchantData['terms']);
-        $merchantSettings->setCheckoutUri($merchantData['checkout']);
-        $merchantSettings->setConfirmationUri($merchantData['confirmation']);
-        $merchantSettings->setPushUri($merchantData['push']);
-
-        $this->checkoutData->setMerchantSettings($merchantSettings);
-
-        $cart = new Cart();
-
-        $orderLines = $this->inputCreateData['order_lines'];
-        foreach ($orderLines as $orderLine) {
-            $orderRow = new OrderRow();
-            $orderRow->setArticleNumber($orderLine['articlenumber']);
-            $orderRow->setDiscountPercent($orderLine['discountpercent']);
-            $orderRow->setName($orderLine['name']);
-            $orderRow->setQuantity($orderLine['quantity']);
-            $orderRow->setUnitPrice($orderLine['unitprice']);
-            $orderRow->setVatPercent($orderLine['vatpercent']);
-
-            $cart->addItem($orderRow);
-        }
-
-        $this->checkoutData->setCart($cart);
-
-        $this->checkoutData->setLocale($this->inputCreateData['locale']);
-
-        $this->checkoutData->setCurrency($this->inputCreateData['purchase_currency']);
-
-        $this->checkoutData->setCountryCode($this->inputCreateData['purchase_country']);
     }
 }

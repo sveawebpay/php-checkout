@@ -10,6 +10,10 @@ namespace Svea\Checkout\Model;
  */
 class Request
 {
+    const METHOD_GET = 'GET';
+    const METHOD_POST = 'POST';
+    const METHOD_PUT = 'PUT';
+    
     /**
      * Authorization token, sent trough authorization header in request.
      *
@@ -91,7 +95,7 @@ class Request
      */
     public function setPostMethod()
     {
-        $this->method = 'POST';
+        $this->method = self::METHOD_POST;
     }
 
     /**
@@ -99,7 +103,7 @@ class Request
      */
     public function setGetMethod()
     {
-        $this->method = 'GET';
+        $this->method = self::METHOD_GET;
     }
 
     /**
@@ -107,7 +111,7 @@ class Request
      */
     public function setPutMethod()
     {
-        $this->method = 'PUT';
+        $this->method = self::METHOD_PUT;
     }
 
     /**

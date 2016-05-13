@@ -8,7 +8,7 @@ use Svea\Checkout\Validation\ValidateCreateOrderData;
 class ValidateCreateOrderDataTest extends TestCase
 {
     /**
-     * @var ValidateCreateOrderData $validateUpdateOrderData
+     * @var ValidateCreateOrderData $validateCreateOrderData
      */
     private $validateCreateOrderData;
 
@@ -64,9 +64,9 @@ class ValidateCreateOrderDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateMerchantWithNoArrayData()
+    public function testValidateMerchantWithoutData()
     {
-        $this->inputCreateData['merchant_urls'] = '';
+        unset($this->inputCreateData['merchantSettings']);
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -74,9 +74,9 @@ class ValidateCreateOrderDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateMerchantWithoutData()
+    public function testValidateMerchantWithNoArrayData()
     {
-        unset($this->inputCreateData['merchant_urls']);
+        $this->inputCreateData['merchantSettings'] = '';
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -86,7 +86,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithoutRequiredFields()
     {
-        unset($this->inputCreateData['merchant_urls']['checkout']);
+        unset($this->inputCreateData['merchantSettings']['checkouturi']);
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -96,19 +96,19 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithEmptyStringFiled()
     {
-        $this->inputCreateData['merchant_urls']['checkout'] = '';
+        $this->inputCreateData['merchantSettings']['checkouturi'] = '';
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
     public function testValidateMerchantWithFalseValueField()
     {
-        $this->inputCreateData['merchant_urls']['checkout'] = false;
+        $this->inputCreateData['merchantSettings']['checkouturi'] = false;
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
     public function testValidateMerchantWithZeroValueField()
     {
-        $this->inputCreateData['merchant_urls']['checkout'] = 0;
+        $this->inputCreateData['merchantSettings']['checkouturi'] = 0;
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -116,71 +116,35 @@ class ValidateCreateOrderDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateOrderItemsWithNoArrayData()
+    public function testValidateOrderCartWithCartNoArrayData()
     {
-        $this->inputCreateData['order_lines'] = '';
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItems', array($this->inputCreateData));
-    }
-
-    public function testValidateOrderItemsWithValidData()
-    {
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItems', array($this->inputCreateData));
+        $this->inputCreateData['cart'] = '';
+        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderCart', array($this->inputCreateData));
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateOrderItemWithNoArrayData()
+    public function testValidateOrderCartWithItemsNoArrayData()
     {
-        $orderItemData = '';
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItem', array($orderItemData));
+        $this->inputCreateData['cart']['items'] = '';
+        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderCart', array($this->inputCreateData));
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateOrderItemWithEmptyArrayData()
+    public function testValidateOrderCartWithCartEmptyArrayData()
     {
-        $orderItemData = array();
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItem', array($orderItemData));
+        $this->inputCreateData['cart'] = array();
+        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderCart', array($this->inputCreateData));
     }
 
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateOrderItemWithoutRequiredFields()
+    public function testValidateOrderCartWithValidData()
     {
-        $orderItemData = $this->inputCreateData['order_lines'][0];
-        unset($orderItemData['name']);
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItem', array($orderItemData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateOrderItemWithEmptyStringFiled()
-    {
-        $orderItemData = $this->inputCreateData['order_lines'][0];
-        $orderItemData['name'] = '';
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItem', array($orderItemData));
-    }
-
-    public function testValidateOrderItemWithFalseValueField()
-    {
-        $orderItemData = $this->inputCreateData['order_lines'][0];
-        $orderItemData['name'] = false;
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItem', array($orderItemData));
-    }
-
-    public function testValidateOrderItemWithZeroValueField()
-    {
-        $orderItemData = $this->inputCreateData['order_lines'][0];
-        $orderItemData['name'] = 0;
-        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderItem', array($orderItemData));
+        $this->invokeMethod($this->validateCreateOrderData, 'validateOrderCart', array($this->inputCreateData));
     }
 
     public function testValidateWithValidData()

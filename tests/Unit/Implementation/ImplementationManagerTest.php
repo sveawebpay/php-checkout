@@ -15,15 +15,11 @@ class ImplementationManagerTest extends TestCase
          */
         $mock = $this->getMockBuilder('\Svea\Checkout\Implementation\ImplementationManager')
             ->setConstructorArgs(array($this->connectorMock, $validatorMock))
-            ->setMethods(array('validateData', 'mapData', 'prepareData', 'invoke'))
+            ->setMethods(array('validateData', 'prepareData', 'invoke'))
             ->getMock();
 
         $mock->expects($this->once())
             ->method('validateData')
-            ->with($this->equalTo($this->inputCreateData));
-
-        $mock->expects($this->once())
-            ->method('mapData')
             ->with($this->equalTo($this->inputCreateData));
 
         $mock->expects($this->once())

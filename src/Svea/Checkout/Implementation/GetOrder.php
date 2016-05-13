@@ -11,16 +11,11 @@ class GetOrder extends ImplementationManager
     const API_URL = '/api/orders/';
 
     /**
-     * @var int $orderId
-     */
-    private $orderId;
-
-    /**
      * Request body - JSON
      *
-     * @var string $requestBodyData
+     * @var Request $requestModel
      */
-    private $requestBodyData;
+    private $requestModel;
 
     /**
      * @param $data
@@ -33,20 +28,16 @@ class GetOrder extends ImplementationManager
     }
 
     /**
-     * Map input data
-     *
-     * @param mixed $data
-     */
-    public function mapData($data)
-    {
-        $this->orderId = intval($data);
-    }
-
-    /**
      * Prepare body data for Api call
+     *
+     * @param mixed $orderId
      */
-    // @codingStandardsIgnoreLine
-    public function prepareData(){}
+    public function prepareData($orderId)
+    {
+        $this->requestModel = new Request();
+        $this->requestModel->setGetMethod();
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $orderId);
+    }
 
     /**
      * Invoke request call
@@ -55,19 +46,22 @@ class GetOrder extends ImplementationManager
      */
     public function invoke()
     {
-        $request = new Request();
-        $request->setGetMethod();
-        $request->setBody($this->requestBodyData);
-        $request->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $this->orderId);
-
-        $this->response = $this->connector->sendRequest($request);
+        $this->response = $this->connector->sendRequest($this->requestModel);
     }
 
     /**
-     * @return int
+     * @return Request
      */
-    public function getOrderId()
+    public function getRequestModel()
     {
-        return $this->orderId;
+        return $this->requestModel;
+    }
+
+    /**
+     * @param Request $requestModel
+     */
+    public function setRequestModel($requestModel)
+    {
+        $this->requestModel = $requestModel;
     }
 }
