@@ -12,14 +12,14 @@ use Svea\Checkout\Exception\SveaInputValidationException;
 class ValidateGetOrderData implements ValidationInterface
 {
     /**
-     * @param int $data
+     * @param integer $data
      * @throws SveaInputValidationException If data is invalid
      */
     public function validate($data)
     {
-        if (is_numeric($data)) {
+        if (!is_numeric($data)) {
             throw new SveaInputValidationException(
-                'Order ID should be passed like long integer(numeric value)!',
+                'Order ID should be passed like long integer!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }

@@ -32,7 +32,7 @@ class ValidateUpdateOrderData implements ValidationInterface
             );
         }
 
-        if (is_numeric($data['id'])) {
+        if (!is_numeric($data['id'])) {
             throw new SveaInputValidationException(
                 'Order ID should be passed like integer!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
