@@ -156,6 +156,62 @@ $data = array(
 $response = $checkoutClient->create($data);
 ```
 
+Response is a list of data returned from API. Response example is given below.
+
+```
+Array
+(
+    [MerchantSettings] => Array
+        (
+            [TermsUri] => http://localhost:51898/terms
+            [CheckoutUri] => http://localhost:51925/
+            [ConfirmationUri] => http://localhost:51925/checkout/confirm
+            [PushUri] => https://svea.com/push.aspx?sid=123&svea_order=123
+        )
+
+    [Cart] => Array
+        (
+            [Items] => Array
+                (
+                    [0] => Array
+                        (
+                            [ArticleNumber] => 123456789
+                            [Name] => Dator
+                            [Quantity] => 200
+                            [UnitPrice] => 12300
+                            [DiscountPercent] => 1000
+                            [VatPercent] => 2500
+                            [Unit] =>
+                        )
+                    [1] => Array
+                        (
+                            [ArticleNumber] => SHIPPING
+                            [Name] => Shipping Fee Updated
+                            [Quantity] => 100
+                            [UnitPrice] => 4900
+                            [DiscountPercent] => 0
+                            [VatPercent] => 2500
+                            [Unit] =>
+                        )
+                )
+         )
+    [Customer] =>
+    [ShippingAddress] =>
+    [BillingAddress] =>
+    [Gui] => Array
+        (
+            [Layout] => desktop
+            [Snippet] =>
+        )
+    [Locale] => sv-SE
+    [Currency] =>
+    [CountryCode] =>
+    [PresetValues] =>
+    [OrderId] => 9
+    [Status] => Created
+)
+```
+
 
 ### 4. Introduction <a id="get-order"></a>
 

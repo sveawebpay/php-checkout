@@ -76,6 +76,8 @@ $response = $checkoutClient->get($orderId);
  *  - Status
  * */
 
+echo "<pre>" . print_r($response, true) . "</pre>";
+
 $orderId = $response['OrderId'];
 
 $guiSnippet = $response['Gui']['Snippet'];
