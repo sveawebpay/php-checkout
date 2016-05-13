@@ -78,8 +78,8 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 
 Information about new order must be provide as list. Required fields are given in table below:
 
-| Parameters IN                 | Required  | Type      | Description  |
-|-------------------------------|-----------|-----------|--------------|
+| Parameters IN                 | Required   | Type      | Description  |
+|-------------------------------|------------|-----------|--------------|
 | merchantSettings              |	*        | array     | List of Merchant urls |
 | cart                          |	*        | array     | List of cart items that should be passed through 'items' list|
 | locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
@@ -97,8 +97,8 @@ Information about new order must be provide as list. Required fields are given i
 
 
 
-| cart > items                 | Required  | Type      | Description  |
-|------------------------------|-----------|-----------|--------------|
+| cart > items                 | Required   | Type      | Description  |
+|------------------------------|------------|-----------|--------------|
 | type                         |	*       | string    | See... @TODO |
 | articlenumber                |	*       | string    | See... @TODO |
 | name                         |	*       | string    | See... @TODO |
