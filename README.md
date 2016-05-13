@@ -2,8 +2,8 @@
 Version 1.0.0
 
 ## Index
-* [1. Introduction](#intrudaction)
-* [2. Introduction](#create-order)
+* [1. Introduction](#introduction)
+* [2. Create order](#create-order)
 * [2. Build and Configuration](https://github.com/sveawebpay/dotnet-integration/tree/master#2-build-and-configuration)
 * [3. Create order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-create-order)
 * [3. Get order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-get-order)
@@ -13,7 +13,7 @@ Version 1.0.0
 
 
 
-### 1. Intrudaction [intrudaction]##
+### 1. Introduction <a id="introduction"></a>
 is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
 It is also possible to preset values to be displayed in the checkout.
 
@@ -31,7 +31,7 @@ If request is not successful it returns Http status code 400 (Bad request) and H
 
 
 
-### 1. Create order [create-order]##
+### 1. Create order  <a id="create-order"></a>
 is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
 It is also possible to preset values to be displayed in the checkout.
 
