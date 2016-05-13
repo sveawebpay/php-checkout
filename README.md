@@ -78,32 +78,32 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 
 Information about new order must be provide as list. Required fields are given in table below:
 
- | Parameters IN                 | Required  | Type      | Description  |
- |-------------------------------|-----------|-----------|--------------|
- | merchantSettings              |	*        | array     | List of Merchant urls |
- | cart                          |	*        | array     | List of cart items that should be passed through 'items' list|
- | locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
- | countrycode                   |	*        | string    | Client country code as ISO 3166 (eg. "SE") |
- | currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK"|
+| Parameters IN                 | Required  | Type      | Description  |
+|-------------------------------|-----------|-----------|--------------|
+| merchantSettings              |	*        | array     | List of Merchant urls |
+| cart                          |	*        | array     | List of cart items that should be passed through 'items' list|
+| locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
+| countrycode                   |	*        | string    | Client country code as ISO 3166 (eg. "SE") |
+| currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK"|
 
 
- | merchantSettings             | Required  | Type      | Description  |
- |------------------------------|-----------|-----------|--------------|
- | termsuri                     |	*       | string    | See... @TODO |
- | checkouturi                  |	*       | string    | See... @TODO |
- | confirmationuri              |	*       | string    | See... @TODO |
- | pushuri                      |	*       | string    | See... @TODO |
+| merchantSettings             | Required  | Type      | Description  |
+|------------------------------|-----------|-----------|--------------|
+| termsuri                     |	*       | string    | See... @TODO |
+| checkouturi                  |	*       | string    | See... @TODO |
+| confirmationuri              |	*       | string    | See... @TODO |
+| pushuri                      |	*       | string    | See... @TODO |
 
 
- | cart > items                 | Required  | Type      | Description  |
- |------------------------------|-----------|-----------|--------------|
- | type                         |	*       | string    | See... @TODO |
- | articlenumber                |	*       | string    | See... @TODO |
- | name                         |	*       | string    | See... @TODO |
- | quantity                     |	*       | int       | See... @TODO |
- | unitprice                    |	*       | int       | See... @TODO |
- | discountprice                |	*       | int       | See... @TODO |
- | vatpercent                   |	*       | int       | See... @TODO |
+| cart > items                 | Required  | Type      | Description  |
+|------------------------------|-----------|-----------|--------------|
+| type                         |	*       | string    | See... @TODO |
+| articlenumber                |	*       | string    | See... @TODO |
+| name                         |	*       | string    | See... @TODO |
+| quantity                     |	*       | int       | See... @TODO |
+| unitprice                    |	*       | int       | See... @TODO |
+| discountprice                |	*       | int       | See... @TODO |
+| vatpercent                   |	*       | int       | See... @TODO |
 
 
 
