@@ -3,7 +3,10 @@ Version 1.0.0
 
 ## Index
 * [1. Introduction](#introduction)
-* [2. Create order](#create-order)
+* [2. Setup](#setup)
+* [3. Create order](#create-order)
+* [4. Create order](#get-order)
+* [5. Create order](#update-order)
 * [2. Build and Configuration](https://github.com/sveawebpay/dotnet-integration/tree/master#2-build-and-configuration)
 * [3. Create order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-create-order)
 * [3. Get order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-get-order)
@@ -14,6 +17,60 @@ Version 1.0.0
 
 
 ### 1. Introduction <a id="introduction"></a>
+Svea Checkout Library is library that allows you easy integration with Svea Checkout Api. This library is dedicated for
+Creating Order, Getting Order information and for Updating Order information.
+
+This file contains an overview and examples how to implement and use the Svea Checkout Library in your project.
+
+
+### 2. Setup <a id="setup"></a>
+Svea Checkout Library can be implemented into project by composer or by copying this library directly into project.
+
+**Via Composer:** if you are using project with composer, you can add library:
+
+by command line with command:
+
+    Composer require svea/checkout
+
+or by adding next part into your composer.json file:
+
+    {
+        "require": {
+            "svea/checkout": "dev-master"
+        }
+    }
+
+**Normally:** if you have project that does not use Composer, you can download it from git and copy it into
+your project into desired folder. The thing that left is to include autoload.php file into your working files.
+
+
+### 3. Introduction <a id="create-order"></a>
+
+#####Include the library
+```php
+include 'autoload.php'
+```
+
+#####Create Connector
+Necessary fields for creating Connector are: merchantId, sharedSecret and base Api url.
+```php
+$merchantId = '1';
+$sharedSecret = 'sharedSecret';
+$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
+
+$conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
+```
+
+
+### 4. Introduction <a id="get-order"></a>
+
+
+
+
+### 5. Introduction <a id="update-order"></a>
+
+
+
 is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
 It is also possible to preset values to be displayed in the checkout.
 
