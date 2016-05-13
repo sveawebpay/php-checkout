@@ -44,7 +44,6 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
  * */
 $response = $checkoutClient->get($orderId);
 
-
 /*
  * Format of returned response array
  *
@@ -75,8 +74,6 @@ $response = $checkoutClient->get($orderId);
  *  - OrderId
  *  - Status
  * */
-
-echo "<pre>" . print_r($response, true) . "</pre>";
 
 $orderId = $response['OrderId'];
 

@@ -156,6 +156,13 @@ $data = array(
 $response = $checkoutClient->create($data);
 ```
 
+You can display Checkout Gui on your page simply by printing Gui data from response;
+
+```php
+echo $response['Gui']['Snippet']
+```
+
+
 Response is a list of data returned from API. Response example is given below.
 
 ```
@@ -213,12 +220,12 @@ Array
 ```
 
 
-### 4. Introduction <a id="get-order"></a>
+### 4. Get Order <a id="get-order"></a>
 
 
 
 
-### 5. Introduction <a id="update-order"></a>
+### 5. Update Order <a id="update-order"></a>
 
 
 
