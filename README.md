@@ -5,8 +5,9 @@ Version 1.0.0
 * [1. Introduction](#introduction)
 * [2. Setup](#setup)
 * [3. Create order](#create-order)
-* [4. Create order](#get-order)
-* [5. Create order](#update-order)
+* [4. Get order](#get-order)
+* [5. Update order](#update-order)
+
 * [2. Build and Configuration](https://github.com/sveawebpay/dotnet-integration/tree/master#2-build-and-configuration)
 * [3. Create order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-create-order)
 * [3. Get order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-get-order)
@@ -28,11 +29,11 @@ Svea Checkout Library can be implemented into project by composer or by copying 
 
 **Via Composer:** if you are using project with composer, you can add library:
 
-by command line with command:
+by command line with command
 
     Composer require svea/checkout
 
-or by adding next part into your composer.json file:
+or by adding next part into your composer.json file and do ` composer update `
 
     {
         "require": {
@@ -44,11 +45,17 @@ or by adding next part into your composer.json file:
 your project into desired folder. The thing that left is to include autoload.php file into your working files.
 
 
-### 3. Introduction <a id="create-order"></a>
+### 3. Create Order <a id="create-order"></a>
 
 #####Include the library
 ```php
-include 'autoload.php'
+include 'vendor/autoload.php'
+
+// or by include classes
+
+use \Svea\Checkout\Transport\Connector;
+// and
+use \Svea\Checkout\Implementation\ChechoutClient;
 ```
 
 #####Create Connector
@@ -60,6 +67,43 @@ $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
 ```
+
+#####Creating Order
+CheckoutClint object is entry point for creating, getting and updating of order.
+To create Checkout object you need to provide Connector object as constructor property.
+
+```php
+$checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
+```
+
+Information about new order must be provide as list. Required fields are given in table below:
+ | Parameters IN                 | Required  | Type      | Description  |
+ |---------------------------    |-----------|-----------|--------------|
+ | merchantSettings              |	*        | array     | List of Merchant urls |
+ | cart                          |	*        | array     | List of cart items that should be passed through 'items' list|
+ | locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
+ | countrycode                   |	*        | string    | Client country code as ISO 3166 (eg. "SE") |
+ | currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK"|
+
+
+ | merchantSettings             | Required  | Type      | Description  |
+ |---------------------------   |-----------|-----------|--------------|
+ | termsuri                     |	*       | string    | See... @TODO |
+ | checkouturi                  |	*       | string    | See... @TODO |
+ | confirmationuri              |	*       | string    | See... @TODO |
+ | pushuri                      |	*       | string    | See... @TODO |
+
+
+ | cart > items                 | Required  | Type      | Description  |
+ |---------------------------   |-----------|-----------|--------------|
+ | type                         |	*       | string    | See... @TODO |
+ | articlenumber                |	*       | string    | See... @TODO |
+ | name                         |	*       | string    | See... @TODO |
+ | quantity                     |	*       | int       | See... @TODO |
+ | unitprice                    |	*       | int       | See... @TODO |
+ | discountprice                |	*       | int       | See... @TODO |
+ | vatpercent                   |	*       | int       | See... @TODO |
+
 
 
 ### 4. Introduction <a id="get-order"></a>
