@@ -9,11 +9,6 @@ class UpdateOrder extends ImplementationManager
     const API_URL = '/api/orders/';
 
     /**
-     * @var int
-     */
-    private $orderId;
-
-    /**
      * Request body - JSON
      *
      * @var Request $requestModel
