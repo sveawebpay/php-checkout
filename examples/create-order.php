@@ -95,8 +95,7 @@ $response = $checkoutClient->create($data);
  *          - ArticleNumber
  *          - Name
  *          - Quantity
- *          - UnitPrice
- *          - DiscountPercent
+ *          - UnitPrice 
  *          - VatPercent
  *          - Unit
  *  - Customer
