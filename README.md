@@ -2,7 +2,8 @@
 Version 1.0.0
 
 ## Index
-* [1. Introduction](https://github.com/sveawebpay/dotnet-integration/tree/master#1-introduction)
+* [1. Introduction](#introduction)
+* [2. Create order](#create-order)
 * [2. Build and Configuration](https://github.com/sveawebpay/dotnet-integration/tree/master#2-build-and-configuration)
 * [3. Create order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-create-order)
 * [3. Get order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-get-order)
@@ -10,7 +11,27 @@ Version 1.0.0
 
 [<< To top](https://github.com/sveawebpay/dotnet-integration/tree/master#cnet-integration-package-api-for-svea-checkout)
 
-### 1. Create order
+
+
+### 1. Introduction <a id="introduction"></a>
+is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
+It is also possible to preset values to be displayed in the checkout.
+
+Returns a full Data object containing the order and the GUI, and a Http response with Http status code 201 (created). See... @TODO
+If request is not successful it returns Http status code 400 (Bad request) and Http header "ErrorMessage" containing the details.
+
+| Parameters IN                 | Required  | Type      | Description  |
+|---------------------------    |-----------|-----------|--------------|
+| merchantSettings              |	*   | array     | See... @TODO |
+| cart                          |	*   | array     | List of items See... @TODO |
+| locale                        |	*   | string    | Language Culture Name (eg. "sv-SE")|
+| countrycode                   |	*   | string    | Client country code as ISO 3166 (eg. "SE" |
+| currency                      |	*   | string    | Currency as ISO 4217 eg. "SEK"|
+
+
+
+
+### 1. Create order  <a id="create-order"></a>
 is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
 It is also possible to preset values to be displayed in the checkout.
 
