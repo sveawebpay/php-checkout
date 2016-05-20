@@ -20,7 +20,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Svea\\Checkout\\": "src/Svea/Checkout"
+      "Svea\\Checkout\\": "src"
     }
   },
   "minimum-stability": "stable",
