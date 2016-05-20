@@ -1,4 +1,4 @@
-# PHP Integration Package API for Svea Checkout
+# PHP Connection library for Svea Checkout
 Version 1.0.0
 
 ## Index
@@ -8,109 +8,74 @@ Version 1.0.0
 * [4. Get order](#get-order)
 * [5. Update order](#update-order)
 
-* [2. Build and Configuration](https://github.com/sveawebpay/dotnet-integration/tree/master#2-build-and-configuration)
-* [3. Create order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-create-order)
-* [3. Get order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-get-order)
-* [3. Update order](https://github.com/sveawebpay/dotnet-integration/tree/master#3-update-order)
-
-[<< To top](https://github.com/sveawebpay/dotnet-integration/tree/master#cnet-integration-package-api-for-svea-checkout)
-
+[<< To top](# PHP Integration Package API for Svea Checkout)
 
 
 ### 1. Introduction <a id="introduction"></a>
-Svea Checkout Library is library that allows you easy integration with Svea Checkout Api. This library is dedicated for
-Creating Order, Getting Order information and for Updating Order information.
-
-This file contains an overview and examples how to implement and use the Svea Checkout Library in your project.
-
+The  Connection library for Svea Checkout offers an easy integration with the Svea Checkout Api, and is the easiest way to integrate the
+Svea Checkout into you website.
+The library provides entrypoints to Create Order, Get Order and for Updating Order.
 
 ### 2. Setup <a id="setup"></a>
-Svea Checkout Library can be implemented into project by composer or by copying this library directly into project.
 
-**Via Composer:** if you are using project with composer, you can add library:
+#### 2.1 Install with [**Composer**](https://getcomposer.org/)
 
-by command line with command
+In command line
+```bash
 
     Composer require svea/checkout
 
-or by adding next part into your composer.json file and do ` composer update `
+```
 
+or add this part to your composer.json
+
+```json
     {
         "require": {
             "svea/checkout": "dev-master"
         }
     }
+```
+and run command ` composer update ` in the console
 
-**Normally:** if you have project that does not use Composer, you can download it from git and copy it into
-your project into desired folder. The thing that left is to include autoload.php file into your working files.
+#### 2.2 Ftp
+Upload the src folder to you project server. Inlude the autoload.php file into your integration file.
 
-
-### 3. Create Order <a id="create-order"></a>
-
-#####Include the library
+### 3 Create a Connector
+You use a connector object as parameter when creating a CheckoutClient request.
+Parmeters for creating Connector are: merchantId, sharedSecret and base Api url.
 ```php
+// inlude the library
 include 'vendor/autoload.php'
 
-// or by include classes
-
+// or include class
 use \Svea\Checkout\Transport\Connector;
-// and
-use \Svea\Checkout\Implementation\ChechoutClient;
-```
 
-#####Create Connector
-Necessary fields for creating Connector are: merchantId, sharedSecret and base Api url.
-```php
 $merchantId = '1';
 $sharedSecret = 'sharedSecret';
+//set endpoint url. Eg. test or prod
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-$conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
+$connector = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
 ```
 
-#####Creating Order
-CheckoutClient object is entry point for creating, getting and updating the order.
-To create CheckoutClient object you need to provide Connector object as constructor property.
+### 3. Create Order
+Creates a new order with the given merchant and cart, where the cart contains the orderrows.
+Returns the order information and the Gui needed to display the Iframed Svea checkout.
 
-```php
-$checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
-```
-
-Information about new order must be provide as list. Required fields are given in table below:
+#### 3.1 Order data
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| merchantSettings              |	*        | array     | List of Merchant urls |
-| cart                          |	*        | array     | List of cart items that should be passed through 'items' list|
+| merchantSettings              |	*        | array     | List of [*Merchant settings*] (#71-merchantsettings) |
+| cart                          |	*        | array     | [*items*](#72-items) list |
 | locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
-| countrycode                   |	*        | string    | Client country code as ISO 3166 (eg. "SE") |
 | currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK"|
+| countrycode                   |	*        | string    | Client country code as ISO 3166 (eg. "SE") |
+| presetValues                  |	        | array    | List of [*Preset values*](#74-presetvalue) to be displayed when the Svea Checkout is loaded|
 
 
-
-| merchantSettings             | Required  | Type      | Description  |
-|------------------------------|-----------|-----------|--------------|
-| termsuri                     |	*      | string    | See... @TODO |
-| checkouturi                  |	*      | string    | See... @TODO |
-| confirmationuri              |	*      | string    | See... @TODO |
-| pushuri                      |	*      | string    | See... @TODO |
-
-
-
-| cart > items                 | Required   | Type      | Description  |
-|------------------------------|------------|-----------|--------------|
-| type                         |	*       | string    | See... @TODO |
-| articlenumber                |	*       | string    | See... @TODO |
-| name                         |	*       | string    | See... @TODO |
-| quantity                     |	*       | int       | See... @TODO |
-| unitprice                    |	*       | int       | See... @TODO |
-| discountprice                |	*       | int       | See... @TODO |
-| vatpercent                   |	*       | int       | See... @TODO |
-
-
-Now, when CheckoutClient is created we can create order. Calling Api for creating order is done by passing data to
-method _create_.
-
+Sample order data
 ```php
 // - Add required information for creating order
 $data = array(
@@ -152,19 +117,123 @@ $data = array(
         "pushuri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
     )
 );
+```
 
+#### 3.2 Create the Order
+Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
+The checkoutClient object is an entry point for creating, getting and updating the order.
+
+```php
+// inlude the library
+include 'vendor/autoload.php'
+
+// or include class
+use \Svea\Checkout\Implementation\CheckoutClient;
+
+$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
+
+//call the method *create*
 $response = $checkoutClient->create($data);
 ```
 
-You can display Checkout Gui on your page simply by printing Gui data from response;
+### 4. Get Order <a id="get-order"></a>
+Get an existing order. Returns the order information and the Gui needed to display the Iframed Svea checkout.
+
+| Parameters IN                | Required  | Type      | Description  |
+|------------------------------|-----------|-----------|--------------|
+| orderId                      |	*      | Long    | The id of the order recieved when creating the order|
+
+#### 4.1 Get the Order
+Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
+The checkoutClient object is an entry point for creating, getting and updating the order.
 
 ```php
-echo $response['Gui']['Snippet']
+// inlude the library
+include 'vendor/autoload.php'
+
+// or include class
+use \Svea\Checkout\Implementation\CheckoutClient;
+
+$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
+
+//call the method *create*
+$response = $checkoutClient->get($orderId);
 ```
 
+### 5. Update Order <a id="update-order"></a>
+Update an existing order. Returns the order information and the updated Gui needed to display the Iframed Svea checkout.
 
-Response is a list of data returned from API. Response example is given below.
+| Parameters IN                 | Required   | Type      | Description  |
+|-------------------------------|------------|-----------|--------------|
+| orderId                       |	*      | Long    | The id of the order recieved when creating the order|
+| cart                          |	        | array     | [*items*](#72-items) list |
 
+Sample order data
+```php
+// - Add required information for creating order
+$data = array(
+    "id" => 9,
+    "cart" => array(
+        "items" => array(
+            array(
+                "articlenumber" => "123456789",
+                "name" => "Dator",
+                "quantity" => 200,
+                "unitprice" => 12300,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+            ),
+            array(
+                "type" => "shipping_fee",
+                "articlenumber" => "SHIPPING",
+                "name" => "Shipping Fee Updated",
+                "quantity" => 100,
+                "unitprice" => 4900,
+                "vatpercent" => 2500
+            )
+        )
+    )
+);
+```
+
+#### 5.1 Update the Order
+Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
+The checkoutClient object is an entry point for creating, getting and updating the order.
+
+```php
+// inlude the library
+include 'vendor/autoload.php'
+
+// or include class
+use \Svea\Checkout\Implementation\CheckoutClient;
+
+$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
+
+//call the method *create*
+$response = $checkoutClient->update($data);
+```
+
+### 6. Response
+The create method will return an array with the response data. The response contains information about the Cart,
+merchantSettnings, Customer and the Gui for the checkout.
+
+| Parameters OUT                | Description  |
+|-------------------------------|--------------|
+| MerchantSettings              | List of [*Merchant settings*] (#41-merchantsettings) |
+| Cart                          | [*items*](#41-items) list |
+| Customer                      | [*Customer*](#76-customer) details list |
+| ShippingAddress               | [*Address*](#77-address) details list |
+| BillingAddress                | [*Address*](#77-address) details list |
+| Gui                           | [*Gui*](#75-gui) details list |
+| Locale                        | Language Culture Name (eg. "sv-SE")|
+| Currency                      | Currency as ISO 4217 eg. "SEK"|
+| Countrycode                   | Client country code as ISO 3166 (eg. "SE") |
+| PresetValues                  | [*PresetValue*](#74-presetvalue) details list |
+| OrderId                       | The Svea order id |
+| Status                        | [*CheckoutOrderStatus*](#79-checkoutorderstatus) |
+
+
+Sample response
 ```
 Array
 (
@@ -219,119 +288,96 @@ Array
 )
 ```
 
-
-### 4. Get Order <a id="get-order"></a>
-
-
-
-
-### 5. Update Order <a id="update-order"></a>
-
-
-
-is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
-It is also possible to preset values to be displayed in the checkout.
-
-Returns a full Data object containing the order and the GUI, and a Http response with Http status code 201 (created). See... @TODO
-If request is not successful it returns Http status code 400 (Bad request) and Http header "ErrorMessage" containing the details.
-
-| Parameters IN                 | Required  | Type      | Description  |
-|---------------------------    |-----------|-----------|--------------|
-| merchantSettings              |	*   | array     | See... @TODO |
-| cart                          |	*   | array     | List of items See... @TODO |
-| locale                        |	*   | string    | Language Culture Name (eg. "sv-SE")|
-| countrycode                   |	*   | string    | Client country code as ISO 3166 (eg. "SE" |
-| currency                      |	*   | string    | Currency as ISO 4217 eg. "SEK"|
-
-
-
-
-### 1. Create order  <a id="create-order"></a>
-is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
-It is also possible to preset values to be displayed in the checkout.
-
-Returns a full Data object containing the order and the GUI, and a Http response with Http status code 201 (created). See... @TODO
-If request is not successful it returns Http status code 400 (Bad request) and Http header "ErrorMessage" containing the details.
-
-| Parameters IN                 | Required  | Type      | Description  |
-|---------------------------    |-----------|-----------|--------------|
-| merchantSettings              |	*   | array     | See... @TODO |
-| cart                          |	*   | array     | List of items See... @TODO |
-| locale                        |	*   | string    | Language Culture Name (eg. "sv-SE")|
-| countrycode                   |	*   | string    | Client country code as ISO 3166 (eg. "SE" |
-| currency                      |	*   | string    | Currency as ISO 4217 eg. "SEK"|
-
-@TODO See ***LINK*** for full example
+The checkout Gui contains the Snippet and the Layout. The Snippet contains the Html and JavaScript that you implement on your
+page where you want to display the Iframed checkuot. The Layout is a String defining the orientation of the customers screen.
 
 ```php
-    /*
-    * Create Connector object
-    *
-    * Possible Throw Exception is \Svea\Checkout\Exception\SveaConnectorException which will return exception if
-    * some of fields $merchantId, $sharedSecret and $baseUrl is missing
-    * */
-    $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
-    // Create Checkout client with created Connector object
-    $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
-    // Initialize creating order and receive response data
-    $response = $checkoutClient->create($data);
-
+echo $response['Gui']['Snippet']
 ```
-### 1. Get order
-is used to get an order.
 
-Returns a full Data object containing the order and the GUI.
-If request is not successful it returns Http status code 400 (Bad request) and Http header "ErrorMessage" containing the details.
+### 7. Data structures
 
-| Parameters IN                 | Required  | Type      | Description  |
-|---------------------------    |-----------|-----------|--------------|
-| orderId                       |	*   | Long      | Id returned when creating order |
+#### 7.1 MerchantSettings
 
-@TODO See ***LINK*** for full example
+| Parameters                   | Required  | Type      | Description  |
+|------------------------------|-----------|-----------|--------------|
+| termsuri                     |	*      | string    | URI to the page with the terms |
+| checkouturi                  |	*      | string    | URI to the page that contains the checkout |
+| confirmationuri              |	*      | string    | URI to the page with the confirmation information for an order. |
+| pushuri                      |	*      | string    | URI for a callback to recieve messages |
 
-```php
-    /*
-    * Create Connector object
-    *
-    * Possible Throw Exception is \Svea\Checkout\Exception\SveaConnectorException which will return exception if
-    * some of fields $merchantId, $sharedSecret and $baseUrl is missing
-    * */
-    $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
-    // Create Checkout client with created Connector object
-    $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
-    // Initialize creating order and receive response data
-    $response = $checkoutClient->create($data);
+#### 7.2 Items
 
-```
-### 1. Create order
-is used to create a new order with properly formatted order data containing merchant settings, locale, country, authorization and cart.
-It is also possible to preset values to be displayed in the checkout.
+Array of [*OrderRows*](#73-orderrow)
 
-Returns a full Data object containing the order and the GUI, and a Http response with Http status code 201 (created).
-If request is not successful it returns Http status code 400 (Bad request) and Http header "ErrorMessage" containing the details.
+#### 7.3 OrderRow
 
-| Parameters IN                 | Required  | Type      | Description  |
-|---------------------------    |-----------|-----------|--------------|
-| merchantSettings              |	*   | array     | See... @TODO |
-| cart                          |	*   | array     | List of items See... @TODO |
-| locale                        |	*   | string    | Language Culture Name (eg. "sv-SE")|
-| countrycode                   |	*   | string    | Client country code as ISO 3166 (eg. "SE" |
-| currency                      |	*   | string    | Currency as ISO 4217 eg. "SEK"|
+| Parameters                   | Required   | Type      | Description  |
+|------------------------------|------------|-----------|--------------|
+| articlenumber                |	*       | string    | Articlenumber as a string, can contain all characters |
+| name                         |	*       | string    | |
+| quantity                     |	*       | int       |  |
+| unitprice                    |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500|
+| discountpercent              |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
+| vatpercent                   |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
+| unit                         |                | string(3) |  Unit type|
 
-@TODO See ***LINK*** for full example
+#### 7.4 PresetValue
 
-```php
-    /*
-    * Create Connector object
-    *
-    * Possible Throw Exception is \Svea\Checkout\Exception\SveaConnectorException which will return exception if
-    * some of fields $merchantId, $sharedSecret and $baseUrl is missing
-    * */
-    $conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
-    // Create Checkout client with created Connector object
-    $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
-    // Initialize creating order and receive response data
-    $response = $checkoutClient->create($data);
+| Parameters                | Required   | Type      | Description  |
+|---------------------------|------------|-----------|--------------|
+| typename                  |	*       | string        | Name of the field you want to set (Eg. emailaddress) |
+| value                     |	*       | string        | Value to be set |
+| isreadonly                |	*       | Boolean       | Set if the field should be editable by the customer |
 
-```
+#### 7.5 Gui
+
+| Parameters OUT               | Required   | Type      | Description  |
+|------------------------------|------------|-----------|--------------|
+| layout                       |	*       | string    | String defining the orientation of the customers screen |
+| snippet                      |	*       | string    | Snippet with Html and JavaScript for the Iframe|
+
+#### 7.6 Customer
+
+| Parameters OUT               | Required   | Type      | Description  |
+|------------------------------|------------|-----------|--------------|
+| nationalid                   |	*       | string    | Social security number or vat number |
+| iscompany                    |	*       | Boolean    | True if nationalid is a vat number |
+| ismale                       |	       | Nullable Boolean    |  |
+| dateofbirth                  |	       | Nullable datetime | |
+
+#### 7.7 Address
+
+| Parameters OUT               | Required   | Type      | Description  |
+|------------------------------|------------|-----------|--------------|
+| emailaddress                   |	*       | string    |  |
+| phonenumber                    |              | string    | True if nationalid is a vat number |
+| fullname                       |	*       |string|  |
+| firstname                      |              | string | |
+| lastname                       |	       | string | |
+| streetaddress                 |	*      | string| |
+| coaddress                     |	       | string| |
+| housenumber                   |	       | string | NL, DE only|
+| zipcode                       |	 *      | string | |
+| city                          |	 *      | string | |
+| countrycode                   |	 *      | string | |
+
+#### 7.8 Customer
+
+| Parameters OUT               | Required   | Type      | Description  |
+|------------------------------|------------|-----------|--------------|
+| nationalid                   |	*       | string    | Social security number or vat number |
+| iscompany                    |	*       | Boolean    | True if nationalid is a vat number |
+| ismale                       |	       | Nullable Boolean    |  |
+| dateofbirth                  |	       | Nullable datetime | |
+
+#### 7.9 CheckoutOrderStatus
+
+| Parameters OUT               | Description  |
+|------------------------------|--------------|
+| created                       | The order has been created and can be changed |
+| confirmed                     | The customer has chose adress and pushed "Complete purchase", the orderrows can no longer be changed. |
+| submitted                     | The order is submitted to our internal system. The customer can change payment type during a time window.  |
+| pendingacknowledge            | The order has been pushed to the merchant and is awaiting an acknowledgement. The order is locked and the method of payment can not be changed by the customer.|
+| complete                      | A response has been given to confirm that the order has been taken care of by an other system. The order is now fully completed in the checkout system. |
 
