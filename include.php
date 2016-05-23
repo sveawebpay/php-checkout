@@ -2,9 +2,7 @@
 
 /*
  *
- * This file is used if you want to autoload project classes
- * without using Composer for autoloading classes
- *
+ * This file is used if you want to autoload project classes without using Composer
  * */
 
 
