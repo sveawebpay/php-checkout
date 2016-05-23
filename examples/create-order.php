@@ -1,7 +1,10 @@
 <?php
 
-// include the Svea Checkout autoload file if you are not using Composer
+// include the Svea Checkout autoload file if you are using Composer
 require_once '../vendor/autoload.php';
+
+// - without composer
+//require_once '../include.php';
 
 /*
  * Example of creating the order and getting the response data
