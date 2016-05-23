@@ -2,23 +2,23 @@
 Version 1.0.0
 
 ## Index
-* [1. Introduction](#introduction)
-* [2. Setup](#setup)
-* [3. Create order](#create-order)
-* [4. Get order](#get-order)
-* [5. Update order](#update-order)
+* [1. Setup](#1-setup)
+* [2. Create a Connector](#2-create-a-connector)
+* [3. Create order](#3-create-order)
+* [4. Get order](#4-get-order)
+* [5. Update order](#5-update-order)
+* [6. Response](#6-response)
+* [7. Data structures](#7-data-structures)
 
 [<< To top](# PHP Integration Package API for Svea Checkout)
 
-
-### 1. Introduction <a id="introduction"></a>
 The  Connection library for Svea Checkout offers an easy integration with the Svea Checkout Api, and is the easiest way to integrate the
 Svea Checkout into you website.
 The library provides entrypoints to Create Order, Get Order and for Updating Order.
 
-### 2. Setup <a id="setup"></a>
+### 1. Setup <a id="setup"></a>
 
-#### 2.1 Install with [**Composer**](https://getcomposer.org/)
+#### 1.1 Install with [**Composer**](https://getcomposer.org/)
 
 In command line
 ```bash
@@ -38,10 +38,10 @@ or add this part to your composer.json
 ```
 and run command ` composer update ` in the console
 
-#### 2.2 Ftp
+#### 1.2 Ftp
 Upload the src folder to you project server. Inlude the autoload.php file into your integration file.
 
-### 3 Create a Connector
+### 2 Create a Connector
 You use a connector object as parameter when creating a CheckoutClient request.
 Parmeters for creating Connector are: merchantId, sharedSecret and base Api url.
 ```php
@@ -62,6 +62,8 @@ $connector = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret
 ### 3. Create Order
 Creates a new order with the given merchant and cart, where the cart contains the orderrows.
 Returns the order information and the Gui needed to display the Iframed Svea checkout.
+
+[See full Create order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/create-order.php)
 
 #### 3.1 Order data
 
@@ -139,6 +141,8 @@ $response = $checkoutClient->create($data);
 ### 4. Get Order <a id="get-order"></a>
 Get an existing order. Returns the order information and the Gui needed to display the Iframed Svea checkout.
 
+[See full Get order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/get-order.php)
+
 | Parameters IN                | Required  | Type      | Description  |
 |------------------------------|-----------|-----------|--------------|
 | orderId                      |	*      | Long    | The id of the order recieved when creating the order|
@@ -162,6 +166,8 @@ $response = $checkoutClient->get($orderId);
 
 ### 5. Update Order <a id="update-order"></a>
 Update an existing order. Returns the order information and the updated Gui needed to display the Iframed Svea checkout.
+
+[See full Update order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/update-order.php)
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
