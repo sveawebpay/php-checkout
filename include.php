@@ -1,5 +1,13 @@
 <?php
 
+/*
+ *
+ * This file is used if you want to autoload project classes
+ * without using Composer for autoloading classes
+ *
+ * */
+
+
 /**
  * Return desired class
  * @param string $className
