@@ -6,7 +6,7 @@ use Svea\Checkout\Model\Request;
 
 class CreateOrder extends ImplementationManager
 {
-    const API_URL = '/api/orders/';
+    protected $apiUrl = '/api/orders/';
 
     /**
      * Request body - JSON
@@ -36,7 +36,7 @@ class CreateOrder extends ImplementationManager
         $this->requestModel = new Request();
         $this->requestModel->setPostMethod();
         $this->requestModel->setBody(json_encode($data));
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL);
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->apiUrl);
     }
 
 

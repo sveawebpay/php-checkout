@@ -65,9 +65,10 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
  *  - \Exception - for any other error
  *
  * */
-$response = $checkoutClient->update($data);
+try {
+    $response = $checkoutClient->update($data);
 
-/*
+    /*
  * Format of returned response array
  *
  *  - MerchantSettings
@@ -97,8 +98,19 @@ $response = $checkoutClient->update($data);
  *  - OrderId
  *  - Status
  * */
-$orderId = $response['OrderId'];
-
-$guiSnippet = $response['Gui']['Snippet'];
-
-$orderStatus = $response['Status'];
+    $orderId = $response['OrderId'];
+    $guiSnippet = $response['Gui']['Snippet'];
+    $orderStatus = $response['Status'];
+} catch (\Svea\Checkout\Exception\SveaApiException $ex) {
+    var_dump("--------- Api errors ---------");
+    var_dump($ex->getMessage());
+} catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
+    var_dump("--------- Conn errors ---------");
+    var_dump($ex->getMessage());
+} catch (\Svea\Checkout\Exception\SveaInputValidationException $ex) {
+    var_dump("--------- Input data errors ---------");
+    var_dump($ex->getMessage());
+} catch (Exception $ex) {
+    var_dump("--------- General errors ---------");
+    var_dump($ex->getMessage());
+}

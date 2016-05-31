@@ -8,7 +8,7 @@ use Svea\Checkout\Exception\SveaInputValidationException;
 
 class GetOrder extends ImplementationManager
 {
-    const API_URL = '/api/orders/';
+    protected $apiUrl = '/api/orders/%d';
 
     /**
      * Request body - JSON
@@ -36,7 +36,7 @@ class GetOrder extends ImplementationManager
     {
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . self::API_URL . $orderId);
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $orderId));
     }
 
     /**

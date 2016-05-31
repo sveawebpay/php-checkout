@@ -94,4 +94,18 @@ class CheckoutClient
 
         return $getOrder->getResponse();
     }
+
+    /**
+     * Return Svea Checkout Order Subsystem information.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function getOrderSubsystemInfo($data)
+    {
+        $getOrder = ImplementationFactory::returnGetOrderSubsystemClass($this->connector);
+        $getOrder->execute($data);
+
+        return $getOrder->getResponse();
+    }
 }

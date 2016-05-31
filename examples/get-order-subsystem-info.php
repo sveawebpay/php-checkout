@@ -12,7 +12,7 @@ require_once '../vendor/autoload.php';
  * */
 
 // Order ID from created order
-$orderId = 9;
+$orderId = 3211;
 
 
 /*
@@ -46,8 +46,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->get($orderId);
-
+    $response = $checkoutClient->getOrderSubsystemInfo($orderId);
 
     /*
      * Format of returned response array
@@ -80,9 +79,9 @@ try {
      *  - Status
      * */
 
-    $orderId = $response['OrderId'];
-    $guiSnippet = $response['Gui']['Snippet'];
-    $orderStatus = $response['Status'];
+    $sveaOrderId = $response['SveaOderId'];
+    $clientId = $response['ClientId'];
+    $transactionId = $response['TransactionId'];
     var_dump($response);
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
