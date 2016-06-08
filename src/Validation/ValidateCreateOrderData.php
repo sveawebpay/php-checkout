@@ -113,7 +113,8 @@ class ValidateCreateOrderData implements ValidationInterface
 
         //if (!preg_match($pattern, $data['clientordernumber'])) {
         $size = count($data['clientordernumber']);
-        if($size <= 0 || $size >32)
+
+        if ($size <= 0 || $size > 32) {
             throw new SveaInputValidationException(
                 '"clientordernumber" should contain maximum of 32 characters that 
                 identifies the order in the merchant\'s system !',
