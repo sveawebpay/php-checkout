@@ -20,6 +20,7 @@ class ValidateCreateOrderData implements ValidationInterface
         $this->validateGeneralData($data);
         $this->validateMerchant($data);
         $this->validateOrderCart($data);
+        $this->validateClientOrderNumber($data);
     }
 
     /**
@@ -35,7 +36,7 @@ class ValidateCreateOrderData implements ValidationInterface
             );
         }
 
-        $requiredFields = array('merchantSettings',  'cart', 'locale', 'currency', 'countrycode');
+        $requiredFields = array('merchantSettings', 'cart', 'locale', 'currency', 'countrycode');
 
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || $data[$field] === '') {
@@ -89,6 +90,31 @@ class ValidateCreateOrderData implements ValidationInterface
         if (!isset($data['cart']['items']) || !is_array($data['cart']['items'])) {
             throw new SveaInputValidationException(
                 'Order lines should be passed as array!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+    }
+
+    /**
+     * @param array $data
+     * @throws SveaInputValidationException
+     */
+    private function validateClientOrderNumber($data)
+    {
+        // @todo - define proper pattern for validation 
+        $pattern = "/^[1-9]{1,32}$/";
+
+        if (!isset($data['clientordernumber'])) {
+            throw new SveaInputValidationException(
+                '"clientordernumber" should be passed!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+
+        if (!preg_match($pattern, $data['clientordernumber'])) {
+            throw new SveaInputValidationException(
+                '"clientordernumber" should contain maximum of 32 number characters that 
+                identifies the order in the merchant\'s system !',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }
