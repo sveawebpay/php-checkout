@@ -233,6 +233,7 @@ JSON;
                     )
                 )
             ),
+            "clientordernumber" => '12312312312213231',
             "merchantSettings" => array(
                 "termsuri" => "http://www.merchant.com/toc",
                 "checkouturi" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",

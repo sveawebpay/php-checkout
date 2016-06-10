@@ -151,4 +151,31 @@ class ValidateCreateOrderDataTest extends TestCase
     {
         $this->validateCreateOrderData->validate($this->inputCreateData);
     }
+
+    public function testValidateOrderClientOrderNumberWithGoodData()
+    {
+        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData) );
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateOrderClientOrderNumberWithMissingData()
+    {
+        unset($this->inputCreateData['clientordernumber']);
+
+        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData) );
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateOrderClientOrderNumberWithBadData()
+    {
+        $this->inputCreateData['clientordernumber'] = '123-das-321';
+
+        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData) );
+    }
 }

@@ -42,6 +42,18 @@ $data = array(
                 "vatpercent" => 2500
             )
         )
+    ), 
+    "presetvalues" => array(
+        array(
+            "typename" => "emailaddress",
+            "value" => "test@sveaekonomi.se",
+            "isreadonly" => true
+        ),
+        array(
+            "typename" => "ZipCode",
+            "value" => "11850",
+            "isreadonly" => true
+        )
     ),
     "merchantSettings" => array(
         "termsuri" => "http://localhost:51898/terms",
@@ -82,7 +94,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
  */
 try {
     $response = $checkoutClient->create($data);
-    
+
     /*
      * Format of returned response array
      *
