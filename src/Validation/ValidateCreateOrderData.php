@@ -101,7 +101,6 @@ class ValidateCreateOrderData implements ValidationInterface
      */
     private function validateClientOrderNumber($data)
     {
-        // @todo - define proper pattern for validation 
         //$pattern = "/^[1-9]{1,32}$/";
 
         if (!isset($data['clientordernumber'])) {
@@ -116,8 +115,7 @@ class ValidateCreateOrderData implements ValidationInterface
 
         if ($size <= 0 || $size > 32) {
             throw new SveaInputValidationException(
-                '"clientordernumber" should contain maximum of 32 characters that 
-                identifies the order in the merchant\'s system !',
+                '"clientordernumber" should contain maximum of 32 characters!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }
