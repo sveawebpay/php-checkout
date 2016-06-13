@@ -1,6 +1,7 @@
 {
   "name": "svea/checkout-php",
   "type": "library",
+  "version": "master",
   "description": "The officially supported php library for Svea Checkout",
   "keywords": [],
   "homepage": "http://svea.com",
@@ -11,6 +12,14 @@
       "url": "https://github.com/sveawebpay/php-checkout-dev.git"
     }
   ],
+  "source": {
+    "url": "https://github.com/sveawebpay/php-checkout-dev.git",
+    "type": "git"
+  },
+  "dist": {
+    "url": "https://github.com/sveawebpay/php-checkout-dev.git",
+    "type": "git"
+  },
   "authors": [
     {
       "name": "Svea Ekonomi",
