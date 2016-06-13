@@ -12,10 +12,6 @@
       "url": "https://github.com/sveawebpay/php-checkout-dev.git"
     }
   ],
-  "dist": {
-    "url": "https://github.com/sveawebpay/php-checkout-dev.git",
-    "type": "git"
-  },
   "authors": [
     {
       "name": "Svea Ekonomi",
