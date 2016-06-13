@@ -2,7 +2,7 @@
 Version 1.0.0
 
 ## Index
-* [1. Setup](#1-setup)
+* [1. Setup](#setup)
 * [2. Create a Connector](#2-create-a-connector)
 * [3. Create order](#3-create-order)
 * [4. Get order](#4-get-order)
