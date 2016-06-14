@@ -12,7 +12,7 @@ require_once '../vendor/autoload.php';
  * */
 
 // Order ID from created order
-$orderId = 9;
+$orderId = 1;
 
 
 /*
@@ -83,8 +83,6 @@ try {
     $orderId = $response['OrderId'];
     $guiSnippet = $response['Gui']['Snippet'];
     $orderStatus = $response['Status'];
-    var_dump($response);
-
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump($ex->getMessage());
