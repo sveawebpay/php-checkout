@@ -15,6 +15,7 @@ $data = array(
     "countrycode" => "SE",
     "currency" => "SEK",
     "locale" => "sv-SE",
+    "clientordernumber" => "123",
     "cart" => array(
         "items" => array(
             array(
@@ -42,7 +43,7 @@ $data = array(
                 "vatpercent" => 2500
             )
         )
-    ), 
+    ),
     "presetvalues" => array(
         array(
             "typename" => "emailaddress",
@@ -50,7 +51,7 @@ $data = array(
             "isreadonly" => true
         ),
         array(
-            "typename" => "ZipCode",
+            "typename" => "PostalCode",
             "value" => "11850",
             "isreadonly" => true
         )
@@ -69,8 +70,8 @@ $data = array(
  * - Shared Secret - Shared Secret string between Svea and merchant
  * - Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
  */
-$merchantId = '1';
-$sharedSecret = 'sharedSecret';
+$merchantId = '1170';
+$sharedSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30db';
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 /**

@@ -1,6 +1,7 @@
 {
   "name": "svea/checkout-php",
   "type": "library",
+  "version": "master",
   "description": "The officially supported php library for Svea Checkout",
   "keywords": [],
   "homepage": "http://svea.com",
