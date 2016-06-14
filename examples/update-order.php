@@ -13,7 +13,7 @@ require_once '../vendor/autoload.php';
 
 // - Add required information for creating order
 $data = array(
-    "id" => 9,
+    "id" => 1,
     "cart" => array(
         "items" => array(
             array(
