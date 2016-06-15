@@ -15,7 +15,7 @@ $data = array(
     "countrycode" => "SE",
     "currency" => "SEK",
     "locale" => "sv-SE",
-    "clientordernumber" => "123",
+    "clientordernumber" => "125",
     "cart" => array(
         "items" => array(
             array(

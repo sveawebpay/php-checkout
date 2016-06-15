@@ -19,12 +19,13 @@ class Connector
     /**
      * Base URL For Svea Checkout test server
      */
-    const TEST_BASE_URL = 'http://webpaycheckoutservice.test.svea.com';
+//    const TEST_BASE_URL = 'http://webpaycheckoutservice.test.svea.com';
+    const TEST_BASE_URL = 'http://checkoutapistage.svea.com';
 
     /**
      * Base URL For Svea Checkout production server
      */
-    const PROD_BASE_URL = 'api.svea.com/';
+    const PROD_BASE_URL = 'http://checkoutapi.svea.com';
 
     /**
      * Merchant identifier assigned to client by Svea.

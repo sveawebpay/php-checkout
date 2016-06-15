@@ -39,7 +39,7 @@ or add this part to your composer.json
 and run command ` composer update ` in the console
 
 #### 1.2 Ftp
-Upload the src folder to you project server. Inlude the autoload.php file into your integration file.
+Upload the src folder to you project server. Include the autoload.php file into your integration file.
 
 ### 2 Create a Connector
 You use a connector object as parameter when creating a CheckoutClient request.
