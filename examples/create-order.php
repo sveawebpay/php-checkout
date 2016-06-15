@@ -12,55 +12,55 @@ require_once '../vendor/autoload.php';
 
 // Add required information for creating order
 $data = array(
-    "countrycode" => "SE",
+    "countryCode" => "SE",
     "currency" => "SEK",
     "locale" => "sv-SE",
-    "clientordernumber" => "125",
+    "clientOrderNumber" => "125",
     "cart" => array(
         "items" => array(
             array(
-                "articlenumber" => "1234567",
+                "articleNumber" => "1234567",
                 "name" => "Dator",
                 "quantity" => 200,
-                "unitprice" => 12300,
-                "discountpercent" => 1000,
-                "vatpercent" => 2500
+                "unitPrice" => 12300,
+                "discountPercent" => 1000,
+                "vatPercent" => 2500
             ),
             array(
-                "articlenumber" => "7654321",
+                "articleNumber" => "7654321",
                 "name" => "Fork",
                 "quantity" => 300,
-                "unitprice" => 15800,
-                "discountpercent" => 2000,
-                "vatpercent" => 2500
+                "unitPrice" => 15800,
+                "discountPercent" => 2000,
+                "vatPercent" => 2500
             ),
             array(
                 "type" => "shipping_fee",
-                "articlenumber" => "",
+                "articleNumber" => "",
                 "name" => "Shipping fee",
                 "quantity" => 100,
-                "unitprice" => 4900,
-                "vatpercent" => 2500
+                "unitPrice" => 4900,
+                "vatPercent" => 2500
             )
         )
     ),
-    "presetvalues" => array(
+    "presetValues" => array(
         array(
-            "typename" => "emailaddress",
+            "typeName" => "emailAddress",
             "value" => "test@sveaekonomi.se",
-            "isreadonly" => true
+            "isReadonly" => true
         ),
         array(
-            "typename" => "PostalCode",
+            "typeName" => "postalCode",
             "value" => "11850",
-            "isreadonly" => true
+            "isReadonly" => true
         )
     ),
     "merchantSettings" => array(
-        "termsuri" => "http://localhost:51898/terms",
-        "checkouturi" => "http://localhost:51925/",
-        "confirmationuri" => "http://localhost:51925/checkout/confirm",
-        "pushuri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+        "termsUri" => "http://localhost:51898/terms",
+        "checkoutUri" => "http://localhost:51925/",
+        "confirmationUri" => "http://localhost:51925/checkout/confirm",
+        "pushUri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
     )
 );
 

@@ -17,20 +17,20 @@ $data = array(
     "cart" => array(
         "items" => array(
             array(
-                "articlenumber" => "123456",
+                "articleNumber" => "123456",
                 "name" => "Dator",
                 "quantity" => 200,
-                "unitprice" => 12300,
-                "discountpercent" => 1000,
-                "vatpercent" => 2500
+                "unitPrice" => 12300,
+                "discountPercent" => 1000,
+                "vatPercent" => 2500
             ),
             array(
                 "type" => "shipping_fee",
-                "articlenumber" => "658475",
+                "articleNumber" => "658475",
                 "name" => "Shipping Fee Updated",
                 "quantity" => 100,
-                "unitprice" => 4900,
-                "vatpercent" => 2500
+                "unitPrice" => 4900,
+                "vatPercent" => 2500
             )
         )
     )

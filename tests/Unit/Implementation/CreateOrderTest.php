@@ -39,21 +39,21 @@ class CreateOrderTest extends TestCase
 
         $this->assertEquals(Request::METHOD_POST, $requestModel->getMethod());
         $this->assertEquals($this->inputCreateData['locale'], $requestBodyData['locale']);
-        $this->assertEquals($this->inputCreateData['countrycode'], $requestBodyData['countrycode']);
+        $this->assertEquals($this->inputCreateData['countryCode'], $requestBodyData['countryCode']);
         $this->assertEquals($this->inputCreateData['currency'], $requestBodyData['currency']);
 
         $items = $requestBodyData['cart']['items'];
 
         $expectedItems = $requestBodyData['cart']['items'];
-        $this->assertEquals($expectedItems[0]['articlenumber'], $items[0]['articlenumber']);
+        $this->assertEquals($expectedItems[0]['articleNumber'], $items[0]['articleNumber']);
         $this->assertEquals($expectedItems[0]['quantity'], $items[0]['quantity']);
 
         $merchantSettings = $requestBodyData['merchantSettings'];
         $expectedMerchantSettings = $this->inputCreateData['merchantSettings'];
-        $this->assertEquals($expectedMerchantSettings['termsuri'], $merchantSettings['termsuri']);
-        $this->assertEquals($expectedMerchantSettings['checkouturi'], $merchantSettings['checkouturi']);
-        $this->assertEquals($expectedMerchantSettings['confirmationuri'], $merchantSettings['confirmationuri']);
-        $this->assertEquals($expectedMerchantSettings['pushuri'], $merchantSettings['pushuri']);
+        $this->assertEquals($expectedMerchantSettings['termsUri'], $merchantSettings['termsUri']);
+        $this->assertEquals($expectedMerchantSettings['checkoutUri'], $merchantSettings['checkoutUri']);
+        $this->assertEquals($expectedMerchantSettings['confirmationUri'], $merchantSettings['confirmationUri']);
+        $this->assertEquals($expectedMerchantSettings['pushUri'], $merchantSettings['pushUri']);
     }
 
     public function testInvoke()

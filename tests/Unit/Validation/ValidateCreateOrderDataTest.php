@@ -86,7 +86,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithoutRequiredFields()
     {
-        unset($this->inputCreateData['merchantSettings']['checkouturi']);
+        unset($this->inputCreateData['merchantSettings']['checkoutUri']);
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -96,19 +96,19 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithEmptyStringFiled()
     {
-        $this->inputCreateData['merchantSettings']['checkouturi'] = '';
+        $this->inputCreateData['merchantSettings']['checkoutUri'] = '';
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
     public function testValidateMerchantWithFalseValueField()
     {
-        $this->inputCreateData['merchantSettings']['checkouturi'] = false;
+        $this->inputCreateData['merchantSettings']['checkoutUri'] = false;
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
     public function testValidateMerchantWithZeroValueField()
     {
-        $this->inputCreateData['merchantSettings']['checkouturi'] = 0;
+        $this->inputCreateData['merchantSettings']['checkoutUri'] = 0;
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -163,7 +163,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateOrderClientOrderNumberWithMissingData()
     {
-        unset($this->inputCreateData['clientordernumber']);
+        unset($this->inputCreateData['clientOrderNumber']);
 
         $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData));
     }
@@ -174,7 +174,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateOrderClientOrderNumberWithBadData()
     {
-        $this->inputCreateData['clientordernumber'] = '123-das-321';
+        $this->inputCreateData['clientOrderNumber'] = '123-das-321';
 
         $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData));
     }
