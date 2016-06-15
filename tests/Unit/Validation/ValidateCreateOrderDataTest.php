@@ -154,7 +154,7 @@ class ValidateCreateOrderDataTest extends TestCase
 
     public function testValidateOrderClientOrderNumberWithGoodData()
     {
-        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData) );
+        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData));
     }
 
     /**
@@ -165,7 +165,7 @@ class ValidateCreateOrderDataTest extends TestCase
     {
         unset($this->inputCreateData['clientordernumber']);
 
-        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData) );
+        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData));
     }
 
     /**
@@ -176,6 +176,6 @@ class ValidateCreateOrderDataTest extends TestCase
     {
         $this->inputCreateData['clientordernumber'] = '123-das-321';
 
-        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData) );
+        $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData));
     }
 }
