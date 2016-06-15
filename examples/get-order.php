@@ -85,9 +85,7 @@ try {
     $orderStatus = $response['Status'];
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
-    var_dump($ex->getMessage());
-    echo "<pre>" . print_r($ex, true) . "</pre>";
-    
+    var_dump($ex->getMessage());  
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
     var_dump("--------- Conn errors ---------");
     var_dump($ex->getMessage());

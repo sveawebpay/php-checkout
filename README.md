@@ -2,7 +2,7 @@
 Version 1.0.0
 
 ## Index
-* [1. Setup](#setup)
+* [1. Setup](#1-setup)
 * [2. Create a Connector](#2-create-a-connector)
 * [3. Create order](#3-create-order)
 * [4. Get order](#4-get-order)
@@ -16,7 +16,7 @@ The  Connection library for Svea Checkout offers an easy integration with the Sv
 Svea Checkout into you website.
 The library provides entrypoints to Create Order, Get Order and for Updating Order.
 
-### 1. Setup <a id="setup"></a>
+### 1. Setup
 
 #### 1.1 Install with [**Composer**](https://getcomposer.org/)
 
