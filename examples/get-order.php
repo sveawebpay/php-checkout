@@ -48,7 +48,6 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 try {
     $response = $checkoutClient->get($orderId);
 
-    var_dump($response);
     /*
      * Format of returned response array
      *
@@ -85,7 +84,7 @@ try {
     $orderStatus = $response['Status'];
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
-    var_dump($ex->getMessage());  
+    var_dump($ex->getMessage());
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
     var_dump("--------- Conn errors ---------");
     var_dump($ex->getMessage());
