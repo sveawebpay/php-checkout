@@ -10,8 +10,6 @@ Version 1.0.0
 * [6. Response](#6-response)
 * [7. Data structures](#7-data-structures)
 
-[<< To top](# PHP Integration Package API for Svea Checkout)
-
 ## Introduction
 The checkout offers a complete solution with a variety of payment methods. The underlying systems for the checkout is our
 paymentPlan, invoice, account payments. Also including our own payment gateway with PCI level 1 for card payments. 
@@ -146,7 +144,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 $response = $checkoutClient->create($data);
 ```
 
-### 4. Get Order <a id="get-order"></a>
+### 4. Get Order
 Get an existing order. Returns the order information and the Gui needed to display the iframe for Svea checkout.
 
 [See full Get order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/get-order.php)
@@ -174,7 +172,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 $response = $checkoutClient->get($orderId);
 ```
 
-### 5. Update Order <a id="update-order"></a>
+### 5. Update Order
 Update an existing order. Returns the order information and the updated Gui needed to display the iframe for Svea checkout.
 
 [See full Update order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/update-order.php)
