@@ -72,55 +72,55 @@ Returns the order information and the Gui needed to display the iframe Svea chec
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| merchantSettings              |	*        | array     | List of [*Merchant settings*] (#71-merchantsettings) |
-| cart                          |	*        | array     | [*items*](#72-items) list |
-| locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
-| currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK"|
-| countryCode                   |	*        | string    | Client country code as ISO 3166 (eg. "SE") |
-| clientOrderNumber             |	*        | string    | A string with maximum of 32 chars that identifies the order in merchant's system. |
-| presetValues                  |	         | array     | List of [*Preset values*](#74-presetvalue) to be displayed when the Svea Checkout is loaded|
+| MerchantSettings              |	*        | array     | List of [*Merchant settings*] (#71-merchantsettings) |
+| Cart                          |	*        | array     | [*items*](#72-items) list |
+| Locale                        |	*        | string    | Language Culture Name (eg. "sv-SE")|
+| Currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK"|
+| CountryCode                   |	*        | string    | Client country code as ISO 3166 (eg. "SE") |
+| ClientOrderNumber             |	*        | string    | A string with maximum of 32 chars that identifies the order in merchant's system. |
+| PresetValues                  |	         | array     | List of [*Preset values*](#74-presetvalue) to be displayed when the Svea Checkout is loaded|
 
 
 Sample order data
 ```php
 // Example of required data for creating order
 $data = array(
-    "countryCode" => "SE",
-    "currency" => "SEK",
-    "locale" => "sv-SE",
-    "cart" => array(
+    "CountryCode" => "SE",
+    "Currency" => "SEK",
+    "Locale" => "sv-SE",
+    "Cart" => array(
         "items" => array(
             array(
-                "articleNumber" => "123456789",
-                "name" => "Car",
-                "quantity" => 200,
-                "unitPrice" => 12300,
-                "discountPercent" => 1000,
-                "vatPercent" => 2500
+                "ArticleNumber" => "123456789",
+                "Name" => "Car",
+                "Quantity" => 200,
+                "UnitPrice" => 12300,
+                "DiscountPercent" => 1000,
+                "VatPercent" => 2500
             ),
             array(
-                "articleNumber" => "987654321",
-                "name" => "Fork",
-                "quantity" => 300,
-                "unitPrice" => 15800,
-                "discountPercent" => 2000,
-                "vatPercent" => 2500
+                "ArticleNumber" => "987654321",
+                "Name" => "Fork",
+                "Quantity" => 300,
+                "UnitPrice" => 15800,
+                "DiscountPercent" => 2000,
+                "VatPercent" => 2500
             ),
             array(
-                "type" => "shipping_fee",
-                "articleNumber" => "SHIPPING",
-                "name" => "Shipping fee",
-                "quantity" => 100,
-                "unitPrice" => 4900,
-                "vatPercent" => 2500
+                "Type" => "shipping_fee",
+                "ArticleNumber" => "SHIPPING",
+                "Name" => "Shipping fee",
+                "Quantity" => 100,
+                "UnitPrice" => 4900,
+                "VatPercent" => 2500
             )
         )
     ),
-    "merchantSettings" => array(
-        "termsUri" => "http://localhost:51898/terms",
-        "checkoutUri" => "http://localhost:51925/",
-        "confirmationUri" => "http://localhost:51925/checkout/confirm",
-        "pushUri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+    "MerchantSettings" => array(
+        "TermsUri" => "http://localhost:51898/terms",
+        "CheckoutUri" => "http://localhost:51925/",
+        "ConfirmationUri" => "http://localhost:51925/checkout/confirm",
+        "PushUri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
     )
 );
 ```
@@ -151,7 +151,7 @@ Get an existing order. Returns the order information and the Gui needed to displ
 
 | Parameters IN                | Required  | Type      | Description  |
 |------------------------------|-----------|-----------|--------------|
-| orderId                      |	*      | Long      | The id of the order received when creating the order|
+| OrderId                      |	*      | Long      | The id of the order received when creating the order|
 
 #### 4.1 Get the Order
 Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
@@ -179,31 +179,31 @@ Update an existing order. Returns the order information and the updated Gui need
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | Long      | The id of the order recieved when creating the order|
-| cart                          |	         | array     | [*items*](#72-items) list |
+| OrderId                       |	*        | Long      | The id of the order recieved when creating the order|
+| Cart                          |	         | array     | [*items*](#72-items) list |
 
 Sample order data
 ```php
 // Example of required data for creating order
 $data = array(
-    "id" => 9,
-    "cart" => array(
-        "items" => array(
+    "Id" => 9,
+    "Cart" => array(
+        "Items" => array(
             array(
-                "articleNumber" => "123456789",
-                "name" => "Dator",
-                "quantity" => 200,
-                "unitPrice" => 12300,
-                "discountPercent" => 1000,
-                "vatPercent" => 2500
+                "ArticleNumber" => "123456789",
+                "Name" => "Dator",
+                "Quantity" => 200,
+                "UnitPrice" => 12300,
+                "DiscountPercent" => 1000,
+                "VatPercent" => 2500
             ),
             array(
-                "type" => "shipping_fee",
-                "articleNumber" => "SHIPPING",
-                "name" => "Shipping Fee Updated",
-                "quantity" => 100,
-                "unitPrice" => 4900,
-                "vatPercent" => 2500
+                "Type" => "shipping_fee",
+                "ArticleNumber" => "SHIPPING",
+                "Name" => "Shipping Fee Updated",
+                "Quantity" => 100,
+                "UnitPrice" => 4900,
+                "VatPercent" => 2500
             )
         )
     )
@@ -317,10 +317,10 @@ echo $response['Gui']['Snippet']
 
 | Parameters IN                | Required  | Type      | Description  |
 |------------------------------|-----------|-----------|--------------|
-| termsUri                     |	*      | string    | URI to the page with the terms |
-| checkoutUri                  |	*      | string    | URI to the page that contains the checkout |
-| confirmationUri              |	*      | string    | URI to the page with the confirmation information for an order. |
-| pushUri                      |	*      | string    | URI for a callback to receive messages |
+| TermsUri                     |	*      | string    | URI to the page with the terms |
+| CheckoutUri                  |	*      | string    | URI to the page that contains the checkout |
+| ConfirmationUri              |	*      | string    | URI to the page with the confirmation information for an order. |
+| PushUri                      |	*      | string    | URI for a callback to receive messages |
 
 #### 7.2 Items
 
@@ -330,21 +330,21 @@ Array of [*OrderRows*](#73-orderrow)
 
 | Parameters IN                | Required   | Type      | Description  |
 |------------------------------|------------|-----------|--------------|
-| articleNumber                |	*       | string    | Articlenumber as a string, can contain all characters |
-| name                         |	*       | string    | |
-| quantity                     |	*       | int       |  |
-| unitPrice                    |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500|
-| discountPercent              |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
-| vatPercent                   |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
-| unit                         |                | string(3) |  Unit type|
+| ArticleNumber                |	*       | string    | Articlenumber as a string, can contain all characters |
+| Name                         |	*       | string    | |
+| Quantity                     |	*       | int       |  |
+| UnitPrice                    |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500|
+| DiscountPercent              |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
+| VatPercent                   |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
+| Unit                         |                | string(3) |  Unit type|
 
 #### 7.4 PresetValue
 
 | Parameters IN             | Required   | Type      | Description  |
 |---------------------------|------------|-----------|--------------|
-| typeName                  |	*       | string        | Name of the field you want to set (Eg. emailAddress) |
-| value                     |	*       | string        | Value to be set |
-| isReadonly                |	*       | Boolean       | Set if the field should be editable by the customer |
+| TypeName                  |	*       | string        | Name of the field you want to set (Eg. emailAddress) |
+| Value                     |	*       | string        | Value to be set |
+| IsReadonly                |	*       | Boolean       | Set if the field should be editable by the customer |
 
 #### 7.5 Gui
 
