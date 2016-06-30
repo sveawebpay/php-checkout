@@ -19,7 +19,7 @@ class ValidateGetOrderData implements ValidationInterface
     {
         if (!is_numeric($data)) {
             throw new SveaInputValidationException(
-                'Order ID should be passed like long integer!',
+                'Order ID should be passed like integer!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }
