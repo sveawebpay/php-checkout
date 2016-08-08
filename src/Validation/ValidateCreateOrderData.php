@@ -36,7 +36,7 @@ class ValidateCreateOrderData implements ValidationInterface
             );
         }
 
-        $requiredFields = array('merchantSettings', 'cart', 'locale', 'currency', 'countryCode');
+        $requiredFields = array('merchantsettings', 'cart', 'locale', 'currency', 'countrycode');
 
         foreach ($requiredFields as $field) {
             if (!isset($data[$field]) || $data[$field] === '') {
@@ -54,15 +54,15 @@ class ValidateCreateOrderData implements ValidationInterface
      */
     private function validateMerchant($data)
     {
-        if (!isset($data['merchantSettings']) || !is_array($data['merchantSettings'])) {
+        if (!isset($data['merchantsettings']) || !is_array($data['merchantsettings'])) {
             throw new SveaInputValidationException(
                 'Merchant "merchantSettings" array should be passed as array!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }
 
-        $merchantData = $data['merchantSettings'];
-        $requiredFields = array('termsUri', 'checkoutUri', 'confirmationUri', 'pushUri');
+        $merchantData = $data['merchantsettings'];
+        $requiredFields = array('termsuri', 'checkouturi', 'confirmationuri', 'pushuri');
 
         foreach ($requiredFields as $field) {
             if (!isset($merchantData[$field]) || $merchantData[$field] === '') {
@@ -101,17 +101,16 @@ class ValidateCreateOrderData implements ValidationInterface
      */
     private function validateClientOrderNumber($data)
     {
-        //$pattern = "/^[1-9]{1,32}$/";
+        //if (!preg_match("/^[1-9]{1,32}$/", $data['clientOrderNumber'])) {
 
-        if (!isset($data['clientOrderNumber'])) {
+        if (!isset($data['clientordernumber'])) {
             throw new SveaInputValidationException(
                 '"clientOrderNumber" should be passed!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }
 
-        //if (!preg_match($pattern, $data['clientOrderNumber'])) {
-        $size = count($data['clientOrderNumber']);
+        $size = strlen ($data['clientordernumber']);
 
         if ($size <= 0 || $size > 32) {
             throw new SveaInputValidationException(

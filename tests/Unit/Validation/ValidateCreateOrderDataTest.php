@@ -66,7 +66,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithoutData()
     {
-        unset($this->inputCreateData['merchantSettings']);
+        unset($this->inputCreateData['merchantsettings']);
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -76,7 +76,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithNoArrayData()
     {
-        $this->inputCreateData['merchantSettings'] = '';
+        $this->inputCreateData['merchantsettings'] = '';
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -86,7 +86,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithoutRequiredFields()
     {
-        unset($this->inputCreateData['merchantSettings']['checkoutUri']);
+        unset($this->inputCreateData['merchantsettings']['checkouturi']);
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -96,19 +96,19 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateMerchantWithEmptyStringFiled()
     {
-        $this->inputCreateData['merchantSettings']['checkoutUri'] = '';
+        $this->inputCreateData['merchantsettings']['checkouturi'] = '';
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
     public function testValidateMerchantWithFalseValueField()
     {
-        $this->inputCreateData['merchantSettings']['checkoutUri'] = false;
+        $this->inputCreateData['merchantsettings']['checkouturi'] = false;
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
     public function testValidateMerchantWithZeroValueField()
     {
-        $this->inputCreateData['merchantSettings']['checkoutUri'] = 0;
+        $this->inputCreateData['merchantsettings']['checkouturi'] = 0;
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
@@ -163,7 +163,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateOrderClientOrderNumberWithMissingData()
     {
-        unset($this->inputCreateData['clientOrderNumber']);
+        unset($this->inputCreateData['clientordernumber']);
 
         $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData));
     }
@@ -174,7 +174,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     public function testValidateOrderClientOrderNumberWithBadData()
     {
-        $this->inputCreateData['clientOrderNumber'] = '123-das-321';
+        $this->inputCreateData['clientordernumber'] = '123-das-321-1231123-das-321-1231123-das-321-1231';
 
         $this->invokeMethod($this->validateCreateOrderData, 'validateClientOrderNumber', array($this->inputCreateData));
     }

@@ -210,35 +210,35 @@ JSON;
     private function setInputCreateData()
     {
         $this->inputCreateData = array(
-            "countryCode" => "SE",
+            "countrycode" => "SE",
             "currency" => "SEK",
             "locale" => "sv-SE",
             "cart" => array(
                 "items" => array(
                     array(
-                        "articleNumber" => "123456",
+                        "articlenumber" => "123456",
                         "name" => "Tomatoes",
                         "quantity" => 10,
-                        "unitPrice" => 600,
-                        "discountPercent" => 1000,
-                        "vatPercent" => 2500
+                        "unitprice" => 600,
+                        "discountpercent" => 1000,
+                        "vatpercent" => 2500
                     ),
                     array(
-                        "articleNumber" => "654321",
+                        "articlenumber" => "654321",
                         "name" => "Bananas",
                         "quantity" => 1,
-                        "unitPrice" => 500,
-                        "discountPercent" => 900,
-                        "vatPercent" => 2000
+                        "unitprice" => 500,
+                        "discountpercent" => 900,
+                        "vatpercent" => 2000
                     )
                 )
             ),
-            "clientOrderNumber" => '12312312312213231',
-            "merchantSettings" => array(
-                "termsUri" => "http://www.merchant.com/toc",
-                "checkoutUri" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
-                "confirmationUri" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
-                "pushUri" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
+            "clientordernumber" => '12312312312213231',
+            "merchantsettings" => array(
+                "termsuri" => "http://www.merchant.com/toc",
+                "checkouturi" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
+                "confirmationuri" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
+                "pushuri" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
             )
         );
     }
@@ -250,20 +250,20 @@ JSON;
             "cart" => array(
                 "items" => array(
                     array(
-                        "articleNumber" => "123456789",
+                        "articlenumber" => "123456789",
                         "name" => "Dator",
                         "quantity" => 200,
-                        "unitPrice" => 12300,
-                        "discountPercent" => 1000,
-                        "vatPercent" => 2500
+                        "unitprice" => 12300,
+                        "discountpercent" => 1000,
+                        "vatpercent" => 2500
                     ),
                     array(
                         "type" => "shipping_fee",
-                        "articleNumber" => "SHIPPING",
+                        "articlenumber" => "SHIPPING",
                         "name" => "Shipping fee",
                         "quantity" => 100,
-                        "unitPrice" => 4900,
-                        "vatPercent" => 2500
+                        "unitprice" => 4900,
+                        "vatpercent" => 2500
                     )
                 )
             )

@@ -42,7 +42,7 @@ class UpdateOrderTest extends TestCase
         $this->assertEquals(Request::METHOD_PUT, $requestModel->getMethod());
 
         $expectedItems = $this->inputUpdateData['cart']['items'];
-        $this->assertEquals($expectedItems[0]['articleNumber'], $items[0]['articleNumber']);
+        $this->assertEquals($expectedItems[0]['articlenumber'], $items[0]['articlenumber']);
         $this->assertEquals($expectedItems[0]['quantity'], $items[0]['quantity']);
 
     }

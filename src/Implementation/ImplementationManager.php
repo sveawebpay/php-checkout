@@ -48,6 +48,7 @@ abstract class ImplementationManager implements ImplementationInterface
      */
     public function execute($data)
     {
+        $data = FormatInputData::formatArrayKeysToLower($data);
         $this->validateData($data);
         $this->prepareData($data);
         $this->invoke();

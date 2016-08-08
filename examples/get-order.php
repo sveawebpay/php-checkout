@@ -47,7 +47,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
  * */
 try {
     $response = $checkoutClient->get($orderId);
-
+echo "<pre>" . print_r($response, true);
     /*
      * Format of returned response array
      *
