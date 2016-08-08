@@ -7,8 +7,9 @@ final class FormatInputData
 
     public static function formatArrayKeysToLower($data)
     {
-        if(!is_array($data))
-            return data;
+        if (!is_array($data)) {
+            return $data;
+        }
 
         return self::lowerArrayKeys($data);
     }
@@ -17,12 +18,12 @@ final class FormatInputData
     {
         $return = array();
 
-        foreach ($input as $key => $value)
-        {
+        foreach ($input as $key => $value) {
             $key = strtolower($key);
 
-            if (is_array($value))
+            if (is_array($value)) {
                 $value = self::lowerArrayKeys($value);
+            }
 
             $return[$key] = $value;
         }
