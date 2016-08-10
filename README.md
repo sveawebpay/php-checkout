@@ -332,16 +332,16 @@ Array of [*OrderRows*](#73-orderrow)
 |------------------------------|------------|-----------|--------------|
 | ArticleNumber                |	*       | string    | Articlenumber as a string, can contain all characters |
 | Name                         |	*       | string    | |
-| Quantity                     |	*       | int       |  |
-| UnitPrice                    |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500|
+| Quantity                     |	*       | int       | Set as basis point (1/100) e.g  2 = 200      |
+| UnitPrice                    |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
 | DiscountPercent              |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
 | VatPercent                   |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
 | Unit                         |                | string(3) |  Unit type|
 
 #### 7.4 PresetValue
 
-| Parameters IN             | Required   | Type      | Description  |
-|---------------------------|------------|-----------|--------------|
+| Parameters IN             | Required  | Type          | Description  |
+|---------------------------|-----------|---------------|--------------|
 | TypeName                  |	*       | string        | Name of the field you want to set (Eg. emailAddress) |
 | Value                     |	*       | string        | Value to be set |
 | IsReadonly                |	*       | Boolean       | Set if the field should be editable by the customer |
@@ -358,8 +358,8 @@ Array of [*OrderRows*](#73-orderrow)
 | Parameters OUT               | Required   | Type      | Description  |
 |------------------------------|------------|-----------|--------------|
 | NationalId                   |	*       | string    | Social security number or vat number |
-| IsCompany                    |	*       | Boolean    | True if nationalId is a vat number |
-| IsMale                       |	       | Nullable Boolean    |  |
+| IsCompany                    |	*       | Boolean   | True if nationalId is a vat number |
+| IsMale                       |	       | Nullable Boolean  | |
 | DateOfBirth                  |	       | Nullable datetime | |
 
 #### 7.7 Address
