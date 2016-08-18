@@ -15,7 +15,7 @@ $data = array(
     "countryCode" => "SE",
     "currency" => "SEK",
     "locale" => "sv-SE",
-    "clientOrderNumber" => "125",
+    "clientOrderNumber" => rand(70000, 270000),
     "cart" => array(
         "items" => array(
             array(
