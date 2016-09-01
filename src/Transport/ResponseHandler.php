@@ -133,7 +133,9 @@ class ResponseHandler
          */
         $arrRequests = explode(PHP_EOL . PHP_EOL, $this->content);
 
-        $this->body = $arrRequests[1];
+        if (is_array($arrRequests) && count($arrRequests) > 1) {
+            $this->body = $arrRequests[1];
+        }
     }
 
     /**
