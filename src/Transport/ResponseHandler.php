@@ -99,9 +99,10 @@ class ResponseHandler
         /**
          * Split the string on "double" new line.
          * First is header data, second is body content
+         * We need to use Windows "end of line" char because of response format
          */
-        $arrRequests = explode(PHP_EOL . PHP_EOL, $this->content);
-        $headerLines = explode(PHP_EOL, $arrRequests[0]);
+        $arrRequests = explode("\r\n\r\n", $this->content); // Split on first occurrence
+        $headerLines = explode("\r\n", $arrRequests[0]); // Split on first occurrence
         $headers['http_code'] = $headerLines[0];
 
         foreach ($headerLines as $i => $line) {
@@ -130,8 +131,9 @@ class ResponseHandler
         /**
          * Split the string on "double" new line.
          * First is header data, second is body content
+         * We need to use Windows "end of line" char because of response format
          */
-        $arrRequests = explode(PHP_EOL . PHP_EOL, $this->content);
+        $arrRequests = explode("\r\n\r\n", $this->content, 2); // Split on first occurrence
 
         if (is_array($arrRequests) && count($arrRequests) > 1) {
             $this->body = $arrRequests[1];

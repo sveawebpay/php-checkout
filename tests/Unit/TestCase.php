@@ -193,18 +193,18 @@ class TestCase extends \PHPUnit_Framework_TestCase
         }
 JSON;
 
-        $this->apiResponse = 'HTTP/1.1 201 Created' . PHP_EOL;
-        $this->apiResponse .= 'Cache-Control: no-cache' . PHP_EOL;
-        $this->apiResponse .= 'Pragma: no-cache' . PHP_EOL;
-        $this->apiResponse .= 'Content-Length: 3469' . PHP_EOL;
-        $this->apiResponse .= 'Content-Type: application/json; charset=utf-8' . PHP_EOL;
-        $this->apiResponse .= 'Expires: -1' . PHP_EOL;
-        $this->apiResponse .= 'Server: Microsoft-IIS/8.5' . PHP_EOL;
-        $this->apiResponse .= 'X-AspNet-Version: 4.0.30319' . PHP_EOL;
-        $this->apiResponse .= 'X-Powered-By: ASP.NET' . PHP_EOL;
+        $this->apiResponse = 'HTTP/1.1 201 Created' . "\r\n";
+        $this->apiResponse .= 'Cache-Control: no-cache' . "\r\n";
+        $this->apiResponse .= 'Pragma: no-cache' . "\r\n";
+        $this->apiResponse .= 'Content-Length: 3469' . "\r\n";
+        $this->apiResponse .= 'Content-Type: application/json; charset=utf-8' . "\r\n";
+        $this->apiResponse .= 'Expires: -1' . "\r\n";
+        $this->apiResponse .= 'Server: Microsoft-IIS/8.5' . "\r\n";
+        $this->apiResponse .= 'X-AspNet-Version: 4.0.30319' . "\r\n";
+        $this->apiResponse .= 'X-Powered-By: ASP.NET' . "\r\n";
         $this->apiResponse .= 'Date: Wed, 27 Apr 2016 09:42:19 GMT';
 
-        $this->apiResponse .= PHP_EOL . PHP_EOL . $json;
+        $this->apiResponse .= "\r\n\r\n" . $json;
     }
 
     private function setInputCreateData()

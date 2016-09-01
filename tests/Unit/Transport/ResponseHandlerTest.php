@@ -14,7 +14,7 @@ class ResponseHandlerTest extends TestCase
     public function testHandleClientResponseExceptionThrown()
     {
         $body = '';
-        $content = 'HTTP/1.1 401 Unauthorized' . PHP_EOL . PHP_EOL . $body;
+        $content = 'HTTP/1.1 401 Unauthorized' . "\r\n\r\n" . $body;
         $httpCode = 401;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
@@ -24,7 +24,7 @@ class ResponseHandlerTest extends TestCase
     public function testHandleClientResponseWithSuccessfulResponse()
     {
         $body = '{"test":"Order create successful"}';
-        $content = 'HTTP/1.1 201 Created' . PHP_EOL . PHP_EOL . $body;
+        $content = 'HTTP/1.1 201 Created' . "\r\n\r\n" . $body;
         $httpCode = 201;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
@@ -40,9 +40,9 @@ class ResponseHandlerTest extends TestCase
     public function testHandleClientResponseWithErrorMessageFromApiResponse()
     {
         $body = '';
-        $content = 'HTTP/1.1 400 Bad request' . PHP_EOL;
+        $content = 'HTTP/1.1 400 Bad request' . "\r\n";
         $content .= 'ErrorMessage: Bad request message';
-        $content .= PHP_EOL . PHP_EOL . $body;
+        $content .= "\r\n\r\n" . $body;
         $httpCode = 400;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
@@ -56,7 +56,7 @@ class ResponseHandlerTest extends TestCase
     public function testHandleClientResponseWithGeneralResponseMessageFromApiResponse()
     {
         $body = '';
-        $content = 'HTTP/1.1 401 Unauthorized' . PHP_EOL . PHP_EOL . $body;
+        $content = 'HTTP/1.1 401 Unauthorized' . "\r\n\r\n" . $body;
         $httpCode = 401;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
@@ -66,7 +66,7 @@ class ResponseHandlerTest extends TestCase
     public function testGetContent()
     {
         $body = '{"test":"Order create successful"}';
-        $content = 'HTTP/1.1 201 Created' . PHP_EOL . PHP_EOL . $body;
+        $content = 'HTTP/1.1 201 Created' . "\r\n\r\n" . $body;
         $httpCode = 201;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
@@ -77,18 +77,18 @@ class ResponseHandlerTest extends TestCase
     public function testSetHeader()
     {
         $body = '';
-        $header = 'HTTP/1.1 201 Created' . PHP_EOL;
-        $header .= 'Cache-Control: no-cache' . PHP_EOL;
-        $header .= 'Pragma: no-cache' . PHP_EOL;
-        $header .= 'Content-Length: 3469' . PHP_EOL;
-        $header .= 'Content-Type: application/json; charset=utf-8' . PHP_EOL;
-        $header .= 'Expires: -1' . PHP_EOL;
-        $header .= 'Server: Microsoft-IIS/8.5' . PHP_EOL;
-        $header .= 'X-AspNet-Version: 4.0.30319' . PHP_EOL;
-        $header .= 'X-Powered-By: ASP.NET' . PHP_EOL;
+        $header = 'HTTP/1.1 201 Created' . "\r\n";
+        $header .= 'Cache-Control: no-cache' . "\r\n";
+        $header .= 'Pragma: no-cache' . "\r\n";
+        $header .= 'Content-Length: 3469' . "\r\n";
+        $header .= 'Content-Type: application/json; charset=utf-8' . "\r\n";
+        $header .= 'Expires: -1' . "\r\n";
+        $header .= 'Server: Microsoft-IIS/8.5' . "\r\n";
+        $header .= 'X-AspNet-Version: 4.0.30319' . "\r\n";
+        $header .= 'X-Powered-By: ASP.NET' . "\r\n";
         $header .= 'Date: Wed, 27 Apr 2016 09:42:19 GMT';
 
-        $content = $header . PHP_EOL . PHP_EOL . $body;
+        $content = $header . "\r\n\r\n" . $body;
         $httpCode = 201;
 
         $responseHandler = new ResponseHandler($content, $httpCode);
@@ -115,7 +115,7 @@ class ResponseHandlerTest extends TestCase
     public function testSetBody()
     {
         $body = '{"test":"Order create successful"}';
-        $content = 'HTTP/1.1 201 Created' . PHP_EOL . PHP_EOL . $body;
+        $content = 'HTTP/1.1 201 Created' . "\r\n\r\n" . $body;
         $httpCode = 200;
 
         $responseHandler = new ResponseHandler($content, $httpCode);

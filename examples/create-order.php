@@ -1,10 +1,10 @@
 <?php
 
 // include the Svea Checkout autoload file if you are using Composer
-require_once '../vendor/autoload.php';
+//require_once '../vendor/autoload.php';
 
 // - without composer
-//require_once '../include.php';
+require_once '../include.php';
 
 /**
  * Example of creating the order and getting the response data
@@ -129,6 +129,7 @@ try {
     $orderId = $response['OrderId'];
     $guiSnippet = $response['Gui']['Snippet'];
     $orderStatus = $response['Status'];
+    print_r($orderId);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump($ex->getMessage());
