@@ -129,7 +129,6 @@ try {
     $orderId = $response['OrderId'];
     $guiSnippet = $response['Gui']['Snippet'];
     $orderStatus = $response['Status'];
-    print_r($orderId);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump($ex->getMessage());
