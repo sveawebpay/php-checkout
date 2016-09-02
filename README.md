@@ -9,6 +9,8 @@ Version 1.0.0
 * [5. Update order](#5-update-order)
 * [6. Response](#6-response)
 * [7. Data structures](#7-data-structures)
+* [8. Sub System Info](#8-subsysteminfo)
+
 
 ## Introduction
 The checkout offers a complete solution with a variety of payment methods. The underlying systems for the checkout is our
@@ -127,7 +129,7 @@ $data = array(
 
 #### 3.2 Create the Order
 Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
-The checkoutClient object is an entry point for creating, getting and updating the order.
+The checkoutClient object is an entry point to use library.
 
 ```php
 // include the library
@@ -140,7 +142,6 @@ include 'vendor/autoload.php'
 
 $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 
-//call the method *create*
 $response = $checkoutClient->create($data);
 ```
 
@@ -155,7 +156,7 @@ Get an existing order. Returns the order information and the Gui needed to displ
 
 #### 4.1 Get the Order
 Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
-The checkoutClient object is an entry point for creating, getting and updating the order.
+The checkoutClient object is an entry point to use library.
 
 ```php
 // include the library
@@ -168,7 +169,6 @@ include 'vendor/autoload.php'
 
 $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 
-//call the method *create*
 $response = $checkoutClient->get($orderId);
 ```
 
@@ -212,7 +212,7 @@ $data = array(
 
 #### 5.1 Update the Order
 Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
-The checkoutClient object is an entry point for creating, getting and updating the order.
+The checkoutClient object is an entry point to use library.
 
 ```php
 // include the library
@@ -225,7 +225,6 @@ include 'vendor/autoload.php'
 
 $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 
-//call the method *create*
 $response = $checkoutClient->update($data);
 ```
 
@@ -236,16 +235,19 @@ merchantSettings, Customer and the Gui for the checkout.
 | Parameters OUT                | Description  |
 |-------------------------------|--------------|
 | MerchantSettings              | List of [*Merchant settings*] (#71-merchantsettings) |
-| Cart                          | [*items*](#41-items) list |
+| Cart                          | [*items*](#72-items) list |
 | Customer                      | [*Customer*](#76-customer) details list |
 | ShippingAddress               | [*Address*](#77-address) details list |
 | BillingAddress                | [*Address*](#77-address) details list |
 | Gui                           | [*Gui*](#75-gui) details list |
 | Locale                        | Language Culture Name (eg. "sv-SE")|
 | Currency                      | Currency as ISO 4217 eg. "SEK"|
-| Countrycode                   | Client country code as ISO 3166 (eg. "SE") |
+| CountryCode                   | Client country code as ISO 3166 (eg. "SE") |
 | PresetValues                  | [*PresetValue*](#74-presetvalue) details list |
+| ClientOrderNumber             | A string with maximum of 32 characters identifying the order in the merchant’s system. |
 | OrderId                       | The Svea order id |
+| EmailAddress                  | The customer’s email address |
+| PhoneNumber                   | The customer’s phone number |
 | Status                        | [*CheckoutOrderStatus*](#79-checkoutorderstatus) |
 
 
@@ -299,7 +301,10 @@ Array
     [Currency] =>
     [CountryCode] =>
     [PresetValues] =>
+    [ClientOrderNumber] => '78691'
     [OrderId] => 9
+    [EmailAddress] => 'integration@svea.com'
+    [PhoneNumber] => '1234567'
     [Status] => Created
 )
 ```
@@ -315,28 +320,30 @@ echo $response['Gui']['Snippet']
 
 #### 7.1 MerchantSettings
 
-| Parameters IN                | Required  | Type      | Description  |
-|------------------------------|-----------|-----------|--------------|
-| TermsUri                     |	*      | string    | URI to the page with the terms |
-| CheckoutUri                  |	*      | string    | URI to the page that contains the checkout |
-| ConfirmationUri              |	*      | string    | URI to the page with the confirmation information for an order. |
-| PushUri                      |	*      | string    | URI for a callback to receive messages |
+| Parameters IN                | Required  | Type      | Description  | Limits  |
+|------------------------------|-----------|-----------|--------------|---------|
+| TermsUri                     |	*      | string    | URI to the page with the terms | 1-500 characters, must be a valid Url |
+| CheckoutUri                  |	*      | string    | URI to the page that contains the checkout | 1-500 characters, must be a valid Url |
+| ConfirmationUri              |	*      | string    | URI to the page with the confirmation information for an order. | 1-500 characters, must be a valid Url |
+| PushUri                      |	*      | string    | URI for a callback to receive messages | 1-500 characters, must be a valid Url |
 
 #### 7.2 Items
 
-Array of [*OrderRows*](#73-orderrow)
+| Parameters IN                | Required  | Type                                 | Description         |
+|------------------------------|-----------|--------------------------------------|---------------------|
+| Items                        |	*      | Array of [*OrderRows*](#73-orderrow)  | See structure below |
 
 #### 7.3 OrderRow
 
-| Parameters IN                | Required   | Type      | Description  |
-|------------------------------|------------|-----------|--------------|
-| ArticleNumber                |	*       | string    | Articlenumber as a string, can contain all characters |
-| Name                         |	*       | string    | |
-| Quantity                     |	*       | int       | Set as basis point (1/100) e.g  2 = 200      |
-| UnitPrice                    |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
-| DiscountPercent              |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
-| VatPercent                   |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 |
-| Unit                         |                | string(3) |  Unit type|
+| Parameters IN                | Required   | Type      | Description  | Limits  |
+|------------------------------|------------|-----------|--------------|---------|
+| ArticleNumber                |	*       | string    | Articlenumber as a string, can contain all characters | Maximum 1000 characters |
+| Name                         |	*       | string    | Article name | 1-40 characters |
+| Quantity                     |	*       | int       | Set as basis point (1/100) e.g  2 = 200      | 1-9 digits. Minor currency |
+| UnitPrice                    |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 | 1-13 digits, can be negative. Minor currency |
+| DiscountPercent              |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 | 0-100 |
+| VatPercent                   |	*       | int       | Set as basis point (1/100) e.g. 25.00 = 2500 | Valid vat percentage for that country. Minor currency |
+| Unit                         |            | string(3) | Unit type| 0-4 characters|
 
 #### 7.4 PresetValue
 
@@ -344,7 +351,17 @@ Array of [*OrderRows*](#73-orderrow)
 |---------------------------|-----------|---------------|--------------|
 | TypeName                  |	*       | string        | Name of the field you want to set (Eg. emailAddress) |
 | Value                     |	*       | string        | Value to be set |
-| IsReadonly                |	*       | Boolean       | Set if the field should be editable by the customer |
+| IsReadOnly                |	*       | Boolean       | Set if the field should be editable by the customer |
+
+**List of presetvalue typenames**
+
+| Parameter                 | Type          | Description  | Limits       |
+|---------------------------|---------------|--------------|--------------|
+| NationalId                | string        |              | Company specific validation |
+| EmailAddress              | string        |              | Max 50 characters, will be validated as an email address |
+| PhoneNumber               | string        |              | 1-18 digits, can include “+”, “-“s and space |
+| PostalCode                | string        |              | Company specific validation |
+| IsCompany                 | Boolean       | Required if nationalid is set | |
 
 #### 7.5 Gui
 
@@ -359,24 +376,21 @@ Array of [*OrderRows*](#73-orderrow)
 |------------------------------|------------|-----------|--------------|
 | NationalId                   |	*       | string    | Social security number or vat number |
 | IsCompany                    |	*       | Boolean   | True if nationalId is a vat number |
-| IsMale                       |	       | Nullable Boolean  | |
-| DateOfBirth                  |	       | Nullable datetime | |
+| IsMale                       |	        | Nullable Boolean  | Indicating if the customer is male or not |
+| DateOfBirth                  |	        | Nullable datetime | Required only for DE and NL or if NationalId is not set for any reason |
 
 #### 7.7 Address
 
 | Parameters OUT               | Required   | Type      | Description  |
 |------------------------------|------------|-----------|--------------|
-| EmailAddress                   |	*       | string    |  |
-| PhoneNumber                    |              | string    | True if nationalId is a vat number |
-| FullName                       |	*       |string|  |
-| FirstName                      |              | string | |
-| LastName                       |	       | string | |
-| StreetAddress                 |	*      | string| |
-| CoAddress                     |	       | string| |
-| HouseNumber                   |	       | string | NL, DE only|
-| PostalCode                       |	 *      | string | |
-| City                          |	 *      | string | |
-| CountryCode                   |	 *      | string | |
+| FullName                     |	*       | string    |              |
+| FirstName                    |            | string    |              |
+| LastName                     |	        | string    |              |
+| StreetAddress                |	*       | string    |              |
+| CoAddress                    |	        | string    |              |
+| PostalCode                   |	*       | string    |              |
+| City                         |	*       | string    |              |
+| CountryCode                  |	*       | string    |              |
 
 #### 7.8 Customer
 
@@ -384,8 +398,8 @@ Array of [*OrderRows*](#73-orderrow)
 |------------------------------|------------|-----------|--------------|
 | NationalId                   |	*       | string    | Social security number or vat number |
 | IsCompany                    |	*       | Boolean    | True if nationalId is a vat number |
-| IsMale                       |	       | Nullable Boolean    |  |
-| DateOfBirth                  |	       | Nullable datetime | |
+| IsMale                       |	        | Nullable Boolean    |  |
+| DateOfBirth                  |	        | Nullable datetime | |
 
 #### 7.9 CheckoutOrderStatus
 
@@ -397,3 +411,37 @@ Array of [*OrderRows*](#73-orderrow)
 | PendingAcknowledge            | The order has been pushed to the merchant and is awaiting an acknowledgement. The order is locked and the method of payment can not be changed by the customer.|
 | Complete                      | A response has been given to confirm that the order has been taken care of by an other system. The order is now fully completed in the checkout system. |
 
+#### 8. SubSystemInfo
+
+Get an existing order sub-system information.
+Returns information needed to identify an order in any of WebPay’s subsystems.
+
+| Parameters IN                | Required  | Type      | Description  |
+|------------------------------|-----------|-----------|--------------|
+| OrderId                      |	*      | Long      | Checkoutorderid of the specified order |
+
+
+| Parameters OUT    | Type | Description  |
+|-------------------|------|--------------|
+| ClientId          | Long | Used to identify the client in WebPay’s subsystems |
+| SveaOrderId       | Long | Used to identify the order in WebPay’s subsystems |
+| TransactionId     | Long | Used to Identify the transaction in WebPay’s paymentgateway-subsystem |
+| PaymentType       | Long | The paymenttype of the order |
+
+#### 8.1 Get the Order SubSystem Info
+Create a CheckoutClient object with the [*Connector*](#3-create-a-connector) as parameter.
+The checkoutClient object is an entry point to use library.
+
+```php
+// include the library
+include 'vendor/autoload.php'
+
+// without composer
+// require_once 'include.php';
+
+...
+
+$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
+
+$response = $checkoutClient->getOrderSubsystemInfo($orderId);
+```
