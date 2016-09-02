@@ -1,7 +1,7 @@
 {
   "name": "svea/checkout-php",
   "type": "library",
-  "version": "master",
+  "version": "1.0.0",
   "description": "The officially supported php library for Svea Checkout",
   "keywords": [],
   "homepage": "http://svea.com",
@@ -23,7 +23,7 @@
     "ext-curl": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.8",
+    "phpunit/phpunit": "~4.8 || ~5.5",
     "phpdocumentor/phpdocumentor": "2.*",
     "satooshi/php-coveralls": "~1.0",
     "squizlabs/php_codesniffer": "2.*",
