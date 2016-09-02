@@ -6,12 +6,6 @@
   "keywords": [],
   "homepage": "http://svea.com",
   "license": "Apache-2.0",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/sveawebpay/php-checkout-dev.git"
-    }
-  ],
   "authors": [
     {
       "name": "Svea Ekonomi",
