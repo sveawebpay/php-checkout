@@ -4,7 +4,6 @@ namespace Svea\Checkout\Implementation;
 
 final class FormatInputData
 {
-
     public static function formatArrayKeysToLower($data)
     {
         if (!is_array($data)) {
@@ -30,5 +29,4 @@ final class FormatInputData
 
         return $return;
     }
-
 }

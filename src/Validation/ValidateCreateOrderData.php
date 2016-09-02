@@ -110,7 +110,7 @@ class ValidateCreateOrderData implements ValidationInterface
             );
         }
 
-        $size = strlen ($data['clientordernumber']);
+        $size = strlen($data['clientordernumber']);
 
         if ($size <= 0 || $size > 32) {
             throw new SveaInputValidationException(
