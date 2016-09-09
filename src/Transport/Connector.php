@@ -19,7 +19,7 @@ class Connector
     /**
      * Base URL For Svea Checkout test server
      */
-    const TEST_BASE_URL = 'http://checkoutapistage.svea.com';
+    const TEST_BASE_URL = 'http://webpaycheckoutservice.uat.svea.com';
 
     /**
      * Base URL For Svea Checkout production server
