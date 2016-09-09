@@ -17,12 +17,32 @@ use Svea\Checkout\Transport\Http\CurlRequest;
 class Connector
 {
     /**
-     * Base URL For Svea Checkout test server
+     * Base URL For Svea Checkout Test server
      */
-    const TEST_BASE_URL = 'http://webpaycheckoutservice.uat.svea.com';
+    const TEST_BASE_URL = 'http://webpaycheckoutservice.test.svea.com';
 
     /**
-     * Base URL For Svea Checkout production server
+     * Base URL For Svea Checkout Dev server
+     */
+    const DEV_BASE_URL = 'http://webpaycheckoutservice.dev.svea.com';
+
+    /**
+     * Base URL For Svea Checkout UAT server
+     */
+    const UAT_BASE_URL = 'http://webpaycheckoutservice.uat.svea.com';
+
+    /**
+     * Base URL For Svea Checkout Demo server
+     */
+    const DEMO_BASE_URL = 'http://webpaycheckoutservice.demo.svea.com';
+
+    /**
+     * Base URL For Svea Checkout Demo server
+     */
+    const STAGE_BASE_URL = 'http://checkoutapistage.svea.com';
+
+    /**
+     * Base URL For Svea Checkout Production server
      */
     const PROD_BASE_URL = 'http://checkoutapi.svea.com';
 
