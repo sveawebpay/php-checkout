@@ -403,13 +403,16 @@ echo $response['Gui']['Snippet']
 
 #### 7.9 CheckoutOrderStatus
 
+The order can only be considered “ready to send to customer” when the checkoutorderstatus is PaymentGuaranteed or Final. No other status can guarantee payment.
+
 | Parameters OUT               | Description  |
 |------------------------------|--------------|
-| Created                       | The order has been created and can be changed |
-| Confirmed                     | The customer has chose address and pushed "Complete purchase", the order rows can no longer be changed. |
-| Submitted                     | The order is submitted to our internal system. The customer can change payment type during a time window.  |
-| PendingAcknowledge            | The order has been pushed to the merchant and is awaiting an acknowledgement. The order is locked and the method of payment can not be changed by the customer.|
-| Complete                      | A response has been given to confirm that the order has been taken care of by an other system. The order is now fully completed in the checkout system. |
+| Cancelled                    | The order has been cancelled due to inactivity. |
+| Created                      | The order has been created.  |
+| Confirmed                    | The order has been confirmed using card payment and is waiting to be paid by the customer.   |
+| PaymentGuaranteed            | The order has been confirmed using a credit option; invoice, paymentplan or accountcredit. |
+| WaitingToBeSent              | The order is finished and is waiting to be sent to WebPay’s subsystems for further handling. |
+| Final                        | The order is completed in the checkout and managed by WebPay’s subsystems.|
 
 #### 8. SubSystemInfo
 
