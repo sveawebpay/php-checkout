@@ -83,10 +83,16 @@ class ResponseHandler
      * Return response content
      *
      * @return mixed
+     * @throws SveaApiException
      */
     public function getContent()
     {
-        return json_decode($this->body, true);
+        $result = json_decode($this->body, true);
+
+        if ($result === null) {
+            throw new SveaApiException('Response format is not valid, JSON decode error', 1000);
+        }
+        return $result;
     }
 
     /**
