@@ -43,6 +43,7 @@ class ApiClient
         $header = array();
         $header[] = 'Content-type: application/json';
         $header[] = 'Authorization: Svea ' . $request->getAuthorizationToken();
+        $header[] = 'Expect:';
 
         $this->httpClient->setOption(CURLOPT_URL, $request->getApiUrl());
         $this->httpClient->setOption(CURLOPT_HTTPHEADER, $header);
