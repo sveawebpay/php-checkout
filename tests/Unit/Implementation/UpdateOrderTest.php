@@ -31,7 +31,7 @@ class UpdateOrderTest extends TestCase
     {
         $this->connectorMock->expects($this->once())
             ->method('getBaseApiUrl');
-        
+
         $this->updateOrder->prepareData($this->inputUpdateData);
 
         $requestModel = $this->updateOrder->getRequestModel();
@@ -44,7 +44,6 @@ class UpdateOrderTest extends TestCase
         $expectedItems = $this->inputUpdateData['cart']['items'];
         $this->assertEquals($expectedItems[0]['articlenumber'], $items[0]['articlenumber']);
         $this->assertEquals($expectedItems[0]['quantity'], $items[0]['quantity']);
-
     }
 
     public function testInvoke()

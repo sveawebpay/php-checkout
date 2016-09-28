@@ -17,12 +17,32 @@ use Svea\Checkout\Transport\Http\CurlRequest;
 class Connector
 {
     /**
-     * Base URL For Svea Checkout test server
+     * Base URL For Svea Checkout Test server
      */
-    const TEST_BASE_URL = 'http://checkoutapistage.svea.com';
+    const TEST_BASE_URL = 'http://webpaycheckoutservice.test.svea.com';
 
     /**
-     * Base URL For Svea Checkout production server
+     * Base URL For Svea Checkout Dev server
+     */
+    const DEV_BASE_URL = 'http://webpaycheckoutservice.dev.svea.com';
+
+    /**
+     * Base URL For Svea Checkout UAT server
+     */
+    const UAT_BASE_URL = 'http://webpaycheckoutservice.uat.svea.com';
+
+    /**
+     * Base URL For Svea Checkout Demo server
+     */
+    const DEMO_BASE_URL = 'http://webpaycheckoutservice.demo.svea.com';
+
+    /**
+     * Base URL For Svea Checkout Demo server
+     */
+    const STAGE_BASE_URL = 'http://checkoutapistage.svea.com';
+
+    /**
+     * Base URL For Svea Checkout Production server
      */
     const PROD_BASE_URL = 'http://checkoutapi.svea.com';
 
@@ -58,10 +78,10 @@ class Connector
     /**
      * Connector constructor.
      *
-     * @param ApiClient $apiClient      HTTP transport client
-     * @param string    $merchantId     Merchant Id
-     * @param string    $sharedSecret   Shared secret
-     * @param string    $baseApiUrl     Base URL for HTTP request to Svea Checkout API
+     * @param ApiClient $apiClient HTTP transport client
+     * @param string $merchantId Merchant Id
+     * @param string $sharedSecret Shared secret
+     * @param string $baseApiUrl Base URL for HTTP request to Svea Checkout API
      */
     public function __construct($apiClient, $merchantId, $sharedSecret, $baseApiUrl)
     {
@@ -76,9 +96,9 @@ class Connector
     /**
      * Initializes connector instance
      *
-     * @param string $merchantId    Merchant Id
-     * @param string $sharedSecret  Shared secret
-     * @param string $apiUrl        Base URL for HTTP request to Svea Checkout API
+     * @param string $merchantId Merchant Id
+     * @param string $sharedSecret Shared secret
+     * @param string $apiUrl Base URL for HTTP request to Svea Checkout API
      * @return Connector
      */
     public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
@@ -135,12 +155,21 @@ class Connector
      */
     private function validateBaseApiUrl()
     {
+        $availableUrls = array(
+            self::TEST_BASE_URL,
+            self::DEV_BASE_URL,
+            self::UAT_BASE_URL,
+            self::DEMO_BASE_URL,
+            self::PROD_BASE_URL,
+            self::STAGE_BASE_URL
+        );
+
         if (empty($this->baseApiUrl)) {
             throw new SveaConnectorException(
                 ExceptionCodeList::getErrorMessage(ExceptionCodeList::MISSING_API_BASE_URL),
                 ExceptionCodeList::MISSING_API_BASE_URL
             );
-        } elseif ($this->baseApiUrl !== self::TEST_BASE_URL && $this->baseApiUrl !== self::PROD_BASE_URL) {
+        } elseif (in_array($this->baseApiUrl, $availableUrls) !== true) {
             throw new SveaConnectorException(
                 ExceptionCodeList::getErrorMessage(ExceptionCodeList::INCORRECT_API_BASE_URL),
                 ExceptionCodeList::INCORRECT_API_BASE_URL
@@ -151,7 +180,7 @@ class Connector
     /**
      * Create request to the API client.
      *
-     * @param Request   $request    Request model contains all data for request to the Svea Checkout API
+     * @param Request $request Request model contains all data for request to the Svea Checkout API
      * @throws SveaApiException     If some error is encountered or If API responds with some error
      * @return ResponseHandler
      */
@@ -180,7 +209,7 @@ class Connector
      * Only a proprietary Svea authentication scheme is supported.
      * base64 ({merchantId}:sha512 (requestBody + sharedSecret))
      *
-     * @param Request $request  Request model with all necessary data for HTTP request
+     * @param Request $request Request model with all necessary data for HTTP request
      */
     private function createAuthorizationToken(Request $request)
     {
