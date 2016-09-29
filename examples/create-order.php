@@ -44,18 +44,18 @@ $data = array(
             )
         )
     ),
-    "presetValues" => array(
+    /*"presetValues" => array(
         array(
             "typeName" => "emailAddress",
             "value" => "test@sveaekonomi.se",
-            "isReadonly" => true
+            "isReadonly" => false
         ),
         array(
             "typeName" => "postalCode",
             "value" => "11850",
-            "isReadonly" => true
+            "isReadonly" => false
         )
-    ),
+    ),*/
     "merchantSettings" => array(
         "termsUri" => "http://localhost:51898/terms",
         "checkoutUri" => "http://localhost:51925/",
@@ -66,24 +66,25 @@ $data = array(
 
 /**
  * Create connector for given
- * - Merchant Id - unique merchant ID
- * - Shared Secret - Shared Secret string between Svea and merchant
- * - Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
+ * - Checkout Merchant Id - unique merchant ID for checkout
+ * - Checkout Secret - Checkout Secret string between Svea and merchant
+ * - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
  */
-$merchantId = '1170';
-$sharedSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30db';
-$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
+$checkoutMerchantId = '100001';
+$checkoutSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1';
+$baseUrl = \Svea\Checkout\Transport\Connector::STAGE_BASE_URL;
 
 /**
  * Create Connector object
  *
  * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
- * some of fields $merchantId, $sharedSecret and $baseUrl is missing
+ * some of fields $checkoutMerchantId, $checkoutSecret and $baseUrl is missing
  */
-$conn = \Svea\Checkout\Transport\Connector::init($merchantId, $sharedSecret, $baseUrl);
+$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
 
 // Create Checkout client with created Connector object
 $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
+
 
 /**
  * Initialize creating the order and receive the response data
@@ -127,7 +128,9 @@ try {
      */
 
     $orderId = $response['OrderId'];
-    $guiSnippet = $response['Gui']['Snippet'];
+    ?><html><head><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script></head><?php
+echo $response['Gui']['Snippet'];?>
+</html><?php
     $orderStatus = $response['Status'];
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
