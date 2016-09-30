@@ -418,7 +418,6 @@ The order can only be considered “ready to send to customer” when the checko
 | Parameter | Description     |
 |-----------|-----------------|
 | sv-SE     | Swedish locale. |
-| en-US     | English locale. |
 
 ### 8.0 HttpStatusCodes
 | Parameter | Type         | Description |
