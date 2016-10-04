@@ -258,6 +258,7 @@ merchantSettings, Customer and the Gui for the checkout.
 | Status                        | The current state of the order, see [*CheckoutOrderStatus*](#78-checkoutorderstatus) below. |
 | EmailAddress                  | String               | The customer’s email address |
 | PhoneNumber                   | String               | The customer’s phone number |
+| PaymentType                   | String               | The final payment method for the order. Will only have a value when the order is locked, otherwise null. See [*PaymentType*](#710-paymenttype)|
 
 
 Sample response
@@ -418,6 +419,20 @@ The order can only be considered “ready to send to customer” when the checko
 | Parameter | Description     |
 |-----------|-----------------|
 | sv-SE     | Swedish locale. |
+
+
+
+
+#### 7.10 PaymentType
+| Parameter   | Description     |
+|-------------|-----------------|
+| Null        | The customer havn’t confirmed the order or can still change paymentType. |
+| Invoice     | The customer chose Invoice |
+| PaymentPlan |	The customer chose a payment plan |
+| Card	      | The customer paid the order with card |
+| DirectBank  |	The customer paid the order with direct bank e.g. Nordea, SEB. |
+| Account	  | The customer chose to use their account credit. |
+
 
 ### 8.0 HttpStatusCodes
 | Parameter | Type         | Description |
