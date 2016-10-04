@@ -49,7 +49,7 @@ You can also download and unzip the project and upload it to your server.
 
 ### 2. Create a Connector
 You use a connector object as parameter when creating a CheckoutClient request.
-Parameters for creating Connector are: merchantId, sharedSecret and base Api url.
+Parameters for creating Connector are: checkoutMerchantId, checkoutSecret and base Api url.
 
 ```php
 // include the library
@@ -61,7 +61,7 @@ require_once 'include.php';
 $checkoutMerchantId = '100001';
 $checkoutSecret = 'checkoutSecret';
 //set endpoint url. Eg. test or prod
-$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
+$baseUrl = \Svea\Checkout\Transport\Connector::STAGE_BASE_URL;
 
 $connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
 ```
