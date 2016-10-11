@@ -44,18 +44,18 @@ $data = array(
             )
         )
     ),
-    /*"presetValues" => array(
+    "presetValues" => array(
         array(
             "typeName" => "emailAddress",
             "value" => "test@sveaekonomi.se",
-            "isReadonly" => false
+            "isReadonly" => true
         ),
         array(
             "typeName" => "postalCode",
             "value" => "11850",
-            "isReadonly" => false
+            "isReadonly" => true
         )
-    ),*/
+    ),
     "merchantSettings" => array(
         "termsUri" => "http://localhost:51898/terms",
         "checkoutUri" => "http://localhost:51925/",
@@ -72,7 +72,7 @@ $data = array(
  */
 $checkoutMerchantId = '100001';
 $checkoutSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1';
-$baseUrl = \Svea\Checkout\Transport\Connector::STAGE_BASE_URL;
+$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 /**
  * Create Connector object
@@ -128,9 +128,7 @@ try {
      */
 
     $orderId = $response['OrderId'];
-    ?><html><head><script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script></head><?php
-echo $response['Gui']['Snippet'];?>
-</html><?php
+    $guiSnippet = $response['Gui']['Snippet'];
     $orderStatus = $response['Status'];
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");

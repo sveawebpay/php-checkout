@@ -2,9 +2,9 @@
 
 namespace Svea\Checkout\Transport;
 
-use \Exception;
-use Svea\Checkout\Exception\SveaApiException;
+use Exception;
 use Svea\Checkout\Exception\ExceptionCodeList;
+use Svea\Checkout\Exception\SveaApiException;
 use Svea\Checkout\Exception\SveaConnectorException;
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Http\CurlRequest;
@@ -16,15 +16,15 @@ use Svea\Checkout\Transport\Http\CurlRequest;
  */
 class Connector
 {
-	/**
-	 * Base URL For Svea Checkout Production server
-	 */
-	const PROD_BASE_URL = 'https://checkoutapi.svea.com';
+    /**
+     * Base URL For Svea Checkout Production server
+     */
+    const PROD_BASE_URL = 'https://checkoutapi.svea.com';
 
-	/**
-	 * Base URL For Svea Checkout Demo server
-	 */
-	const STAGE_BASE_URL = 'https://checkoutapistage.svea.com';
+    /**
+     * Base URL For Svea Checkout Demo server
+     */
+    const TEST_BASE_URL = 'https://checkoutapistage.svea.com';
 
     /**
      * Merchant identifier assigned to client by Svea.
@@ -137,11 +137,7 @@ class Connector
     {
         $availableUrls = array(
             self::TEST_BASE_URL,
-            self::DEV_BASE_URL,
-            self::UAT_BASE_URL,
-            self::DEMO_BASE_URL,
-            self::PROD_BASE_URL,
-            self::STAGE_BASE_URL
+            self::PROD_BASE_URL
         );
 
         if (empty($this->baseApiUrl)) {

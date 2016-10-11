@@ -61,7 +61,7 @@ require_once 'include.php';
 $checkoutMerchantId = '100001';
 $checkoutSecret = 'checkoutSecret';
 //set endpoint url. Eg. test or prod
-$baseUrl = \Svea\Checkout\Transport\Connector::STAGE_BASE_URL;
+$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 $connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
 ```

@@ -44,7 +44,7 @@ $data = array(
  * */
 $checkoutMerchantId = '100001';
 $checkoutSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30db';
-$baseUrl = \Svea\Checkout\Transport\Connector::STAGE_BASE_URL;
+$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 /*
  * Create Connector object
