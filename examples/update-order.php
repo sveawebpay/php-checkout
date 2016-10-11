@@ -13,7 +13,7 @@ require_once '../vendor/autoload.php';
 
 // - Add required information for creating order
 $data = array(
-    "id" => 1,
+    "id" => 1669,
     "cart" => array(
         "items" => array(
             array(
@@ -43,7 +43,7 @@ $data = array(
  *  - Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
  * */
 $checkoutMerchantId = '100001';
-$checkoutSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30db';
+$checkoutSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1';
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 /*
