@@ -181,6 +181,8 @@ $response = $checkoutClient->get($orderId);
 ### 5. Update Order
 Update an existing order. Returns the order information and the updated Gui needed to display the iframe for Svea checkout.
 
+Updating an order is only possible while the CheckoutOrderStatus is "Created", see [*CheckoutOrderStatus*](#78-checkoutorderstatus).
+
 [See full Update order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/update-order.php)
 
 | Parameters IN  as URI-parameters: | Required   | Type      | Description  |
