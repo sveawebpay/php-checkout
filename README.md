@@ -362,7 +362,7 @@ echo $response['Gui']['Snippet']
 | DiscountPercent              |	        | Integer       | The discountpercent of the product. | 0-100 |
 | VatPercent                   |	*       | Integer       | The VAT percentage of the current product. | Valid vat percentage for that country. Minor currency.  |
 | Unit                         |            | String        | The unit type, e.g., “st”, “pc”, “kg” etc. | 0-4 characters|
-| TemporaryReference           |            | String        | Can be used when creating or updating an order. The returned rows will have their corresponding temporaryreference as they were given in the indata. it will not be stored and will not be returned in GetOrder.  | |
+| TemporaryReference           |            | String        | Can be used when creating or updating an order. The returned rows will have their corresponding temporaryreference as they were given in the indata. It will not be stored and will not be returned in GetOrder.  | |
 
 #### 7.4 PresetValue
 
