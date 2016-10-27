@@ -87,7 +87,7 @@ Returns the order information and the Gui needed to display the iframe Svea chec
 
 Sample order data
 ```php
-// Example of required data for creating order
+// Example of data for creating order
 $data = array(
     "CountryCode" => "SE",
     "Currency" => "SEK",
@@ -100,7 +100,8 @@ $data = array(
                 "Quantity" => 200,
                 "UnitPrice" => 12300,
                 "DiscountPercent" => 1000,
-                "VatPercent" => 2500
+                "VatPercent" => 2500,
+                'TemporaryReference' => '230'
             ),
             array(
                 "ArticleNumber" => "987654321",
@@ -108,7 +109,8 @@ $data = array(
                 "Quantity" => 300,
                 "UnitPrice" => 15800,
                 "DiscountPercent" => 2000,
-                "VatPercent" => 2500
+                "VatPercent" => 2500,
+                'TemporaryReference' => '231'
             ),
             array(
                 "Type" => "shipping_fee",
@@ -195,7 +197,7 @@ Updating an order is only possible while the CheckoutOrderStatus is "Created", s
 
 Sample order data
 ```php
-// Example of required data for creating order
+// Example of data for creating order
 $data = array(
     "Id" => 9,
     "Cart" => array(
@@ -206,7 +208,8 @@ $data = array(
                 "Quantity" => 200,
                 "UnitPrice" => 12300,
                 "DiscountPercent" => 1000,
-                "VatPercent" => 2500
+                "VatPercent" => 2500.
+                "TemporaryReference" => "230"
             ),
             array(
                 "Type" => "shipping_fee",
@@ -214,7 +217,8 @@ $data = array(
                 "Name" => "Shipping Fee Updated",
                 "Quantity" => 100,
                 "UnitPrice" => 4900,
-                "VatPercent" => 2500
+                "VatPercent" => 2500,
+                "TemporaryReference" => "231"
             )
         )
     )
@@ -288,6 +292,7 @@ Array
                             [DiscountPercent] => 1000
                             [VatPercent] => 2500
                             [Unit] =>
+                            [TemporaryReference] => "230"
                         )
                     [1] => Array
                         (
@@ -298,6 +303,7 @@ Array
                             [DiscountPercent] => 0
                             [VatPercent] => 2500
                             [Unit] =>
+                            [TemporaryReference] => "231"
                         )
                 )
          )
@@ -356,6 +362,7 @@ echo $response['Gui']['Snippet']
 | DiscountPercent              |	        | Integer       | The discountpercent of the product. | 0-100 |
 | VatPercent                   |	*       | Integer       | The VAT percentage of the current product. | Valid vat percentage for that country. Minor currency.  |
 | Unit                         |            | String        | The unit type, e.g., “st”, “pc”, “kg” etc. | 0-4 characters|
+| TemporaryReference           |            | String        | Can be used when creating or updating an order. The returned rows will have their corresponding temporaryreference as they were given in the indata. it will not be stored and will not be returned in GetOrder.  | |
 
 #### 7.4 PresetValue
 

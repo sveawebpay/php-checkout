@@ -24,7 +24,8 @@ $data = array(
                 "quantity" => 200,
                 "unitPrice" => 12300,
                 "discountPercent" => 1000,
-                "vatPercent" => 2500
+                "vatPercent" => 2500,
+                'temporaryReference' => "230"
             ),
             array(
                 "articleNumber" => "7654321",
@@ -32,7 +33,8 @@ $data = array(
                 "quantity" => 300,
                 "unitPrice" => 15800,
                 "discountPercent" => 2000,
-                "vatPercent" => 2500
+                "vatPercent" => 2500,
+                'temporaryReference' => "231"
             ),
             array(
                 "type" => "shipping_fee",
@@ -70,8 +72,8 @@ $data = array(
  * - Checkout Secret - Checkout Secret string between Svea and merchant
  * - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
  */
-$checkoutMerchantId = '100001';
-$checkoutSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1';
+$checkoutMerchantId = "100001";
+$checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1";
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 /**
@@ -113,6 +115,7 @@ try {
      *          - UnitPrice 
      *          - VatPercent
      *          - Unit
+     *          - TemporaryReference
      *  - Customer
      *  - ShippingAddress
      *  - BillingAddress
