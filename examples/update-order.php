@@ -22,7 +22,8 @@ $data = array(
                 "quantity" => 200,
                 "unitPrice" => 12300,
                 "discountPercent" => 1000,
-                "vatPercent" => 2500
+                "vatPercent" => 2500,
+                "temporaryReference" => "230"
             ),
             array(
                 "type" => "shipping_fee",
@@ -30,7 +31,8 @@ $data = array(
                 "name" => "Shipping Fee Updated",
                 "quantity" => 100,
                 "unitPrice" => 4900,
-                "vatPercent" => 2500
+                "vatPercent" => 2500,
+                "temporaryReference" => "231"
             )
         )
     )
@@ -85,6 +87,7 @@ try {
  *          - DiscountPercent
  *          - VatPercent
  *          - Unit
+ *          - TemporaryReference
  *  - Customer
  *  - ShippingAddress
  *  - BillingAddress
