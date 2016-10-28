@@ -2,10 +2,10 @@
 
 namespace Implementation\Admin;
 
-use Svea\Checkout\Implementation\ImplementationManager;
+use Svea\Checkout\Implementation\Admin\AdminImplementationManager;
 use Svea\Checkout\Model\Request;
 
-class DeliverOrder extends ImplementationManager
+class DeliverOrder extends AdminImplementationManager
 {
     protected $apiUrl = '/api/v1/orders/%d/deliveries';
 
@@ -22,7 +22,8 @@ class DeliverOrder extends ImplementationManager
      */
     public function validateData($data)
     {
-        // TODO: Implement validateData() method.
+        $validator = $this->validator;
+        $validator->validate($data);
     }
 
     /**
@@ -33,7 +34,7 @@ class DeliverOrder extends ImplementationManager
     {
         $this->requestModel = new Request();
         $this->requestModel->setPostMethod();
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $orderId));
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($orderId));
     }
 
     /**
@@ -41,6 +42,6 @@ class DeliverOrder extends ImplementationManager
      */
     public function invoke()
     {
-        // TODO: Implement invoke() method.
+        $this->response = $this->connector->sendRequest($this->requestModel);
     }
 }
