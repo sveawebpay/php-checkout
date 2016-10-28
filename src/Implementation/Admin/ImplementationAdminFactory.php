@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Admin;
+namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;

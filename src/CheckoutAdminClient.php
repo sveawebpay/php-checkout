@@ -2,9 +2,15 @@
 
 namespace Svea\Checkout;
 
-use Implementation\Admin\ImplementationAdminFactory;
+use Svea\Checkout\Implementation\Admin\ImplementationAdminFactory;
 use Svea\Checkout\Transport\Connector;
 
+/**
+ * Class CheckoutAdminClient
+ *
+ * @package Svea\Checkout
+ * @author Svea
+ */
 class CheckoutAdminClient
 {
     /**
@@ -15,7 +21,7 @@ class CheckoutAdminClient
     private $connector;
 
     /**
-     * CheckoutClient constructor.
+     * CheckoutAdminClient constructor.
      *
      * @param Connector $connector
      */
@@ -25,16 +31,16 @@ class CheckoutAdminClient
     }
 
     /**
-     * Create new Svea Checkout order.
+     * Deliver Svea Checkout order.
      *
-     * @param array $data
+     * @param int $data
      * @return mixed
      */
-    public function deliverOrder(array $data)
+    public function deliverOrder($data)
     {
-        $createOrder = ImplementationAdminFactory::returnDeliverOrderClass($this->connector);
-        $createOrder->execute($data);
+        $deliverOrder = ImplementationAdminFactory::returnDeliverOrderClass($this->connector);
+        $deliverOrder->execute($data);
 
-        return $createOrder->getResponse();
+        return $deliverOrder->getResponse();
     }
 }

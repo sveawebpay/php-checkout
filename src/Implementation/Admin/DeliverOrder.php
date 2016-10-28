@@ -1,6 +1,6 @@
 <?php
 
-namespace Implementation\Admin;
+namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Implementation\Admin\AdminImplementationManager;
 use Svea\Checkout\Model\Request;
