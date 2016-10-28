@@ -26,6 +26,16 @@ class Connector
      */
     const TEST_BASE_URL = 'https://checkoutapistage.svea.com';
 
+	/**
+	 * Base URL For Svea Checkout Administration Production server
+	 * */
+	const PROD_ADMIN_BASE_URL = 'https://paymentadminapi.svea.com/';
+
+	/**
+	 * Base URL For Svea Checkout Administration Demo server
+	 * */
+	const TEST_ADMIN_BASE_URL = 'https://paymentadminapi.svea.com/';
+
     /**
      * Merchant identifier assigned to client by Svea.
      *
