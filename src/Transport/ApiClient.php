@@ -43,13 +43,16 @@ class ApiClient
         $header = array();
         $header[] = 'Content-type: application/json';
         $header[] = 'Authorization: Svea ' . $request->getAuthorizationToken();
+        $header[] = 'CheckoutMerchantId: ' . $request->getMerchantId();
+        $header[] = 'CheckoutSecret: ' . $request->getSecret();
+        $header[] = 'Timestamp: ' . $request->getTimestamp();
         $header[] = 'Expect:';
 
         $this->httpClient->setOption(CURLOPT_URL, $request->getApiUrl());
         $this->httpClient->setOption(CURLOPT_HTTPHEADER, $header);
         $this->httpClient->setOption(CURLOPT_RETURNTRANSFER, 1);
         $this->httpClient->setOption(CURLOPT_HEADER, 1);
-	    $this->httpClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
+        $this->httpClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
 
         if ($request->getMethod() === 'POST') {
             $this->httpClient->setOption(CURLOPT_POST, 1);

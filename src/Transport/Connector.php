@@ -163,6 +163,7 @@ class Connector
     public function sendRequest(Request $request)
     {
         $this->createAuthorizationToken($request);
+        $this->setHeaderInformation($request);
 
         try {
 
@@ -180,6 +181,16 @@ class Connector
     }
 
     /**
+     * Add necessary data for Request Header
+     * @param Request $request Request model with all necessary data for HTTP request
+     */
+    private function setHeaderInformation($request)
+    {
+        $request->setMerchantId($this->merchantId);
+        $request->setSecret($this->sharedSecret);
+    }
+
+    /**
      * Create Authorization Token from Request model.
      * Every request to the API must be authenticated by using the Authorization HTTP request-header.
      * Only a proprietary Svea authentication scheme is supported.
@@ -189,8 +200,17 @@ class Connector
      */
     private function createAuthorizationToken(Request $request)
     {
-        $authToken = base64_encode($this->merchantId . ':' . hash('sha512', $request->getBody() . $this->sharedSecret));
+        $timestamp = $this->createTimestamp();
+        $request->setTimestamp($timestamp);
+
+        $authToken = base64_encode($this->merchantId . ':' .
+            hash('sha512', $request->getBody() . $this->sharedSecret . $timestamp));
         $request->setAuthorizationToken($authToken);
+    }
+
+    private function createTimestamp()
+    {
+        return gmdate('Y-m-d H:i');
     }
 
     /**

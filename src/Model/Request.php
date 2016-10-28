@@ -43,6 +43,18 @@ class Request
     private $apiUrl;
 
     /**
+     * @var $merchantId
+     */
+    private $merchantId;
+
+    /**
+     * @var $secret
+     */
+    private $secret;
+
+    private $timestamp;
+
+    /**
      * Return authorization token.
      *
      * @return string
@@ -132,5 +144,53 @@ class Request
     public function setApiUrl($apiUrl)
     {
         $this->apiUrl = $apiUrl;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMerchantId()
+    {
+        return $this->merchantId;
+    }
+
+    /**
+     * @param mixed $merchantId
+     */
+    public function setMerchantId($merchantId)
+    {
+        $this->merchantId = $merchantId;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSecret()
+    {
+        return $this->secret;
+    }
+
+    /**
+     * @param mixed $secret
+     */
+    public function setSecret($secret)
+    {
+        $this->secret = $secret;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimestamp()
+    {
+        return $this->timestamp;
+    }
+
+    /**
+     * @param mixed $timestamp
+     */
+    public function setTimestamp($timestamp)
+    {
+        $this->timestamp = $timestamp;
     }
 }
