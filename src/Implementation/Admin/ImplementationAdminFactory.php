@@ -9,7 +9,6 @@ use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
-use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
 
 class ImplementationAdminFactory
 {
