@@ -13,6 +13,7 @@ class Request
     const METHOD_GET = 'GET';
     const METHOD_POST = 'POST';
     const METHOD_PUT = 'PUT';
+    const METHOD_PATCH = 'PATCH';
     
     /**
      * Authorization token, sent trough authorization header in request.
@@ -124,6 +125,14 @@ class Request
     public function setPutMethod()
     {
         $this->method = self::METHOD_PUT;
+    }
+
+    /**
+     * Set PATCH method to the request.
+     */
+    public function setPatchMethod()
+    {
+        $this->method = self::METHOD_PATCH;
     }
 
     /**

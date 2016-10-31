@@ -113,8 +113,8 @@ class ResponseHandler
 
         foreach ($headerLines as $i => $line) {
             if ($i > 0) {
-                list ($key, $value) = explode(': ', $line);
-                $headers[$key] = $value;
+                list ($key, $value) = explode(':', $line, 2); // Split on first occurrence
+                $headers[trim($key)] = trim($value);
             }
         }
 
@@ -128,7 +128,7 @@ class ResponseHandler
     {
         return $this->body;
     }
-    
+
     /**
      * Prepare body data from response.
      */

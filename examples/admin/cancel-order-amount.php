@@ -13,7 +13,8 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 201
+    "orderId" => 201, // required - Long  filed (Specified Checkout order for cancel amount)
+    "amount" => 15000 // required - Integer only positive. Minor currency.
 );
 
 
@@ -48,7 +49,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->deliverOrder($data);
+    $response = $checkoutClient->cancelOrderAmount($data);
 
     var_dump($response);
 

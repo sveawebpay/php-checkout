@@ -3,10 +3,11 @@
 namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Transport\Connector;
-use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
+use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
+use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
 
 class ImplementationAdminFactory
 {
@@ -30,6 +31,15 @@ class ImplementationAdminFactory
 
     /**
      * @param Connector $connector
+     * @return GetOrderAddresses
+     */
+    public static function returnGetOrderAddressesClass(Connector $connector)
+    {
+        return new GetOrderAddresses($connector, new ValidateGetOrderAddressesData());
+    }
+
+    /**
+     * @param Connector $connector
      * @return GetOrderDelivery
      */
     public static function returnGetOrderDeliveryClass(Connector $connector)
@@ -39,10 +49,10 @@ class ImplementationAdminFactory
 
     /**
      * @param Connector $connector
-     * @return GetOrderAddresses
+     * @return CancelOrderAmount
      */
-    public static function returnGetOrderAddressesClass(Connector $connector)
+    public static function returnCancelOrderAmountClass(Connector $connector)
     {
-        return new GetOrderAddresses($connector, new ValidateGetOrderAddressesData());
+        return new CancelOrderAmount($connector, new ValidateCancelOrderAmountData());
     }
 }

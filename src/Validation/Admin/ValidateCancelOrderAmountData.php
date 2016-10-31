@@ -6,14 +6,16 @@ use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Exception\SveaInputValidationException;
 use Svea\Checkout\Validation\ValidationInterface;
 
-class ValidateDeliverOrderData implements ValidationInterface
+class ValidateCancelOrderAmountData implements ValidationInterface
 {
+
     /**
      * @param array $data
      */
     public function validate($data)
     {
         $this->validateOrderId($data);
+        $this->validateAmount($data);
     }
 
     /**
@@ -32,6 +34,23 @@ class ValidateDeliverOrderData implements ValidationInterface
         if (!is_numeric($data['orderid'])) {
             throw new SveaInputValidationException(
                 'Order ID should be passed like integer!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+    }
+
+    private function validateAmount($data)
+    {
+        if (!isset($data['amount'])) {
+            throw new SveaInputValidationException(
+                'Amount should be passed!',
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+
+        if (!is_int($data['amount'])) {
+            throw new SveaInputValidationException(
+                'Amount should be passed like integer!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }

@@ -89,4 +89,18 @@ class CheckoutAdminClient
 
         return $deliverOrder->getResponse();
     }
+
+    /**
+     * Cancel amount for Svea Checkout order.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function cancelOrderAmount($data)
+    {
+        $deliverOrder = ImplementationAdminFactory::returnCancelOrderAmountClass($this->connector);
+        $deliverOrder->execute($data);
+
+        return $deliverOrder->getResponse();
+    }
 }
