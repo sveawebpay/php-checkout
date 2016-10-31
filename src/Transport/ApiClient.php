@@ -64,6 +64,11 @@ class ApiClient
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
         }
 
+        if ($request->getMethod() === 'PATCH') {
+            $this->httpClient->setOption(CURLOPT_CUSTOMREQUEST, "PATCH");
+            $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
+        }
+
         $httpResponse = $this->httpClient->execute();
         $httpCode = $this->httpClient->getInfo(CURLINFO_HTTP_CODE);
 
