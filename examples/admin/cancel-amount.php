@@ -12,9 +12,7 @@ require_once '../../include.php';
  * */
 
 // Order ID from created order
-$data = array(
-    "orderId" => 201
-);
+$orderId = 201;
 
 
 /*
@@ -48,7 +46,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->deliverOrder($data);
+    $response = $checkoutClient->deliverOrder($orderId);
 
     var_dump($response);
 

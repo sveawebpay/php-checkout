@@ -34,4 +34,13 @@ class ImplementationAdminFactory
     {
         return new GetOrderDelivery($connector, new ValidateGetOrderDeliveryData());
     }
+
+    /**
+     * @param Connector $connector
+     * @return CancelOrderAmount
+     */
+    public static function returnCancelOrderAmountClass(Connector $connector)
+    {
+        return new CancelOrderAmount($connector, new ValidateDeliverOrderData());
+    }
 }

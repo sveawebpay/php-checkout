@@ -4,9 +4,9 @@ namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Model\Request;
 
-class DeliverOrder extends AdminImplementationManager
+class CancelOrderAmount extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%d/deliveries';
+    protected $apiUrl = '/api/v1/orders/%d/';
 
     /**
      * Request body - JSON
@@ -33,15 +33,12 @@ class DeliverOrder extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        if (!empty($data['rowids'])) {
-            $requestData['rowids'] = $data['rowids'];
-        }
-
-        $orderId = $data['orderid'];
+        $requestData['amount'] = $data['amount'];
+        $orderId = $data['id'];
         $this->requestModel = new Request();
-        $this->requestModel->setPostMethod();
+        $this->requestModel->setPatchMethod();
         $this->requestModel->setBody(json_encode($requestData));
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($orderId));
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $orderId));
     }
 
     /**
