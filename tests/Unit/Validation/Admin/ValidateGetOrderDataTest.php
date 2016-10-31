@@ -1,9 +1,9 @@
 <?php
 
-namespace Svea\Checkout\Tests\Unit\Validation;
+namespace Svea\Checkout\Tests\Unit\Validation\Admin;
 
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\ValidateGetOrderData;
+use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 
 class ValidateGetOrderDataTest extends TestCase
 {

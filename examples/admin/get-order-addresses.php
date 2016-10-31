@@ -48,10 +48,10 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 try {
 	$data = array(
 		'id' => 201,
-		'deliveryId' => 1
+		'addressId' => 1
 	);
 
-	$response = $checkoutClient->getOrderDelivery($data);
+	$response = $checkoutClient->getOrderAddresses($data);
 	echo "<pre>" . print_r($response, true);
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {

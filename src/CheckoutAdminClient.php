@@ -9,7 +9,7 @@ use Svea\Checkout\Transport\Connector;
  * Class CheckoutAdminClient
  *
  * @package Svea\Checkout
- * @author Svea
+ * @author  Svea
  */
 class CheckoutAdminClient
 {
@@ -34,6 +34,7 @@ class CheckoutAdminClient
      * Get Svea Checkout order information.
      *
      * @param int $data
+     *
      * @return mixed
      */
     public function getOrder($data)
@@ -48,6 +49,7 @@ class CheckoutAdminClient
      * Get Svea Checkout order delivery information.
      *
      * @param int $data
+     *
      * @return mixed
      */
     public function getOrderDelivery($data)
@@ -59,9 +61,25 @@ class CheckoutAdminClient
     }
 
     /**
+     * Get Svea Checkout order delivery information.
+     *
+     * @param int $data
+     *
+     * @return mixed
+     */
+    public function getOrderAddresses($data)
+    {
+        $deliverOrder = ImplementationAdminFactory::returnGetOrderAddressesClass($this->connector);
+        $deliverOrder->execute($data);
+
+        return $deliverOrder->getResponse();
+    }
+
+    /**
      * Deliver Svea Checkout order.
      *
      * @param int $data
+     *
      * @return mixed
      */
     public function deliverOrder($data)

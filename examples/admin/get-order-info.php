@@ -22,7 +22,7 @@ $orderId = 201;
  *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
  * */
 $checkoutMerchantId = '1';
-$checkoutSecret = 'shared secret';
+$checkoutSecret = 'sharedSecret';
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 /*
@@ -49,13 +49,6 @@ try {
 	$response = $checkoutClient->getOrder($orderId);
 	echo "<pre>" . print_r($response, true);
 
-	/*
-	 *
-	 * */
-
-	$orderId = $response['OrderId'];
-	$guiSnippet = $response['Gui']['Snippet'];
-	$orderStatus = $response['Status'];
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
 	var_dump("--------- Api errors ---------");
 	var_dump($ex->getMessage());
