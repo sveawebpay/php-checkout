@@ -4,9 +4,9 @@ namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Model\Request;
 
-class CancelOrderAmount extends AdminImplementationManager
+class CancelOrderRow extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%d/';
+    protected $apiUrl = '/api/v1/orders/%d/rows/%d';
 
     /**
      * Request body - JSON
@@ -33,12 +33,16 @@ class CancelOrderAmount extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        $requestData['amount'] = $data['amount'];
+        $requestData['isCancelled'] = $data['iscancelled'];
+
         $orderId = $data['orderid'];
+        $orderRowId = $data['orderrowid'];
+        $urlParams = array($orderId, $orderRowId);
+
         $this->requestModel = new Request();
         $this->requestModel->setPatchMethod();
         $this->requestModel->setBody(json_encode($requestData));
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($orderId));
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($urlParams));
     }
 
     /**
