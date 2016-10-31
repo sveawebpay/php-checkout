@@ -37,7 +37,7 @@ class GetOrderDelivery extends AdminImplementationManager
 	 */
 	public function prepareData($data)
 	{
-		$params = array($data['orderid'], $data['deliveryid']);
+		$params = array($data['id'], $data['deliveryid']);
 
 		$this->requestModel = new Request();
 		$this->requestModel->setGetMethod();

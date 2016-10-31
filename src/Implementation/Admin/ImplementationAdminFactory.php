@@ -8,6 +8,8 @@ use Svea\Checkout\Validation\Admin\ValidateCancelOrderRowData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
+use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
+use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
 
 class ImplementationAdminFactory
 {
@@ -28,6 +30,16 @@ class ImplementationAdminFactory
     {
         return new GetOrder($connector, new ValidateGetOrderData());
     }
+
+    /**
+     * @param Connector $connector
+     * @return GetOrderAddresses
+     */
+    public static function returnGetOrderAddressesClass(Connector $connector)
+    {
+        return new GetOrderAddresses($connector, new ValidateGetOrderAddressesData());
+    }
+
     /**
      * @param Connector $connector
      * @return GetOrderDelivery
