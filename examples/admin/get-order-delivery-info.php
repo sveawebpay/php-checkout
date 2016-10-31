@@ -46,12 +46,13 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-	$response = $checkoutClient->getOrder($orderId);
-	echo "<pre>" . print_r($response, true);
+	$data = array(
+		'id' => 201,
+		'deliveryId' => 1
+	);
 
-	/*
-	 *
-	 * */
+	$response = $checkoutClient->getOrderDelivery($data);
+	echo "<pre>" . print_r($response, true);
 
 	$orderId = $response['OrderId'];
 	$guiSnippet = $response['Gui']['Snippet'];

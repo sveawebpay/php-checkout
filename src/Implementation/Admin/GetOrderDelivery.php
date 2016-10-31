@@ -1,15 +1,17 @@
 <?php
 
+
 namespace Svea\Checkout\Implementation\Admin;
+
 
 use Svea\Checkout\Model\Request;
 
-class GetOrder extends AdminImplementationManager
+class GetOrderDelivery extends AdminImplementationManager
 {
 	/**
 	 * url of action
 	 */
-	protected $apiUrl = '/api/v1/orders/%d';
+	protected $apiUrl = '/api/v1/orders/%d/deliveries/%d';
 
 	/**
 	 * Request body - JSON
@@ -31,13 +33,15 @@ class GetOrder extends AdminImplementationManager
 	/**
 	 * Prepare body data for Api call
 	 *
-	 * @param mixed $orderId
+	 * @param mixed $data
 	 */
-	public function prepareData($orderId)
+	public function prepareData($data)
 	{
+		$params = array($data['orderid'], $data['deliveryid']);
+
 		$this->requestModel = new Request();
 		$this->requestModel->setGetMethod();
-		$this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($orderId));
+		$this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($params));
 	}
 
 	/**

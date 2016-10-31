@@ -31,6 +31,34 @@ class CheckoutAdminClient
     }
 
     /**
+     * Get Svea Checkout order information.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function getOrder($data)
+    {
+        $deliverOrder = ImplementationAdminFactory::returnGetOrderClass($this->connector);
+        $deliverOrder->execute($data);
+
+        return $deliverOrder->getResponse();
+    }
+
+    /**
+     * Get Svea Checkout order delivery information.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function getOrderDelivery($data)
+    {
+        $deliverOrder = ImplementationAdminFactory::returnGetOrderDeliveryClass($this->connector);
+        $deliverOrder->execute($data);
+
+        return $deliverOrder->getResponse();
+    }
+
+    /**
      * Deliver Svea Checkout order.
      *
      * @param int $data
