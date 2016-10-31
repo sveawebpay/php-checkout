@@ -24,7 +24,7 @@ $data = array(
  *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
  * */
 $checkoutMerchantId = '1';
-$checkoutSecret = 'Shared secret';
+$checkoutSecret = 'sharedSecret';
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 /*
