@@ -3,7 +3,6 @@
 
 namespace Svea\Checkout\Implementation\Admin;
 
-
 use Svea\Checkout\Model\Request;
 
 class GetOrderDelivery extends AdminImplementationManager

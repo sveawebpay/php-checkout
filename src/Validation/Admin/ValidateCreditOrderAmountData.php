@@ -3,7 +3,6 @@
 
 namespace Svea\Checkout\Validation\Admin;
 
-
 use Svea\Checkout\Validation\ValidationService;
 
 class ValidateCreditOrderAmountData extends ValidationService

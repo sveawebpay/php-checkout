@@ -144,5 +144,4 @@ class CheckoutAdminClient
 
         return $deliverOrder->getResponse();
     }
-
 }
