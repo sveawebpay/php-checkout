@@ -13,10 +13,9 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 202, // required  - Long  filed (Specified Checkout order for cancel amount)
-    "deliveryId" => 1, // required -
-    "amount" => 15000, // required - Integer only positive. Minor currency.
-    "rowIds" => array(1,2) // required - List of order row ids to be credit
+    "orderId"    => 202,   // required - Long  filed (Specified Checkout order for cancel amount)
+    "deliveryId" => 1,     // required - Int - Id of order delivery
+    "creditId"   => 2,     // optional - Int - Id of order delivery credit
 );
 
 
@@ -27,8 +26,8 @@ $data = array(
  *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
  * */
 $checkoutMerchantId = '1';
-$checkoutSecret = 'sharedSecret';
-$baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
+$checkoutSecret     = 'sharedSecret';
+$baseUrl            = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 /*
  * Create Connector object
