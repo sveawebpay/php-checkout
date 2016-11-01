@@ -11,10 +11,10 @@ class ValidateCancelOrderRowData extends ValidationService
      */
     public function validate($data)
     {
-        $this->mustBeSet($data, $data['orderid'], 'Order Id');
+        $this->mustBeSet($data, 'orderid', 'Order Id');
         $this->mustBeInteger($data['orderid'], 'Order Id');
 
-        $this->mustBeSet($data, $data['orderrowid'], 'Order Row Id');
+        $this->mustBeSet($data, 'orderrowid', 'Order Row Id');
         $this->mustBeInteger($data['orderrowid'], 'Order Row Id');
     }
 }

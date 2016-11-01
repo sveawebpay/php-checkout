@@ -17,10 +17,10 @@ class ValidateCreditOrderRowsData extends ValidationService
         // TODO - check about orderRowIds
         $this->validateListOfRowIds($data);
 
-        $this->mustBeSet($data, $data['orderid'], 'Order Id');
+        $this->mustBeSet($data, 'orderid', 'Order Id');
         $this->mustBeInteger($data['orderid'], 'Order Id');
 
-        $this->mustBeSet($data, $data['deliveryid'], 'Delivery Id');
+        $this->mustBeSet($data, 'deliveryid', 'Delivery Id');
         $this->mustBeInteger($data['deliveryid'], 'Delivery Id');
     }
 
