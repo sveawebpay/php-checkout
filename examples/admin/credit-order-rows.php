@@ -14,7 +14,8 @@ require_once '../../include.php';
 // Order ID from created order
 $data = array(
     "orderId" => 201, // required - Long  filed (Specified Checkout order for cancel amount)
-    "orderRowId" => 1, // required - Long - Id of the specified row.
+    "deliveryId" => 1, // required - Long - Id of the specified delivery.
+    "orderRowIds" => array(1, 2) // required - Array - Ids of the delivered order rows that will be credited.
 );
 
 
@@ -49,7 +50,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->cancelOrderRow($data);
+    $response = $checkoutClient->creditOrderRows($data);
 
     var_dump($response);
 

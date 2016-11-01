@@ -6,7 +6,7 @@ use Svea\Checkout\Model\Request;
 
 class CancelOrderAmount extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%d/';
+    protected $apiUrl = '/api/v1/orders/%d';
 
     /**
      * Request body - JSON
@@ -34,6 +34,7 @@ class CancelOrderAmount extends AdminImplementationManager
     {
         $requestData = array();
         $requestData['amount'] = $data['amount'];
+
         $orderId = $data['orderid'];
         $this->requestModel = new Request();
         $this->requestModel->setPatchMethod();

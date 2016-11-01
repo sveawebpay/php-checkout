@@ -5,6 +5,8 @@ namespace Svea\Checkout\Implementation\Admin;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
 use Svea\Checkout\Validation\Admin\ValidateCancelOrderRowData;
+use Svea\Checkout\Validation\Admin\ValidateCreditOrderAmountData;
+use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
@@ -67,10 +69,19 @@ class ImplementationAdminFactory
     }
     /**
      * @param Connector $connector
-     * @return CancelOrderRow
+     * @return CreditOrderAmount
      */
     public static function returnCreditOrderAmountClass(Connector $connector)
     {
-        return new CreditOrderRow($connector, new ValidateCreditOrderRowData());
+        return new CreditOrderAmount($connector, new ValidateCreditOrderAmountData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return CreditOrderRows
+     */
+    public static function returnCreditOrderRowsClass(Connector $connector)
+    {
+        return new CreditOrderRows($connector, new ValidateCreditOrderRowsData());
     }
 }

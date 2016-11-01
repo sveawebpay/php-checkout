@@ -2,83 +2,19 @@
 
 namespace Svea\Checkout\Validation\Admin;
 
-use Svea\Checkout\Exception\ExceptionCodeList;
-use Svea\Checkout\Exception\SveaInputValidationException;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidationService;
 
-class ValidateCancelOrderRowData implements ValidationInterface
+class ValidateCancelOrderRowData extends ValidationService
 {
-
     /**
      * @param array $data
      */
     public function validate($data)
     {
-        $this->validateOrderId($data);
-        $this->validateOrderRowId($data);
-        $this->validateIsCancelledField($data);
-    }
+        $this->mustBeSet($data, $data['orderid'], 'Order Id');
+        $this->mustBeInteger($data['orderid'], 'Order Id');
 
-    /**
-     * @param array $data
-     * @throws SveaInputValidationException
-     */
-    private function validateOrderId($data)
-    {
-        if (!isset($data['orderid'])) {
-            throw new SveaInputValidationException(
-                'Order ID should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        if (!is_numeric($data['orderid'])) {
-            throw new SveaInputValidationException(
-                'Order ID should be passed like integer!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-    }
-
-    /**
-     * @param array $data
-     * @throws SveaInputValidationException
-     */
-    private function validateOrderRowId($data)
-    {
-        if (!isset($data['orderrowid'])) {
-            throw new SveaInputValidationException(
-                'Order Row ID should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        if (!is_numeric($data['orderrowid'])) {
-            throw new SveaInputValidationException(
-                'Order Row ID should be passed like integer!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-    }
-
-    /**
-     * @param array $data
-     * @throws SveaInputValidationException
-     */
-    private function validateIsCancelledField($data)
-    {
-        if (!isset($data['iscancelled'])) {
-            throw new SveaInputValidationException(
-                'isCancelled should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        if (!is_bool($data['iscancelled'])) {
-            throw new SveaInputValidationException(
-                'isCancelled should be passed like boolean!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data, $data['orderrowid'], 'Order Row Id');
+        $this->mustBeInteger($data['orderrowid'], 'Order Row Id');
     }
 }
