@@ -13,9 +13,13 @@ class ResponseHandler
 {
     /**
      * API response successful http codes
+     * 200 - OK
+     * 201 - Created
+     * 204 - No Content
+     * 302 - Found
      * @var array
      */
-    private $httpSuccessfulCodes = array(200, 201, 302);
+    private $httpSuccessfulCodes = array(200, 201, 204, 302);
 
     /**
      * Svea Checkout Api response content.
@@ -89,7 +93,7 @@ class ResponseHandler
     {
         $result = json_decode($this->body, true);
 
-        if ($result === null) {
+        if ($result === null && $this->body !== '') {
             throw new SveaApiException('Response format is not valid, JSON decode error', 1000);
         }
         return $result;

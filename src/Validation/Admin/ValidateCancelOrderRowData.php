@@ -16,7 +16,6 @@ class ValidateCancelOrderRowData implements ValidationInterface
     {
         $this->validateOrderId($data);
         $this->validateOrderRowId($data);
-        $this->validateIsCancelledField($data);
     }
 
     /**
@@ -56,27 +55,6 @@ class ValidateCancelOrderRowData implements ValidationInterface
         if (!is_numeric($data['orderrowid'])) {
             throw new SveaInputValidationException(
                 'Order Row ID should be passed like integer!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-    }
-
-    /**
-     * @param array $data
-     * @throws SveaInputValidationException
-     */
-    private function validateIsCancelledField($data)
-    {
-        if (!isset($data['iscancelled'])) {
-            throw new SveaInputValidationException(
-                'isCancelled should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        if (!is_bool($data['iscancelled'])) {
-            throw new SveaInputValidationException(
-                'isCancelled should be passed like boolean!',
                 ExceptionCodeList::INPUT_VALIDATION_ERROR
             );
         }

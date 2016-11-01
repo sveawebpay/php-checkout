@@ -15,7 +15,6 @@ require_once '../../include.php';
 $data = array(
     "orderId" => 201, // required - Long  filed (Specified Checkout order for cancel amount)
     "orderRowId" => 1, // required - Long - Id of the specified row.
-    "isCancelled" => true // required - Boolean  filed (Determines if the order is cancelled or not)
 );
 
 

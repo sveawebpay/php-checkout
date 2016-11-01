@@ -34,6 +34,7 @@ class CancelOrderAmount extends AdminImplementationManager
     {
         $requestData = array();
         $requestData['amount'] = $data['amount'];
+
         $orderId = $data['orderid'];
         $this->requestModel = new Request();
         $this->requestModel->setPatchMethod();

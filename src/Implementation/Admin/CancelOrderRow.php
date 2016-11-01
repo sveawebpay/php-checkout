@@ -33,7 +33,7 @@ class CancelOrderRow extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        $requestData['isCancelled'] = $data['iscancelled'];
+        $requestData['isCancelled'] = true; // Determines that this order is cancelled
 
         $orderId = $data['orderid'];
         $orderRowId = $data['orderrowid'];
