@@ -31,12 +31,12 @@ class GetOrderAddresses extends AdminImplementationManager
     /**
      * Prepare body data for Api call
      *
-     * @param mixed $orderId
+     * @param mixed $data
      */
     public function prepareData($data)
     {
         $addressId = intval($data['addressid']) > 0 ? $data['addressid'] : '';
-        $params    = array($data['id'], $addressId);
+        $params = array($data['id'], $addressId);
 
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();
