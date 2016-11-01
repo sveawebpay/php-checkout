@@ -6,12 +6,12 @@ use Svea\Checkout\Implementation\ImplementationManager;
 
 abstract class AdminImplementationManager extends ImplementationManager
 {
-    protected function getUrlString($data)
+    protected function prepareUrl($data)
     {
         if (!is_array($data)) {
             $data = array($data);
         }
 
-        return vsprintf($this->apiUrl, $data);
+        return $this->connector->getBaseApiUrl() . vsprintf($this->apiUrl, $data);
     }
 }

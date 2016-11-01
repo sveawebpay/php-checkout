@@ -42,7 +42,7 @@ class CancelOrderRow extends AdminImplementationManager
         $this->requestModel = new Request();
         $this->requestModel->setPatchMethod();
         $this->requestModel->setBody(json_encode($requestData));
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($urlParams));
+        $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
     }
 
     /**
@@ -51,5 +51,21 @@ class CancelOrderRow extends AdminImplementationManager
     public function invoke()
     {
         $this->response = $this->connector->sendRequest($this->requestModel);
+    }
+
+    /**
+     * @return Request
+     */
+    public function getRequestModel()
+    {
+        return $this->requestModel;
+    }
+
+    /**
+     * @param Request $requestModel
+     */
+    public function setRequestModel($requestModel)
+    {
+        $this->requestModel = $requestModel;
     }
 }

@@ -40,7 +40,7 @@ class GetOrderAddresses extends AdminImplementationManager
 
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($params));
+        $this->requestModel->setApiUrl($this->prepareUrl($params));
     }
 
     /**
