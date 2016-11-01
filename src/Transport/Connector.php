@@ -70,34 +70,19 @@ class Connector
     /**
      * Connector constructor.
      *
-     * @param ApiClient $apiClient HTTP transport client
-     * @param string $merchantId Merchant Id
-     * @param string $sharedSecret Shared secret
-     * @param string $baseApiUrl Base URL for HTTP request to Svea Checkout API
+     * @param ApiClient $apiClient    HTTP transport client
+     * @param string    $merchantId   Merchant Id
+     * @param string    $sharedSecret Shared secret
+     * @param string    $baseApiUrl   Base URL for HTTP request to Svea Checkout API
      */
     public function __construct($apiClient, $merchantId, $sharedSecret, $baseApiUrl)
     {
-        $this->merchantId = $merchantId;
+        $this->merchantId   = $merchantId;
         $this->sharedSecret = $sharedSecret;
-        $this->baseApiUrl = $baseApiUrl;
-        $this->apiClient = $apiClient;
+        $this->baseApiUrl   = $baseApiUrl;
+        $this->apiClient    = $apiClient;
 
         $this->validateData();
-    }
-
-    /**
-     * Initializes connector instance
-     *
-     * @param string $merchantId Merchant Id
-     * @param string $sharedSecret Shared secret
-     * @param string $apiUrl Base URL for HTTP request to Svea Checkout API
-     * @return Connector
-     */
-    public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
-    {
-        $httpClient = new ApiClient(new CurlRequest());
-
-        return new static($httpClient, $merchantId, $sharedSecret, $apiUrl);
     }
 
     /**
@@ -168,11 +153,26 @@ class Connector
     }
 
     /**
+     * Initializes connector instance
+     *
+     * @param string $merchantId   Merchant Id
+     * @param string $sharedSecret Shared secret
+     * @param string $apiUrl       Base URL for HTTP request to Svea Checkout API
+     * @return Connector
+     */
+    public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
+    {
+        $httpClient = new ApiClient(new CurlRequest());
+
+        return new static($httpClient, $merchantId, $sharedSecret, $apiUrl);
+    }
+
+    /**
      * Create request to the API client.
      *
      * @param Request $request Request model contains all data for request to the Svea Checkout API
      * @throws SveaApiException     If some error is encountered or If API responds with some error
-     * @return ResponseHandler
+     * @return mixed
      */
     public function sendRequest(Request $request)
     {
@@ -180,28 +180,14 @@ class Connector
         $this->setHeaderInformation($request);
 
         try {
-
-            /**
-             * @var ResponseHandler $response
-             */
             $response = $this->apiClient->sendRequest($request);
 
-            return $response->getContent();
+            return $response->getFullContent();
         } catch (SveaApiException $e) {
             throw $e;
         } catch (Exception $e) {
             throw new SveaApiException('API communication error', 1010, $e);
         }
-    }
-
-    /**
-     * Add necessary data for Request Header
-     * @param Request $request Request model with all necessary data for HTTP request
-     */
-    private function setHeaderInformation($request)
-    {
-        $request->setMerchantId($this->merchantId);
-        $request->setSecret($this->sharedSecret);
     }
 
     /**
@@ -225,6 +211,16 @@ class Connector
     private function createTimestamp()
     {
         return gmdate('Y-m-d H:i');
+    }
+
+    /**
+     * Add necessary data for Request Header
+     * @param Request $request Request model with all necessary data for HTTP request
+     */
+    private function setHeaderInformation($request)
+    {
+        $request->setMerchantId($this->merchantId);
+        $request->setSecret($this->sharedSecret);
     }
 
     /**

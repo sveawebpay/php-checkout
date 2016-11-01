@@ -65,4 +65,12 @@ class ImplementationAdminFactory
     {
         return new CancelOrderRow($connector, new ValidateCancelOrderRowData());
     }
+    /**
+     * @param Connector $connector
+     * @return CancelOrderRow
+     */
+    public static function returnCreditOrderAmountClass(Connector $connector)
+    {
+        return new CreditOrderRow($connector, new ValidateCreditOrderRowData());
+    }
 }

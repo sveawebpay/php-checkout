@@ -113,7 +113,7 @@ class ConnectorTest extends TestCase
             ->will($this->returnValue($responseHandler));
 
         $connector = new Connector($this->apiClientMock, $this->merchantId, $this->sharedSecret, $this->apiUrl);
-        $response = $connector->sendRequest($this->requestModel);
+        $response = $connector->sendRequest($this->requestModel)->getContent();
 
         $this->assertEquals($responseContent, $response);
     }

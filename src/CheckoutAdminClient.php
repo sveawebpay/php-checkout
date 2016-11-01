@@ -2,8 +2,8 @@
 
 namespace Svea\Checkout;
 
-use Svea\Checkout\Implementation\Admin\ImplementationAdminFactory;
 use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Implementation\Admin\ImplementationAdminFactory;
 
 /**
  * Class CheckoutAdminClient
@@ -117,4 +117,18 @@ class CheckoutAdminClient
 
         return $deliverOrder->getResponse();
     }
+    /**
+     * Cancel amount for Svea Checkout order.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function creditOrderAmount($data)
+    {
+        $deliverOrder = ImplementationAdminFactory::returnCreditOrderAmountClass($this->connector);
+        $deliverOrder->execute($data);
+
+        return $deliverOrder->getResponse();
+    }
+
 }

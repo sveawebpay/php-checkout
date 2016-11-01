@@ -102,6 +102,7 @@ try {
     /*
      * Format of returned response array
      *
+     * Response:
      *  - MerchantSettings
      *      - TermsUri
      *      - CheckoutUri

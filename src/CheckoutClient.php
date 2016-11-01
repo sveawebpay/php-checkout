@@ -17,22 +17,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *
- * @category Payment
- * @package Svea_Checkout
- * @author Svea Ekonomi AB <support-webpay@sveaekonomi.se>
+ * @category  Payment
+ * @package   Svea_Checkout
+ * @author    Svea Ekonomi AB <support-webpay@sveaekonomi.se>
  * @copyright 2016 Svea Ekonomi AB
- * @license http://www.apache.org/licenses/LICENSE-2.0 Apache license v2.0
+ * @license   http://www.apache.org/licenses/LICENSE-2.0 Apache license v2.0
  */
 namespace Svea\Checkout;
 
-use Svea\Checkout\Implementation\ImplementationFactory;
 use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Implementation\ImplementationFactory;
 
 /**
  * Class CheckoutClient
  *
  * @package Svea\Checkout
- * @author Svea
+ * @author  Svea
  */
 class CheckoutClient
 {

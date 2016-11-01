@@ -70,9 +70,10 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 try {
     $response = $checkoutClient->update($data);
 
-    /*
+/*
  * Format of returned response array
  *
+ * Response:
  *  - MerchantSettings
  *      - TermsUri
  *      - CheckoutUri
@@ -101,9 +102,9 @@ try {
  *  - OrderId
  *  - Status
  * */
-    $orderId = $response['OrderId'];
-    $guiSnippet = $response['Gui']['Snippet'];
-    $orderStatus = $response['Status'];
+    $orderId = $response['Response']['OrderId'];
+    $guiSnippet = $response['Response']['Gui']['Snippet'];
+    $orderStatus = $response['Response']['Status'];
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump($ex->getMessage());

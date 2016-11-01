@@ -13,7 +13,10 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 201
+    "orderId" => 202, // required  - Long  filed (Specified Checkout order for cancel amount)
+    "deliveryId" => 1, // required -
+    "amount" => 15000, // required - Integer only positive. Minor currency.
+    "rowIds" => array(1,2) // required - List of order row ids to be credit
 );
 
 
@@ -48,9 +51,9 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->creditOrder($data);
+    $response = $checkoutClient->creditOrderAmount($data);
 
-    var_dump($response);
+    var_dump($response['response']);
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");

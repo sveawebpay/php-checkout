@@ -50,7 +50,7 @@ class ResponseHandler
      */
     public function __construct($content, $httpCode)
     {
-        $this->content = $content;
+        $this->content  = $content;
         $this->httpCode = $httpCode;
 
         $this->setHeader();
@@ -77,48 +77,6 @@ class ResponseHandler
 
             throw new SveaApiException($errorMessage, $this->httpCode);
         }
-    }
-
-    /**
-     * Return response content
-     *
-     * @return mixed
-     * @throws SveaApiException
-     */
-    public function getContent()
-    {
-        $result = json_decode($this->body, true);
-
-        if ($result === null) {
-            throw new SveaApiException('Response format is not valid, JSON decode error', 1000);
-        }
-        return $result;
-    }
-
-    /**
-     * Create array of header information from response.
-     */
-    public function setHeader()
-    {
-        $headers = array();
-
-        /**
-         * Split the string on "double" new line.
-         * First is header data, second is body content
-         * We need to use Windows "end of line" char because of response format
-         */
-        $arrRequests = explode("\r\n\r\n", $this->content); // Split on first occurrence
-        $headerLines = explode("\r\n", $arrRequests[0]); // Split on first occurrence
-        $headers['http_code'] = $headerLines[0];
-
-        foreach ($headerLines as $i => $line) {
-            if ($i > 0) {
-                list ($key, $value) = explode(':', $line, 2); // Split on first occurrence
-                $headers[trim($key)] = trim($value);
-            }
-        }
-
-        $this->header = $headers;
     }
 
     /**
@@ -157,8 +115,69 @@ class ResponseHandler
     /**
      * @return array
      */
+    public function getFullContent()
+    {
+        $returnData = array();
+
+        $header = $this->getHeader();
+
+        if (isset($header['Location'])) {
+            $returnData['Header'] = $this->getHeader();
+        }
+
+        $returnData['Response'] = $this->getContent();
+
+        return $returnData;
+    }
+
+    /**
+     * @return array
+     */
     public function getHeader()
     {
         return $this->header;
+    }
+
+    /**
+     * Create array of header information from response.
+     */
+    public function setHeader()
+    {
+        $headers = array();
+
+        /**
+         * Split the string on "double" new line.
+         * First is header data, second is body content
+         * We need to use Windows "end of line" char because of response format
+         */
+        $arrRequests          = explode("\r\n\r\n", $this->content); // Split on first occurrence
+        $headerLines          = explode("\r\n", $arrRequests[0]); // Split on first occurrence
+        $headers['http_code'] = $headerLines[0];
+
+        foreach ($headerLines as $i => $line) {
+            if ($i > 0) {
+                list ($key, $value) = explode(':', $line, 2); // Split on first occurrence
+                $headers[trim($key)] = trim($value);
+            }
+        }
+
+        $this->header = $headers;
+    }
+
+    /**
+     * Return response content
+     *
+     * @return mixed
+     * @throws SveaApiException
+     */
+    public function getContent()
+    {
+        $result = json_decode($this->body, true);
+
+        if ($result === null) {
+            throw new SveaApiException('Response format is not valid, JSON decode error', 1000);
+        }
+
+        return $result;
     }
 }

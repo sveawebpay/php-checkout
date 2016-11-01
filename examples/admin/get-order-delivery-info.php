@@ -7,13 +7,13 @@
 require_once '../../include.php';
 
 /*
- * Example of getting the order information
+ * Example of getting the order delivery information
  *
  * */
-
-// Order ID from created order
-$orderId = 201;
-
+$data = array(
+	'id' => 201,
+	'deliveryId' => 1
+);
 
 /*
  * Create connector for given
@@ -46,11 +46,6 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-	$data = array(
-		'id' => 201,
-		'deliveryId' => 1
-	);
-
 	$response = $checkoutClient->getOrderDelivery($data);
 	echo "<pre>" . print_r($response, true);
 
