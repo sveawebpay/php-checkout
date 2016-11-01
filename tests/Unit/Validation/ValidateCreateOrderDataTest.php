@@ -48,12 +48,20 @@ class ValidateCreateOrderDataTest extends TestCase
         $this->invokeMethod($this->validateCreateOrderData, 'validateGeneralData', array($this->inputCreateData));
     }
 
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
     public function testValidateGeneralDataWithFalseValueField()
     {
         $this->inputCreateData['locale'] = false;
         $this->invokeMethod($this->validateCreateOrderData, 'validateGeneralData', array($this->inputCreateData));
     }
 
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
     public function testValidateGeneralDataWithZeroValueField()
     {
         $this->inputCreateData['locale'] = 0;
@@ -100,12 +108,20 @@ class ValidateCreateOrderDataTest extends TestCase
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
     public function testValidateMerchantWithFalseValueField()
     {
         $this->inputCreateData['merchantsettings']['checkouturi'] = false;
         $this->invokeMethod($this->validateCreateOrderData, 'validateMerchant', array($this->inputCreateData));
     }
 
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
     public function testValidateMerchantWithZeroValueField()
     {
         $this->inputCreateData['merchantsettings']['checkouturi'] = 0;

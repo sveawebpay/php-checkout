@@ -7,6 +7,17 @@ use Svea\Checkout\Validation\ValidateGetOrderData;
 
 class ValidateGetOrderDataTest extends TestCase
 {
+    public function testValidateWithOrderIdIntAsIntiger()
+    {
+        $orderId = 1234;
+        $validateGetOrder = new ValidateGetOrderData();
+        $validateGetOrder->validate($orderId);
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
     public function testValidateWithOrderIdIntAsString()
     {
         $orderId = '1234';

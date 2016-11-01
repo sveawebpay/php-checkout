@@ -2,15 +2,15 @@
 
 namespace Svea\Checkout\Validation\Admin;
 
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidationService;
 
-class ValidateGetOrderDeliveryData implements ValidationInterface
+class ValidateGetOrderDeliveryData extends ValidationService
 {
-	/**
-	 * @param mixed $data
-	 */
-	public function validate($data)
-	{
-		// TODO: Implement validate() method.
-	}
+    /**
+     * @param mixed $data
+     */
+    public function validate($data)
+    {
+        // TODO: Implement validate() method.
+    }
 }

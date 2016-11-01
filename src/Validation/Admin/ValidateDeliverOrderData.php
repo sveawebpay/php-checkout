@@ -2,38 +2,16 @@
 
 namespace Svea\Checkout\Validation\Admin;
 
-use Svea\Checkout\Exception\ExceptionCodeList;
-use Svea\Checkout\Exception\SveaInputValidationException;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidationService;
 
-class ValidateDeliverOrderData implements ValidationInterface
+class ValidateDeliverOrderData extends ValidationService
 {
     /**
      * @param array $data
      */
     public function validate($data)
     {
-        $this->validateOrderId($data);
-    }
-
-    /**
-     * @param array $data
-     * @throws SveaInputValidationException
-     */
-    private function validateOrderId($data)
-    {
-        if (!isset($data['orderid'])) {
-            throw new SveaInputValidationException(
-                'Order ID should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        if (!is_numeric($data['orderid'])) {
-            throw new SveaInputValidationException(
-                'Order ID should be passed like integer!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data, $data['orderid'], 'Order Id');
+        $this->mustBeInteger($data['orderid'], 'Order Id');
     }
 }

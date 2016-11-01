@@ -3,7 +3,7 @@
 namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Transport\Connector;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidationService;
 
 /**
  * Class ImplementationManager
@@ -26,18 +26,18 @@ abstract class ImplementationManager implements ImplementationInterface
     protected $response;
 
     /**
-     * @var ValidationInterface
+     * @var ValidationService
      */
     protected $validator;
 
     /**
      * @param Connector $connector Used for authentication and connect with Svea Checkout API
-     * @param ValidationInterface $validationInterface
+     * @param ValidationService $validationService
      */
-    public function __construct(Connector $connector, ValidationInterface $validationInterface)
+    public function __construct(Connector $connector, ValidationService $validationService)
     {
         $this->connector = $connector;
-        $this->validator = $validationInterface;
+        $this->validator = $validationService;
     }
 
     /**

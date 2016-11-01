@@ -4,9 +4,9 @@ namespace Svea\Checkout\Validation\Admin;
 
 use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Exception\SveaInputValidationException;
-use Svea\Checkout\Validation\ValidationInterface;
+use Svea\Checkout\Validation\ValidationService;
 
-class ValidateCreditOrderRowsData implements ValidationInterface
+class ValidateCreditOrderRowsData extends ValidationService
 {
 
     /**
@@ -14,47 +14,14 @@ class ValidateCreditOrderRowsData implements ValidationInterface
      */
     public function validate($data)
     {
-        $this->validateOrderId($data);
-        $this->validateDeliveryId($data);
+        // TODO - check about orderRowIds
         $this->validateListOfRowIds($data);
-    }
 
-    /**
-     * @param array $data
-     * @throws SveaInputValidationException
-     */
-    private function validateOrderId($data)
-    {
-        if (!isset($data['orderid'])) {
-            throw new SveaInputValidationException(
-                'Order ID should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data, $data['orderid'], 'Order Id');
+        $this->mustBeInteger($data['orderid'], 'Order Id');
 
-        if (!is_int($data['orderid'])) {
-            throw new SveaInputValidationException(
-                'Order ID should be passed like integer!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-    }
-
-    private function validateDeliveryId($data)
-    {
-        if (!isset($data['deliveryid'])) {
-            throw new SveaInputValidationException(
-                'Delivery ID should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        if (!is_int($data['deliveryid'])) {
-            throw new SveaInputValidationException(
-                'Delivery ID should be passed like integer!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data, $data['deliveryid'], 'Delivery Id');
+        $this->mustBeInteger($data['deliveryid'], 'Delivery Id');
     }
 
     private function validateListOfRowIds($data)

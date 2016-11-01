@@ -9,7 +9,7 @@ use Svea\Checkout\Exception\SveaInputValidationException;
  * Class ValidateCreateOrderData
  * @package Svea\Checkout\Validation
  */
-class ValidateCreateOrderData implements ValidationInterface
+class ValidateCreateOrderData extends ValidationService
 {
     /**
      * @param array $data
@@ -29,22 +29,12 @@ class ValidateCreateOrderData implements ValidationInterface
      */
     private function validateGeneralData($data)
     {
-        if (!is_array($data)) {
-            throw new SveaInputValidationException(
-                'Order data should be array!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeArray($data, 'Order data');
 
         $requiredFields = array('merchantsettings', 'cart', 'locale', 'currency', 'countrycode');
-
         foreach ($requiredFields as $field) {
-            if (!isset($data[$field]) || $data[$field] === '') {
-                throw new SveaInputValidationException(
-                    "Order \"$field\" should be passed!",
-                    ExceptionCodeList::INPUT_VALIDATION_ERROR
-                );
-            }
+            $this->mustBeSet($data, $field, $field);
+            $this->mustNotBeEmpty($data[$field], $field);
         }
     }
 
@@ -54,23 +44,15 @@ class ValidateCreateOrderData implements ValidationInterface
      */
     private function validateMerchant($data)
     {
-        if (!isset($data['merchantsettings']) || !is_array($data['merchantsettings'])) {
-            throw new SveaInputValidationException(
-                'Merchant "merchantSettings" array should be passed as array!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data, 'merchantsettings', 'Merchant settings');
+        $this->mustBeArray($data['merchantsettings'], 'Merchant settings');
 
         $merchantData = $data['merchantsettings'];
         $requiredFields = array('termsuri', 'checkouturi', 'confirmationuri', 'pushuri');
 
         foreach ($requiredFields as $field) {
-            if (!isset($merchantData[$field]) || $merchantData[$field] === '') {
-                throw new SveaInputValidationException(
-                    "Merchant \"$field\" url should be passed!",
-                    ExceptionCodeList::INPUT_VALIDATION_ERROR
-                );
-            }
+            $this->mustBeSet($merchantData, $field, 'Merchant settings' . $field);
+            $this->mustNotBeEmpty($merchantData[$field], 'Merchant settings' . $field);
         }
     }
 
@@ -80,19 +62,11 @@ class ValidateCreateOrderData implements ValidationInterface
      */
     private function validateOrderCart($data)
     {
-        if (!isset($data['cart']) || !is_array($data['cart'])) {
-            throw new SveaInputValidationException(
-                'Order lines should be passed as array!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data, 'cart', 'Order Cart');
+        $this->mustBeArray($data['cart'], 'Order Cart');
 
-        if (!isset($data['cart']['items']) || !is_array($data['cart']['items'])) {
-            throw new SveaInputValidationException(
-                'Order lines should be passed as array!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data['cart'], 'items', 'Order Items');
+        $this->mustBeArray($data['cart']['items'], 'Order Items');
     }
 
     /**
@@ -101,22 +75,10 @@ class ValidateCreateOrderData implements ValidationInterface
      */
     private function validateClientOrderNumber($data)
     {
-        //if (!preg_match("/^[1-9]{1,32}$/", $data['clientOrderNumber'])) {
-
-        if (!isset($data['clientordernumber'])) {
-            throw new SveaInputValidationException(
-                '"clientOrderNumber" should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        $size = strlen($data['clientordernumber']);
-
-        if ($size <= 0 || $size > 32) {
-            throw new SveaInputValidationException(
-                '"clientOrderNumber" should contain maximum of 32 characters!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $fieldKey = 'clientordernumber';
+        $fieldTitle = 'Client Order number';
+        $this->mustBeSet($data, $fieldKey, $fieldTitle);
+        $this->mustNotBeEmpty($data[$fieldKey], $fieldTitle);
+        $this->lengthMustBeBetween($data[$fieldKey], 1, 32, $fieldTitle);
     }
 }
