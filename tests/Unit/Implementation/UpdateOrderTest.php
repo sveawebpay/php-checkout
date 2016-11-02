@@ -5,6 +5,7 @@ namespace Svea\Checkout\Tests\Unit\Implementation;
 use Svea\Checkout\Implementation\UpdateOrder;
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Tests\Unit\TestCase;
+use Svea\Checkout\Transport\ResponseHandler;
 use Svea\Checkout\Validation\ValidateUpdateOrderData;
 
 class UpdateOrderTest extends TestCase
