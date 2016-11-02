@@ -119,7 +119,7 @@ class ResponseHandler
     /**
      * @return array
      */
-    public function getFullContent()
+    public function getWholeResponse()
     {
         $returnData = array();
 
@@ -178,7 +178,7 @@ class ResponseHandler
     {
         $result = json_decode($this->body, true);
 
-        if ($result === null) {
+        if ($result === null && $this->body !== '') {
             throw new SveaApiException('Response format is not valid, JSON decode error', 1000);
         }
 

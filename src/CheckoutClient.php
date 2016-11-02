@@ -25,8 +25,10 @@
  */
 namespace Svea\Checkout;
 
+use Svea\Checkout\Implementation\ImplementationInterface;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Implementation\ImplementationFactory;
+use Svea\Checkout\Transport\ResponseHandler;
 
 /**
  * Class CheckoutClient
@@ -61,10 +63,7 @@ class CheckoutClient
      */
     public function create(array $data)
     {
-        $createOrder = ImplementationFactory::returnCreateOrderClass($this->connector);
-        $createOrder->execute($data);
-
-        return $createOrder->getResponse();
+        return $this->executeAction(ImplementationFactory::returnCreateOrderClass($this->connector), $data);
     }
 
     /**
@@ -75,10 +74,7 @@ class CheckoutClient
      */
     public function update(array $data)
     {
-        $updateOrder = ImplementationFactory::returnUpdateOrderClass($this->connector);
-        $updateOrder->execute($data);
-
-        return $updateOrder->getResponse();
+        return $this->executeAction(ImplementationFactory::returnUpdateOrderClass($this->connector), $data);
     }
 
     /**
@@ -89,10 +85,7 @@ class CheckoutClient
      */
     public function get($data)
     {
-        $getOrder = ImplementationFactory::returnGetOrderClass($this->connector);
-        $getOrder->execute($data);
-
-        return $getOrder->getResponse();
+        return $this->executeAction(ImplementationFactory::returnGetOrderClass($this->connector), $data);
     }
 
     /**
@@ -103,9 +96,23 @@ class CheckoutClient
      */
     public function getOrderSubsystemInfo($data)
     {
-        $getOrder = ImplementationFactory::returnGetOrderSubsystemClass($this->connector);
-        $getOrder->execute($data);
+        return $this->executeAction(ImplementationFactory::returnGetOrderSubsystemClass($this->connector), $data);
+    }
 
-        return $getOrder->getResponse();
+    /**
+     * @param ImplementationInterface $actionObject
+     * @param mixed $inputData
+     * @return array
+     */
+    private function executeAction($actionObject, $inputData)
+    {
+        $actionObject->execute($inputData);
+
+        /**
+         * @var ResponseHandler $responseHandler
+         */
+        $responseHandler = $actionObject->getResponse();
+
+        return $responseHandler->getContent();
     }
 }

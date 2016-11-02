@@ -2,8 +2,10 @@
 
 namespace Svea\Checkout;
 
+use Svea\Checkout\Implementation\ImplementationInterface;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Implementation\Admin\ImplementationAdminFactory;
+use Svea\Checkout\Transport\ResponseHandler;
 
 /**
  * Class CheckoutAdminClient
@@ -39,10 +41,7 @@ class CheckoutAdminClient
      */
     public function getOrder($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnGetOrderClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnGetOrderClass($this->connector), $data);
     }
 
     /**
@@ -54,10 +53,7 @@ class CheckoutAdminClient
      */
     public function getOrderDelivery($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnGetOrderDeliveryClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnGetOrderDeliveryClass($this->connector), $data);
     }
 
     /**
@@ -69,25 +65,18 @@ class CheckoutAdminClient
      */
     public function getOrderAddresses($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnGetOrderAddressesClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnGetOrderAddressesClass($this->connector), $data);
     }
 
     /**
      * Deliver Svea Checkout order.
      *
      * @param int $data
-     *
      * @return mixed
      */
     public function deliverOrder($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnDeliverOrderClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnDeliverOrderClass($this->connector), $data);
     }
 
     /**
@@ -98,10 +87,7 @@ class CheckoutAdminClient
      */
     public function cancelOrderAmount($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnCancelOrderAmountClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnCancelOrderAmountClass($this->connector), $data);
     }
 
     /**
@@ -112,10 +98,7 @@ class CheckoutAdminClient
      */
     public function cancelOrderRow($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnCancelOrderRowClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnCancelOrderRowClass($this->connector), $data);
     }
 
     /**
@@ -126,10 +109,7 @@ class CheckoutAdminClient
      */
     public function creditOrderRows($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnCreditOrderRowsClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnCreditOrderRowsClass($this->connector), $data);
     }
     /**
      * Cancel amount for Svea Checkout order.
@@ -139,9 +119,23 @@ class CheckoutAdminClient
      */
     public function creditOrderAmount($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnCreditOrderAmountClass($this->connector);
-        $deliverOrder->execute($data);
+        return $this->executeAction(ImplementationAdminFactory::returnCreditOrderAmountClass($this->connector), $data);
+    }
 
-        return $deliverOrder->getResponse();
+    /**
+     * @param ImplementationInterface $actionObject
+     * @param mixed $inputData
+     * @return array
+     */
+    private function executeAction($actionObject, $inputData)
+    {
+        $actionObject->execute($inputData);
+
+        /**
+         * @var ResponseHandler $responseHandler
+         */
+        $responseHandler = $actionObject->getResponse();
+
+        return $responseHandler->getWholeResponse();
     }
 }

@@ -182,7 +182,7 @@ class Connector
         try {
             $response = $this->apiClient->sendRequest($request);
 
-            return $response->getFullContent();
+            return $response;
         } catch (SveaApiException $e) {
             throw $e;
         } catch (Exception $e) {
