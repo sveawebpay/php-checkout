@@ -12,6 +12,8 @@ abstract class AdminImplementationManager extends ImplementationManager
             $data = array($data);
         }
 
-        return $this->connector->getBaseApiUrl() . vsprintf($this->apiUrl, $data);
+        $url = vsprintf($this->apiUrl, $data);
+
+        return $this->connector->getBaseApiUrl() . $url ;
     }
 }

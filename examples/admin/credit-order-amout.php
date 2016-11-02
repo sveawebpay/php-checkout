@@ -7,13 +7,18 @@
 require_once '../../include.php';
 
 /*
- * Example of getting the order delivery information
+ * Example of getting the order information
  *
  * */
+
+// Order ID from created order
 $data = array(
-    'id'         => 201,
-    'deliveryId' => 1
+    "orderId"    => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
+    "deliveryId" => 1,          // required - Int - Id of order delivery
+    "amount"     => 2000,       // Int - MinorCurrency - Amount to be credit,
+    //"orderrowids" => array(1,2) // optional - array - ids of order rows
 );
+
 
 /*
  * Create connector for given
@@ -46,8 +51,9 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->getOrderDelivery($data);
-    echo "<pre>" . print_r($response, true);
+    $response = $checkoutClient->creditOrderAmount($data);
+
+    var_dump($response['response']);
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");

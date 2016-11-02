@@ -7,7 +7,7 @@ use Svea\Checkout\Model\Request;
 class CreditOrderAmount extends AdminImplementationManager
 {
     //URI: /api/v1/orders/{orderId}/deliveries/{deliveryId}/credits [POST]
-    protected $apiUrl = '/api/v1/orders/%d/deliveries/%d/credits/%d';
+    protected $apiUrl = '/api/v1/orders/%d/deliveries/%d/credits';
 
     /**
      * Request body - JSON
@@ -34,17 +34,18 @@ class CreditOrderAmount extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        $requestData['amount'] = $data['amount'];
+        $requestData['Amount'] = $data['amount'];
+       // $requestData['OrderRowIds'] = $rowIds = isset($data['orderrowids']) ? $data['orderrowids'] : array(0);
+
         $orderId = $data['orderid'];
         $deliveryId = $data['deliveryid'];
-        $creditId = isset($data['creditId']) ? $data['creditid'] : '';
 
-        $params = array($orderId, $deliveryId, $creditId);
+        $params = array($orderId, $deliveryId);
 
         $this->requestModel = new Request();
-        $this->requestModel->setGetMethod();
+        $this->requestModel->setPostMethod();
         $this->requestModel->setBody(json_encode($requestData));
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $this->getUrlString($params));
+        $this->requestModel->setApiUrl($this->prepareUrl($params));
     }
 
     /**

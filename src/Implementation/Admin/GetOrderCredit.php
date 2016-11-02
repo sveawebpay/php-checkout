@@ -5,12 +5,12 @@ namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Model\Request;
 
-class GetOrderDelivery extends AdminImplementationManager
+class GetOrderCredit extends AdminImplementationManager
 {
     /**
      * url of action
      */
-    protected $apiUrl = '/api/v1/orders/%d/deliveries/%s';
+    protected $apiUrl = '/api/v1/orders/%d/deliveries/%d/credits/%s';
 
     /**
      * Request body - JSON
@@ -36,9 +36,9 @@ class GetOrderDelivery extends AdminImplementationManager
      */
     public function prepareData($data)
     {
-        $deliveryId = isset($data['deliveryid']) > 0 ? $data['deliveryid'] : '';
+        $creditId = isset($data['creditid']) > 0 ? $data['creditid'] : '';
 
-        $params = array($data['id'], $deliveryId);
+        $params = array($data['id'], $data['deliveryid'], $creditId);
 
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();

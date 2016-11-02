@@ -9,7 +9,7 @@ class GetOrderAddresses extends AdminImplementationManager
     /**
      * url of action
      */
-    protected $apiUrl = '/api/v1/orders/%d/addresses/%d';
+    protected $apiUrl = '/api/v1/orders/%d/addresses/%s';
 
     /**
      * Request body - JSON
@@ -35,7 +35,7 @@ class GetOrderAddresses extends AdminImplementationManager
      */
     public function prepareData($data)
     {
-        $addressId = intval($data['addressid']) > 0 ? $data['addressid'] : '';
+        $addressId = isset($data['addressid']) > 0 ? $data['addressid'] : '';
         $params = array($data['id'], $addressId);
 
         $this->requestModel = new Request();

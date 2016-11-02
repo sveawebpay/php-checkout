@@ -19,6 +19,8 @@ class ValidateCreditOrderAmountData extends ValidationService
 
         $this->mustBeInteger($data['amount'], 'Credit Amount');
 
-        $this->mustBeArray($data['rowids'], 'Order Row Ids');
+        if (isset($data['orderrowids'])) {
+            $this->mustBeArray($data['orderrowids'], 'Order Row Ids');
+        }
     }
 }

@@ -13,9 +13,9 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId"    => 202,   // required - Long  filed (Specified Checkout order for cancel amount)
-    "deliveryId" => 1,     // required - Int - Id of order delivery
-    "creditId"   => 2,     // optional - Int - Id of order delivery credit
+    "Id"    => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
+    "deliveryId" => 1,          // required - Int - Id of order delivery
+   // "creditId"   => 1,        // optional - Int - Id of order delivery credit,
 );
 
 
@@ -50,7 +50,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->creditOrderAmount($data);
+    $response = $checkoutClient->getOrderCredits($data);
 
     var_dump($response['response']);
 
