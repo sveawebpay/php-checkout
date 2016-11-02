@@ -51,7 +51,9 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 try {
     $response = $checkoutClient->cancelOrderRow($data);
 
-    var_dump($response);
+    if ($response['Response'] === null) {
+        print_r('Success cancel amount');
+    }
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");

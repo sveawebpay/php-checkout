@@ -13,8 +13,10 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 202, // required - Long  filed (Specified Checkout order for cancel amount)
-    "amount" => 15000 // required - Integer only positive. Minor currency.
+    // already cancelled order id - 202
+    "orderId" => 204, // required - Long  filed (Specified Checkout order for cancel amount)
+    // Invalid amount - 15000
+    "amount" => 500 // required - Integer only positive. Minor currency.
 );
 
 
@@ -51,7 +53,9 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 try {
     $response = $checkoutClient->cancelOrderAmount($data);
 
-    var_dump($response);
+    if ($response['Response'] === null) {
+        print_r('Success cancel amount');
+    }
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
