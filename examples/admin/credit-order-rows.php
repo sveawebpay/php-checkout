@@ -13,9 +13,9 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 201, // required - Long  filed (Specified Checkout order for cancel amount)
+    "orderId" => 204, // required - Long  filed (Specified Checkout order for cancel amount)
     "deliveryId" => 1, // required - Long - Id of the specified delivery.
-    "orderRowIds" => array(1, 2) // required - Array - Ids of the delivered order rows that will be credited.
+    "orderRowIds" => array(1) // required - Array - Ids of the delivered order rows that will be credited.
 );
 
 
