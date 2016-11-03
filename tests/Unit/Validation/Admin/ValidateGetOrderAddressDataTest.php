@@ -8,20 +8,38 @@ use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
 class ValidateGetOrderAddressDataTest extends TestCase
 {
     /**
-     * @var ValidateGetOrderAddressesData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateGetOrderAddressesData $validateUpdateOrderData
      */
-    protected $validatorMock;
+    private $validateGetOrderAddress;
+
+    /**
+     * @var mixed $inputData
+     */
+    private $inputData;
 
     public function setUp()
     {
-        $this->validatorMock = new ValidateGetOrderAddressesData();
+        $this->validateGetOrderAddress = new ValidateGetOrderAddressesData();
+
+        $this->inputData = array(
+            'orderid'   => 201,
+            'addressid' => 1
+        );
     }
 
     public function testValidateWithOrderIdIntAsInteger()
     {
-        $data = array('orderid' => 1234);
+        $this->validateGetOrderAddress->validate($this->inputData);
+    }
 
-        $this->validatorMock->validate($data);
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateWithMissingOrderId()
+    {
+        unset($this->inputData['orderid']);
+        $this->validateGetOrderAddress->validate($this->inputData);
     }
 
     /**
@@ -30,9 +48,8 @@ class ValidateGetOrderAddressDataTest extends TestCase
      */
     public function testValidateWithOrderIdIntAsString()
     {
-        $data = array('orderid' => '1234');
-
-        $this->validatorMock->validate($data);
+        $this->inputData['orderid'] = '201';
+        $this->validateGetOrderAddress->validate($this->inputData);
     }
 
     /**
@@ -41,9 +58,8 @@ class ValidateGetOrderAddressDataTest extends TestCase
      */
     public function testValidateWithOrderIdString()
     {
-        $data = array('orderid' => 'svea');
-
-        $this->validatorMock->validate($data);
+        $this->inputData['orderid'] = 'svea';
+        $this->validateGetOrderAddress->validate($this->inputData);
     }
 
     /**
@@ -52,19 +68,15 @@ class ValidateGetOrderAddressDataTest extends TestCase
      */
     public function testValidateWithEmptyString()
     {
-        $data = array('orderid' => '');
+        $this->inputData['orderid'] = '';
 
-        $this->validatorMock->validate($data);
+        $this->validateGetOrderAddress->validate($this->inputData);
     }
 
     public function testValidateWithEmptyAddressId()
     {
-        $data = array(
-            'orderid' => 1,
-            'addressid' => ''
-        );
-
-        $this->validatorMock->validate($data);
+        unset($this->inputData['addressid']);
+        $this->validateGetOrderAddress->validate($this->inputData);
     }
 
     /**
@@ -73,21 +85,13 @@ class ValidateGetOrderAddressDataTest extends TestCase
      */
     public function testValidateWithAddressIdAsString()
     {
-        $data = array(
-            'orderid' => 1,
-            'addressid' => 'wrongId'
-        );
-
-        $this->validatorMock->validate($data);
+        $this->inputData['addressid'] = 'wrongId';
+        $this->validateGetOrderAddress->validate($this->inputData);
     }
 
     public function testValidateWithAddressIdAsInt()
     {
-        $data = array(
-            'orderid' => 1,
-            'addressid' => 3
-        );
-
-        $this->validatorMock->validate($data);
+        $this->inputData['addressid'] = 3;
+        $this->validateGetOrderAddress->validate($this->inputData);
     }
 }

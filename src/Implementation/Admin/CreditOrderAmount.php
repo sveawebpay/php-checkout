@@ -35,7 +35,6 @@ class CreditOrderAmount extends AdminImplementationManager
     {
         $requestData = array();
         $requestData['Amount'] = $data['amount'];
-       // $requestData['OrderRowIds'] = $rowIds = isset($data['orderrowids']) ? $data['orderrowids'] : array(0);
 
         $orderId = $data['orderid'];
         $deliveryId = $data['deliveryid'];

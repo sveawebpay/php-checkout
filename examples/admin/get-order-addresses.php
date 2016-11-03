@@ -11,8 +11,8 @@ require_once '../../include.php';
  *
  * */
 $data = array(
-    'orderId'        => 201,
-    'addressId' => 1
+    'orderId'       => 201,  // required - Long
+    'addressId'     => 1     // optional - Long
 );
 
 /*

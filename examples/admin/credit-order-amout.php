@@ -16,7 +16,6 @@ $data = array(
     "orderId"    => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
     "deliveryId" => 1,          // required - Int - Id of order delivery
     "amount"     => 2000,       // Int - MinorCurrency - Amount to be credit,
-    //"orderrowids" => array(1,2) // optional - array - ids of order rows
 );
 
 
