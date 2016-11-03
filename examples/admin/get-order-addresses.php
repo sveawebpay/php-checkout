@@ -11,7 +11,7 @@ require_once '../../include.php';
  *
  * */
 $data = array(
-    'id' => 201,
+    'orderId'        => 201,
     'addressId' => 1
 );
 
@@ -22,8 +22,8 @@ $data = array(
  *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
  * */
 $checkoutMerchantId = '1';
-$checkoutSecret = 'sharedSecret';
-$baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
+$checkoutSecret     = 'sharedSecret';
+$baseUrl            = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 /*
  * Create Connector object
@@ -46,19 +46,19 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-	$response = $checkoutClient->getOrderAddresses($data);
-	echo "<pre>" . print_r($response, true);
+    $response = $checkoutClient->getOrderAddresses($data);
+    echo "<pre>" . print_r($response, true);
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
-	var_dump("--------- Api errors ---------");
-	var_dump($ex->getMessage());
+    var_dump("--------- Api errors ---------");
+    var_dump($ex->getMessage());
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
-	var_dump("--------- Conn errors ---------");
-	var_dump($ex->getMessage());
+    var_dump("--------- Conn errors ---------");
+    var_dump($ex->getMessage());
 } catch (\Svea\Checkout\Exception\SveaInputValidationException $ex) {
-	var_dump("--------- Input data errors ---------");
-	var_dump($ex->getMessage());
+    var_dump("--------- Input data errors ---------");
+    var_dump($ex->getMessage());
 } catch (Exception $ex) {
-	var_dump("--------- General errors ---------");
-	var_dump($ex->getMessage());
+    var_dump("--------- General errors ---------");
+    var_dump($ex->getMessage());
 }

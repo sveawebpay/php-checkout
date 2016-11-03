@@ -11,7 +11,8 @@ class ValidateAddOrderRowData extends ValidationService
      */
     public function validate($data)
     {
-        $this->mustBeInteger($data['id'], 'Order Id');
+        $this->mustBeSet($data, 'orderid', 'Order Row');
+        $this->mustBeInteger($data['orderid'], 'Order Id');
 
         $this->mustBeSet($data, 'orderrow', 'Order Row');
         $this->mustBeArray($data['orderrow'], 'Order Row');

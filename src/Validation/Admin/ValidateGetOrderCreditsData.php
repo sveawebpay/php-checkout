@@ -12,7 +12,7 @@ class ValidateGetOrderCreditsData extends ValidationService
      */
     public function validate($data)
     {
-        $this->mustBeInteger($data['id'], "Order Id");
+        $this->mustBeInteger($data['orderid'], "Order Id");
         $this->mustBeInteger($data['deliveryid'], "Delivery Id");
     }
 }

@@ -30,10 +30,9 @@ class AddOrderRow extends AdminImplementationManager
      */
     public function prepareData($data)
     {
-        $requestData             = array();
-        $requestData['orderRow'] = $data['orderrow'];
+        $requestData = $data['orderrow'];
 
-        $orderId = $data['id'];
+        $orderId = $data['orderid'];
 
         $this->requestModel = new Request();
         $this->requestModel->setPostMethod();

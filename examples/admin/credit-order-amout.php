@@ -53,7 +53,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 try {
     $response = $checkoutClient->creditOrderAmount($data);
 
-    var_dump($response['response']);
+    var_dump($response);
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");

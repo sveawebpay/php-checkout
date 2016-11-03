@@ -38,7 +38,7 @@ class GetOrderDelivery extends AdminImplementationManager
     {
         $deliveryId = isset($data['deliveryid']) > 0 ? $data['deliveryid'] : '';
 
-        $params = array($data['id'], $deliveryId);
+        $params = array($data['orderid'], $deliveryId);
 
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();

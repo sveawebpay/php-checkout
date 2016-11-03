@@ -36,7 +36,7 @@ class GetOrderAddresses extends AdminImplementationManager
     public function prepareData($data)
     {
         $addressId = isset($data['addressid']) > 0 ? $data['addressid'] : '';
-        $params = array($data['id'], $addressId);
+        $params = array($data['orderid'], $addressId);
 
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();

@@ -38,7 +38,7 @@ class GetOrderCredit extends AdminImplementationManager
     {
         $creditId = isset($data['creditid']) > 0 ? $data['creditid'] : '';
 
-        $params = array($data['id'], $data['deliveryid'], $creditId);
+        $params = array($data['orderid'], $data['deliveryid'], $creditId);
 
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();

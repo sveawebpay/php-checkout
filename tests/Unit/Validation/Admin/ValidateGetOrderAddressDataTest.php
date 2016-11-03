@@ -19,7 +19,7 @@ class ValidateGetOrderAddressDataTest extends TestCase
 
     public function testValidateWithOrderIdIntAsInteger()
     {
-        $data = array('id' => 1234);
+        $data = array('orderid' => 1234);
 
         $this->validatorMock->validate($data);
     }
@@ -30,7 +30,7 @@ class ValidateGetOrderAddressDataTest extends TestCase
      */
     public function testValidateWithOrderIdIntAsString()
     {
-        $data = array('id' => '1234');
+        $data = array('orderid' => '1234');
 
         $this->validatorMock->validate($data);
     }
@@ -41,7 +41,7 @@ class ValidateGetOrderAddressDataTest extends TestCase
      */
     public function testValidateWithOrderIdString()
     {
-        $data = array('id' => 'svea');
+        $data = array('orderid' => 'svea');
 
         $this->validatorMock->validate($data);
     }
@@ -52,7 +52,7 @@ class ValidateGetOrderAddressDataTest extends TestCase
      */
     public function testValidateWithEmptyString()
     {
-        $data = array('id' => '');
+        $data = array('orderid' => '');
 
         $this->validatorMock->validate($data);
     }
@@ -60,7 +60,7 @@ class ValidateGetOrderAddressDataTest extends TestCase
     public function testValidateWithEmptyAddressId()
     {
         $data = array(
-            'id' => 1,
+            'orderid' => 1,
             'addressid' => ''
         );
 
@@ -74,7 +74,7 @@ class ValidateGetOrderAddressDataTest extends TestCase
     public function testValidateWithAddressIdAsString()
     {
         $data = array(
-            'id' => 1,
+            'orderid' => 1,
             'addressid' => 'wrongId'
         );
 
@@ -84,7 +84,7 @@ class ValidateGetOrderAddressDataTest extends TestCase
     public function testValidateWithAddressIdAsInt()
     {
         $data = array(
-            'id' => 1,
+            'orderid' => 1,
             'addressid' => 3
         );
 
