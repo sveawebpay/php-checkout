@@ -126,7 +126,8 @@ class ResponseHandler
         $header = $this->getHeader();
 
         if (isset($header['Location'])) {
-            $returnData['Header'] = $this->getHeader();
+            $returnData['Header']['Location'] = $header['Location'];
+            $returnData['Header']['HttpCode'] = $this->httpCode;
         }
 
         $returnData['Response'] = $this->getContent();

@@ -109,10 +109,7 @@ class CheckoutAdminClient
      */
     public function getOrderCredits($data)
     {
-        $deliverOrder = ImplementationAdminFactory::returnGetOrderCreditClass($this->connector);
-        $deliverOrder->execute($data);
-
-        return $deliverOrder->getResponse();
+        return $this->executeAction(ImplementationAdminFactory::returnGetOrderCreditClass($this->connector), $data);
     }
 
     /**
@@ -135,6 +132,17 @@ class CheckoutAdminClient
     public function creditOrderAmount($data)
     {
         return $this->executeAction(ImplementationAdminFactory::returnCreditOrderAmountClass($this->connector), $data);
+    }
+
+    /**
+     * Add Order Row.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function addOrderRow($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnAddOrderRowClass($this->connector), $data);
     }
 
     /**

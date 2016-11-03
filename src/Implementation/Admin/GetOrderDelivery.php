@@ -60,7 +60,6 @@ class GetOrderDelivery extends AdminImplementationManager
     {
         return $this->requestModel;
     }
-
     /**
      * @param Request $requestModel
      */

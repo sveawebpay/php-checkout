@@ -6,7 +6,10 @@ use Svea\Checkout\Model\Request;
 
 class DeliverOrder extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%d/deliveries';
+    /**
+     * url of action
+     */
+    protected $apiUrl =  '/api/v1/orders/%d/deliveries';
 
     /**
      * Request body - JSON

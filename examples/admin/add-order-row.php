@@ -13,10 +13,48 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "Id"    => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
-    "deliveryId" => 1,          // required - Int - Id of order delivery
-    "creditId"   => 1,        // optional - Int - Id of order delivery credit,
+    "Id"       => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
+    "orderRow" => array(
+        "ArticleNumber" => "prod-01",
+        "Name"          => "someProd",
+        "Quantity"      => 300,
+        "UnitPrice"     => 5000,
+        //"DiscountPercent" => "", // optional 0-100
+        "VatPercent"    => 0,       // required - 0, 6, 12, 25
+        "Unit"          => "pc"           // optional st, pc, kg, etc.
+    )
 );
+
+/*
+ * Create connector for given
+ *  - Merchant Id - unique merchant ID
+ *  - Shared Secret - Shared Secret string between Svea and merchant
+ *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
+ * */
+$checkoutMerchantId = '1';
+$checkoutSecret     = 'sharedSecret';
+$baseUrl            = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
+
+/*
+ * Create connector for given
+ *  - Merchant Id - unique merchant ID
+ *  - Shared Secret - Shared Secret string between Svea and merchant
+ *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
+ * */
+$checkoutMerchantId = '1';
+$checkoutSecret     = 'sharedSecret';
+$baseUrl            = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
+
+/*
+ * Create Connector object
+ *
+ * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
+ * some of fields $merchantId, $sharedSecret and $baseUrl is missing
+ * */
+$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+
+// Create Checkout client with created Connector object
+$checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
 
 /*
@@ -50,7 +88,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->getOrderCredits($data);
+    $response = $checkoutClient->addOrderRow($data);
 
     var_dump($response);
 
