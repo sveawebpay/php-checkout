@@ -76,6 +76,28 @@ abstract class ValidationService
 
     /**
      * @param mixed $data
+     * @param string $dataTitle
+     * @throws SveaInputValidationException
+     */
+    protected function mustNotBeEmptyArray($data, $dataTitle)
+    {
+        if (!is_array($data)) {
+            throw new SveaInputValidationException(
+                "$dataTitle must be passed as array!",
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+
+        if (count($data) < 1) {
+            throw new SveaInputValidationException(
+                "$dataTitle must not be empty array!",
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+    }
+
+    /**
+     * @param mixed $data
      * @param integer $minLength
      * @param integer $maxLength
      * @param string $dataTitle

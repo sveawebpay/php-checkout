@@ -44,13 +44,13 @@ $data = array(
          * Integer - The discount percent of the product
          * Limit - 0-100
          */
-        "discountPercent" => 1000,
+        "discountPercent" => 50,
 
         /**
          * Integer - The VAT percentage of the current product
          * Limit - Valid VAT percentage for that country. Minor currency
          */
-        "vatPercent" => 2500,
+        "vatPercent" => 6,
 
         /**
          * String - The unit type e.g. "st", "pc", "kg", etc.
