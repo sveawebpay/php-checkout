@@ -26,27 +26,11 @@ class ValidateCreditOrderRowsData extends ValidationService
 
     private function validateListOfRowIds($data)
     {
-        if (!isset($data['orderrowids'])) {
-            throw new SveaInputValidationException(
-                'Order Row Ids should be passed!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
-
-        if (!is_array($data['orderrowids'])) {
-            throw new SveaInputValidationException(
-                'Order Row Ids should be passed like array!',
-                ExceptionCodeList::INPUT_VALIDATION_ERROR
-            );
-        }
+        $this->mustBeSet($data, 'orderrowids', 'Order Row Ids');
+        $this->mustNotBeEmptyArray($data['orderrowids'], 'Order Row Ids');
 
         foreach ($data['orderrowids'] as $orderRowId) {
-            if (!is_int($orderRowId)) {
-                throw new SveaInputValidationException(
-                    'Order Row Id should be passed like array!',
-                    ExceptionCodeList::INPUT_VALIDATION_ERROR
-                );
-            }
+            $this->mustBeInteger($orderRowId, 'Order Row Id');
         }
     }
 }
