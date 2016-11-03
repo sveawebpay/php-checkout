@@ -6,13 +6,14 @@ use Svea\Checkout\Model\Request;
 
 class AddOrderRow extends AdminImplementationManager
 {
+    protected $apiUrl = '/api/v1/orders/%d/rows';
+
     /**
-     * Set ApiUrl
+     * Request body - JSON
+     *
+     * @var Request $requestModel
      */
-    protected function setApiUrl()
-    {
-        $this->apiUrl = '/api/v1/orders/%d/rows';
-    }
+    private $requestModel;
 
     /**
      * Input data validation
@@ -29,7 +30,7 @@ class AddOrderRow extends AdminImplementationManager
      */
     public function prepareData($data)
     {
-        $requestData = array();
+        $requestData             = array();
         $requestData['orderRow'] = $data['orderrow'];
 
         $orderId = $data['id'];
