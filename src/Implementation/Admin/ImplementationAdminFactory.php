@@ -13,6 +13,7 @@ use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
+use Svea\Checkout\Validation\Admin\ValidateUpdateOrderRowData;
 
 class ImplementationAdminFactory
 {
@@ -104,5 +105,14 @@ class ImplementationAdminFactory
     public static function returnAddOrderRowClass(Connector $connector)
     {
         return new AddOrderRow($connector, new ValidateAddOrderRowData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return UpdateOrderRow
+     */
+    public static function returnUpdateOrderRowClass(Connector $connector)
+    {
+        return new UpdateOrderRow($connector, new ValidateUpdateOrderRowData());
     }
 }

@@ -41,7 +41,7 @@ class CreditOrderRowsTest extends TestCase
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_POST, $requestModel->getMethod());
-        $this->assertEquals($inputData['orderrowids'], $requestBodyData['rowIds']);
+        $this->assertEquals($inputData['orderrowids'], $requestBodyData['orderRowIds']);
     }
 
     public function testInvoke()

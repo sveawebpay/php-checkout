@@ -146,6 +146,17 @@ class CheckoutAdminClient
     }
 
     /**
+     * Update Order Row.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function updateOrderRow($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnUpdateOrderRowClass($this->connector), $data);
+    }
+
+    /**
      * @param ImplementationInterface $actionObject
      * @param mixed $inputData
      * @return array

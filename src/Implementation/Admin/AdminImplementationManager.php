@@ -27,11 +27,11 @@ abstract class AdminImplementationManager extends ImplementationManager
             $data = array($data);
         }
 
-        if (isset($this->apiUrl)) {
-            $url = vsprintf($this->apiUrl, $data);
-        } else {
-            throw new Exception("Api Url is not set.");
+        if (!isset($this->apiUrl)) {
+            throw new Exception("Api Url must be set.");
         }
+
+        $url = vsprintf($this->apiUrl, $data);
 
         return $this->connector->getBaseApiUrl() . $url;
     }

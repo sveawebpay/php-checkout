@@ -2,32 +2,70 @@
 
 namespace Svea\Checkout\Implementation\Admin;
 
+use Svea\Checkout\Model\Request;
+
 class UpdateOrderRow extends AdminImplementationManager
 {
+    protected $apiUrl = '/api/v1/orders/%d/rows/%d';
 
     /**
-     * Input data validation
-     * @param mixed $data Input data to Svea Checkout Library
+     * Request body - JSON
+     *
+     * @var Request $requestModel
+     */
+    private $requestModel;
+
+    /**
+     * @param $data
+     * @throws \Svea\Checkout\Exception\SveaInputValidationException
      */
     public function validateData($data)
     {
-        // TODO: Implement validateData() method.
+        $validator = $this->validator;
+        $validator->validate($data);
     }
 
     /**
-     * Prepare body data for Api call
+     * Prepare date for request
+     *
      * @param mixed $data
      */
     public function prepareData($data)
     {
-        // TODO: Implement prepareData() method.
+        $orderRowData = array();
+        if (isset($data['orderrowdata'])) {
+            $orderRowData = $data['orderrowdata'];
+        }
+
+
+        $orderId = $data['orderid'];
+        $orderRowId = $data['orderrowid'];
+        $urlParams = array($orderId, $orderRowId);
+
+        $this->requestModel = new Request();
+        $this->requestModel->setPatchMethod();
+        $this->requestModel->setBody(json_encode($orderRowData));
+        $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
+    }
+
+    public function invoke()
+    {
+        $this->response = $this->connector->sendRequest($this->requestModel);
     }
 
     /**
-     * Invoke Api call
+     * @return Request
      */
-    public function invoke()
+    public function getRequestModel()
     {
-        // TODO: Implement invoke() method.
+        return $this->requestModel;
+    }
+
+    /**
+     * @param Request $requestModel
+     */
+    public function setRequestModel($requestModel)
+    {
+        $this->requestModel = $requestModel;
     }
 }
