@@ -3,17 +3,18 @@
 namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 use Svea\Checkout\Validation\Admin\ValidateAddOrderRowData;
-use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
+use Svea\Checkout\Validation\Admin\ValidateGetDataFromLink;
+use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
+use Svea\Checkout\Validation\Admin\ValidateUpdateOrderRowData;
 use Svea\Checkout\Validation\Admin\ValidateCancelOrderRowData;
-use Svea\Checkout\Validation\Admin\ValidateCreditOrderAmountData;
 use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderCreditsData;
-use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
-use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
+use Svea\Checkout\Validation\Admin\ValidateCreditOrderAmountData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
-use Svea\Checkout\Validation\Admin\ValidateUpdateOrderRowData;
+use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
 
 class ImplementationAdminFactory
 {
@@ -114,5 +115,14 @@ class ImplementationAdminFactory
     public static function returnUpdateOrderRowClass(Connector $connector)
     {
         return new UpdateOrderRow($connector, new ValidateUpdateOrderRowData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return GetDataFromLink
+     */
+    public static function returnGetDataFromLinkClass(Connector $connector)
+    {
+        return new GetDataFromLink($connector, new  ValidateGetDataFromLink());
     }
 }

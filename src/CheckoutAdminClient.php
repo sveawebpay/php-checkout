@@ -157,6 +157,17 @@ class CheckoutAdminClient
     }
 
     /**
+     * Get Data from Link.
+     *
+     * @param string $data
+     * @return mixed
+     */
+    public function getDataFromLink($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnGetDataFromLinkClass($this->connector), $data);
+    }
+
+    /**
      * @param ImplementationInterface $actionObject
      * @param mixed $inputData
      * @return array

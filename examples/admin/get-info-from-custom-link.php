@@ -1,5 +1,4 @@
 <?php
-
 // include the Svea Checkout autoload file if you are using Composer
 //require_once '../vendor/autoload.php';
 
@@ -10,20 +9,7 @@ require_once '../../include.php';
  * Example of getting the order information
  *
  * */
-
-// Order ID from created order
-$data = array(
-    "orderId"       => 201,        // required - Long  filed (Specified Checkout order for cancel amount)
-    "orderRow" => array(
-        "ArticleNumber" => "prod-01",
-        "Name"          => "someProd",
-        "Quantity"      => 300,
-        "UnitPrice"     => 5000,
-        //"DiscountPercent" => "", // optional 0-100
-        "VatPercent"    => 0,       // required - 0, 6, 12, 25
-        "Unit"          => "pc"           // optional st, pc, kg, etc.
-    )
-);
+$url = '/api/v1/queue/2';
 
 /*
  * Create connector for given
@@ -46,6 +32,7 @@ $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutS
 // Create Checkout client with created Connector object
 $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
+
 /*
  *  Initialize getting the order information
  *  Possible Exceptions are:
@@ -56,7 +43,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->addOrderRow($data);
+    $response = $checkoutClient->getDataFromLink($url);
 
     var_dump($response);
 
