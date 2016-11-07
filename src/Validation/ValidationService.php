@@ -44,6 +44,21 @@ abstract class ValidationService
     }
 
     /**
+     * @param array  $data
+     * @param string $paramTitle
+     * @throws SveaInputValidationException
+     */
+    protected function mustBeString($data, $paramTitle)
+    {
+        if (!is_string($data) || $data == "") {
+            throw new SveaInputValidationException(
+                "$paramTitle must be passed as string and can't be empty!",
+                ExceptionCodeList::INPUT_VALIDATION_ERROR
+            );
+        }
+    }
+
+    /**
      * @param mixed $data
      * @param string $dataTitle
      * @throws SveaInputValidationException
