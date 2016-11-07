@@ -48,6 +48,7 @@ class ApiClient
         $header[] = 'Timestamp: ' . $request->getTimestamp();
         $header[] = 'Expect:';
 
+        $this->httpClient->init();
         $this->httpClient->setOption(CURLOPT_URL, $request->getApiUrl());
         $this->httpClient->setOption(CURLOPT_HTTPHEADER, $header);
         $this->httpClient->setOption(CURLOPT_RETURNTRANSFER, 1);

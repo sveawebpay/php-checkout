@@ -14,15 +14,6 @@ class CurlRequest implements HttpRequestInterface
      */
     private $handle = null;
 
-
-    /**
-     * CurlRequest constructor.
-     */
-    public function __construct()
-    {
-        $this->handle = curl_init();
-    }
-
     /**
      * @param $name
      * @param $value
@@ -81,5 +72,13 @@ class CurlRequest implements HttpRequestInterface
     public function close()
     {
         curl_close($this->handle);
+    }
+
+    /**
+     * Init cURL session
+     */
+    public function init()
+    {
+        $this->handle = curl_init();
     }
 }
