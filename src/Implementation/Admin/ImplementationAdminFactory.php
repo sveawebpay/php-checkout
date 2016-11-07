@@ -15,7 +15,6 @@ use Svea\Checkout\Validation\Admin\ValidateGetOrderCreditsData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
 use Svea\Checkout\Validation\Admin\ValidateCreditOrderAmountData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
-use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
 
 class ImplementationAdminFactory
 {

@@ -56,7 +56,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
  *
  * */
 try {
-    $response = $checkoutClient->cancelOrderAmount($data);
+    $response = $checkoutClient->cancelOrder($data);
 
     if ($response['Response'] === null) {
         print_r('Success cancel amount');

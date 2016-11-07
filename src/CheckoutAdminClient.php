@@ -85,7 +85,7 @@ class CheckoutAdminClient
      * @param int $data
      * @return mixed
      */
-    public function cancelOrderAmount($data)
+    public function cancelOrder($data)
     {
         return $this->executeAction(ImplementationAdminFactory::returnCancelOrderClass($this->connector), $data);
     }

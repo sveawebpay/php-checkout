@@ -12,7 +12,7 @@ class CancelOrderTest extends TestCase
     /**
      * @var CancelOrder
      */
-    protected $cancelOrderAmount;
+    protected $cancelOrder;
 
     /**
      * @var ValidateCancelOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
@@ -25,7 +25,7 @@ class CancelOrderTest extends TestCase
 
         $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\Admin\ValidateCancelOrderData')
             ->getMock();
-        $this->cancelOrderAmount = new CancelOrder($this->connectorMock, $this->validatorMock);
+        $this->cancelOrder = new CancelOrder($this->connectorMock, $this->validatorMock);
     }
 
     public function testPrepareData()
@@ -34,9 +34,9 @@ class CancelOrderTest extends TestCase
             'orderid' => 1,
             'amount' => 15000
         );
-        $this->cancelOrderAmount->prepareData($inputData);
+        $this->cancelOrder->prepareData($inputData);
 
-        $requestModel = $this->cancelOrderAmount->getRequestModel();
+        $requestModel = $this->cancelOrder->getRequestModel();
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
@@ -50,7 +50,7 @@ class CancelOrderTest extends TestCase
             ->method('sendRequest')
             ->will($this->returnValue($fakeResponse));
 
-        $createOrder = $this->cancelOrderAmount;
+        $createOrder = $this->cancelOrder;
         $createOrder->setRequestModel($this->requestModel);
         $createOrder->invoke();
 
@@ -62,7 +62,7 @@ class CancelOrderTest extends TestCase
         $this->validatorMock->expects($this->once())
             ->method('validate');
 
-        $getOrder = $this->cancelOrderAmount;
+        $getOrder = $this->cancelOrder;
 
         $getOrder->validateData($this->inputCreateData);
     }
