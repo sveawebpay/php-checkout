@@ -36,7 +36,7 @@ class DeliverOrder extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        if (!empty($data['rowids'])) {
+        if (isset($data['rowids']) && !empty($data['rowids'])) {
             $requestData['rowIds'] = $data['rowids'];
         }
 

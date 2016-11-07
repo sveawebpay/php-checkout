@@ -2,20 +2,20 @@
 
 namespace Svea\Checkout\Tests\Unit\Implementation\Admin;
 
-use Svea\Checkout\Implementation\Admin\CancelOrderAmount;
+use Svea\Checkout\Implementation\Admin\CancelOrder;
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
+use Svea\Checkout\Validation\Admin\ValidateCancelOrderData;
 
-class CancelOrderAmountTest extends TestCase
+class CancelOrderTest extends TestCase
 {
     /**
-     * @var CancelOrderAmount
+     * @var CancelOrder
      */
     protected $cancelOrderAmount;
 
     /**
-     * @var ValidateCancelOrderAmountData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateCancelOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
      */
     protected $validatorMock;
 
@@ -23,9 +23,9 @@ class CancelOrderAmountTest extends TestCase
     {
         parent::setUp();
 
-        $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData')
+        $this->validatorMock = $this->getMockBuilder('\Svea\Checkout\Validation\Admin\ValidateCancelOrderData')
             ->getMock();
-        $this->cancelOrderAmount = new CancelOrderAmount($this->connectorMock, $this->validatorMock);
+        $this->cancelOrderAmount = new CancelOrder($this->connectorMock, $this->validatorMock);
     }
 
     public function testPrepareData()

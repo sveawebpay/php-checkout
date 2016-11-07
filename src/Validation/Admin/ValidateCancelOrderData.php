@@ -4,7 +4,7 @@ namespace Svea\Checkout\Validation\Admin;
 
 use Svea\Checkout\Validation\ValidationService;
 
-class ValidateCancelOrderAmountData extends ValidationService
+class ValidateCancelOrderData extends ValidationService
 {
     /**
      * @param array $data
@@ -14,7 +14,8 @@ class ValidateCancelOrderAmountData extends ValidationService
         $this->mustBeSet($data, 'orderid', 'Order Id');
         $this->mustBeInteger($data['orderid'], 'Order Id');
 
-        $this->mustBeSet($data, 'amount', 'Amount');
-        $this->mustBeInteger($data['amount'], 'Amount');
+        if (isset($data['amount'])) {
+            $this->mustBeInteger($data['amount'], 'Amount');
+        }
     }
 }

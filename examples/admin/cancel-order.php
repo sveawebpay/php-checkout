@@ -16,7 +16,12 @@ $data = array(
     // already cancelled order id - 202
     "orderId" => 204, // required - Long  filed (Specified Checkout order for cancel amount)
     // Invalid amount - 15000
-    "amount" => 500 // required - Integer only positive. Minor currency.
+
+    /**
+     * optional - If you do not send the amount whole order will be cancelled.
+     * Amount is Integer and only positive. Minor currency.
+     */
+    "amount" => 500
 );
 
 

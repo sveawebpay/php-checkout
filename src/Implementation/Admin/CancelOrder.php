@@ -4,7 +4,7 @@ namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Model\Request;
 
-class CancelOrderAmount extends AdminImplementationManager
+class CancelOrder extends AdminImplementationManager
 {
     protected $apiUrl = '/api/v1/orders/%d';
 
@@ -33,7 +33,16 @@ class CancelOrderAmount extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        $requestData['amount'] = $data['amount'];
+
+        if (isset($data['amount']) && !empty($data['amount'])) {
+            $requestData['amount'] = $data['amount'];
+        } else {
+            /**
+             * Determines that this order is cancelled
+             * Required field if amount is not specified
+             */
+            $requestData['isCancelled'] = true;
+        }
 
         $orderId = $data['orderid'];
         $this->requestModel = new Request();

@@ -3,14 +3,14 @@
 namespace Svea\Checkout\Tests\Unit\Validation\Admin;
 
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\Admin\ValidateCancelOrderAmountData;
+use Svea\Checkout\Validation\Admin\ValidateCancelOrderData;
 
-class ValidateCancelOrderAmountDataTest extends TestCase
+class ValidateCancelOrderDataTest extends TestCase
 {
     /**
-     * @var ValidateCancelOrderAmountData $validateUpdateOrderData
+     * @var ValidateCancelOrderData $validateUpdateOrderData
      */
-    private $validateCancelOrderAmount;
+    private $validateCancelOrder;
 
     /**
      * @var mixed $inputData
@@ -20,7 +20,7 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->validateCancelOrderAmount = new ValidateCancelOrderAmountData();
+        $this->validateCancelOrder = new ValidateCancelOrderData();
 
         $this->inputData = array(
             'orderid' => 204,
@@ -35,7 +35,7 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithoutOrderId()
     {
         unset($this->inputData['orderid']);
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     /**
@@ -45,7 +45,7 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithOrderIdAsString()
     {
         $this->inputData['orderid'] = '204';
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     /**
@@ -55,7 +55,7 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithEmptyOrderId()
     {
         $this->inputData['orderid'] = '';
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     /**
@@ -65,7 +65,7 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithNullOrderId()
     {
         $this->inputData['orderid'] = null;
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     /**
@@ -75,22 +75,12 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithOrderIdAsDecimal()
     {
         $this->inputData['orderid'] = 204.5;
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     public function testValidateWithOrderIdAsInteger()
     {
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithoutAmount()
-    {
-        unset($this->inputData['amount']);
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     /**
@@ -100,7 +90,7 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithAmountAsString()
     {
         $this->inputData['amount'] = '204';
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     /**
@@ -110,17 +100,7 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithEmptyAmount()
     {
         $this->inputData['amount'] = '';
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithNullAmount()
-    {
-        $this->inputData['amount'] = null;
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     /**
@@ -130,11 +110,11 @@ class ValidateCancelOrderAmountDataTest extends TestCase
     public function testValidateWithAmountAsDecimal()
     {
         $this->inputData['amount'] = 204.5;
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 
     public function testValidateWithAmountAsInteger()
     {
-        $this->invokeMethod($this->validateCancelOrderAmount, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateCancelOrder, 'validate', array($this->inputData));
     }
 }

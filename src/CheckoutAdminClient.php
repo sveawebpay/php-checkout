@@ -87,7 +87,7 @@ class CheckoutAdminClient
      */
     public function cancelOrderAmount($data)
     {
-        return $this->executeAction(ImplementationAdminFactory::returnCancelOrderAmountClass($this->connector), $data);
+        return $this->executeAction(ImplementationAdminFactory::returnCancelOrderClass($this->connector), $data);
     }
 
     /**
