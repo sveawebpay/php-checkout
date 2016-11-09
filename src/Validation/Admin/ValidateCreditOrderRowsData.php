@@ -14,8 +14,7 @@ class ValidateCreditOrderRowsData extends ValidationService
      */
     public function validate($data)
     {
-        // TODO - check about orderRowIds
-        $this->validateListOfRowIds($data);
+        $this->validateListOfRowIdsOrNewCreditRow($data);
 
         $this->mustBeSet($data, 'orderid', 'Order Id');
         $this->mustBeInteger($data['orderid'], 'Order Id');
@@ -24,13 +23,17 @@ class ValidateCreditOrderRowsData extends ValidationService
         $this->mustBeInteger($data['deliveryid'], 'Delivery Id');
     }
 
-    private function validateListOfRowIds($data)
+    private function validateListOfRowIdsOrNewCreditRow($data)
     {
-        $this->mustBeSet($data, 'orderrowids', 'Order Row Ids');
-        $this->mustNotBeEmptyArray($data['orderrowids'], 'Order Row Ids');
+        if (isset($data['orderrowids'])) {
+            $this->mustNotBeEmptyArray($data['orderrowids'], 'Order Row Ids');
 
-        foreach ($data['orderrowids'] as $orderRowId) {
-            $this->mustBeInteger($orderRowId, 'Order Row Id');
+            foreach ($data['orderrowids'] as $orderRowId) {
+                $this->mustBeInteger($orderRowId, 'Order Row Id');
+            }
+        } else {
+            $this->mustBeSet($data, 'newcreditrow', 'Credit Row');
+            $this->mustNotBeEmptyArray($data['newcreditrow'], 'Credit Row');
         }
     }
 }

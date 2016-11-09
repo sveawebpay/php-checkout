@@ -33,7 +33,11 @@ class CreditOrderRows extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        $requestData['orderRowIds'] = $data['orderrowids'];
+        if (isset($data['orderrowids'])) {
+            $requestData['orderRowIds'] = $data['orderrowids'];
+        } elseif (isset($data['newcreditrow'])) {
+            $requestData['newCreditRow'] = $data['newcreditrow'];
+        }
 
         $orderId = $data['orderid'];
         $deliveryId = $data['deliveryid'];

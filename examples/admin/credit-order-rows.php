@@ -15,7 +15,13 @@ require_once '../../include.php';
 $data = array(
     "orderId" => 201, // required - Long  filed (Specified Checkout order for cancel amount)
     "deliveryId" => 1, // required - Long - Id of the specified delivery.
-    "orderRowIds" => array(3) // required - Array - Ids of the delivered order rows that will be credited.
+//    "orderRowIds" => array(3), // required - Array - Ids of the delivered order rows that will be credited.,
+    "newCreditRow" => array(
+        "name"          => "credit row",
+        "quantity"      => 1,
+        "unitPrice"     => 5000,
+        "VatPercent"    => 0,       // required - 0, 6, 12, 25
+    )
 );
 
 
