@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Svea\Checkout\Implementation\Admin;
-
 
 use Svea\Checkout\Model\Request;
 
@@ -17,7 +15,7 @@ class GetDataFromLink extends AdminImplementationManager
 
     /**
      * Input data validation
-     * @param mixed $data Input data to Svea Checkout Library
+     * @param mixed $url Input data to Svea Checkout Library
      */
     public function validateData($url)
     {
@@ -32,7 +30,7 @@ class GetDataFromLink extends AdminImplementationManager
     {
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl().$url);
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . $url);
     }
 
     /**
