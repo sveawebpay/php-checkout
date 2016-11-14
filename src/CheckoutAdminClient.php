@@ -71,7 +71,7 @@ class CheckoutAdminClient
     /**
      * Deliver Svea Checkout order.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function deliverOrder($data)
