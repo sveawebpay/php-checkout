@@ -32,7 +32,7 @@ class DeliverOrderTest extends TestCase
     {
         $inputData = array(
             'orderid' => 201,
-            'rowids' => array(1, 2)
+            'orderrowids' => array(1, 2)
         );
         $this->deliverOrder->prepareData($inputData);
 
@@ -40,7 +40,7 @@ class DeliverOrderTest extends TestCase
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_POST, $requestModel->getMethod());
-        $this->assertEquals($inputData['rowids'], $requestBodyData['rowIds']);
+        $this->assertEquals($inputData['orderrowids'], $requestBodyData['orderRowIds']);
     }
 
     public function testInvoke()

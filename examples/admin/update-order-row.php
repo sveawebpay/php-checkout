@@ -8,7 +8,7 @@ require_once '../../include.php';
 
 // Input data for this admin action
 $data = array(
-    "orderId" => 201, // required - Long  Id of the specified order
+    "orderId" => 7402, // required - Long  Id of the specified order
     "orderRowId" => 1, // required - Long - Id of the specified order rows that will be updated.
 
     /**
@@ -20,19 +20,19 @@ $data = array(
          * String - Articlenumber as a string, can contain letters and numbers.
          * Limit - Maximum 256 characters
          */
-        "articleNumber" => "123456",
+        "articleNumber" => "prod11",
 
         /**
          * String - Article name
          * Limit - 1-40 characters
          */
-        "name" => "Dator",
+        "name" => "iPhone",
 
         /**
          * Integer - Quantity of the product.
          * Limit - 1-9 digits
          */
-        "quantity" => 200,
+        "quantity" => 2,
 
         /**
          * Integer - Price of product including VAT
@@ -44,19 +44,19 @@ $data = array(
          * Integer - The discount percent of the product
          * Limit - 0-100
          */
-        "discountPercent" => 50,
+        "discountPercent" => 0,
 
         /**
          * Integer - The VAT percentage of the current product
          * Limit - Valid VAT percentage for that country. Minor currency
          */
-        "vatPercent" => 6,
+        "vatPercent" => 2500,
 
         /**
          * String - The unit type e.g. "st", "pc", "kg", etc.
          * Limit - 0-4 characters
          */
-        "Unit" => "230"
+        "Unit" => "pc"
     )
 );
 
