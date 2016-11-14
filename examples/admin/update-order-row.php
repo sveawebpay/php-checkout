@@ -8,14 +8,14 @@ require_once '../../include.php';
 
 // Input data for this admin action
 $data = array(
-    "orderId" => 7402, // required - Long  Id of the specified order
-    "orderRowId" => 1, // required - Long - Id of the specified order rows that will be updated.
+    "orderId" => 7427, // required - Long  Id of the specified order
+    "orderRowId" => 2, // required - Long - Id of the specified order rows that will be updated.
 
     /**
      * Order row data
      */
 
-    "orderRowData" => array(
+    "orderRow" => array(
         /**
          * String - Articlenumber as a string, can contain letters and numbers.
          * Limit - Maximum 256 characters

@@ -36,7 +36,7 @@ class UpdateOrderRowTest extends TestCase
         $inputData = array(
             'orderid' => $orderId,
             'orderrowid' => $orderRowId,
-            'orderrowdata' => array(
+            'orderrow' => array(
                 'articlenumber' => '1234'
             )
         );
@@ -46,7 +46,7 @@ class UpdateOrderRowTest extends TestCase
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
-        $this->assertEquals($inputData['orderrowdata']['articlenumber'], $requestBodyData['articlenumber']);
+        $this->assertEquals($inputData['orderrow']['articlenumber'], $requestBodyData['articlenumber']);
     }
 
     public function testInvoke()

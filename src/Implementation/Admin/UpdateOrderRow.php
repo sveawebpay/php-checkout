@@ -33,8 +33,8 @@ class UpdateOrderRow extends AdminImplementationManager
     public function prepareData($data)
     {
         $orderRowData = array();
-        if (isset($data['orderrowdata'])) {
-            $orderRowData = $data['orderrowdata'];
+        if (isset($data['orderrow'])) {
+            $orderRowData = $data['orderrow'];
         }
 
 
