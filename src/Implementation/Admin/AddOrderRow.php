@@ -47,4 +47,20 @@ class AddOrderRow extends AdminImplementationManager
     {
         $this->response = $this->connector->sendRequest($this->requestModel);
     }
+
+    /**
+     * @return Request
+     */
+    public function getRequestModel()
+    {
+        return $this->requestModel;
+    }
+
+    /**
+     * @param Request $requestModel
+     */
+    public function setRequestModel($requestModel)
+    {
+        $this->requestModel = $requestModel;
+    }
 }
