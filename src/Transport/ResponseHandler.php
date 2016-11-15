@@ -72,14 +72,25 @@ class ResponseHandler
         if (!in_array($this->httpCode, $this->httpSuccessfulCodes)) {
             $errorMessage = 'Undefined error occurred.';
 
-            if (isset($this->header['http_code'])) {
-                $errorMessage = $this->header['http_code'];
-            }
-            if (isset($this->header['ErrorMessage'])) {
-                $errorMessage = $this->header['ErrorMessage'];
+            if (!empty($this->body)) {
+                $errorContent = $this->getContent();
+                $errorCode = $errorContent['Code'];
+                $errorMessage = $errorContent['Message'];
+                if (isset($errorContent['Errors']) && is_array($errorContent['Errors'])) {
+                    $error = $errorContent['Errors'][0];
+                    $errorMessage = $error['ErrorMessage'];
+                }
+            } else {
+                if (isset($this->header['http_code'])) {
+                    $errorMessage = $this->header['http_code'];
+                }
+                if (isset($this->header['ErrorMessage'])) {
+                    $errorMessage = $this->header['ErrorMessage'];
+                }
+                $errorCode = $this->httpCode;
             }
 
-            throw new SveaApiException($errorMessage, $this->httpCode);
+            throw new SveaApiException($errorMessage, $errorCode);
         }
     }
 
@@ -155,8 +166,8 @@ class ResponseHandler
          * First is header data, second is body content
          * We need to use Windows "end of line" char because of response format
          */
-        $arrRequests          = explode("\r\n\r\n", $this->content); // Split on first occurrence
-        $headerLines          = explode("\r\n", $arrRequests[0]); // Split on first occurrence
+        $arrRequests = explode("\r\n\r\n", $this->content); // Split on first occurrence
+        $headerLines = explode("\r\n", $arrRequests[0]); // Split on first occurrence
         $headers['http_code'] = $headerLines[0];
 
         foreach ($headerLines as $i => $line) {

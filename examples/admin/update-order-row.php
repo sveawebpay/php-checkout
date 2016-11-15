@@ -9,7 +9,7 @@ require_once '../../include.php';
 // Input data for this admin action
 $data = array(
     "orderId" => 7427, // required - Long  Id of the specified order
-    "orderRowId" => 2, // required - Long - Id of the specified order rows that will be updated.
+    "orderRowId" => 4, // required - Long - Id of the specified order rows that will be updated.
 
     /**
      * Order row data
@@ -88,14 +88,18 @@ try {
     var_dump($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
     var_dump("--------- Conn errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 } catch (\Svea\Checkout\Exception\SveaInputValidationException $ex) {
     var_dump("--------- Input data errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 } catch (Exception $ex) {
     var_dump("--------- General errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 }

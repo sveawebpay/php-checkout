@@ -13,9 +13,9 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 201, // required - Long  filed (Specified Checkout order for cancel amount)
+    "orderId" => 7427, // required - Long  filed (Specified Checkout order for cancel amount)
     "deliveryId" => 1, // required - Long - Id of the specified delivery.
-    "orderRowIds" => array(3), // required - Array - Ids of the delivered order rows that will be credited.,
+    "orderRowIds" => array(2), // required - Array - Ids of the delivered order rows that will be credited.,
 //    "newCreditRow" => array(
 //        "name"          => "credit row",
 //        "quantity"      => 1,
@@ -62,14 +62,18 @@ try {
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
     var_dump("--------- Conn errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 } catch (\Svea\Checkout\Exception\SveaInputValidationException $ex) {
     var_dump("--------- Input data errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 } catch (Exception $ex) {
     var_dump("--------- General errors ---------");
-    var_dump($ex->getMessage());
+    var_dump('Error message -> ' . $ex->getMessage());
+    var_dump('Error code -> ' . $ex->getCode());
 }
