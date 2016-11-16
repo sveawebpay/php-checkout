@@ -13,8 +13,8 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 7427,
-    "orderRowIds" => array(1) // Optional filed
+    "orderId" => 7453,
+    "orderRowIds" => array(2) // Optional filed
 );
 
 
@@ -24,8 +24,8 @@ $data = array(
  *  - Shared Secret - Shared Secret string between Svea and merchant
  *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
  * */
-$checkoutMerchantId = '1';
-$checkoutSecret = 'sharedSecret';
+$checkoutMerchantId = "100001";
+$checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1";
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 /*

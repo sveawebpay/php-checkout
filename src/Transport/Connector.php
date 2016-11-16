@@ -24,7 +24,8 @@ class Connector
     /**
      * Base URL For Svea Checkout Demo server
      */
-    const TEST_BASE_URL = 'http://checkoutapistage.svea.com';
+//    const TEST_BASE_URL = 'http://checkoutapistage.svea.com';
+    const TEST_BASE_URL = 'http://webpaycheckoutservice.test.svea.com';
 
     /**
      * Base URL For Svea Checkout Administration Production server
@@ -35,8 +36,9 @@ class Connector
     /**
      * Base URL For Svea Checkout Administration Demo server
      */
-    //const TEST_ADMIN_BASE_URL = 'https://paymentadminapi.svea.com';
-    const TEST_ADMIN_BASE_URL = 'https://webpaypaymentadminapi.dev.svea.com';
+//    const TEST_ADMIN_BASE_URL = 'https://paymentadminapi.svea.com';
+//    const TEST_ADMIN_BASE_URL = 'https://webpaypaymentadminapi.dev.svea.com';
+    const TEST_ADMIN_BASE_URL = 'http://webpaypaymentadminapi.test.svea.com';
 
     /**
      * Merchant identifier assigned to client by Svea.
@@ -70,17 +72,17 @@ class Connector
     /**
      * Connector constructor.
      *
-     * @param ApiClient $apiClient    HTTP transport client
-     * @param string    $merchantId   Merchant Id
-     * @param string    $sharedSecret Shared secret
-     * @param string    $baseApiUrl   Base URL for HTTP request to Svea Checkout API
+     * @param ApiClient $apiClient HTTP transport client
+     * @param string $merchantId Merchant Id
+     * @param string $sharedSecret Shared secret
+     * @param string $baseApiUrl Base URL for HTTP request to Svea Checkout API
      */
     public function __construct($apiClient, $merchantId, $sharedSecret, $baseApiUrl)
     {
-        $this->merchantId   = $merchantId;
+        $this->merchantId = $merchantId;
         $this->sharedSecret = $sharedSecret;
-        $this->baseApiUrl   = $baseApiUrl;
-        $this->apiClient    = $apiClient;
+        $this->baseApiUrl = $baseApiUrl;
+        $this->apiClient = $apiClient;
 
         $this->validateData();
     }
@@ -155,9 +157,9 @@ class Connector
     /**
      * Initializes connector instance
      *
-     * @param string $merchantId   Merchant Id
+     * @param string $merchantId Merchant Id
      * @param string $sharedSecret Shared secret
-     * @param string $apiUrl       Base URL for HTTP request to Svea Checkout API
+     * @param string $apiUrl Base URL for HTTP request to Svea Checkout API
      * @return Connector
      */
     public static function init($merchantId, $sharedSecret, $apiUrl = self::PROD_BASE_URL)
@@ -177,7 +179,6 @@ class Connector
     public function sendRequest(Request $request)
     {
         $this->createAuthorizationToken($request);
-        $this->setHeaderInformation($request);
 
         try {
             $response = $this->apiClient->sendRequest($request);
@@ -211,16 +212,6 @@ class Connector
     private function createTimestamp()
     {
         return gmdate('Y-m-d H:i');
-    }
-
-    /**
-     * Add necessary data for Request Header
-     * @param Request $request Request model with all necessary data for HTTP request
-     */
-    private function setHeaderInformation($request)
-    {
-        $request->setMerchantId($this->merchantId);
-        $request->setSecret($this->sharedSecret);
     }
 
     /**

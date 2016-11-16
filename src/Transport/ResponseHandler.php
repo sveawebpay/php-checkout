@@ -15,11 +15,12 @@ class ResponseHandler
      * API response successful http codes
      * 200 - OK
      * 201 - Created
+     * 202 - Accepted
      * 204 - No Content
      * 302 - Found
      * @var array
      */
-    private $httpSuccessfulCodes = array(200, 201, 204, 302);
+    private $httpSuccessfulCodes = array(200, 201, 202, 204, 302);
 
     /**
      * Svea Checkout Api response content.

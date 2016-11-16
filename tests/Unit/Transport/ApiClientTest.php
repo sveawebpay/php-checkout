@@ -42,7 +42,7 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWithBadRequestStatusResponse()
     {
-        $this->mockHttpClient($this->apiResponse, 400);
+        $this->mockHttpClient(null, 400);
         $this->requestModel->setPutMethod();
 
         $this->apiClientMock->sendRequest($this->requestModel);
@@ -54,7 +54,7 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWithNotFoundStatusResponse()
     {
-        $this->mockHttpClient($this->apiResponse, 404);
+        $this->mockHttpClient(null, 404);
 
         $this->apiClientMock->sendRequest($this->requestModel);
     }
@@ -65,7 +65,7 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWithUnauthorizedStatusResponse()
     {
-        $this->mockHttpClient($this->apiResponse, 401);
+        $this->mockHttpClient(null, 401);
 
         $this->apiClientMock->sendRequest($this->requestModel);
     }
@@ -76,7 +76,34 @@ class ApiClientTest extends TestCase
      */
     public function testSendRequestWith404StatusResponse()
     {
-        $this->mockHttpClient($this->apiResponse, 404);
+        $this->mockHttpClient(null, 404);
+
+        $this->apiClientMock->sendRequest($this->requestModel);
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaApiException
+     * @expectedExceptionMessage Specific error message
+     * @expectedExceptionCode 2001
+     */
+    public function testSendRequestWithCustomErrorResponse()
+    {
+        $arrayData = array(
+            "Code" => 2001,
+            "Message" => "Global error message",
+            "Errors" => array(
+                array(
+                    "Code" => 2002,
+                    "ErrorMessage" => "Specific error message"
+                )
+            )
+        );
+        $apiResponse = 'HTTP/1.1 400 Bad request' . "\r\n";
+        $apiResponse .= 'Cache-Control: no-cache' . "\r\n";
+        $apiResponse .= 'Date: Wed, 27 Apr 2016 09:42:19 GMT';
+
+        $apiResponse .= "\r\n\r\n" . json_encode($arrayData);
+        $this->mockHttpClient($apiResponse, 404);
 
         $this->apiClientMock->sendRequest($this->requestModel);
     }

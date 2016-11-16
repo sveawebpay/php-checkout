@@ -158,31 +158,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
             "BillingAddress":null,
             "Gui":{
                 "Layout":"desktop",
-                "Snippet":"<div id="svea-checkout-container" style="overflow-x: hidden;">
-                <script type="text/javascript"> /* <![CDATA[ */ setTimeout((function(window, key ,containerId, document)
-                { window[key] = window[key] || function () { (window[key].q = window[key].q || []).push(arguments); };
-                window[key].config = { container: window.document.getElementById(containerId), ORDERID: '13',
-                AUTHTOKEN:'SveaCheckout EH+0k2KjPEKvD16ObMmm8svZLZo=', //TESTDRIVE:true,
-                //LAYOUT:'desktop', //LOCALE:'sv-se',
-                //ORDER_STATUS:'checkout_incomplete', MERCHANTTERMSURI: '', MERCHANTTERMSTITLE: '', MERCHANTNAME: '',
-                //GUI_OPTIONS:[], //ALLOW_SEPARATE_SHIPPING_ADDRESS: //false,
-                //NATIONAL_IDENTIFICATION_NUMBER_MANDATORY: //false, //ANALYTICS:'UA-36053137-1',
-                //PHONE_MANDATORY:false, //PACKSTATION_ENABLED:false, //PURCHASE_COUNTRY:'swe',
-                //PURCHASE_CURRENCY:'sek',
-                //BOOTSTRAP_SRC: 'http://testwpyweb01.sveaweb.se/checkout_test_mvc/scripts/checkout/checkout-loader.js'
-                //BOOTSTRAP_SRC: 'http://localhost:51925/scripts/checkout/checkout-loader.js'
-                BOOTSTRAP_SRC: 'http://webpaycheckout.test.svea.com//scripts/checkout/checkout-loader.js' };
-                var scriptTag = document.createElement('script'); var container = document.getElementById(containerId);
-                scriptTag.async = true; scriptTag.src = window[key].config.BOOTSTRAP_SRC;
-                container.insertBefore(scriptTag, container.firstChild);
-                // TODO: keep track of times when snippet loads for order...
-                //try{ // p = w[k].config.BOOTSTRAP_SRC.split('/'); // p = p.slice(0, p.length - 1);
-                // l = p.join('/') + // '/api/_tracking/v1/snippet/load?orderUrl=' +
-                // w.encodeURIComponent(w[k].config.ORDER_URL) + '&' + // (new Date).getTime();
-                // ((w.Image && (new w.Image))||(d.createElement&&d.createElement('img'))||{}).src=l; //}
-                catch(e){} })(this,'_sveaCheckout','svea-checkout-container',document), 7000); /* ]]>
-                */ </script> <noscript> Please
-                <a href="http://enable-javascript.com">enable JavaScript</a>. </noscript> </div> "
+                "Snippet":""
             },
             "Locale":"sv-SE",
             "Currency":null,

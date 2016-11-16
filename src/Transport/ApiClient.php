@@ -43,8 +43,6 @@ class ApiClient
         $header = array();
         $header[] = 'Content-type: application/json';
         $header[] = 'Authorization: Svea ' . $request->getAuthorizationToken();
-        $header[] = 'CheckoutMerchantId: ' . $request->getMerchantId();
-        $header[] = 'CheckoutSecret: ' . $request->getSecret();
         $header[] = 'Timestamp: ' . $request->getTimestamp();
         $header[] = 'Expect:';
 
