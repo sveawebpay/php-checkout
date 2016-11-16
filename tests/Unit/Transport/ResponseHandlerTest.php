@@ -123,4 +123,48 @@ class ResponseHandlerTest extends TestCase
 
         $this->assertEquals($body, $responseHandler->getBody());
     }
+
+    public function testGetWholeResponseWith204NoContentStatusResponse()
+    {
+        $body = '{"test":"Order credited successful"}';
+        $content = 'HTTP/1.1 204 Created' . "\r\n\r\n" . $body;
+        $httpCode = 204;
+
+        $responseHandler = new ResponseHandler($content, $httpCode);
+
+        $this->assertEquals('', $responseHandler->getWholeResponse());
+    }
+
+    public function testGetWholeResponseWith201CreatedStatusResponse()
+    {
+        $body = '{"test":"Order credited successful"}';
+        $content = 'HTTP/1.1 201 Created' . "\r\n\r\n" . $body;
+        $httpCode = 201;
+
+        $responseHandler = new ResponseHandler($content, $httpCode);
+
+        $expectedValue = array(
+          'Response' => json_decode($body, true)
+        );
+        $this->assertEquals($expectedValue, $responseHandler->getWholeResponse());
+    }
+
+    public function testGetWholeResponseWith202AcceptedStatusResponse()
+    {
+        $body = '{"test":"Order credited successful"}';
+        $locationUrl = 'http://svea.com';
+        $content = 'HTTP/1.1 202 Accepted' . "\r\nLocation: ". $locationUrl . "\r\n\r\n" . $body;
+        $httpCode = 202;
+
+        $responseHandler = new ResponseHandler($content, $httpCode);
+
+        $expectedValue = array(
+            'Response' => json_decode($body, true),
+            'Header' => array(
+                'Location' => $locationUrl,
+                'HttpCode' => $httpCode
+            )
+        );
+        $this->assertEquals($expectedValue, $responseHandler->getWholeResponse());
+    }
 }

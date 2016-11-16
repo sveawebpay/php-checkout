@@ -142,7 +142,16 @@ class ResponseHandler
             $returnData['Header']['HttpCode'] = $this->httpCode;
         }
 
-        $returnData['Response'] = $this->getContent();
+        /**
+         * Fix for 204 No Content - http response
+         * Instead of empty array response or null we return void (empty string)
+         */
+        if ($this->httpCode === 204) {
+            return '';
+        }
+
+        $responseContent = $this->getContent();
+        $returnData['Response'] = $responseContent;
 
         return $returnData;
     }
