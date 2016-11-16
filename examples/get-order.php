@@ -12,7 +12,7 @@ require_once '../include.php';
  * */
 
 // Order ID from created order
-$orderId = 1669;
+$orderId = 51721;
 
 
 /*
@@ -47,7 +47,7 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
  * */
 try {
     $response = $checkoutClient->get($orderId);
-    echo "<pre>" . print_r($response, true);
+    print_r($response);
     /*
      * Format of returned response array
      *
@@ -80,9 +80,9 @@ try {
      *  - Status
      * */
 
-    $orderId = $response['Response']['OrderId'];
-    $guiSnippet = $response['Response']['Gui']['Snippet'];
-    $orderStatus = $response['Response']['Status'];
+    $orderId = $response['OrderId'];
+    $guiSnippet = $response['Gui']['Snippet'];
+    $orderStatus = $response['Status'];
 
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
