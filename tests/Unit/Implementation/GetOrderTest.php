@@ -53,7 +53,7 @@ class GetOrderTest extends TestCase
 
         $this->getOrder->invoke();
 
-        $this->assertEquals($fakeResponse, $this->getOrder->getResponse());
+        $this->assertEquals($fakeResponse, $this->getOrder->getResponseHandler());
     }
 
     public function testValidate()

@@ -124,7 +124,7 @@ class ResponseHandlerTest extends TestCase
         $this->assertEquals($body, $responseHandler->getBody());
     }
 
-    public function testGetWholeResponseWith204NoContentStatusResponse()
+    public function testGetResponseWith204NoContentStatusResponse()
     {
         $body = '{"test":"Order credited successful"}';
         $content = 'HTTP/1.1 204 Created' . "\r\n\r\n" . $body;
@@ -132,10 +132,10 @@ class ResponseHandlerTest extends TestCase
 
         $responseHandler = new ResponseHandler($content, $httpCode);
 
-        $this->assertEquals('', $responseHandler->getWholeResponse());
+        $this->assertEquals('', $responseHandler->getResponse());
     }
 
-    public function testGetWholeResponseWith201CreatedStatusResponse()
+    public function testGetResponseWith201CreatedStatusResponse()
     {
         $body = '{"test":"Order credited successful"}';
         $content = 'HTTP/1.1 201 Created' . "\r\n\r\n" . $body;
@@ -143,13 +143,10 @@ class ResponseHandlerTest extends TestCase
 
         $responseHandler = new ResponseHandler($content, $httpCode);
 
-        $expectedValue = array(
-          'Response' => json_decode($body, true)
-        );
-        $this->assertEquals($expectedValue, $responseHandler->getWholeResponse());
+        $this->assertEquals(json_decode($body, true), $responseHandler->getResponse());
     }
 
-    public function testGetWholeResponseWith202AcceptedStatusResponse()
+    public function testGetResponseWith202AcceptedStatusResponse()
     {
         $body = '{"test":"Order credited successful"}';
         $locationUrl = 'http://svea.com';
@@ -159,12 +156,8 @@ class ResponseHandlerTest extends TestCase
         $responseHandler = new ResponseHandler($content, $httpCode);
 
         $expectedValue = array(
-            'Response' => json_decode($body, true),
-            'Header' => array(
-                'Location' => $locationUrl,
-                'HttpCode' => $httpCode
-            )
+            'Location' => $locationUrl
         );
-        $this->assertEquals($expectedValue, $responseHandler->getWholeResponse());
+        $this->assertEquals($expectedValue, $responseHandler->getResponse());
     }
 }

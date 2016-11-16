@@ -43,7 +43,7 @@ class UpdateOrder extends ImplementationManager
 
     public function invoke()
     {
-        $this->response = $this->connector->sendRequest($this->requestModel);
+        $this->responseHandler = $this->connector->sendRequest($this->requestModel);
     }
 
     /**

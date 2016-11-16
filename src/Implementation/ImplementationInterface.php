@@ -2,6 +2,8 @@
 
 namespace Svea\Checkout\Implementation;
 
+use Svea\Checkout\Transport\ResponseHandler;
+
 /**
  * Interface ImplementationInterface
  * @package Svea\Checkout\Implementation
@@ -15,7 +17,7 @@ interface ImplementationInterface
     public function execute($data);
 
     /**
-     * @return mixed
+     * @return ResponseHandler
      */
-    public function getResponse();
+    public function getResponseHandler();
 }

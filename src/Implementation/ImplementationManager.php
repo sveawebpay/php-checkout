@@ -3,6 +3,7 @@
 namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Transport\ResponseHandler;
 use Svea\Checkout\Validation\ValidationService;
 
 /**
@@ -21,9 +22,9 @@ abstract class ImplementationManager implements ImplementationInterface
     /**
      * API response content - json
      *
-     * @var string $response
+     * @var ResponseHandler $responseHandler
      */
-    protected $response;
+    protected $responseHandler;
 
     /**
      * @var ValidationService
@@ -59,9 +60,9 @@ abstract class ImplementationManager implements ImplementationInterface
      *
      * @return mixed
      */
-    public function getResponse()
+    public function getResponseHandler()
     {
-        return $this->response;
+        return $this->responseHandler;
     }
 
     /**

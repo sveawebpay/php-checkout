@@ -131,27 +131,30 @@ class ResponseHandler
     /**
      * @return array
      */
-    public function getWholeResponse()
+    public function getResponse()
     {
         $returnData = array();
-
-        $header = $this->getHeader();
-
-        if (isset($header['Location'])) {
-            $returnData['Header']['Location'] = $header['Location'];
-            $returnData['Header']['HttpCode'] = $this->httpCode;
-        }
 
         /**
          * Fix for 204 No Content - http response
          * Instead of empty array response or null we return void (empty string)
          */
         if ($this->httpCode === 204) {
-            return '';
+            $returnData = '';
+        } elseif ($this->httpCode === 202) {
+            /**
+             * Fix for 202 Accepted - http response
+             * Instead of empty array for body response or null we return only header information
+             * without Response key.
+             * Array with Location and HttpCode in Header
+             */
+            $header = $this->getHeader();
+            if (isset($header['Location'])) {
+                $returnData['Location'] = $header['Location'];
+            }
+        } else {
+            $returnData = $this->getContent();
         }
-
-        $responseContent = $this->getContent();
-        $returnData['Response'] = $responseContent;
 
         return $returnData;
     }

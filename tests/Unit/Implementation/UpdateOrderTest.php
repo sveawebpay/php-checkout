@@ -58,7 +58,7 @@ class UpdateOrderTest extends TestCase
         $updateOrder->setRequestModel($this->requestModel);
         $updateOrder->invoke();
 
-        $this->assertEquals($fakeResponse, $updateOrder->getResponse());
+        $this->assertEquals($fakeResponse, $updateOrder->getResponseHandler());
     }
 
     public function testValidate()

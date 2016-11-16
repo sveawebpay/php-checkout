@@ -54,7 +54,7 @@ class CancelOrderTest extends TestCase
         $createOrder->setRequestModel($this->requestModel);
         $createOrder->invoke();
 
-        $this->assertEquals($fakeResponse, $createOrder->getResponse());
+        $this->assertEquals($fakeResponse, $createOrder->getResponseHandler());
     }
 
     public function testValidate()

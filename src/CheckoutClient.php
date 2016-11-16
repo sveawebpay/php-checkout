@@ -108,11 +108,8 @@ class CheckoutClient
     {
         $actionObject->execute($inputData);
 
-        /**
-         * @var ResponseHandler $responseHandler
-         */
-        $responseHandler = $actionObject->getResponse();
+        $responseHandler = $actionObject->getResponseHandler();
 
-        return $responseHandler->getContent();
+        return $responseHandler->getResponse();
     }
 }

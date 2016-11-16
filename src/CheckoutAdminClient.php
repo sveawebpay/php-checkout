@@ -179,8 +179,8 @@ class CheckoutAdminClient
         /**
          * @var ResponseHandler $responseHandler
          */
-        $responseHandler = $actionObject->getResponse();
+        $responseHandler = $actionObject->getResponseHandler();
 
-        return $responseHandler->getWholeResponse();
+        return $responseHandler->getResponse();
     }
 }

@@ -13,8 +13,8 @@ require_once '../../include.php';
 
 // Order ID from created order
 $data = array(
-    "orderId" => 7453,
-    "orderRowIds" => array(2) // Optional filed
+    "orderId" => 51718,
+    "orderRowIds" => array(1, 2) // Optional filed
 );
 
 
