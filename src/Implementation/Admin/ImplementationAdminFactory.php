@@ -38,29 +38,12 @@ class ImplementationAdminFactory
 
     /**
      * @param Connector $connector
-     * @return GetOrderAddresses
-     */
-    public static function returnGetOrderAddressesClass(Connector $connector)
-    {
-        return new GetOrderAddresses($connector, new ValidateGetOrderAddressesData());
-    }
-
-    /**
-     * @param Connector $connector
-     * @return GetOrderDelivery
-     */
-    public static function returnGetOrderDeliveryClass(Connector $connector)
-    {
-        return new GetOrderDelivery($connector, new ValidateGetOrderDeliveryData());
-    }
-
-    /**
-     * @param Connector $connector
+     * @param bool $isCancelAmount
      * @return CancelOrder
      */
-    public static function returnCancelOrderClass(Connector $connector)
+    public static function returnCancelOrderClass(Connector $connector, $isCancelAmount = false)
     {
-        return new CancelOrder($connector, new ValidateCancelOrderData());
+        return new CancelOrder($connector, new ValidateCancelOrderData($isCancelAmount), $isCancelAmount);
     }
 
     /**
@@ -79,15 +62,6 @@ class ImplementationAdminFactory
     public static function returnCreditOrderAmountClass(Connector $connector)
     {
         return new CreditOrderAmount($connector, new ValidateCreditOrderAmountData());
-    }
-
-    /**
-     * @param Connector $connector
-     * @return GetOrderCredit
-     */
-    public static function returnGetOrderCreditClass(Connector $connector)
-    {
-        return new GetOrderCredit($connector, new ValidateGetOrderCreditsData());
     }
 
     /**
@@ -115,14 +89,5 @@ class ImplementationAdminFactory
     public static function returnUpdateOrderRowClass(Connector $connector)
     {
         return new UpdateOrderRow($connector, new ValidateUpdateOrderRowData());
-    }
-
-    /**
-     * @param Connector $connector
-     * @return GetDataFromLink
-     */
-    public static function returnGetDataFromLinkClass(Connector $connector)
-    {
-        return new GetDataFromLink($connector, new  ValidateGetDataFromLink());
     }
 }

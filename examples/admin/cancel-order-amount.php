@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Get Svea Checkout order from admin API.
- * This method is used to get the entire order with all its relevant information.
- * Including its deliveries, rows, credits and addresses
+ * By specifying a higher amount than the current order cancelled amount then the order cancelled amount will increase,
+ * assuming the order has the action "CanCancelAmount".
+ * The delta between the new CancelledAmount and the former CancelledAmount will be cancelled.
  *
  *
  * Include Library
@@ -14,23 +14,15 @@
  * If you do not use Composer, include the include.php file from root of the project
  * require_once '../../include.php';
  */
+
 require_once '../../include.php';
 
-/**
- * @var integer $checkoutMerchantId
- * Unique merchant ID
- */
 $checkoutMerchantId = 100001;
-
-/**
- * @var string $checkoutSecret
- * Shared Secret string between Svea and merchant
- */
 $checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1";
 
 /**
  * @var string $baseUrl
- * Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
+ * Base Url for SVEA Api. Can be TEST_BASE_URL or PROD_BASE_URL
  */
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
@@ -45,7 +37,8 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 204
+        "orderId" => 204,
+//        "amount" => 5000
     );
 
     /**
@@ -55,7 +48,7 @@ try {
      *      some error occurred with data validation on API side
      * \Exception - for any other error
      */
-    $response = $checkoutClient->cancelOrder($data);
+    $response = $checkoutClient->cancelOrderAmount($data);
 
     if ($response === '') {
         print_r('Success cancel amount');

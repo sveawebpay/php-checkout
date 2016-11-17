@@ -45,30 +45,6 @@ class CheckoutAdminClient
     }
 
     /**
-     * Get Svea Checkout order delivery information.
-     *
-     * @param int $data
-     *
-     * @return mixed
-     */
-    public function getOrderDelivery($data)
-    {
-        return $this->executeAction(ImplementationAdminFactory::returnGetOrderDeliveryClass($this->connector), $data);
-    }
-
-    /**
-     * Get Svea Checkout order delivery information.
-     *
-     * @param int $data
-     *
-     * @return mixed
-     */
-    public function getOrderAddresses($data)
-    {
-        return $this->executeAction(ImplementationAdminFactory::returnGetOrderAddressesClass($this->connector), $data);
-    }
-
-    /**
      * Deliver Svea Checkout order.
      *
      * @param mixed $data
@@ -80,14 +56,25 @@ class CheckoutAdminClient
     }
 
     /**
-     * Cancel amount for Svea Checkout order.
+     * Cancel Svea Checkout order.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function cancelOrder($data)
     {
         return $this->executeAction(ImplementationAdminFactory::returnCancelOrderClass($this->connector), $data);
+    }
+
+    /**
+     * Cancel Svea Checkout order amount.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function cancelOrderAmount($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnCancelOrderClass($this->connector, true), $data);
     }
 
     /**
@@ -99,17 +86,6 @@ class CheckoutAdminClient
     public function cancelOrderRow($data)
     {
         return $this->executeAction(ImplementationAdminFactory::returnCancelOrderRowClass($this->connector), $data);
-    }
-
-    /**
-     * Get Credit(s) for Svea Checkout Order Delivery.
-     *
-     * @param int $data
-     * @return mixed
-     */
-    public function getOrderCredits($data)
-    {
-        return $this->executeAction(ImplementationAdminFactory::returnGetOrderCreditClass($this->connector), $data);
     }
 
     /**
@@ -154,17 +130,6 @@ class CheckoutAdminClient
     public function updateOrderRow($data)
     {
         return $this->executeAction(ImplementationAdminFactory::returnUpdateOrderRowClass($this->connector), $data);
-    }
-
-    /**
-     * Get Data from Link.
-     *
-     * @param string $data
-     * @return mixed
-     */
-    public function getDataFromLink($data)
-    {
-        return $this->executeAction(ImplementationAdminFactory::returnGetDataFromLinkClass($this->connector), $data);
     }
 
     /**

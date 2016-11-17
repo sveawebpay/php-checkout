@@ -3,9 +3,19 @@
 namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Model\Request;
+use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Validation\ValidationService;
 
 class CancelOrder extends AdminImplementationManager
 {
+    /**
+     * @var bool $isCancelAmount
+     */
+    protected $isCancelAmount;
+
+    /**
+     * @var string $apiUrl
+     */
     protected $apiUrl = '/api/v1/orders/%d';
 
     /**
@@ -14,6 +24,12 @@ class CancelOrder extends AdminImplementationManager
      * @var Request $requestModel
      */
     private $requestModel;
+
+    public function __construct(Connector $connector, ValidationService $validationService, $isCancelAmount = false)
+    {
+        parent::__construct($connector, $validationService);
+        $this->isCancelAmount = $isCancelAmount;
+    }
 
     /**
      * Input data validation
@@ -34,7 +50,7 @@ class CancelOrder extends AdminImplementationManager
     {
         $requestData = array();
 
-        if (isset($data['amount']) && !empty($data['amount'])) {
+        if ($this->isCancelAmount === true && isset($data['amount']) && !empty($data['amount'])) {
             $requestData['amount'] = $data['amount'];
         } else {
             /**
@@ -73,5 +89,21 @@ class CancelOrder extends AdminImplementationManager
     public function setRequestModel($requestModel)
     {
         $this->requestModel = $requestModel;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isIsCancelAmount()
+    {
+        return $this->isCancelAmount;
+    }
+
+    /**
+     * @param boolean $isCancelAmount
+     */
+    public function setIsCancelAmount($isCancelAmount)
+    {
+        $this->isCancelAmount = $isCancelAmount;
     }
 }

@@ -28,12 +28,30 @@ class CancelOrderTest extends TestCase
         $this->cancelOrder = new CancelOrder($this->connectorMock, $this->validatorMock);
     }
 
-    public function testPrepareData()
+    public function testPrepareDataCancelOrder()
     {
         $inputData = array(
             'orderid' => 1,
             'amount' => 15000
         );
+
+        $this->cancelOrder->prepareData($inputData);
+
+        $requestModel = $this->cancelOrder->getRequestModel();
+        $requestBodyData = json_decode($requestModel->getBody(), true);
+
+        $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
+        $this->assertArrayNotHasKey('amount', $requestBodyData);
+    }
+
+    public function testPrepareDataCancelOrderAmount()
+    {
+        $inputData = array(
+            'orderid' => 1,
+            'amount' => 15000
+        );
+
+        $this->cancelOrder->setIsCancelAmount(true);
         $this->cancelOrder->prepareData($inputData);
 
         $requestModel = $this->cancelOrder->getRequestModel();
