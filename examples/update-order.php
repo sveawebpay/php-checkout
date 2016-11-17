@@ -13,7 +13,7 @@ require_once '../vendor/autoload.php';
 
 // - Add required information for creating order
 $data = array(
-    "id" => 1669,
+    "orderId" => 1669,
     "cart" => array(
         "items" => array(
             array(
@@ -47,17 +47,6 @@ $data = array(
 $checkoutMerchantId = '100001';
 $checkoutSecret = '3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1';
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
-
-/*
- * Create Connector object
- *
- * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
- * some of fields $merchantId, $sharedSecret and $baseUrl is missing
- * */
-$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
-
-// Create Checkout client with created Connector object
-$checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 /*
  *  Initialize updating the order and receive the response data
  *  Possible Exceptions are:
@@ -68,40 +57,50 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
  *
  * */
 try {
+    /*
+     * Create Connector object
+     *
+     * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
+     * some of fields $merchantId, $sharedSecret and $baseUrl is missing
+     * */
+    $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+
+    // Create Checkout client with created Connector object
+    $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
     $response = $checkoutClient->update($data);
 
-/*
- * Format of returned response array
- *
- * Response:
- *  - MerchantSettings
- *      - TermsUri
- *      - CheckoutUri
- *      - ConfirmationUri
- *      - PushUri
- *  - Cart
- *      - Items [..] / list of items
- *          - ArticleNumber
- *          - Name
- *          - Quantity
- *          - UnitPrice
- *          - DiscountPercent
- *          - VatPercent
- *          - Unit
- *          - TemporaryReference
- *  - Customer
- *  - ShippingAddress
- *  - BillingAddress
- *  - Gui
- *      - Layout
- *      - Snippet
- *  - Locale
- *  - Currency
- *  - CountryCode
- *  - PresetValues
- *  - OrderId
- *  - Status
- * */
+    /*
+     * Format of returned response array
+     *
+     * Response:
+     *  - MerchantSettings
+     *      - TermsUri
+     *      - CheckoutUri
+     *      - ConfirmationUri
+     *      - PushUri
+     *  - Cart
+     *      - Items [..] / list of items
+     *          - ArticleNumber
+     *          - Name
+     *          - Quantity
+     *          - UnitPrice
+     *          - DiscountPercent
+     *          - VatPercent
+     *          - Unit
+     *          - TemporaryReference
+     *  - Customer
+     *  - ShippingAddress
+     *  - BillingAddress
+     *  - Gui
+     *      - Layout
+     *      - Snippet
+     *  - Locale
+     *  - Currency
+     *  - CountryCode
+     *  - PresetValues
+     *  - OrderId
+     *  - Status
+     * */
     $orderId = $response['Response']['OrderId'];
     $guiSnippet = $response['Response']['Gui']['Snippet'];
     $orderStatus = $response['Response']['Status'];

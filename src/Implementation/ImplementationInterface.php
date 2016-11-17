@@ -12,7 +12,7 @@ interface ImplementationInterface
 {
     /**
      * Template pattern for all implementations
-     * @param mixed $data
+     * @param array $data
      */
     public function execute($data);
 

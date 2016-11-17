@@ -11,6 +11,7 @@ class ValidateGetOrderData extends ValidationService
      */
     public function validate($data)
     {
-        $this->mustBeInteger($data, 'Order Id');
+        $this->mustBeSet($data, 'orderid', 'Order Id');
+        $this->mustBeInteger($data['orderid'], 'Order Id');
     }
 }

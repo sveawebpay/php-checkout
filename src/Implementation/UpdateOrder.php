@@ -2,6 +2,7 @@
 
 namespace Svea\Checkout\Implementation;
 
+use Svea\Checkout\Model\InputDataModel;
 use Svea\Checkout\Model\Request;
 
 class UpdateOrder extends ImplementationManager
@@ -16,7 +17,7 @@ class UpdateOrder extends ImplementationManager
     private $requestModel;
 
     /**
-     * @param $data
+     * @param array $data
      * @throws \Svea\Checkout\Exception\SveaInputValidationException
      */
     public function validateData($data)
@@ -28,13 +29,13 @@ class UpdateOrder extends ImplementationManager
     /**
      * Prepare date for request
      *
-     * @param mixed $data
+     * @param array $data
      */
     public function prepareData($data)
     {
         $cart = array();
         $cart['cart'] = $data['cart'];
-        $orderId = $data['id'];
+        $orderId = $data['orderid'];
         $this->requestModel = new Request();
         $this->requestModel->setPutMethod();
         $this->requestModel->setBody(json_encode($cart));

@@ -33,7 +33,7 @@ abstract class ValidationService
      * @param string $paramTitle
      * @throws SveaInputValidationException
      */
-    protected function mustBeSet(array $data, $paramKey, $paramTitle)
+    protected function mustBeSet($data, $paramKey, $paramTitle)
     {
         if (!isset($data[$paramKey])) {
             throw new SveaInputValidationException(

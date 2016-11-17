@@ -45,7 +45,7 @@ abstract class ImplementationManager implements ImplementationInterface
      * Template pattern for all implementations.
      * These are necessary steps for all implementations.
      *
-     * @param mixed $data Input data to Svea Checkout Library
+     * @param array $data Input data to Svea Checkout Library
      */
     public function execute($data)
     {
@@ -67,13 +67,13 @@ abstract class ImplementationManager implements ImplementationInterface
 
     /**
      * Input data validation
-     * @param mixed $data Input data to Svea Checkout Library
+     * @param array $data Input data to Svea Checkout Library
      */
     abstract public function validateData($data);
 
     /**
      * Prepare body data for Api call
-     * @param mixed $data
+     * @param array $data
      */
     abstract public function prepareData($data);
 

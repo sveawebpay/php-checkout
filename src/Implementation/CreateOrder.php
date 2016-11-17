@@ -18,7 +18,7 @@ class CreateOrder extends ImplementationManager
     /**
      * Validate passed data
      *
-     * @param mixed $data
+     * @param array $data
      */
     public function validateData($data)
     {
@@ -29,7 +29,7 @@ class CreateOrder extends ImplementationManager
     /**
      * Prepare date for request
      *
-     * @param mixed $data
+     * @param array $data
      */
     public function prepareData($data)
     {

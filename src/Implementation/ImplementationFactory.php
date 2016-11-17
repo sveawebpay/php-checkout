@@ -31,15 +31,6 @@ class ImplementationFactory
      * @param Connector $connector
      * @return ImplementationInterface
      */
-    public static function returnGetOrderSubsystemClass(Connector $connector)
-    {
-        return new GetOrderSubsystemInfo($connector, new ValidateGetOrderData());
-    }
-
-    /**
-     * @param Connector $connector
-     * @return ImplementationInterface
-     */
     public static function returnUpdateOrderClass(Connector $connector)
     {
         return new UpdateOrder($connector, new ValidateUpdateOrderData());

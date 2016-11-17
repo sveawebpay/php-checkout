@@ -16,7 +16,7 @@ class UpdateOrderRow extends AdminImplementationManager
     private $requestModel;
 
     /**
-     * @param $data
+     * @param array $data
      * @throws \Svea\Checkout\Exception\SveaInputValidationException
      */
     public function validateData($data)
@@ -28,7 +28,7 @@ class UpdateOrderRow extends AdminImplementationManager
     /**
      * Prepare date for request
      *
-     * @param mixed $data
+     * @param array $data
      */
     public function prepareData($data)
     {

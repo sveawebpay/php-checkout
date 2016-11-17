@@ -45,7 +45,9 @@ try {
     $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
-    $orderId = 51718;
+    $orderId = array(
+        "orderId" => 51718
+    );
 
     /**
      * Possible Exceptions are:

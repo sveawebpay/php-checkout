@@ -21,7 +21,7 @@ class GetOrder extends AdminImplementationManager
     /**
      * Input data validation
      *
-     * @param mixed $data Input data to Svea Checkout Library
+     * @param array $data Input data to Svea Checkout Library
      */
     public function validateData($data)
     {
@@ -31,7 +31,7 @@ class GetOrder extends AdminImplementationManager
     /**
      * Prepare body data for Api call
      *
-     * @param mixed $orderId
+     * @param array $orderId
      */
     public function prepareData($orderId)
     {

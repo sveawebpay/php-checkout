@@ -28,7 +28,6 @@ namespace Svea\Checkout;
 use Svea\Checkout\Implementation\ImplementationInterface;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Implementation\ImplementationFactory;
-use Svea\Checkout\Transport\ResponseHandler;
 
 /**
  * Class CheckoutClient
@@ -80,7 +79,7 @@ class CheckoutClient
     /**
      * Return Svea Checkout order data.
      *
-     * @param int $data
+     * @param array $data
      * @return mixed
      */
     public function get($data)
@@ -89,19 +88,8 @@ class CheckoutClient
     }
 
     /**
-     * Return Svea Checkout Order Subsystem information.
-     *
-     * @param int $data
-     * @return mixed
-     */
-    public function getOrderSubsystemInfo($data)
-    {
-        return $this->executeAction(ImplementationFactory::returnGetOrderSubsystemClass($this->connector), $data);
-    }
-
-    /**
      * @param ImplementationInterface $actionObject
-     * @param mixed $inputData
+     * @param array $inputData
      * @return array
      */
     private function executeAction($actionObject, $inputData)

@@ -2,9 +2,6 @@
 
 namespace Svea\Checkout\Validation;
 
-use Svea\Checkout\Exception\ExceptionCodeList;
-use Svea\Checkout\Exception\SveaInputValidationException;
-
 /**
  * Class ValidateUpdateOrderData
  * @package Svea\Checkout\Validation
@@ -16,7 +13,7 @@ class ValidateUpdateOrderData extends ValidationService
      */
     public function validate($data)
     {
-        $this->mustBeSet($data, 'id', 'Order Id');
-        $this->mustBeInteger($data['id'], 'Order Id');
+        $this->mustBeSet($data, 'orderid', 'Order Id');
+        $this->mustBeInteger($data['orderid'], 'Order Id');
     }
 }

@@ -18,7 +18,7 @@ class CreditOrderAmount extends AdminImplementationManager
 
     /**
      * Input data validation
-     * @param mixed $data Input data to Svea Checkout Library
+     * @param array $data Input data to Svea Checkout Library
      */
     public function validateData($data)
     {
@@ -29,7 +29,7 @@ class CreditOrderAmount extends AdminImplementationManager
     /**
      * Prepare date for request
      *
-     * @param mixed $data
+     * @param array $data
      */
     public function prepareData($data)
     {

@@ -78,7 +78,7 @@ class Request
     /**
      * Set request body data as json encoded array
      *
-     * @param string $body
+     * @param string|mixed $body
      */
     public function setBody($body)
     {

@@ -38,7 +38,7 @@ try {
 
     $data = array(
         "orderId" => 204,
-//        "amount" => 5000
+        "amount" => 5000
     );
 
     /**

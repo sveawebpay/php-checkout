@@ -18,7 +18,7 @@ class GetOrder extends ImplementationManager
     private $requestModel;
 
     /**
-     * @param $data
+     * @param array $data
      * @throws SveaInputValidationException
      */
     public function validateData($data)
@@ -30,10 +30,11 @@ class GetOrder extends ImplementationManager
     /**
      * Prepare body data for Api call
      *
-     * @param mixed $orderId
+     * @param array $data
      */
-    public function prepareData($orderId)
+    public function prepareData($data)
     {
+        $orderId = $data['orderid'];
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();
         $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $orderId));
