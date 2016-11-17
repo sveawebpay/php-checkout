@@ -77,7 +77,7 @@ class ApiClient
         $this->httpClient->close();
 
         if ($errorNumber > 0) {
-            throw new Exception($httpError, ExceptionCodeList::CLIENT_API_ERROR);
+            throw new Exception($httpError, ExceptionCodeList::COMMUNICATION_ERROR);
         }
 
         $responseHandler = new ResponseHandler($httpResponse, $httpCode);

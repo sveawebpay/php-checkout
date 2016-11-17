@@ -4,15 +4,12 @@ namespace Svea\Checkout\Exception;
 
 class ExceptionCodeList
 {
-    const CLIENT_API_ERROR = 1000;
-
-    const MISSING_MERCHANT_ID = 2001;
-    const MISSING_SHARED_SECRET = 2002;
-    const MISSING_API_BASE_URL = 2003;
-    const INCORRECT_API_BASE_URL = 2004;
-
-    const INPUT_VALIDATION_ERROR = 3000;
-
+    const COMMUNICATION_ERROR = 10000;
+    const MISSING_MERCHANT_ID = 20001;
+    const MISSING_SHARED_SECRET = 20002;
+    const MISSING_API_BASE_URL = 20003;
+    const INCORRECT_API_BASE_URL = 20004;
+    const INPUT_VALIDATION_ERROR = 30000;
     const UNKNOWN_CODE_MESSAGE = 'Unknown code error';
 
     /**
@@ -26,14 +23,12 @@ class ExceptionCodeList
         $exceptionCode = intval($exceptionCode);
 
         $exceptionMessageList = array(
-            1000 => 'Api Client Error',
-
-            2001 => 'Missing Merchant Id',
-            2002 => 'Missing Shared Secret',
-            2003 => 'Missing API Base URL',
-            2004 => 'Incorrect API Base URL',
-
-            3000 => 'Input Validation Error'
+            self::COMMUNICATION_ERROR => 'Api Client Error',
+            self::MISSING_MERCHANT_ID => 'Missing Merchant Id',
+            self::MISSING_SHARED_SECRET => 'Missing Shared Secret',
+            self::MISSING_API_BASE_URL => 'Missing API Base URL',
+            self::INCORRECT_API_BASE_URL => 'Incorrect API Base URL',
+            self::INPUT_VALIDATION_ERROR => 'Input Validation Error'
         );
 
         if (isset($exceptionMessageList[$exceptionCode])) {

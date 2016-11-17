@@ -1,91 +1,74 @@
 <?php
+/**
+ * Get Svea Checkout order from admin API.
+ * This method is used to get the entire order with all its relevant information.
+ * Including its deliveries, rows, credits and addresses
+ */
 
-// include Svea Checkout library if you are using Composer
-//require_once '../vendor/autoload.php';
 
-// include Svea Checkout library without composer
+/**
+ * Include Library
+ *
+ * If you use Composer, include the autoload.php file from vendor folder
+ * require_once '../vendor/autoload.php';
+ *
+ * If you do not use Composer, include the include.php file from root of the project
+ * require_once '../../include.php';
+ */
 require_once '../../include.php';
 
-// Input data for this admin action
-$data = array(
-    "orderId" => 7427, // required - Long  Id of the specified order
-    "orderRowId" => 4, // required - Long - Id of the specified order rows that will be updated.
-
-    /**
-     * Order row data
-     */
-
-    "orderRow" => array(
-        /**
-         * String - Articlenumber as a string, can contain letters and numbers.
-         * Limit - Maximum 256 characters
-         */
-        "articleNumber" => "prod11",
-
-        /**
-         * String - Article name
-         * Limit - 1-40 characters
-         */
-        "name" => "iPhone",
-
-        /**
-         * Integer - Quantity of the product.
-         * Limit - 1-9 digits
-         */
-        "quantity" => 2,
-
-        /**
-         * Integer - Price of product including VAT
-         * Limit - 1-13 digits, can be negative. Minor currency
-         */
-        "unitPrice" => 12300,
-
-        /**
-         * Integer - The discount percent of the product
-         * Limit - 0-100
-         */
-        "discountPercent" => 0,
-
-        /**
-         * Integer - The VAT percentage of the current product
-         * Limit - Valid VAT percentage for that country. Minor currency
-         */
-        "vatPercent" => 2500,
-
-        /**
-         * String - The unit type e.g. "st", "pc", "kg", etc.
-         * Limit - 0-4 characters
-         */
-        "Unit" => "pc"
-    )
-);
+/**
+ * @var integer $checkoutMerchantId
+ * Unique merchant ID
+ */
+$checkoutMerchantId = 100001;
 
 /**
- * Create connector
- * Shared Secret - Shared Secret string between Svea and merchant
- * Base Url for SVEA Checkout admin Api. Can be TEST_ADMIN_BASE_URL and PROD_ADMIN_BASE_URL
+ * @var string $checkoutSecret
+ * Shared Secret string between Svea and merchant
  */
-$checkoutMerchantId = "100001";
 $checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1";
+
+/**
+ * @var string $baseUrl
+ * Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
+ */
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
-/**
- * Create Connector object
- *
- * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
- * some of fields $merchantId, $sharedSecret and $baseUrl is missing
- */
-$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
-
-// Create Checkout admin client with created Connector object
-$checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
-
-/**
- * Initialize Update order row
- */
 try {
+    /**
+     * Create Connector object
+     *
+     * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
+     * some of fields $merchantId, $sharedSecret and $baseUrl is missing
+     */
+    $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+    $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
+
+    $data = array(
+        "orderId" => 7427, // required - Long  Id of the specified order
+        "orderRowId" => 4, // required - Long - Id of the specified order rows that will be updated.
+        "orderRow" => array(
+            "articleNumber" => "prod11",
+            "name" => "iPhone",
+            "quantity" => 2,
+            "unitPrice" => 12300,
+            "discountPercent" => 0,
+            "vatPercent" => 2500,
+            "Unit" => "pc"
+        )
+    );
+
+    /**
+     * Possible Exceptions are:
+     * \Svea\Checkout\Exception\SveaInputValidationException - if $orderId is missing
+     * \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
+     *      some error occurred with data validation on API side
+     * \Exception - for any other error
+     */
     $response = $checkoutClient->updateOrderRow($data);
-    var_dump($response);
+
+    print_r($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump('Error message -> ' . $ex->getMessage());

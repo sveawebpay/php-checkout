@@ -1,65 +1,74 @@
 <?php
 
-// include the Svea Checkout autoload file if you are using Composer
-//require_once '../vendor/autoload.php';
+/**
+ * Get Svea Checkout order from admin API.
+ * This method is used to get the entire order with all its relevant information.
+ * Including its deliveries, rows, credits and addresses
+ */
 
-// - without composer
+
+/**
+ * Include Library
+ *
+ * If you use Composer, include the autoload.php file from vendor folder
+ * require_once '../vendor/autoload.php';
+ *
+ * If you do not use Composer, include the include.php file from root of the project
+ * require_once '../../include.php';
+ */
 require_once '../../include.php';
 
-/*
- * Example of getting the order information
- *
- * */
+/**
+ * @var integer $checkoutMerchantId
+ * Unique merchant ID
+ */
+$checkoutMerchantId = 100001;
 
-// Order ID from created order
-$data = array(
-    "orderId" => 7427,        // required - Long  filed (Specified Checkout order for cancel amount)
-    "orderRow" => array(
-        "ArticleNumber" => "prod-01",
-        "Name" => "someProd",
-        "Quantity" => 300,
-        "UnitPrice" => 5000,
-        //"DiscountPercent" => "", // optional 0-100
-        "VatPercent" => 0,       // required - 0, 6, 12, 25
-        "Unit" => "pc"           // optional st, pc, kg, etc.
-    )
-);
-
-/*
- * Create connector for given
- *  - Merchant Id - unique merchant ID
- *  - Shared Secret - Shared Secret string between Svea and merchant
- *  - Base Url for SVEA Api. Can be STAGE_BASE_URL and PROD_BASE_URL
- * */
-$checkoutMerchantId = "100001";
+/**
+ * @var string $checkoutSecret
+ * Shared Secret string between Svea and merchant
+ */
 $checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1";
+
+/**
+ * @var string $baseUrl
+ * Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
+ */
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
-/*
- * Create Connector object
- *
- * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
- * some of fields $merchantId, $sharedSecret and $baseUrl is missing
- * */
-$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
-
-// Create Checkout client with created Connector object
-$checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
-
-/*
- *  Initialize getting the order information
- *  Possible Exceptions are:
- *  - \Svea\Checkout\Exception\SveaInputValidationException - if $orderId is missing
- *  - \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
- *      some error occurred with data validation on API side
- *  - \Exception - for any other error
- *
- * */
 try {
+    /**
+     * Create Connector object
+     *
+     * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
+     * some of fields $merchantId, $sharedSecret and $baseUrl is missing
+     */
+    $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+    $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
+
+    $data = array(
+        "orderId" => 7427,        // required - Long  filed (Specified Checkout order for cancel amount)
+        "orderRow" => array(
+            "ArticleNumber" => "prod-01",
+            "Name" => "someProd",
+            "Quantity" => 300,
+            "UnitPrice" => 5000,
+            //"DiscountPercent" => "", // optional 0-100
+            "VatPercent" => 0,       // required - 0, 6, 12, 25
+            "Unit" => "pc"           // optional st, pc, kg, etc.
+        )
+    );
+
+    /**
+     * Possible Exceptions are:
+     * \Svea\Checkout\Exception\SveaInputValidationException - if $orderId is missing
+     * \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
+     *      some error occurred with data validation on API side
+     * \Exception - for any other error
+     */
     $response = $checkoutClient->addOrderRow($data);
 
-    var_dump($response);
-
+    print_r($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     var_dump("--------- Api errors ---------");
     var_dump('Error message -> ' . $ex->getMessage());
