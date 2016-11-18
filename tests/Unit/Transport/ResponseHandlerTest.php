@@ -156,8 +156,10 @@ class ResponseHandlerTest extends TestCase
         $responseHandler = new ResponseHandler($content, $httpCode);
 
         $expectedValue = array(
-            'Location' => $locationUrl
+            'HeaderLocation' => $locationUrl
         );
+        $expectedValue = array_merge($expectedValue, json_decode($body, true));
+
         $this->assertEquals($expectedValue, $responseHandler->getResponse());
     }
 }
