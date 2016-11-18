@@ -13,5 +13,11 @@ class ValidateDeliverOrderData extends ValidationService
     {
         $this->mustBeSet($data, 'orderid', 'Order Id');
         $this->mustBeInteger($data['orderid'], 'Order Id');
+
+        $this->mustBeSet($data, 'orderrowids', 'Order Id');
+        $this->mustNotBeEmptyArray($data['orderrowids'], 'Order Row Ids');
+        foreach ($data['orderrowids'] as $orderRowId) {
+            $this->mustBeInteger($orderRowId, 'Order Row Id');
+        }
     }
 }
