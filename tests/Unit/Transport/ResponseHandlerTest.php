@@ -146,7 +146,7 @@ class ResponseHandlerTest extends TestCase
         $this->assertEquals(json_decode($body, true), $responseHandler->getResponse());
     }
 
-    public function testGetResponseWith202AcceptedStatusResponse()
+    public function testGetResponseWith202AcceptedStatusResponseWithBodyContent()
     {
         $body = '{"test":"Order credited successful"}';
         $locationUrl = 'http://svea.com';
@@ -159,6 +159,22 @@ class ResponseHandlerTest extends TestCase
             'HeaderLocation' => $locationUrl
         );
         $expectedValue = array_merge($expectedValue, json_decode($body, true));
+
+        $this->assertEquals($expectedValue, $responseHandler->getResponse());
+    }
+
+    public function testGetResponseWith202AcceptedStatusResponseWithoutBodyContent()
+    {
+        $body = '';
+        $locationUrl = 'http://svea.com';
+        $content = 'HTTP/1.1 202 Accepted' . "\r\nLocation: ". $locationUrl . "\r\n\r\n" . $body;
+        $httpCode = 202;
+
+        $responseHandler = new ResponseHandler($content, $httpCode);
+
+        $expectedValue = array(
+            'HeaderLocation' => $locationUrl
+        );
 
         $this->assertEquals($expectedValue, $responseHandler->getResponse());
     }
