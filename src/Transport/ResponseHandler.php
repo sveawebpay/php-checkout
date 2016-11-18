@@ -144,13 +144,15 @@ class ResponseHandler
         } elseif ($this->httpCode === 202) {
             /**
              * Fix for 202 Accepted - http response
-             * Instead of empty array for body response or null we return only header information
-             * without Response key.
-             * Array with Location and HttpCode in Header
              */
+            $bodyContent = $this->getContent();
+            if ($bodyContent !== null) {
+                $returnData = $bodyContent;
+            }
+
             $header = $this->getHeader();
             if (isset($header['Location'])) {
-                $returnData['Location'] = $header['Location'];
+                $returnData['HeaderLocation'] = $header['Location'];
             }
         } else {
             $returnData = $this->getContent();

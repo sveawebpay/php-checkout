@@ -44,16 +44,13 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 7427, // required - Long  Id of the specified order
-        "orderRowId" => 4, // required - Long - Id of the specified order rows that will be updated.
+        "orderId" => 51764, // required - Long  Id of the specified order
+        "orderRowId" => 3, // required - Long - Id of the specified order rows that will be updated.
         "orderRow" => array(
             "articleNumber" => "prod11",
             "name" => "iPhone",
-            "quantity" => 2,
-            "unitPrice" => 12300,
-            "discountPercent" => 0,
-            "vatPercent" => 2500,
-            "Unit" => "pc"
+            "quantity" => 400, // minor unit
+            "discountPercent" => 400, // minor unit
         )
     );
 
