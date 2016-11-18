@@ -6,7 +6,9 @@ use Svea\Checkout\Model\Request;
 
 class CreditOrderAmount extends AdminImplementationManager
 {
-    //URI: /api/v1/orders/{orderId}/deliveries/{deliveryId}/credits [POST]
+    /**
+     * @var string $apiUrl
+     */
     protected $apiUrl = '/api/v1/orders/%d/deliveries/%d/credits';
 
     /**

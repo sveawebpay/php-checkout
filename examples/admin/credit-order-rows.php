@@ -1,17 +1,14 @@
 <?php
 
 /**
- * Get Svea Checkout order from admin API.
- * This method is used to get the entire order with all its relevant information.
- * Including its deliveries, rows, credits and addresses
- */
-
-
-/**
+ * Creates a new credit on the specified delivery with specified order rows.
+ * Assuming the delivery has action “CanCreditOrderRows” and the specified order rows also has action "CanCredit"
+ *
+ *
  * Include Library
  *
  * If you use Composer, include the autoload.php file from vendor folder
- * require_once '../vendor/autoload.php';
+ * require_once '../../vendor/autoload.php';
  *
  * If you do not use Composer, include the include.php file from root of the project
  * require_once '../../include.php';
@@ -19,21 +16,12 @@
 require_once '../../include.php';
 
 /**
- * @var integer $checkoutMerchantId
  * Unique merchant ID
+ * Shared Secret string between Svea and merchant
+ * Base Url for SVEA Api. Can be TEST_ADMIN_BASE_URL and PROD_ADMIN_BASE_URL
  */
 $checkoutMerchantId = 100001;
-
-/**
- * @var string $checkoutSecret
- * Shared Secret string between Svea and merchant
- */
 $checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1";
-
-/**
- * @var string $baseUrl
- * Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
- */
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 try {
@@ -42,6 +30,14 @@ try {
      *
      * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
      * some of fields $merchantId, $sharedSecret and $baseUrl is missing
+     *
+     * Credit Order Rows
+     *
+     * Possible Exceptions are:
+     * \Svea\Checkout\Exception\SveaInputValidationException - if $orderId is missing
+     * \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
+     *      some error occurred with data validation on API side
+     * \Exception - for any other error
      */
     $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
@@ -57,31 +53,21 @@ try {
 //        "vatPercent"    => 0,       // required - 0, 6, 12, 25
 //    )
     );
-
-    /**
-     * Possible Exceptions are:
-     * \Svea\Checkout\Exception\SveaInputValidationException - if $orderId is missing
-     * \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
-     *      some error occurred with data validation on API side
-     * \Exception - for any other error
-     */
     $response = $checkoutClient->creditOrderRows($data);
-
     print_r($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
-    var_dump("--------- Api errors ---------");
-    var_dump('Error message -> ' . $ex->getMessage());
-    var_dump('Error code -> ' . $ex->getCode());
+    examplePrintError($ex, 'Api errors');
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
-    var_dump("--------- Conn errors ---------");
-    var_dump('Error message -> ' . $ex->getMessage());
-    var_dump('Error code -> ' . $ex->getCode());
+    examplePrintError($ex, 'Conn errors');
 } catch (\Svea\Checkout\Exception\SveaInputValidationException $ex) {
-    var_dump("--------- Input data errors ---------");
-    var_dump('Error message -> ' . $ex->getMessage());
-    var_dump('Error code -> ' . $ex->getCode());
+    examplePrintError($ex, 'Input data errors');
 } catch (Exception $ex) {
-    var_dump("--------- General errors ---------");
-    var_dump('Error message -> ' . $ex->getMessage());
-    var_dump('Error code -> ' . $ex->getCode());
+    examplePrintError($ex, 'General errors');
+}
+
+function examplePrintError(Exception $ex, $errorTitle)
+{
+    print_r('--------- ' . $errorTitle . ' ---------' . PHP_EOL);
+    print_r('Error message -> ' . $ex->getMessage() . PHP_EOL);
+    print_r('Error code -> ' . $ex->getCode() . PHP_EOL);
 }
