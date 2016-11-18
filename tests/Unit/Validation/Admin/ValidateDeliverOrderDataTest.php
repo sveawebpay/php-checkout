@@ -23,7 +23,8 @@ class ValidateDeliverOrderDataTest extends TestCase
         $this->validateDeliverOrder = new ValidateDeliverOrderData();
 
         $this->inputData = array(
-            "orderid" => 201
+            "orderid" => 201,
+            'orderrowids' => array(1, 2)
         );
     }
 
@@ -74,6 +75,55 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithOrderIdAsDecimal()
     {
         $this->inputData['orderid'] = 204.5;
+        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateWithOrderIdAsIntAndWithoutOrderRowIds()
+    {
+        unset($this->inputData['orderrowids']);
+        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsInt()
+    {
+        $this->inputData['orderrowids'] = 1;
+        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+    }
+
+    /**
+     * Empty array for orderRowIds will be deliver whole Order
+     */
+    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsEmptyArray()
+    {
+        $this->inputData['orderrowids'] = array();
+        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsArrayWithStrings()
+    {
+        $this->inputData['orderrowids'] = array('1');
+        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+    }
+
+    /**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsArrayWithDecimalValue()
+    {
+        $this->inputData['orderrowids'] = array(1.5);
         $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
     }
 

@@ -45,6 +45,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
     $data = array(
         "orderId" => 51718,
+        /* To deliver whole order just send orderRowIds as empty array */
         "orderRowIds" => array(1, 2)
     );
     $response = $checkoutClient->deliverOrder($data);

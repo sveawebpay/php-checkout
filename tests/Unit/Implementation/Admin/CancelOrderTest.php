@@ -58,7 +58,7 @@ class CancelOrderTest extends TestCase
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
-        $this->assertEquals($inputData['amount'], $requestBodyData['amount']);
+        $this->assertEquals($inputData['amount'], $requestBodyData['cancelledAmount']);
     }
 
     public function testInvoke()
