@@ -47,7 +47,7 @@ try {
         "deliveryId" => 1, // required - Long - Id of the specified delivery.
         "newCreditRow" => array( // required - New order row for order crediting
             "name" => "credit row",
-            "quantity" => 1,
+            "quantity" => 100,
             "unitPrice" => 5000,
             "vatPercent" => 0,       // required - 0, 6, 12, 25
         )
