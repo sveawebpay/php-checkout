@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Creates a new credit on the specified delivery with specified order rows.
- * Assuming the delivery has action “CanCreditOrderRows” and the specified order rows also has action "CanCredit"
+ * By specifying a new credit row, a new credit row will be created on the delivery,
+ * assuming the delivery has action “CanCreditNewRow”.
  *
  *
  * Include Library
@@ -45,9 +45,14 @@ try {
     $data = array(
         "orderId" => 7427, // required - Long  filed (Specified Checkout order for cancel amount)
         "deliveryId" => 1, // required - Long - Id of the specified delivery.
-        "orderRowIds" => array(2), // required - Array - Ids of the delivered order rows that will be credited.
+        "newCreditRow" => array( // required - New order row for order crediting
+            "name" => "credit row",
+            "quantity" => 1,
+            "unitPrice" => 5000,
+            "vatPercent" => 0,       // required - 0, 6, 12, 25
+        )
     );
-    $response = $checkoutClient->creditOrderRows($data);
+    $response = $checkoutClient->creditNewOrderRow($data);
     print_r($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     examplePrintError($ex, 'Api errors');

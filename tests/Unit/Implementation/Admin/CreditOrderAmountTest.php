@@ -40,7 +40,7 @@ class CreditOrderAmountTest extends TestCase
         $requestModel = $this->creditOrderAmount->getRequestModel();
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
-        $this->assertEquals(Request::METHOD_POST, $requestModel->getMethod());
+        $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
         $this->assertEquals($inputData['amount'], $requestBodyData['amount']);
     }
 

@@ -9,7 +9,7 @@ class CreditOrderAmount extends AdminImplementationManager
     /**
      * @var string $apiUrl
      */
-    protected $apiUrl = '/api/v1/orders/%d/deliveries/%d/credits';
+    protected $apiUrl = '/api/v1/orders/%d/deliveries/%d';
 
     /**
      * Request body - JSON
@@ -44,7 +44,7 @@ class CreditOrderAmount extends AdminImplementationManager
         $params = array($orderId, $deliveryId);
 
         $this->requestModel = new Request();
-        $this->requestModel->setPostMethod();
+        $this->requestModel->setPatchMethod();
         $this->requestModel->setBody(json_encode($requestData));
         $this->requestModel->setApiUrl($this->prepareUrl($params));
     }

@@ -66,11 +66,12 @@ class ImplementationAdminFactory
 
     /**
      * @param Connector $connector
+     * @param bool $isNewCreditRow
      * @return CreditOrderRows
      */
-    public static function returnCreditOrderRowsClass(Connector $connector)
+    public static function returnCreditOrderRowsClass(Connector $connector, $isNewCreditRow = false)
     {
-        return new CreditOrderRows($connector, new ValidateCreditOrderRowsData());
+        return new CreditOrderRows($connector, new ValidateCreditOrderRowsData($isNewCreditRow), $isNewCreditRow);
     }
 
     /**

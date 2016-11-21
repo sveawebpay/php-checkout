@@ -82,11 +82,19 @@ class ValidateCreditOrderRowsDataTest extends TestCase
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-    public function testValidateWithOrderIdAsInteger()
+    public function testValidateValidCreditOrderRowIds()
     {
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
+    public function testValidateNewCreditRowWithoutOrderRowIds()
+    {
+        unset($this->inputData['orderrowids']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(true);
+        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
+    }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
@@ -138,35 +146,15 @@ class ValidateCreditOrderRowsDataTest extends TestCase
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-    public function testValidateWithDeliveryIdAsInteger()
-    {
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    public function testValidateWithoutOrderRowIds()
-    {
-        unset($this->inputData['orderrowids']);
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithEmptyOrderRowIdsAndWithoutNewCreditRow()
-    {
-        unset($this->inputData['newcreditrow']);
-        $this->inputData['orderrowids'] = array();
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithOrderRowIdsAsString()
+    public function testValidateCreditOrderRowIdsWithOrderRowIdsAsString()
     {
         $this->inputData['orderrowids'] = '204';
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -174,15 +162,18 @@ class ValidateCreditOrderRowsDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithEmptyOrderRowIds()
+    public function testValidateCreditOrderRowIdsWithEmptyOrderRowIds()
     {
         $this->inputData['orderrowids'] = '';
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-    public function testValidateWithNullOrderRowIds()
+    public function testValidateNewCreditRowWithValidData()
     {
-        $this->inputData['orderrowids'] = null;
+        unset($this->inputData['orderrowids']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(true);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -190,9 +181,11 @@ class ValidateCreditOrderRowsDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithOrderRowIdsAsDecimal()
+    public function testValidateCreditOrderRowIdsWithOrderRowIdsAsDecimal()
     {
         $this->inputData['orderrowids'] = 204.5;
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -200,9 +193,11 @@ class ValidateCreditOrderRowsDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithOrderRowIdsAsEmptyArray()
+    public function testValidateCreditOrderRowIdsWithOrderRowIdAsEmptyArray()
     {
         $this->inputData['orderrowids'] = array();
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -210,19 +205,11 @@ class ValidateCreditOrderRowsDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithOrderRowIdAsEmptyArray()
-    {
-        $this->inputData['orderrowids'] = array();
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithOrderRowIdAsString()
+    public function testValidateCreditOrderRowIdsWithOrderRowIdAsString()
     {
         $this->inputData['orderrowids'] = array('1');
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -230,9 +217,11 @@ class ValidateCreditOrderRowsDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithOrderRowIdAsDecimal()
+    public function testValidateCreditOrderRowIdsWithOrderRowIdAsDecimal()
     {
         $this->inputData['orderrowids'] = array(1.1);
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -240,15 +229,11 @@ class ValidateCreditOrderRowsDataTest extends TestCase
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithEmptyOrderRowId()
+    public function testValidateCreditOrderRowIdsWithEmptyOrderRowId()
     {
         $this->inputData['orderrowids'] = array('');
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    public function testValidateWithOrderRowIdAsInteger()
-    {
-        $this->inputData['orderrowids'] = array(1);
+        unset($this->inputData['newcreditrow']);
+        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -263,20 +248,15 @@ class ValidateCreditOrderRowsDataTest extends TestCase
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-    public function testValidateWithoutNewCreditRow()
-    {
-        unset($this->inputData['orderrowids']);
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithoutOrderRowIdsAndEmptyNewCreditRow()
+    public function testValidateNewCreditRowWithoutOrderRowIdsAndEmptyNewCreditRow()
     {
         unset($this->inputData['orderrowids']);
         $this->inputData['newcreditrow'] = array();
+        $this->validateCreditOrderRow->setIsNewCreditRow(true);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 }

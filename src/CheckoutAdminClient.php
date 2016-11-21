@@ -78,7 +78,7 @@ class CheckoutAdminClient
     }
 
     /**
-     * Cancel amount for Svea Checkout Order Delivery.
+     * Cancel Checkout order row.
      *
      * @param int $data
      * @return mixed
@@ -89,7 +89,7 @@ class CheckoutAdminClient
     }
 
     /**
-     * Cancel amount for Svea Checkout order.
+     * Credit order rows for Svea Checkout order.
      *
      * @param int $data
      * @return mixed
@@ -100,7 +100,18 @@ class CheckoutAdminClient
     }
 
     /**
-     * Cancel amount for Svea Checkout order.
+     * Credit new order row.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function creditNewOrderRow($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnCreditOrderRowsClass($this->connector, true), $data);
+    }
+
+    /**
+     * Credit amount for Svea Checkout order.
      *
      * @param int $data
      * @return mixed

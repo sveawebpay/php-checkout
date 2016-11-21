@@ -3,10 +3,17 @@
 namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Model\Request;
+use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Validation\ValidationService;
 
 class CreditOrderRows extends AdminImplementationManager
 {
     protected $apiUrl = '/api/v1/orders/%d/deliveries/%d/credits';
+
+    /**
+     * @var bool $isNewCreditRow
+     */
+    protected $isNewCreditRow;
 
     /**
      * Request body - JSON
@@ -14,6 +21,18 @@ class CreditOrderRows extends AdminImplementationManager
      * @var Request $requestModel
      */
     private $requestModel;
+
+    /**
+     * CreditOrderRows constructor.
+     * @param Connector $connector
+     * @param ValidationService $validationService
+     * @param bool $isNewCreditRow
+     */
+    public function __construct(Connector $connector, ValidationService $validationService, $isNewCreditRow = false)
+    {
+        parent::__construct($connector, $validationService);
+        $this->isNewCreditRow = $isNewCreditRow;
+    }
 
     /**
      * Input data validation
@@ -33,10 +52,10 @@ class CreditOrderRows extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        if (isset($data['orderrowids'])) {
-            $requestData['orderRowIds'] = $data['orderrowids'];
-        } elseif (isset($data['newcreditrow'])) {
+        if ($this->isNewCreditRow === true) {
             $requestData['newCreditRow'] = $data['newcreditrow'];
+        } else {
+            $requestData['orderRowIds'] = $data['orderrowids'];
         }
 
         $orderId = $data['orderid'];
