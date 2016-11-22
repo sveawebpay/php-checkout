@@ -520,7 +520,7 @@ However if a subset of all active order rows are specified a partial delivery wi
 
 | Parameters OUT                 |Type      | Description  |
 |-------------------------------|-----------|--------------|
-| TODO                      | string      | TODO |
+| HeaderLocation                      | string      | URI to the created task. |
 
 ### 9.4 Cancel Order
 Cancel an order before it has been delivered. Assuming the order has the action **CanCancelOrder**.
