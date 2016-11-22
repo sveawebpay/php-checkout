@@ -45,7 +45,7 @@ try {
     $data = array(
         "orderId" => 7427, // required - Long  filed (Specified Checkout order for cancel amount)
         "deliveryId" => 1, // required - Long - Id of the specified delivery.
-        "newCreditRow" => array( // required - New order row for order crediting
+        "newCreditOrderRow" => array( // required - New order row for order crediting
             "name" => "credit row",
             "quantity" => 100,
             "unitPrice" => 5000,

@@ -53,7 +53,7 @@ class CreditOrderRows extends AdminImplementationManager
     {
         $requestData = array();
         if ($this->isNewCreditRow === true) {
-            $requestData['newCreditRow'] = $data['newcreditrow'];
+            $requestData['newCreditOrderRow'] = $data['newcreditrow'];
         } else {
             $requestData['orderRowIds'] = $data['orderrowids'];
         }
