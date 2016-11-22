@@ -41,12 +41,12 @@ class CreditOrderAmount extends AdminImplementationManager
         $orderId = $data['orderid'];
         $deliveryId = $data['deliveryid'];
 
-        $params = array($orderId, $deliveryId);
+        $urlParams = array($orderId, $deliveryId);
 
         $this->requestModel = new Request();
         $this->requestModel->setPatchMethod();
         $this->requestModel->setBody(json_encode($requestData));
-        $this->requestModel->setApiUrl($this->prepareUrl($params));
+        $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
     }
 
     /**

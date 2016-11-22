@@ -8,6 +8,7 @@ use Svea\Checkout\Validation\Admin\ValidateAddOrderRowData;
 use Svea\Checkout\Validation\Admin\ValidateCancelOrderData;
 use Svea\Checkout\Validation\Admin\ValidateGetDataFromLink;
 use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
+use Svea\Checkout\Validation\Admin\ValidateGetTaskData;
 use Svea\Checkout\Validation\Admin\ValidateUpdateOrderRowData;
 use Svea\Checkout\Validation\Admin\ValidateCancelOrderRowData;
 use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsData;
@@ -34,6 +35,15 @@ class ImplementationAdminFactory
     public static function returnGetOrderClass(Connector $connector)
     {
         return new GetOrder($connector, new ValidateGetOrderData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return GetTask
+     */
+    public static function returnGetTaskClass(Connector $connector)
+    {
+        return new GetTask($connector, new ValidateGetTaskData());
     }
 
     /**

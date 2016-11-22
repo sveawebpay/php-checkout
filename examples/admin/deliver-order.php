@@ -36,17 +36,16 @@ try {
      * Deliver Order
      *
      * Possible Exceptions are:
-     * \Svea\Checkout\Exception\SveaInputValidationException - if $orderId is missing
-     * \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
-     *      some error occurred with data validation on API side
+     * \Svea\Checkout\Exception\SveaInputValidationException
+     * \Svea\Checkout\Exception\SveaApiException
      * \Exception - for any other error
      */
     $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
     $data = array(
-        "orderId" => 51764,
+        "orderId" => 51951,
         /* To deliver whole order just send orderRowIds as empty array */
-        "orderRowIds" => array(4)
+        "orderRowIds" => array()
     );
     $response = $checkoutClient->deliverOrder($data);
     print_r($response);

@@ -22,9 +22,9 @@ class ValidateGetOrderDataTest extends TestCase
      */
     public function testValidateWithOrderIdAsInteger()
     {
-        $orderId = 1234;
+        $data = 1234;
         $validateGetOrder = new ValidateGetOrderData();
-        $validateGetOrder->validate($orderId);
+        $validateGetOrder->validate($data);
     }
 
     /**
@@ -44,9 +44,9 @@ class ValidateGetOrderDataTest extends TestCase
      */
     public function testValidateWithOrderIdAsString()
     {
-        $orderId = '1234';
+        $data = '1234';
         $validateGetOrder = new ValidateGetOrderData();
-        $validateGetOrder->validate($orderId);
+        $validateGetOrder->validate($data);
     }
 
     /**
@@ -55,9 +55,9 @@ class ValidateGetOrderDataTest extends TestCase
      */
     public function testValidateWithEmptyString()
     {
-        $orderId = '';
+        $data = '';
         $validateGetOrder = new ValidateGetOrderData();
-        $validateGetOrder->validate($orderId);
+        $validateGetOrder->validate($data);
     }
 
     /**

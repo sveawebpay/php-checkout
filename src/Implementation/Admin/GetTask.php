@@ -4,10 +4,8 @@ namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Model\Request;
 
-class AddOrderRow extends AdminImplementationManager
+class GetTask extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%d/rows';
-
     /**
      * Request body - JSON
      *
@@ -30,15 +28,11 @@ class AddOrderRow extends AdminImplementationManager
      */
     public function prepareData($data)
     {
-        $requestData = $data['orderrow'];
+        $locationAbsoluteUrl = $data['locationurl'];
 
-        $orderId = $data['orderid'];
         $this->requestModel = new Request();
-        $this->requestModel->setPostMethod();
-        $this->requestModel->setBody(json_encode($requestData));
-
-        $urlParams = array($orderId);
-        $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
+        $this->requestModel->setGetMethod();
+        $this->requestModel->setApiUrl($locationAbsoluteUrl);
     }
 
     /**

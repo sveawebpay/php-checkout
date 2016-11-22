@@ -45,6 +45,18 @@ class CheckoutAdminClient
     }
 
     /**
+     * Get Svea Checkout task information.
+     *
+     * @param int $data
+     *
+     * @return mixed
+     */
+    public function getTask($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnGetTaskClass($this->connector), $data);
+    }
+
+    /**
      * Deliver Svea Checkout order.
      *
      * @param mixed $data

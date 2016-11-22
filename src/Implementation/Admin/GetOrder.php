@@ -31,13 +31,16 @@ class GetOrder extends AdminImplementationManager
     /**
      * Prepare body data for Api call
      *
-     * @param array $orderId
+     * @param array $data
      */
-    public function prepareData($orderId)
+    public function prepareData($data)
     {
+        $orderId = $data['orderid'];
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();
-        $this->requestModel->setApiUrl($this->prepareUrl($orderId));
+
+        $urlParams = array($orderId);
+        $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
     }
 
     /**

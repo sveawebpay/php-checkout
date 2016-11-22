@@ -64,7 +64,9 @@ class CancelOrder extends AdminImplementationManager
         $this->requestModel = new Request();
         $this->requestModel->setPatchMethod();
         $this->requestModel->setBody(json_encode($requestData));
-        $this->requestModel->setApiUrl($this->prepareUrl($orderId));
+
+        $urlParams = array($orderId);
+        $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
     }
 
     /**

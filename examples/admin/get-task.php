@@ -1,8 +1,7 @@
 <?php
-
 /**
- * Changes the status of an order row to "Cancelled", assuming the order has the action "CanCancelOrderRow"
- * and the OrderRow has the action "CanCancel".
+ * A task will explain the status of a previously performed operation.
+ * When finished it will point towards the new resource with the Location header.
  *
  *
  * Include Library
@@ -32,8 +31,7 @@ try {
      * some of fields $merchantId, $sharedSecret and $baseUrl is missing
      *
      *
-     * Cancel Order Row
-     *
+     * Get Task
      * Possible Exceptions are:
      * \Svea\Checkout\Exception\SveaInputValidationException
      * \Svea\Checkout\Exception\SveaApiException
@@ -43,14 +41,21 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 51764, // required - Long  filed (Specified Checkout order for cancel amount)
-        "orderRowId" => 2, // required - Long - Id of the specified row.
+        "locationUrl" => 'http://webpaypaymentadminapi.test.svea.com/api/v1/queue/1'
     );
 
-    $response = $checkoutClient->cancelOrderRow($data);
-    if ($response === '') {
-        print_r('Success cancel amount');
-    }
+    $response = $checkoutClient->getTask($data);
+
+    /**
+     * Success response
+     * Array
+     * (
+     *  [Id] => 1
+     *  [Status] => InProgress
+     * )
+     */
+
+    print_r($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     examplePrintError($ex, 'Api errors');
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {

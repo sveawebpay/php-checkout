@@ -43,7 +43,9 @@ class DeliverOrder extends AdminImplementationManager
         $this->requestModel = new Request();
         $this->requestModel->setPostMethod();
         $this->requestModel->setBody(json_encode($requestData));
-        $this->requestModel->setApiUrl($this->prepareUrl($orderId));
+
+        $urlParams = array($orderId);
+        $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
     }
 
     /**

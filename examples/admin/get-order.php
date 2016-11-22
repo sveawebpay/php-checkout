@@ -34,19 +34,18 @@ try {
      *
      * Get Order
      * Possible Exceptions are:
-     * \Svea\Checkout\Exception\SveaInputValidationException - if $orderId is missing
-     * \Svea\Checkout\Exception\SveaApiException - is there is some problem with api connection or
-     *      some error occurred with data validation on API side
+     * \Svea\Checkout\Exception\SveaInputValidationException
+     * \Svea\Checkout\Exception\SveaApiException
      * \Exception - for any other error
      */
     $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
-    $orderId = array(
-        "orderId" => 51764
+    $data = array(
+        "orderId" => 51951
     );
 
-    $response = $checkoutClient->getOrder($orderId);
+    $response = $checkoutClient->getOrder($data);
     print_r($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     examplePrintError($ex, 'Api errors');
