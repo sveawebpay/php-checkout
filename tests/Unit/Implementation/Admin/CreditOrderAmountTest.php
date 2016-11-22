@@ -33,7 +33,7 @@ class CreditOrderAmountTest extends TestCase
         $inputData = array(
             "orderid" => 204,
             "deliveryid" => 1,
-            "amount" => 2000,
+            "creditedamount" => 2000,
         );
         $this->creditOrderAmount->prepareData($inputData);
 
@@ -41,7 +41,7 @@ class CreditOrderAmountTest extends TestCase
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
-        $this->assertEquals($inputData['amount'], $requestBodyData['amount']);
+        $this->assertEquals($inputData['creditedamount'], $requestBodyData['creditedAmount']);
     }
 
     public function testInvoke()

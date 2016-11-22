@@ -45,7 +45,7 @@ try {
 
     $data = array(
         "orderId" => 204,
-        "amount" => 5000
+        "cancelledAmount" => 5000
     );
 
     $response = $checkoutClient->cancelOrderAmount($data);

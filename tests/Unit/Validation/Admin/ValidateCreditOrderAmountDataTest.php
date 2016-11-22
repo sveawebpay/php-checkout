@@ -25,7 +25,7 @@ class ValidateCreditOrderAmountDataTest extends TestCase
         $this->inputData = array(
             "orderid"    => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
             "deliveryid" => 1,          // required - Int - Id of order delivery
-            "amount"     => 2000,       // required - Int
+            "creditedamount"     => 2000,       // required - Int
         );
     }
 
@@ -145,7 +145,7 @@ class ValidateCreditOrderAmountDataTest extends TestCase
      */
     public function testValidateWithoutAmount()
     {
-        unset($this->inputData['amount']);
+        unset($this->inputData['creditedamount']);
         $this->invokeMethod($this->validateCreditOrderAmount, 'validate', array($this->inputData));
     }
 
@@ -155,7 +155,7 @@ class ValidateCreditOrderAmountDataTest extends TestCase
      */
     public function testValidateWithAmountAsString()
     {
-        $this->inputData['amount'] = '204';
+        $this->inputData['creditedamount'] = '204';
         $this->invokeMethod($this->validateCreditOrderAmount, 'validate', array($this->inputData));
     }
 
@@ -165,7 +165,7 @@ class ValidateCreditOrderAmountDataTest extends TestCase
      */
     public function testValidateWithEmptyAmount()
     {
-        $this->inputData['amount'] = '';
+        $this->inputData['creditedamount'] = '';
         $this->invokeMethod($this->validateCreditOrderAmount, 'validate', array($this->inputData));
     }
 
@@ -175,7 +175,7 @@ class ValidateCreditOrderAmountDataTest extends TestCase
      */
     public function testValidateWithNullAmount()
     {
-        $this->inputData['amount'] = null;
+        $this->inputData['creditedamount'] = null;
         $this->invokeMethod($this->validateCreditOrderAmount, 'validate', array($this->inputData));
     }
 
@@ -185,7 +185,7 @@ class ValidateCreditOrderAmountDataTest extends TestCase
      */
     public function testValidateWithAmountAsDecimal()
     {
-        $this->inputData['amount'] = 204.5;
+        $this->inputData['creditedamount'] = 204.5;
         $this->invokeMethod($this->validateCreditOrderAmount, 'validate', array($this->inputData));
     }
 

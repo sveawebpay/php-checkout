@@ -47,7 +47,7 @@ try {
     $data = array(
         "orderId" => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
         "deliveryId" => 1,          // required - Int - Id of order delivery
-        "amount" => 2000,       // required - Int Amount to be credit minor currency,
+        "creditedAmount" => 2000,       // required - Int Amount to be credit minor currency,
     );
     $response = $checkoutClient->creditOrderAmount($data);
     print_r($response);

@@ -18,7 +18,7 @@ class ValidateCreditOrderAmountData extends ValidationService
         $this->mustBeSet($data, 'deliveryid', 'Delivery Id');
         $this->mustBeInteger($data['deliveryid'], 'Delivery Id');
 
-        $this->mustBeSet($data, 'amount', 'Credit Amount');
-        $this->mustBeInteger($data['amount'], 'Credit Amount');
+        $this->mustBeSet($data, 'creditedamount', 'Credit Amount');
+        $this->mustBeInteger($data['creditedamount'], 'Credit Amount');
     }
 }

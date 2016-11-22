@@ -25,8 +25,8 @@ class ValidateCancelOrderData extends ValidationService
         $this->mustBeInteger($data['orderid'], 'Order Id');
 
         if ($this->isCancelAmount === true) {
-            $this->mustBeSet($data, 'amount', 'Amount');
-            $this->mustBeInteger($data['amount'], 'Amount');
+            $this->mustBeSet($data, 'cancelledamount', 'Cancelled Amount');
+            $this->mustBeInteger($data['cancelledamount'], 'Cancelled Amount');
         }
     }
 

@@ -32,7 +32,7 @@ class CancelOrderTest extends TestCase
     {
         $inputData = array(
             'orderid' => 1,
-            'amount' => 15000
+            'cancelledamount' => 15000
         );
 
         $this->cancelOrder->prepareData($inputData);
@@ -41,14 +41,14 @@ class CancelOrderTest extends TestCase
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
-        $this->assertArrayNotHasKey('amount', $requestBodyData);
+        $this->assertArrayNotHasKey('cancelledamount', $requestBodyData);
     }
 
     public function testPrepareDataCancelOrderAmount()
     {
         $inputData = array(
             'orderid' => 1,
-            'amount' => 15000
+            'cancelledamount' => 15000
         );
 
         $this->cancelOrder->setIsCancelAmount(true);
@@ -58,7 +58,7 @@ class CancelOrderTest extends TestCase
         $requestBodyData = json_decode($requestModel->getBody(), true);
 
         $this->assertEquals(Request::METHOD_PATCH, $requestModel->getMethod());
-        $this->assertEquals($inputData['amount'], $requestBodyData['cancelledAmount']);
+        $this->assertEquals($inputData['cancelledamount'], $requestBodyData['cancelledAmount']);
     }
 
     public function testInvoke()

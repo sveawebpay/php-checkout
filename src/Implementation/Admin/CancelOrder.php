@@ -51,7 +51,7 @@ class CancelOrder extends AdminImplementationManager
         $requestData = array();
 
         if ($this->isCancelAmount === true) {
-            $requestData['cancelledAmount'] = $data['amount'];
+            $requestData['cancelledAmount'] = $data['cancelledamount'];
         } else {
             /**
              * Determines that this order is cancelled
