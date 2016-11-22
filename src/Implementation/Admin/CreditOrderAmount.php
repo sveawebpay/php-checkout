@@ -36,7 +36,7 @@ class CreditOrderAmount extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        $requestData['amount'] = $data['amount'];
+        $requestData['creditedAmount'] = $data['amount'];
 
         $orderId = $data['orderid'];
         $deliveryId = $data['deliveryid'];
