@@ -437,11 +437,11 @@ The order can only be considered “ready to send to customer” when the checko
 | Parameter   | Description     |
 |-------------|-----------------|
 | Null        | The customer havn’t confirmed the order or can still change paymentType. |
-| Invoice     | The customer chose Invoice |
+| Invoice     | Invoice |
 | PaymentPlan |	The customer chose a payment plan |
 | Card	      | The customer paid the order with card |
 | DirectBank  |	The customer paid the order with direct bank e.g. Nordea, SEB. |
-| Account	  | The customer chose to use their account credit. |
+| AccountCredit	  | The customer chose to use their account credit. |
 
 
 ### 8.0 HttpStatusCodes
@@ -488,7 +488,7 @@ A task will explain the status of a previously performed operation. When finishe
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| array of *taskId*             |	*        | long      | Id of the queued task. |
+| array of *taskId*             |	*        | int      | Id of the queued task. |
 #### Response
 
 | Parameters OUT                 |Type      | Description  |
@@ -505,7 +505,7 @@ However if a subset of all active order rows are specified a partial delivery wi
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRowIds                   |	*        | array      | array of [*orderRowIds*](TODO:LINK) To deliver whole order just send orderRowIds as empty array |
 
 ```php
@@ -527,7 +527,7 @@ Cancel an order before it has been delivered. Assuming the order has the action 
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
 
 
 ```php
@@ -548,8 +548,8 @@ The new *CancelledAmount* cannot be equal to or lower than the current *Cancelle
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
-| cancelledAmount               |	*        | long(1-13)      | 1-13 digits, only positive. Minor currency. |
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
+| cancelledAmount               |	*        | int(1-13)      | 1-13 digits, only positive. Minor currency. |
 
 
 ```php
@@ -570,14 +570,14 @@ Changes the status of an order row to *Cancelled*, assuming the order has the ac
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
-| orderRowId                    |	*        | long      | Id of the specified row|
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
+| orderRowId                    |	*        | int      | Id of the specified row|
 
 
 ```php
       $data = array(
-          "orderId" => 51764, // required - Long  filed (Specified Checkout order for cancel amount)
-          "orderRowId" => 2, // required - Long - Id of the specified row.
+          "orderId" => 51764, // required - int  filed (Specified Checkout order for cancel amount)
+          "orderRowId" => 2, // required - int - Id of the specified row.
       );
   
       $response = $checkoutClient->cancelOrderRow($data);
@@ -593,15 +593,15 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
-| deliveryId                    |	*        | long      | Id of the specified row|
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
+| deliveryId                    |	*        | int      | Id of the specified row|
 | orderRowIds                   |	*        | array      | Id of the specified row|
 
 
 ```php
        $data = array(
-             "orderId" => 7427, // required - Long  filed (Specified Checkout order for cancel amount)
-             "deliveryId" => 1, // required - Long - Id of the specified delivery.
+             "orderId" => 7427, // required - int  filed (Specified Checkout order for cancel amount)
+             "deliveryId" => 1, // required - int - Id of the specified delivery.
              "orderRowIds" => array(2), // required - Array - Ids of the delivered order rows that will be credited.
          );
          $response = $checkoutClient->creditOrderRows($data);
@@ -617,15 +617,15 @@ By specifying a new credit row, a new credit row will be created on the delivery
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
-| deliveryId                    |	*        | long      | Id of the specified row. |
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
+| deliveryId                    |	*        | int      | Id of the specified row. |
 | newCreditOrderRow             |	*        | array      | The new credit row. |
 
 
 ```php
          $data = array(
-               "orderId" => 7427, // required - Long  filed (Specified Checkout order for cancel amount)
-               "deliveryId" => 1, // required - Long - Id of the specified delivery.
+               "orderId" => 7427, // required - int  filed (Specified Checkout order for cancel amount)
+               "deliveryId" => 1, // required - int - Id of the specified delivery.
                "newCreditOrderRow" => array( // required - New order row for order crediting
                    "name" => "credit row",
                    "quantity" => 100,
@@ -649,14 +649,14 @@ This method requires **CanCreditAmount** on the delivery.
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
 | deliveryId                    |	*        | int      | Id of the specified row. |
 | creditedAmount                |	*        | int(1-13)| 1-13 digits, only positive. Minor currency. |
 
 
 ```php
          $data = array(
-                "orderId" => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
+                "orderId" => 204,        // required - int  filed (Specified Checkout order for cancel amount)
                 "deliveryId" => 1,          // required - Int - Id of order delivery
                 "creditedAmount" => 2000,       // required - Int Amount to be credit minor currency,
             );
@@ -675,12 +675,12 @@ If the new order amount will exceed the current order amount, a credit check wil
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRow                      |	*        | array      | Id of the specified row. |
 
 ```php
        $data = array(
-              "orderId" => 51764,        // required - Long  filed (Specified Checkout order for cancel amount)
+              "orderId" => 51764,        // required - int  filed (Specified Checkout order for cancel amount)
               "orderRow" => array(
                   "ArticleNumber" => "prod-04",
                   "Name" => "someProd",
@@ -708,14 +708,14 @@ If the new order amount will exceed the current order amount, a credit check wil
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRowId                    |	*        | int      | Id of the specified row. |
 | orderRow                      |	*        | array      | TODO link orderrow |
 
 ```php
        $data = array(
-            "orderId" => 51764, // required - Long  Id of the specified order
-            "orderRowId" => 3, // required - Long - Id of the specified order rows that will be updated.
+            "orderId" => 51764, // required - int  Id of the specified order
+            "orderRowId" => 3, // required - int - Id of the specified order rows that will be updated.
             "orderRow" => array(
                 "articleNumber" => "prod11",
                 "name" => "iPhone",
@@ -733,8 +733,9 @@ If the new order amount will exceed the current order amount, a credit check wil
 |-------------------------------|-----------|--------------|
 | TODO                          | string      | TODO|
 
-### 9.12 Error handling
-### 9.13 Data types
+
+
+
 
 
 
