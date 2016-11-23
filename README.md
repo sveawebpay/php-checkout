@@ -458,6 +458,9 @@ The order can only be considered “ready to send to customer” when the checko
 
 ## 9. Administrate orders
 
+[See full examples](examples/admin)
+
+
 ### 9.1 Get order
 This method is used to get the entire order with all its relevant information. Including its deliveries, rows, credits and addresses.
 
@@ -465,20 +468,13 @@ This method is used to get the entire order with all its relevant information. I
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | long      | Checkout order id of the specified order. |
-
-```php
-    $data = array(
-        "orderId" => 51951
-    );
-    $response = $checkoutClient->getOrder($data);
-```
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
 
 #### Response
 
 | Parameters OUT                | Type      | Description  |
 |-------------------------------|-----------|--------------|
-| info about the order          | [*Order*](#TODO:ORDER DATATYPE) | An array containing all the order details. See order structure in Data objects chapter. |
+| info about the order          | array     | An array containing all the order details. |
 
 
 
@@ -488,7 +484,8 @@ A task will explain the status of a previously performed operation. When finishe
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| array of *taskId*             |	*        | int      | Id of the queued task. |
+| locationUrl                   |	*        | string        | Key **HeaderLocation** in response array from accepted admin requests. |
+
 #### Response
 
 | Parameters OUT                 |Type      | Description  |
