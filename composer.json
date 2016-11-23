@@ -1,10 +1,7 @@
 {
-  "name": "svea/checkout-php",
-  "type": "library",
+  "name": "sveaekonomi/checkout",
   "version": "1.0.0",
-  "description": "The officially supported php library for Svea Checkout",
-  "keywords": [],
-  "homepage": "http://svea.com",
+  "description": "Php integration library for Svea Checkout",
   "license": "Apache-2.0",
   "authors": [
     {
