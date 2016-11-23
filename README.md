@@ -468,8 +468,8 @@ If the returned ResultCode is not present in the above tables please contact Sve
 If any action is unsuccessful or there is any other error, library will throw exception
 
 **Possible Exceptions**
-\Svea\Checkout\Exception\SveaInputValidationException - If any of the input fields is invalid ot missing.
-\Svea\Checkout\Exception\SveaApiException - If there is some problem with API connection or some error occurred with data validation on API side.
+\Svea\Checkout\Exception\SveaInputValidationException - If any of the input fields is invalid or missing.
+\Svea\Checkout\Exception\SveaApiException - If there is some problem with API connection or some error occurred with data validation on the API side.
 \Svea\Checkout\Exception\SveaConnectorException - will be returned if some of fields merchantId, sharedSecret or baseUrl is missing.
 \Exception - For any other error
 
@@ -515,7 +515,7 @@ However if a subset of all active order rows are specified a partial delivery wi
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
 | orderId                       |	*        | int       | Checkout order id of the specified order. |
-| orderRowIds                   |	*        | array     | array of **orderRowIds** To deliver whole order just send orderRowIds as empty array |
+| orderRowIds                   |	*        | array     | array of *orderRowIds* To deliver whole order just send orderRowIds as empty array |
 
 #### Response
 
@@ -734,17 +734,7 @@ If order row is successfully updated, Response is empty.
 | Cancelled             | The order is fully cancelled |
 | Failed                | The payment for this order has failed |
 
-#### 9.12.8 Payment Type
-
-| Parameter             |  Description                                               |
-|-----------------------|------------------------------------------------------------|
-| Invoice               | Invoice order |
-| PaymentPlan           | PaymentPlan order |
-| AccountCredit         | AccountCredit order | 
-| Card                  | Card order |
-| DirectBank            | DirectBank order |
-
-#### 9.12.9 Order actions
+#### 9.12.8 Order actions
 
 | Parameter                 |  Description                                               |
 |---------------------------|------------------------------------------------------------|
@@ -756,7 +746,7 @@ If order row is successfully updated, Response is empty.
 | CanAddOrderRow            ||
 | CanUpdateOrderRow         ||
 
-#### 9.12.10 Delivery actions
+#### 9.12.9 Delivery actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -764,7 +754,7 @@ If order row is successfully updated, Response is empty.
 | CanCreditOrderRows    ||
 | CanCreditAmount       ||		
 
-#### 9.12.11 Order Row actions
+#### 9.12.10 Order Row actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
