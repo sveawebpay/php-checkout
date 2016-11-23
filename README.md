@@ -19,7 +19,7 @@ paymentPlan, invoice, account payments. Also including our own payment gateway w
 The checkout supports both B2C and B2B payments, fast customer identification and caches customers behaviour. 
 For administration of orders, you can either implement it in your own project, or use our new admin interface.
 
-The library provides entry points to Create Order, Get Order and for Updating Order.
+The library provides entry points to integrate the checkout into your platform and to administrate checkout orders.
 
 ### 1. Setup
 
@@ -445,21 +445,33 @@ The order can only be considered “ready to send to customer” when the checko
 
 
 ### 8.0 HttpStatusCodes
-| Parameter | Type         | Description |
-|-----------|--------------|-------------|
-| 200       | Success      | Request was successful. |
-| 201       | Created      | The order was created successfully. |
-| 302       | Found        | The order was found. |
-| 400       | Bad Request  | The input data was invalid. |
-| 401       | Unauthorized | The request did not contain correct authorization. |
-| 403       | Forbidden    | The request did not contain correct authorization. |
-| 404       | Not found    | No order with the requested ID was found. |
+| Parameter | Type          | Description |
+|-----------|---------------|-------------|
+| 200       | Success       | Request was successful. |
+| 201       | Created       | The order was created successfully. The request has been fulfilled, resulting in the creation of a new resource. |
+| 202       | Accepted      | Request has been accepted and is in progress. |
+| 204       | No content    | The server successfully processed the request and is not returning any content. |
+| 302       | Found         | The order was found. |
+| 303       | See Other     | Task is complete, Location URI in header. |
+| 400       | Bad Request   | The input data was invalid. Validation error. |
+| 401       | Unauthorized  | The request did not contain correct authorization. | 
+| 403       | Forbidden     | The request did not contain correct authorization. | 
+| 404       | Not Found     | No order with the requested ID was found. | 
 
+If the returned ResultCode is not present in the above tables please contact SveaWebPay for further information.
 
 ## 9. Administrate orders
 
 [See full examples](examples/admin)
 
+### Errors
+If any action is unsuccessful or there is any other error, library will throw exception
+
+**Possible Exceptions**
+\Svea\Checkout\Exception\SveaInputValidationException - If any of the input fields is invalid ot missing.
+\Svea\Checkout\Exception\SveaApiException - If there is some problem with API connection or some error occurred with data validation on API side.
+\Svea\Checkout\Exception\SveaConnectorException - will be returned if some of fields merchantId, sharedSecret or baseUrl is missing.
+\Exception - For any other error
 
 ### 9.1 Get order
 This method is used to get the entire order with all its relevant information. Including its deliveries, rows, credits and addresses.
@@ -484,13 +496,13 @@ A task will explain the status of a previously performed operation. When finishe
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| locationUrl                   |	*        | string        | Key **HeaderLocation** in response array from accepted admin requests. |
+| locationUrl                   |	*        | string    | Key **HeaderLocation** in response array from accepted admin requests. |
 
 #### Response
 
 | Parameters OUT                 |Type      | Description  |
 |-------------------------------|-----------|--------------|
-| taskId                        | array      | TODO: |
+| Task                          | Task      | And object containing details regarding a queued task |
 
 ### 9.3 Deliver order
 Creates a delivery on a checkout order. Assuming the order got the **CanDeliverOrder** action.
@@ -502,22 +514,14 @@ However if a subset of all active order rows are specified a partial delivery wi
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | int      | Checkout order id of the specified order. |
-| orderRowIds                   |	*        | array      | array of [*orderRowIds*](TODO:LINK) To deliver whole order just send orderRowIds as empty array |
+| orderId                       |	*        | int       | Checkout order id of the specified order. |
+| orderRowIds                   |	*        | array     | array of **orderRowIds** To deliver whole order just send orderRowIds as empty array |
 
-```php
-    $data = array(
-        "orderId" => 51951,
-        /* To deliver whole order just send orderRowIds as empty array */
-        "orderRowIds" => array()
-    );
-    $response = $checkoutClient->deliverOrder($data);
-```
 #### Response
 
-| Parameters OUT                 |Type      | Description  |
+| Parameters OUT                |Type       | Description  |
 |-------------------------------|-----------|--------------|
-| HeaderLocation                      | string      | URI to the created task. |
+| HeaderLocation                | string    | URI to the created task. (Absolute URL) |
 
 ### 9.4 Cancel Order
 Cancel an order before it has been delivered. Assuming the order has the action **CanCancelOrder**.
@@ -527,117 +531,73 @@ Cancel an order before it has been delivered. Assuming the order has the action 
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 
 
-```php
-     $data = array(
-            "orderId" => 204
-        );
-    
-        $response = $checkoutClient->cancelOrder($data);
-```
 #### Response
-| Parameters OUT                |Type      | Description  |
-|-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+
+If the order is successfully cancelled, Response is empty. 
+
 ### 9.5 Cancel order amount
-By specifying a higher amount than the current order cancelled amount then the order cancelled amount will increase, assuming the order has the action **CanCancelOrderAmount**. The delta between the new *CancelledAmount* and the former *CancelledAmount* will be cancelled.
+By specifying a higher amount than the current order cancelled amount then the order cancelled amount will increase, 
+assuming the order has the action **CanCancelOrderAmount**. The delta between the new *CancelledAmount* and the former *CancelledAmount* will be cancelled.
 
 The new *CancelledAmount* cannot be equal to or lower than the current *CancelledAmount* or more than *OrderAmount* on the order.
 
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| orderId                       |	*        | int      | Checkout order id of the specified order. |
-| cancelledAmount               |	*        | int(1-13)      | 1-13 digits, only positive. Minor currency. |
+| orderId                       |	*        | int       | Checkout order id of the specified order. |
+| cancelledAmount               |	*        | int(1-13) | 1-13 digits, only positive. Minor currency. |
 
 
-```php
-    $data = array(
-           "orderId" => 204,
-           "cancelledAmount" => 5000
-       );
-   
-       $response = $checkoutClient->cancelOrderAmount($data);
-
-```
 #### Response
-| Parameters OUT                |Type      | Description  |
-|-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+
+If order amount is successfully cancelled, Response is empty.
+
 ### 9.6 Cancel order row
 Changes the status of an order row to *Cancelled*, assuming the order has the action **CanCancelOrderRow** and the OrderRow has the action **CanCancelRow**. 
 
-| Parameters IN                 | Required   | Type      | Description  |
-|-------------------------------|------------|-----------|--------------|
+| Parameters IN                 | Required   | Type     | Description  |
+|-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRowId                    |	*        | int      | Id of the specified row|
 
 
-```php
-      $data = array(
-          "orderId" => 51764, // required - int  filed (Specified Checkout order for cancel amount)
-          "orderRowId" => 2, // required - int - Id of the specified row.
-      );
-  
-      $response = $checkoutClient->cancelOrderRow($data);
-
-```
 #### Response
-| Parameters OUT                |Type      | Description  |
-|-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+
+If order row is successfully cancelled, Response is empty.
 
 ### 9.7 Credit order rows
 Creates a new credit on the specified delivery with specified order rows. Assuming the delivery has action **CanCreditOrderRows** and the specified order rows also has action **CanCreditRow**
 
-| Parameters IN                 | Required   | Type      | Description  |
-|-------------------------------|------------|-----------|--------------|
+| Parameters IN                 | Required   | Type     | Description  |
+|-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| deliveryId                    |	*        | int      | Id of the specified row|
-| orderRowIds                   |	*        | array      | Id of the specified row|
+| deliveryId                    |	*        | int      | Id of the specified delivery row |
+| orderRowIds                   |	*        | array    | Id of the specified row |
 
 
-```php
-       $data = array(
-             "orderId" => 7427, // required - int  filed (Specified Checkout order for cancel amount)
-             "deliveryId" => 1, // required - int - Id of the specified delivery.
-             "orderRowIds" => array(2), // required - Array - Ids of the delivered order rows that will be credited.
-         );
-         $response = $checkoutClient->creditOrderRows($data);
-
-```
 #### Response
-| Parameters OUT                |Type      | Description  |
+
+| Parameters OUT                |Type       | Description  |
 |-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+| HeaderLocation                | string    | URI to the created task. (Absolute URL) |
+
+On the returned URL can be checked status of the task.
 
 ### 9.8 Credit new order row
 By specifying a new credit row, a new credit row will be created on the delivery, assuming the delivery has action **CanCreditNewRow**.
 
-| Parameters IN                 | Required   | Type      | Description  |
-|-------------------------------|------------|-----------|--------------|
+| Parameters IN                 | Required   | Type     | Description  |
+|-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| deliveryId                    |	*        | int      | Id of the specified row. |
-| newCreditOrderRow             |	*        | array      | The new credit row. |
+| deliveryId                    |	*        | int      | Id of the specified delivery row. |
+| newCreditOrderRow             |	*        | array    | The new credit row. |
 
-
-```php
-         $data = array(
-               "orderId" => 7427, // required - int  filed (Specified Checkout order for cancel amount)
-               "deliveryId" => 1, // required - int - Id of the specified delivery.
-               "newCreditOrderRow" => array( // required - New order row for order crediting
-                   "name" => "credit row",
-                   "quantity" => 100,
-                   "unitPrice" => 5000,
-                   "vatPercent" => 0,       // required - 0, 6, 12, 25
-               )
-           );
-           $response = $checkoutClient->creditNewOrderRow($data);
-
-```
 #### Response
 
-| Parameters OUT                |Type      | Description  |
+| Parameters OUT                |Type       | Description  |
 |-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+| HeaderLocation                | string    | URI to the created task. (Absolute URL) |
+
+On the returned URL can be checked status of the task.
 
 ### 9.9 Credit amount
 By specifying a credited amount larger than the current credited amount. A credit is being made on the specified delivery. The credited amount cannot be lower than the current credited amount or larger than the delivered amount.
@@ -647,103 +607,168 @@ This method requires **CanCreditAmount** on the delivery.
 | Parameters IN                 | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| deliveryId                    |	*        | int      | Id of the specified row. |
+| deliveryId                    |	*        | int      | Id of the specified delivery row. |
 | creditedAmount                |	*        | int(1-13)| 1-13 digits, only positive. Minor currency. |
 
-
-```php
-         $data = array(
-                "orderId" => 204,        // required - int  filed (Specified Checkout order for cancel amount)
-                "deliveryId" => 1,          // required - Int - Id of order delivery
-                "creditedAmount" => 2000,       // required - Int Amount to be credit minor currency,
-            );
-            $response = $checkoutClient->creditOrderAmount($data);
-
-```
 #### Response
 
-| Parameters OUT                |Type      | Description  |
-|-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+If order amount is successfully credited, Response is empty.
 
 ### 9.10 Add order row
 This method is used to add order rows to an order, assuming the order has the action **CanAddOrderRow**. 
 If the new order amount will exceed the current order amount, a credit check will be performed.
 
-| Parameters IN                 | Required   | Type      | Description  |
-|-------------------------------|------------|-----------|--------------|
+| Parameters IN                 | Required   | Type     | Description  |
+|-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| orderRow                      |	*        | array      | Id of the specified row. |
+| orderRow                      |	*        | array    | Order Row data. |
 
-```php
-       $data = array(
-              "orderId" => 51764,        // required - int  filed (Specified Checkout order for cancel amount)
-              "orderRow" => array(
-                  "ArticleNumber" => "prod-04",
-                  "Name" => "someProd",
-                  "Quantity" => 300, // minor unit
-                  "UnitPrice" => 5000,
-                  "DiscountPercent" => "", // optional 0-100 minor unit
-                  "VatPercent" => 0,       // required - 0, 6, 12, 25
-                  "Unit" => "pc"           // optional st, pc, kg, etc.
-              )
-          );
-      
-          $response = $checkoutClient->addOrderRow($data);
-
-```
 #### Response
 
-| Parameters OUT                |Type      | Description  |
+| Parameters OUT                |Type       | Description  |
 |-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+| HeaderLocation                | string    | URI to the created task. (Absolute URL) |
+| OrderRowId                    | int       | The row id of the newly created Order Row |
+
+On the returned URL (HeaderLocation) can be checked status of the task.
 
 ### 9.11 Update order row
 This method is used to update an order row, assuming the order has action "CanUpdateOrderRow" and the order row has the action **CanUpdateRow**. 
 The method will update all fields set in the payload, if a field is not set the row will keep the current value.
 If the new order amount will exceed the current order amount, a credit check will be performed.
 
-| Parameters IN                 | Required   | Type      | Description  |
-|-------------------------------|------------|-----------|--------------|
+| Parameters IN                 | Required   | Type     | Description  |
+|-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRowId                    |	*        | int      | Id of the specified row. |
-| orderRow                      |	*        | array      | TODO link orderrow |
+| orderRow                      |	*        | array    | Use only those fields that need to be updated. |
 
-```php
-       $data = array(
-            "orderId" => 51764, // required - int  Id of the specified order
-            "orderRowId" => 3, // required - int - Id of the specified order rows that will be updated.
-            "orderRow" => array(
-                "articleNumber" => "prod11",
-                "name" => "iPhone",
-                "quantity" => 400, // minor unit
-                "discountPercent" => 400, // minor unit
-            )
-        );
-    
-        $response = $checkoutClient->updateOrderRow($data);
-
-```
 #### Response
 
-| Parameters OUT                |Type      | Description  |
-|-------------------------------|-----------|--------------|
-| TODO                          | string      | TODO|
+If order row is successfully updated, Response is empty.
 
 
+### 9.12 Data objects
 
+#### 9.12.1 Order
+| Parameter             |   Type        | Description                                               |
+|-----------------------|---------------|-----------------------------------------------------------|
+| Id                    |   int	        | Checkoutorderid of the order|
+| Currency	            |  string	    | The current currency as defined by ISO 4217, i.e. SEK, NOK etc.|
+| MerchantOrderId	    |  string	    | A string with maximum of 32 characters that identifies the order in the merchant’s systems.| 
+| OrderStatus           |  string       | The current state of the order, see list of possible OrderStatus below.| 
+| EmailAddress          |  string       | The customer’s email address|
+| PhoneNumber           |  string       | The customer’s phone number| 
+| PaymentType           | string        | The final payment method for the order. Will only have a value when the order is locked, otherwise null. See list of possible PaymentType below.|
+| CreationDate          | DateTime      | Date and time when the order was created|
+| NationalId            | string        | Personal- or organizationnumber.|
+| IsCompany             | boolean       | True if nationalid is organisationnumber, false if nationalid is personalnumber.|  
+| OrderAmount           | int           | The total amount on the order. Minor unit|
+| CancelledAmount       | int           | The total cancelled amount on the order. Minor uit|
+| ShippingAddress       | Address       | Shipping address of identified customer.|   
+| BillingAddress        | Address       | Billing address of identified customer.|
+| OrderRows             | List of OrderRow | |
+| Deliveries            | List of Delivery | |
+| Actions               | List of String | A list of actions possible on the order.|
 
+#### 9.12.2 Delivery
 
+| Parameter             |   Type        | Description                                               |
+|-----------------------|---------------|-----------------------------------------------------------|
+| Id                    | int           |	Delivery id                                             |
+| CreationDate          | DateTime      | Date and time when the order was created|
+| InvoiceId             | int           | Invoice identification number, is only set if the payment method is invoice|
+| DeliveryAmount        | int           | The total amount on the delivery. Minor unit|
+| CreditedAmount        | int           | The total credited amount on the delivery. Minor unit|
+| Credits               | List of Credit| |
+| OrderRows             | List of OrderRow | | 
+| Actions               | List of string | A list of actions possible on the delivery.|
 
+#### 9.12.3 Credit
 
+| Parameter             |   Type        | Description                                               |
+|-----------------------|---------------|-----------------------------------------------------------|
+| Amount	            | Long          |	Credited amount. Minor currency.|
+| OrderRows             | List of OrderRow | |
+| Actions               | List of String | A list of actions possible on the credit.|
 
+#### 9.12.4 Task
 
+| Parameter             |   Type        | Description                                               |
+|-----------------------|---------------|-----------------------------------------------------------|
+| Id	                | Long          |	Identifier for the task |
+| Status                | String        | Status of the task |
 
+#### 9.12.5 Order Row
 
+|Parameter	            |R  | RO | Type     | Description                   |	Limits|
+|-----------------------|---|----|----------|-------------------------------|-------------------|
+| OrderRowId            |   | *  |int      | Order row id from underlying system, unique on order. | Not possible to set through API, only get.|
+| ArticleNumber         |   |    |string    | Articlenumber as a string, can contain letters and numbers. | Maximum 256 characters.   |
+| Name                  | * |    |string    | Article name. | 1-40 characters. |
+| Quantity              | * |    |int      | Quantity of the product. | 1-9 digits. Minor unit.|
+| UnitPrice             | * |    |int      | Price of the product including VAT. | 1-13 digits, can be negative. Minor currency.|
+| DiscountPercent       |   |    |int      | The discountpercent of the product. | 0-9900. Minor unit| 
+| VatPercent            | * |    |int      | The VAT percentage of the current product. | Valid vat percentage for that country . Minor unit.0-10000|
+| Unit                  |   |    |string    | The unit type, e.g., “st”, “pc”, “kg” etc.  | 0-4 characters. |
+| IsCancelled           |   | *  |boolean  | Determines if the row is cancelled. | Not possible to set through API, only get.|
+| Actions               |   | *  |List of string | A list of actions possible on the order row. See list of OrderRow actions below. | Not possible to set through API, only get.|
 
+#### 9.12.6 Address
 
+| Parameter             |   Type        | Description                                               |
+|-----------------------|---------------|-----------------------------------------------------------|
+| FullName              | 	string      | 	Company: name of the company. Individual: first, middle and last name(s)  |
+| StreetAddress         | 	string      | 	Street address |
+| CoAddress             | 	string      | 	Co address |
+| PostalCode            | 	string      | 	Postal code |
+| City                  | 	string      | 	City |
+| CountryCode           | 	string      | 	2-letter ISO country code |
 
+#### 9.12.7 Order Status
 
+| Parameter             |  Description                                               |
+|-----------------------|------------------------------------------------------------|
+| Open                  | The order is open and active. This includes partially delivered orders |
+| Delivered             | The order is fully delivered |
+| Cancelled             | The order is fully cancelled |
+| Failed                | The payment for this order has failed |
 
+#### 9.12.8 Payment Type
 
+| Parameter             |  Description                                               |
+|-----------------------|------------------------------------------------------------|
+| Invoice               | Invoice order |
+| PaymentPlan           | PaymentPlan order |
+| AccountCredit         | AccountCredit order | 
+| Card                  | Card order |
+| DirectBank            | DirectBank order |
 
+#### 9.12.9 Order actions
+
+| Parameter                 |  Description                                               |
+|---------------------------|------------------------------------------------------------|
+| CanDeliverOrder           ||
+| CanDeliverOrderPartially  ||
+| CanCancelOrder            ||
+| CanCancelOrderRow         ||
+| CanCancelOrderAmount      ||
+| CanAddOrderRow            ||
+| CanUpdateOrderRow         ||
+
+#### 9.12.10 Delivery actions
+
+| Parameter             |  Description                                               |
+|-----------------------|------------------------------------------------------------|
+| CanCreditNewRow       ||
+| CanCreditOrderRows    ||
+| CanCreditAmount       ||		
+
+#### 9.12.11 Order Row actions
+
+| Parameter             |  Description                                               |
+|-----------------------|------------------------------------------------------------|
+| CanDeliverRow         ||	
+| CanCancelRow          ||
+| CanCreditRow          ||	
+| CanUpdateRow          ||
