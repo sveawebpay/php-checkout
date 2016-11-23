@@ -8,9 +8,8 @@
   "license": "Apache-2.0",
   "authors": [
     {
-      "name": "Svea Ekonomi",
-      "email": "integration@svea.com",
-      "homepage": "http://svea.com"
+      "name": "Svea Ekonomi AB",
+      "email": "support-webpay@sveaekonomi.se"
     }
   ],
   "autoload": {
