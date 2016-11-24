@@ -41,7 +41,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "locationUrl" => 'http://webpaypaymentadminapi.test.svea.com/api/v1/queue/1'
+        "locationUrl" => 'http://webpaypaymentadminapi.test.svea.com/api/v1/queue/2'
     );
 
     $response = $checkoutClient->getTask($data);
