@@ -43,7 +43,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 51764, // required - Long  Id of the specified order
+        "orderId" => 51955, // required - Long  Id of the specified order
         "orderRowId" => 3, // required - Long - Id of the specified order rows that will be updated.
         "orderRow" => array(
             "articleNumber" => "prod11",

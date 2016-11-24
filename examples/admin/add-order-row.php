@@ -43,7 +43,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 51764,        // required - Long  filed (Specified Checkout order for cancel amount)
+        "orderId" => 51955,        // required - Long  filed (Specified Checkout order for cancel amount)
         "orderRow" => array(
             "ArticleNumber" => "prod-04",
             "Name" => "someProd",
