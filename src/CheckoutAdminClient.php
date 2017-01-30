@@ -119,7 +119,10 @@ class CheckoutAdminClient
      */
     public function creditNewOrderRow($data)
     {
-        return $this->executeAction(ImplementationAdminFactory::returnCreditOrderRowsClass($this->connector, true), $data);
+        return $this->executeAction(
+            ImplementationAdminFactory::returnCreditOrderRowsClass($this->connector, true),
+            $data
+        );
     }
 
     /**

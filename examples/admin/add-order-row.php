@@ -20,8 +20,8 @@ require_once '../../include.php';
  * Shared Secret string between Svea and merchant
  * Base Url for SVEA Api. Can be TEST_ADMIN_BASE_URL and PROD_ADMIN_BASE_URL
  */
-$checkoutMerchantId = 100001;
-$checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d1";
+$checkoutMerchantId = 100002;
+$checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d2";
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 try {
@@ -43,7 +43,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 51955,        // required - Long  filed (Specified Checkout order for cancel amount)
+        "orderId" => 65017,        // required - Long  filed (Specified Checkout order for cancel amount)
         "orderRow" => array(
             "ArticleNumber" => "prod-04",
             "Name" => "someProd",
@@ -56,6 +56,14 @@ try {
     );
 
     $response = $checkoutClient->addOrderRow($data);
+    $location = $response['HeaderLocation'];
+
+    $data = array(
+        "locationUrl" => $location
+    );
+
+    $response = $checkoutClient->getTask($data);
+
     print_r($response);
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     examplePrintError($ex, 'Api errors');

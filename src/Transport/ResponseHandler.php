@@ -18,9 +18,10 @@ class ResponseHandler
      * 202 - Accepted
      * 204 - No Content
      * 302 - Found
+     * 303 - See Other
      * @var array
      */
-    private $httpSuccessfulCodes = array(200, 201, 202, 204, 302);
+    private $httpSuccessfulCodes = array(200, 201, 202, 204, 302, 303);
 
     /**
      * Svea Checkout Api response content.
@@ -72,11 +73,18 @@ class ResponseHandler
     {
         if (!in_array($this->httpCode, $this->httpSuccessfulCodes)) {
             $errorMessage = 'Undefined error occurred.';
+            $errorCode = null;
 
             if (!empty($this->body)) {
                 $errorContent = $this->getContent();
-                $errorCode = $errorContent['Code'];
-                $errorMessage = $errorContent['Message'];
+                if (isset($errorContent['Code'])) {
+                    $errorCode = $errorContent['Code'];
+                }
+
+                if (isset($errorContent['Message'])) {
+                    $errorMessage = $errorContent['Message'];
+                }
+
                 if (isset($errorContent['Errors']) && is_array($errorContent['Errors'])) {
                     $error = $errorContent['Errors'][0];
                     $errorMessage = $error['ErrorMessage'];
@@ -141,10 +149,7 @@ class ResponseHandler
          */
         if ($this->httpCode === 204) {
             $returnData = '';
-        } elseif ($this->httpCode === 202) {
-            /**
-             * Fix for 202 Accepted - http response
-             */
+        } else {
             $bodyContent = $this->getContent();
             if ($bodyContent !== null) {
                 $returnData = $bodyContent;
@@ -154,8 +159,6 @@ class ResponseHandler
             if (isset($header['Location'])) {
                 $returnData['HeaderLocation'] = $header['Location'];
             }
-        } else {
-            $returnData = $this->getContent();
         }
 
         return $returnData;

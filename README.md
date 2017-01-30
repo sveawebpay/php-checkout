@@ -1,5 +1,5 @@
 # PHP Checkout library for Svea Checkout
-Version 1.0.0
+Version 1.0.1
 
 ## Index
 * [1. Setup](#1-setup)
@@ -436,13 +436,29 @@ The order can only be considered “ready to send to customer” when the checko
 #### 7.10 PaymentType
 | Parameter   | Description     |
 |-------------|-----------------|
-| Null        | The customer havn’t confirmed the order or can still change paymentType. |
-| Invoice     | Invoice |
-| PaymentPlan |	The customer chose a payment plan |
-| Card	      | The customer paid the order with card |
-| DirectBank  |	The customer paid the order with direct bank e.g. Nordea, SEB. |
-| AccountCredit	  | The customer chose to use their account credit. |
+| Null        | The customer haven’t confirmed the order or can still change paymentType. |
+| INVOICE     | Invoice |
+| PAYMENTPLAN |	The customer chose a payment plan |
+| SVEACARDPAY	      | The customer paid the order with card |
+| DirectBank(varies)  |	The customer paid the order with direct bank e.g. Nordea, SEB. See below for all available parameters |
+| ACCOUNTCREDIT	  | The customer chose to use their account credit. |
 
+| Parameter         | Description     |
+|-------------------|-----------------|
+|BANKAXESS	        | BankAxess, Norway |
+|DBAKTIAFI	        | Aktia, Finland |
+|DBALANDSBANKENFI	| Ålandsbanken, Finland |
+|DBDANSKEBANKSE	    | Danske bank, Sweden |
+|DBNORDEAFI	        | Nordea, Finland |
+|DBNORDEASE	        | Nordea, Sweden |
+|DBPOHJOLAFI	    | OP-Pohjola, Finland |
+|DBSAMPOFI	        | Sampo, Finland |
+|DBSEBSE	        | SEB, Individuals, Sweden |
+|DBSEBFTGSE	        | SEB, companies, Sweden |
+|DBSHBSE	        | Handelsbanken, Sweden |
+|DBSPANKKIFI	    | S-Pankki, Finland |
+|DBSWEDBANKSE	    | Swedbank, Sweden |
+|DBTAPIOLAFI	    | Tapiola, Finland |
 
 ### 8.0 HttpStatusCodes
 | Parameter | Type          | Description |
