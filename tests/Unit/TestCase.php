@@ -212,9 +212,9 @@ JSON;
             "clientordernumber" => '12312312312213231',
             "merchantsettings" => array(
                 "termsuri" => "http://www.merchant.com/toc",
-                "checkouturi" => "http://www.merchant.com/checkout?klarna_order_id={checkout.order.id}",
-                "confirmationuri" => "http://www.merchant.com/thank-you?klarna_order_id={checkout.order.id}",
-                "pushuri" => "http://www.merchant.com/create_order?klarna_order_id={checkout.order.id}"
+                "checkouturi" => "http://www.merchant.com/checkout?svea_order_id={checkout.order.id}",
+                "confirmationuri" => "http://www.merchant.com/thank-you?svea_order_id={checkout.order.id}",
+                "pushuri" => "http://www.merchant.com/create_order?svea_order_id={checkout.order.id}"
             )
         );
     }
