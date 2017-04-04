@@ -71,7 +71,7 @@ $connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $chec
 Create a new order with the given merchant and cart, where the cart contains the order rows.
 Returns the order information and the Gui needed to display the iframe Svea checkout.
 
-[See full Create order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/create-order.php)
+[See full Create order example](https://github.com/sveawebpay/php-checkout/blob/master/examples/create-order.php)
 
 #### 3.1 Order data
 
