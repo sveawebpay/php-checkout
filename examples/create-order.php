@@ -58,7 +58,7 @@ try {
         "countryCode" => "SE",
         "currency" => "SEK",
         "locale" => "sv-SE",
-        "clientOrderNumber" => 61000,
+        "clientOrderNumber" => rand(10000,30000000),
         "cart" => array(
             "items" => array(
                 array(
@@ -105,7 +105,7 @@ try {
             "termsUri" => "http://localhost:51898/terms",
             "checkoutUri" => "http://localhost:51925/",
             "confirmationUri" => "http://localhost:51925/checkout/confirm",
-            "pushUri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+            "pushUri" => "https://localhost:51925/push.php?svea_order_id={checkout.order.uri}",
         )
     );
     $response = $checkoutClient->create($data);

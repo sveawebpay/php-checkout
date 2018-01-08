@@ -1,5 +1,5 @@
 # PHP Checkout library for Svea Checkout
-Version 1.0.4
+Version 1.0.5
 
 ## Index
 * [1. Setup](#1-setup)
@@ -12,7 +12,6 @@ Version 1.0.4
 * [8. HttpStatusCodes](#8-httpstatuscodes)
 * [9. Administrate orders](#9-administrate-orders)
 
-
 ## Introduction
 The checkout offers a complete solution with a variety of payment methods. The underlying systems for the checkout is our
 paymentPlan, invoice, account payments. Also including our own payment gateway with PCI level 1 for card payments. 
@@ -22,8 +21,6 @@ For administration of orders, you can either implement it in your own project, o
 The library provides entry points to integrate the checkout into your platform and to administrate checkout orders.
 
 ### 1. Setup
-
-The checkout requires jQuery to be able to run properly, if jQuery isn't loaded the iFrame won't appear.
 
 #### 1.1 Install with [**Composer**](https://getcomposer.org/)
 
@@ -71,20 +68,9 @@ $connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $chec
 Create a new order with the given merchant and cart, where the cart contains the order rows.
 Returns the order information and the Gui needed to display the iframe Svea checkout.
 
-[See full Create order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/create-order.php)
+[See full Create order example](https://github.com/sveawebpay/php-checkout/blob/master/examples/create-order.php)
 
 #### 3.1 Order data
-
-| Parameters IN                 | Required   | Type      | Description  |
-|-------------------------------|------------|-----------|--------------|
-| MerchantSettings              |	*        | MerchantSettings     | Specific merchant URIs, see [*Merchant settings*](#71-merchantsettings) |
-| Cart                          |	*        | Cart     | A cart-object containing the [*OrderRows*](#73-orderrows) |
-| Locale                        |	*        | string    | The current locale of the checkout, i.e. sv-SE etc. |
-| Currency                      |	*        | string    | Currency as ISO 4217 eg. "SEK" |
-| CountryCode                   |	*        | string    | The current currency as defined by ISO 4217, i.e. SEK, NOK etc. |
-| ClientOrderNumber             |	*        | string    | A string with maximum of 32 chars that identifies the order in merchant's system. |
-| PresetValues                  |	         | List of PresetValue     | [*Preset values*](#74-presetvalue) chosen by the merchant to be prefilled and eventually locked for changing by the customer. |
-
 
 Sample order data
 ```php
@@ -127,7 +113,7 @@ $data = array(
         "TermsUri" => "http://localhost:51898/terms",
         "CheckoutUri" => "http://localhost:51925/",
         "ConfirmationUri" => "http://localhost:51925/checkout/confirm",
-        "PushUri" => "https://svea.com/push.aspx?sid=123&svea_order=123"
+        "pushUri" => "https://localhost:51925/push.php?svea_order_id={checkout.order.uri}"
     )
 );
 ```
@@ -153,7 +139,7 @@ $response = $checkoutClient->create($data);
 ### 4. Get Order
 Get an existing order. Returns the order information and the Gui needed to display the iframe for Svea checkout.
 
-[See full Get order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/get-order.php)
+[See full Get order example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-order.php)
 
 | Parameters IN                | Required  | Type      | Description  |
 |------------------------------|-----------|-----------|--------------|
@@ -176,9 +162,13 @@ require_once 'include.php';
 
 ...
 
+$data = array(
+        'orderId' => 51721
+    );
+
 $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 
-$response = $checkoutClient->get($orderId);
+$response = $checkoutClient->get($data);
 ```
 
 ### 5. Update Order
@@ -186,7 +176,7 @@ Update an existing order. Returns the order information and the updated Gui need
 
 Updating an order is only possible while the CheckoutOrderStatus is "Created", see [*CheckoutOrderStatus*](#78-checkoutorderstatus).
 
-[See full Update order example](https://github.com/sveawebpay/php-checkout-dev/blob/master/examples/update-order.php)
+[See full Update order example](https://github.com/sveawebpay/php-checkout/blob/master/examples/update-order.php)
 
 | Parameters IN  as URI-parameters: | Required   | Type      | Description  |
 |-----------------------------------|------------|-----------|--------------|
@@ -277,7 +267,7 @@ Array
             [TermsUri] => http://localhost:51898/terms
             [CheckoutUri] => http://localhost:51925/
             [ConfirmationUri] => http://localhost:51925/checkout/confirm
-            [PushUri] => https://svea.com/push.aspx?sid=123&svea_order=123
+            [PushUri] => https://localhost:51925/push.php?svea_order={checkout.order.uri}
         )
 
     [Cart] => Array
@@ -336,6 +326,8 @@ echo $response['Gui']['Snippet']
 ```
 
 ### 7. Data structures
+
+The latest data structures are always available at [Checkout API](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/moduler-integration/merchant-checkout-api.pdf) and [Payment Admin API](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/moduler-integration/paymentadminexternalapi_.pdf) meanwhile the data below can be outdated.
 
 #### 7.1 MerchantSettings
 
@@ -429,7 +421,9 @@ The order can only be considered “ready to send to customer” when the checko
 | Parameter | Description     |
 |-----------|-----------------|
 | sv-SE     | Swedish locale. |
-
+| nn-NO     | Norwegian locale. |
+| nb-NO     | Norwegian locale. |
+| fi-FI     | Finnish locale. |
 
 
 
