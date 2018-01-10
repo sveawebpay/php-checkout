@@ -63,42 +63,34 @@ try {
             "items" => array(
                 array(
                     "articleNumber" => "1234567",
-                    "name" => "Dator",
+                    "name" => "Yellow rubber duck",
                     "quantity" => 200,
                     "unitPrice" => 12300,
                     "discountPercent" => 1000,
                     "vatPercent" => 2500,
-                    'temporaryReference' => "230"
+                    'temporaryReference' => "1"
                 ),
                 array(
-                    "articleNumber" => "7654321",
-                    "name" => "Fork",
-                    "quantity" => 300,
-                    "unitPrice" => 15800,
-                    "discountPercent" => 2000,
-                    "vatPercent" => 2500,
-                    'temporaryReference' => "231"
-                ),
-                array(
-                    "type" => "shipping_fee",
-                    "articleNumber" => "",
-                    "name" => "Shipping fee",
+                    "articleNumber" => "987654321",
+                    "name" => "Blue rubber duck",
                     "quantity" => 100,
-                    "unitPrice" => 4900,
-                    "vatPercent" => 2500
+                    "unitPrice" => 2500,
+                    "discountPercent" => 1000,
+                    "vatPercent" => 2500,
+                    'temporaryReference' => "2"
                 )
             )
         ),
         "presetValues" => array(
             array(
                 "typeName" => "emailAddress",
-                "value" => "test@sveaekonomi.se",
-                "isReadonly" => true
+                "value" => "test@yourdomain.se",
+                "isReadonly" => false
             ),
             array(
                 "typeName" => "postalCode",
-                "value" => "11850",
-                "isReadonly" => true
+                "value" => "99999",
+                "isReadonly" => false
             )
         ),
         "merchantSettings" => array(
@@ -145,6 +137,9 @@ try {
     $orderId = $response['OrderId'];
     $guiSnippet = $response['Gui']['Snippet'];
     $orderStatus = $response['Status'];
+
+    echo '<pre>' . print_r($response, true) . '</pre>';
+
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     examplePrintError($ex, 'Api errors');
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
