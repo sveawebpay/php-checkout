@@ -42,11 +42,11 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 54929
+        "orderId" => 178693
     );
 
     $response = $checkoutClient->getOrder($data);
-    print_r($response);
+    echo '<pre>' . print_r($response,true) . '</pre>';
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     examplePrintError($ex, 'Api errors');
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {

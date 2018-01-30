@@ -19,6 +19,7 @@ require_once '../include.php';
  * Shared Secret string between Svea and merchant
  * Base Url for SVEA Api. Can be TEST_BASE_URL and PROD_BASE_URL
  */
+
 $checkoutMerchantId = 100002;
 $checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d2";
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
@@ -68,15 +69,17 @@ try {
                     "unitPrice" => 12300,
                     "discountPercent" => 1000,
                     "vatPercent" => 2500,
+                    "unit" => "st",
                     'temporaryReference' => "1"
                 ),
                 array(
                     "articleNumber" => "987654321",
                     "name" => "Blue rubber duck",
-                    "quantity" => 100,
-                    "unitPrice" => 2500,
+                    "quantity" => 500,
+                    "unitPrice" => 25000,
                     "discountPercent" => 1000,
                     "vatPercent" => 2500,
+                    "unit" => "pcs",
                     'temporaryReference' => "2"
                 )
             )
@@ -100,6 +103,7 @@ try {
             "pushUri" => "https://localhost:51925/push.php?svea_order_id={checkout.order.uri}",
         )
     );
+
     $response = $checkoutClient->create($data);
 
     /*

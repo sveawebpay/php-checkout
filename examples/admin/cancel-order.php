@@ -43,7 +43,8 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 204
+        "orderId" => 180212,
+        "IsCancelled" => true
     );
 
     $response = $checkoutClient->cancelOrder($data);
