@@ -40,6 +40,11 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $inputUpdateData;
 
     /**
+     * @var array $inputGetAvailablePartPaymentCampaignsData
+     */
+    protected $inputGetAvailablePartPaymentCampaignsData;
+
+    /**
      * @var string $apiResponse
      */
     protected $apiResponse;
@@ -72,6 +77,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
         $this->setConnector();
         $this->setInputCreateData();
         $this->setInputUpdateData();
+        $this->setInputGetAvailablePartPaymentCampaignsData();
     }
 
     /**
@@ -244,5 +250,10 @@ JSON;
                 )
             )
         );
+    }
+
+    private function setInputGetAvailablePartPaymentCampaignsData()
+    {
+        $this->inputGetAvailablePartPaymentCampaignsData = array("IsCompany" => false);
     }
 }

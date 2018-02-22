@@ -1,5 +1,4 @@
 # PHP Checkout library for Svea Checkout
-Version 1.0.6
 
 ## Index
 * [1. Setup](#1-setup)
@@ -8,13 +7,15 @@ Version 1.0.6
 * [4. Get order](#4-get-order)
 * [5. Update order](#5-update-order)
 * [6. Response](#6-response)
-* [7. Data structures](#7-data-structures)
-* [8. HttpStatusCodes](#8-httpstatuscodes)
-* [9. Administrate orders](#9-administrate-orders)
+* [7. Additional requests](#7-additional-requests)
+* [8. Data structures](#8-data-structures)
+* [9. HttpStatusCodes](#9-httpstatuscodes)
+* [10. Administrate orders](#10-administrate-orders)
 
 ## Introduction
-The checkout offers a complete solution with a variety of payment methods. The underlying systems for the checkout is our
-paymentPlan, invoice, account payments. Also including our own payment gateway with PCI level 1 for card payments. 
+The checkout offers a complete solution with a variety of payment methods. The payment methods that are currently available in the checkout is invoice, payment plan, account credit, card payments and payment by bank.
+
+
 The checkout supports both B2C and B2B payments, fast customer identification and caches customers behaviour. 
 For administration of orders, you can either implement it in your own project, or use our new admin interface.
 
@@ -251,7 +252,7 @@ merchantSettings, Customer and the Gui for the checkout.
 | CountryCode                   | String               | Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, DE, FI etc.  |
 | ClientOrderNumber             | String               | A string with maximum of 32 characters that identifies the order in the merchant’s systems |
 | PresetValues                  | List of PresetValues | [*Preset values*](#74-presetvalue) chosen by the merchant to be prefilled and eventually locked for changing by the customer. |
-| OrderId                       | Long                 | Checkoutorderid of the order. |
+| OrderId                       | Long                 | CheckoutOrderId of the order. |
 | Status                        | The current state of the order, see [*CheckoutOrderStatus*](#78-checkoutorderstatus) below. |
 | EmailAddress                  | String               | The customer’s email address |
 | PhoneNumber                   | String               | The customer’s phone number |
@@ -324,12 +325,103 @@ page where you want to display the iframe for Svea checkout. The Layout is a Str
 ```php
 echo $response['Gui']['Snippet']
 ```
+### 7. Additional requests
 
-### 7. Data structures
+#### 7.1 GetAvailablePartPaymentCampaigns
+
+[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-available-part-payment-campaigns.php)
+
+GetAvailablePartPaymentCampaigns can be used to fetch the details of all the campaigns that are available on the merchant
+
+The information can be used to for example display information about how much it will cost to pay for a certain product or products on the actual product page.
+
+Example Request:
+```php
+
+$checkoutMerchantId = 100002;
+$checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d2";
+$baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
+
+$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+$checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
+
+$data = array(
+    'IsCompany' => false
+);
+$response = $checkoutClient->getAvailablePartPaymentCampaigns($data);
+echo "<pre>" . print_r($response, true) . "</pre>";
+```
+
+Running the code above will return an array with [8.11 CampaignCodeInfo](#811-campaigncodeinfo)
+
+Example response when decoded:
+```php
+Array
+(
+    [0] => Array
+        (
+            [CampaignCode] => 213060
+            [ContractLengthInMonths] => 3
+            [Description] => Köp nu betala om 3 månader (räntefritt)
+            [FromAmount] => 1000
+            [InitialFee] => 100
+            [InterestRatePercent] => 0
+            [MonthlyAnnuityFactor] => 1
+            [NotificationFee] => 29
+            [NumberOfInterestFreeMonths] => 3
+            [NumberOfPaymentFreeMonths] => 3
+            [PaymentPlanType] => 2
+            [ToAmount] => 50000
+        )
+
+    [1] => Array
+        (
+                    [CampaignCode] => 410012
+                    [ContractLengthInMonths] => 12
+                    [Description] => Dela upp betalningen på 12 månader
+                    [FromAmount] => 100
+                    [InitialFee] => 0
+                    [InterestRatePercent] => 19.9
+                    [MonthlyAnnuityFactor] => 0.092586652785396
+                    [NotificationFee] => 29
+                    [NumberOfInterestFreeMonths] => 0
+                    [NumberOfPaymentFreeMonths] => 0
+                    [PaymentPlanType] => 0
+                    [ToAmount] => 30000
+        )
+)
+```
+
+The information should be stored in a database for fast access.
+
+##### Calculation formulas
+
+Calculating price per month:
+```php
+ProductPrice * MonthlyAnnuityFactor + NotificationFee
+```
+
+Using the second campaign with a product price of 150kr in the example above will result in:
+150 * 0.092586652785396 + 29 = 42.8879979kr round upwards to closest whole number -> 43kr
+
+
+
+Calculating total amount to pay:
+```php
+InitialFee + (ProductPrice * MonthlyAnnuityFactor + NotificationFee) * ContractLengthInMonths
+```
+
+Using the second campaign with a product price of 150kr in the example above will result in:
+0 + (150 * 0.092586652785396 + 29 ) * 12 = 514.655975 round upwards to closest whole numer -> 515kr
+
+!!! NOTE !!!
+If you are a finnish merchant you have to display ALL the values described [here](https://www.kkv.fi/sv/beslut-och-publikationer/publikationer/konsumentrombudsmannens-riktlinjer/enligt-substans/tillhandahallande-av-konsumentkrediter/#luottolinjausSVE5.1)
+
+### 8. Data structures
 
 The latest data structures are always available at [Checkout API](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/moduler-integration/merchant-checkout-api.pdf) and [Payment Admin API](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/moduler-integration/paymentadminexternalapi_.pdf) meanwhile the data below can be outdated.
 
-#### 7.1 MerchantSettings
+#### 8.1 MerchantSettings
 
 | Parameters IN                | Required  | Type      | Description  | Limits  |
 |------------------------------|-----------|-----------|--------------|---------|
@@ -337,14 +429,17 @@ The latest data structures are always available at [Checkout API](https://www.sv
 | CheckoutUri                  |	*      | string    | URI to the page in the webshop that loads the Checkout.  | 1-500 characters, must be a valid Url |
 | ConfirmationUri              |	*      | string    | URI to the page in the webshop displaying specific information to a customer after the order has been confirmed. | 1-500 characters, must be a valid Url |
 | PushUri                      |	*      | string    | URl to a location that is expecting callbacks from the Checkout when an order is confirmed. Uri must have the {checkout.order.uri} placeholder.  | 1-500 characters, must be a valid Url |
+| CheckoutValidationCallBackUri|           | string    | An optional URl to a location that is expecting callbacks from the Checkout to validate order’s stock status, and also the possibility to update checkout with an updated ClientOrderNumber. Uri may have a {checkout.order.uri} placeholder which will be replaced with the checkoutorderid. Please refer below CheckoutValidationCallbackResponse to see the expected response. | 1-500 characters, must be a valid Url |
+| ActivePartPaymentCampaigns   |           | List<integer> | List of valid CampaignIDs. If used then list of available part payment campaign options will be filtered through the chosen list. | Must be a list of valid CampaignIDs |
+| PromotedPartPaymentCampaign  |           | integer   | Valid CampaignID. If used then the chosen campaign will be shown as the first payment method in all payment method lists. | Must be valid CampaignID |
 
-#### 7.2 Items
+#### 8.2 Items
 
 | Parameters IN                | Required  | Type                                 | Description         |
 |------------------------------|-----------|--------------------------------------|---------------------|
-| Items                        |	*      | List of [*OrderRows*](#73-orderrow)  | See structure below |
+| Items                        |	*      | List of [*OrderRows*](#83-orderrow)  | See structure below |
 
-#### 7.3 OrderRow
+#### 8.3 OrderRow
 
 | Parameters IN                | Required   | Type      | Description  | Limits  |
 |------------------------------|------------|-----------|--------------|---------|
@@ -357,7 +452,7 @@ The latest data structures are always available at [Checkout API](https://www.sv
 | Unit                         |            | String        | The unit type, e.g., “st”, “pc”, “kg” etc. | 0-4 characters|
 | TemporaryReference           |            | String        | Can be used when creating or updating an order. The returned rows will have their corresponding temporaryreference as they were given in the indata. It will not be stored and will not be returned in GetOrder.  | |
 
-#### 7.4 PresetValue
+#### 8.4 PresetValue
 
 | Parameters IN             | Required  | Type          | Description  |
 |---------------------------|-----------|---------------|--------------|
@@ -375,27 +470,27 @@ The latest data structures are always available at [Checkout API](https://www.sv
 | PostalCode                | String        |              | Company specific validation |
 | IsCompany                 | Boolean       | Required if nationalid is set | |
 
-#### 7.5 Gui
+#### 8.5 Gui
 
 | Parameters OUT               | Required   | Type      | Description  |
 |------------------------------|------------|-----------|--------------|
 | Layout                       |	*       | String    | Defines the orientation of the device, either “desktop” or “portrait”.  |
 | Snippet                      |	*       | String    | HTML-snippet including javascript to populate the iFrame. |
 
-#### 7.6 Customer
+#### 8.6 Customer
 
 | Parameters OUT               | Required   | Type      | Description  |
 |------------------------------|------------|-----------|--------------|
 | NationalId                   |	*       | String    | Personal- or organizationnumber. |
-| IsCompany                    |	*       | Boolean   | True if nationalid is organisationnumber, false if nationalid is personalnumber.   |
+| IsCompany                    |	*       | Boolean   | True if nationalId is organisationnumber, false if nationalid is personalnumber.   |
 | IsMale                       |	        | Boolean  | Indicating if the customer is male or not. |
 | DateOfBirth                  |	        | Nullable datetime | Required only for DE and NL or if NationalId is not set for any reason. |
 
-#### 7.7 Address
+#### 8.7 Address
 
 | Parameters OUT               | Type      | Description  |
 |------------------------------|-----------|--------------|
-| FullName                     | String    | Company: name of the company. Individfual: first name(s), middle name(s) and last name(s). |
+| FullName                     | String    | Company: name of the company. Individual: first name(s), middle name(s) and last name(s). |
 | FirstName                    | String    | First name(s).  |
 | LastName                     | String    | Last name(s).   |
 | StreetAddress                | String    | Street address.  |
@@ -404,9 +499,9 @@ The latest data structures are always available at [Checkout API](https://www.sv
 | City                         | String    | City.  |
 | CountryCode                  | String    | Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, DE, FI etc.|
 
-#### 7.8 CheckoutOrderStatus
+#### 8.8 CheckoutOrderStatus
 
-The order can only be considered “ready to send to customer” when the checkoutorderstatus is Final. No other status can guarantee payment.
+The order can only be considered “ready to send to customer” when the CheckoutOrderStatus is Final. No other status can guarantee payment.
 
 | Parameters OUT               | Description  |
 |------------------------------|--------------|
@@ -417,7 +512,7 @@ The order can only be considered “ready to send to customer” when the checko
 | WaitingToBeSent              | The order is finished and is waiting to be sent to WebPay’s subsystems for further handling. |
 | Final                        | The order is completed in the checkout and managed by WebPay’s subsystems.|
 
-#### 7.9 Locale
+#### 8.9 Locale
 | Parameter | Description     |
 |-----------|-----------------|
 | sv-SE     | Swedish locale. |
@@ -427,7 +522,7 @@ The order can only be considered “ready to send to customer” when the checko
 
 
 
-#### 7.10 PaymentType
+#### 8.10 PaymentType
 | Parameter   | Description     |
 |-------------|-----------------|
 | Null        | The customer haven’t confirmed the order or can still change paymentType. |
@@ -453,8 +548,25 @@ The order can only be considered “ready to send to customer” when the checko
 |DBSPANKKIFI	    | S-Pankki, Finland |
 |DBSWEDBANKSE	    | Swedbank, Sweden |
 |DBTAPIOLAFI	    | Tapiola, Finland |
+|TRUSTLY            | Trustly |
 
-### 8.0 HttpStatusCodes
+#### 8.11 CampaignCodeInfo
+| Parameter                 | Type      | Description |
+|---------------------------|-----------|-------------|
+| CampaignCode              | Integer   | CampaignId  |
+| ContractLengthInMonths    | Integer   | Contract length in months |
+| Description               | String    | Campaign description |
+| FromAmount                | Decimal   | Minimum amount (major currency) |
+| ToAmount                  | Decimal   | Maximum amount (major currency) |
+| InitialFee                | Decimal   | Initial fee (major currency) |
+| InterestRatePercent       | Decimal   | Interest rate in percent (e.g. 40 = 40%) |
+| MonthlyAnnuityFactor      | Decimal   | Monthly annuity factor |
+| NotificationFee           | Decimal   | Notification fee (major currency) |
+| NumberOfInterestFreeMonths| Integer   | Number of interest free months |
+| NumberOfPaymentFreeMonths | Integer   | Number of payment free months |
+| PaymentPlanType           | Integer   | Type of campaign |
+
+### 9.0 HttpStatusCodes
 | Parameter | Type          | Description |
 |-----------|---------------|-------------|
 | 200       | Success       | Request was successful. |
@@ -470,7 +582,7 @@ The order can only be considered “ready to send to customer” when the checko
 
 If the returned ResultCode is not present in the above tables please contact SveaWebPay for further information.
 
-## 9. Administrate orders
+## 10. Administrate orders
 
 [See full examples](examples/admin)
 
@@ -483,7 +595,7 @@ If any action is unsuccessful or there is any other error, library will throw ex
 \Svea\Checkout\Exception\SveaConnectorException - will be returned if some of fields merchantId, sharedSecret or baseUrl is missing.
 \Exception - For any other error
 
-### 9.1 Get order
+### 10.1 Get order
 This method is used to get the entire order with all its relevant information. Including its deliveries, rows, credits and addresses.
 
 #### Parameters
@@ -500,7 +612,7 @@ This method is used to get the entire order with all its relevant information. I
 
 
 
-### 9.2 Get task
+### 10.2 Get task
 A task will explain the status of a previously performed operation. When finished it will point towards the new resource with the Location.
 #### Parameters
 
@@ -514,7 +626,7 @@ A task will explain the status of a previously performed operation. When finishe
 |-------------------------------|-----------|--------------|
 | Task                          | Task      | And object containing details regarding a queued task |
 
-### 9.3 Deliver order
+### 10.3 Deliver order
 Creates a delivery on a checkout order. Assuming the order got the **CanDeliverOrder** action.
 
 The deliver call should contain a list of all order row ids that should be delivered.
@@ -533,7 +645,7 @@ However if a subset of all active order rows are specified a partial delivery wi
 |-------------------------------|-----------|--------------|
 | HeaderLocation                | string    | URI to the created task. (Absolute URL) |
 
-### 9.4 Cancel Order
+### 10.4 Cancel Order
 Cancel an order before it has been delivered. Assuming the order has the action **CanCancelOrder**.
 
 | Parameters IN                 | Required   | Type      | Description  |
@@ -545,7 +657,7 @@ Cancel an order before it has been delivered. Assuming the order has the action 
 
 If the order is successfully cancelled, Response is empty. 
 
-### 9.5 Cancel order amount
+### 10.5 Cancel order amount
 By specifying a higher amount than the current order cancelled amount then the order cancelled amount will increase, 
 assuming the order has the action **CanCancelOrderAmount**. The delta between the new *CancelledAmount* and the former *CancelledAmount* will be cancelled.
 
@@ -561,7 +673,7 @@ The new *CancelledAmount* cannot be equal to or lower than the current *Cancelle
 
 If order amount is successfully cancelled, Response is empty.
 
-### 9.6 Cancel order row
+### 10.6 Cancel order row
 Changes the status of an order row to *Cancelled*, assuming the order has the action **CanCancelOrderRow** and the OrderRow has the action **CanCancelRow**. 
 
 | Parameters IN                 | Required   | Type     | Description  |
@@ -574,7 +686,7 @@ Changes the status of an order row to *Cancelled*, assuming the order has the ac
 
 If order row is successfully cancelled, Response is empty.
 
-### 9.7 Credit order rows
+### 10.7 Credit order rows
 Creates a new credit on the specified delivery with specified order rows. Assuming the delivery has action **CanCreditOrderRows** and the specified order rows also has action **CanCreditRow**
 
 | Parameters IN                 | Required   | Type     | Description  |
@@ -592,7 +704,7 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 
 On the returned URL can be checked status of the task.
 
-### 9.8 Credit new order row
+### 10.8 Credit new order row
 By specifying a new credit row, a new credit row will be created on the delivery, assuming the delivery has action **CanCreditNewRow**.
 
 | Parameters IN                 | Required   | Type     | Description  |
@@ -609,7 +721,7 @@ By specifying a new credit row, a new credit row will be created on the delivery
 
 On the returned URL can be checked status of the task.
 
-### 9.9 Credit amount
+### 10.9 Credit amount
 By specifying a credited amount larger than the current credited amount. A credit is being made on the specified delivery. The credited amount cannot be lower than the current credited amount or larger than the delivered amount.
 
 This method requires **CanCreditAmount** on the delivery.
@@ -624,7 +736,7 @@ This method requires **CanCreditAmount** on the delivery.
 
 If order amount is successfully credited, Response is empty.
 
-### 9.10 Add order row
+### 10.10 Add order row
 This method is used to add order rows to an order, assuming the order has the action **CanAddOrderRow**. 
 If the new order amount will exceed the current order amount, a credit check will be performed.
 
@@ -642,7 +754,7 @@ If the new order amount will exceed the current order amount, a credit check wil
 
 On the returned URL (HeaderLocation) can be checked status of the task.
 
-### 9.11 Update order row
+### 10.11 Update order row
 This method is used to update an order row, assuming the order has action "CanUpdateOrderRow" and the order row has the action **CanUpdateRow**. 
 The method will update all fields set in the payload, if a field is not set the row will keep the current value.
 If the new order amount will exceed the current order amount, a credit check will be performed.
@@ -658,9 +770,9 @@ If the new order amount will exceed the current order amount, a credit check wil
 If order row is successfully updated, Response is empty.
 
 
-### 9.12 Data objects
+### 10.12 Data objects
 
-#### 9.12.1 Order
+#### 10.12.1 Order
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id                    |   int	        | Checkoutorderid of the order|
@@ -681,7 +793,7 @@ If order row is successfully updated, Response is empty.
 | Deliveries            | List of Delivery | |
 | Actions               | List of String | A list of actions possible on the order.|
 
-#### 9.12.2 Delivery
+#### 10.12.2 Delivery
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -694,7 +806,7 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | | 
 | Actions               | List of string | A list of actions possible on the delivery.|
 
-#### 9.12.3 Credit
+#### 10.12.3 Credit
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -702,14 +814,14 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | |
 | Actions               | List of String | A list of actions possible on the credit.|
 
-#### 9.12.4 Task
+#### 10.12.4 Task
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id	                | Long          |	Identifier for the task |
 | Status                | String        | Status of the task |
 
-#### 9.12.5 Order Row
+#### 10.12.5 Order Row
 
 |Parameter	            |R  | RO | Type     | Description                   |	Limits|
 |-----------------------|---|----|----------|-------------------------------|-------------------|
@@ -724,7 +836,7 @@ If order row is successfully updated, Response is empty.
 | IsCancelled           |   | *  |boolean  | Determines if the row is cancelled. | Not possible to set through API, only get.|
 | Actions               |   | *  |List of string | A list of actions possible on the order row. See list of OrderRow actions below. | Not possible to set through API, only get.|
 
-#### 9.12.6 Address
+#### 10.12.6 Address
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -735,7 +847,7 @@ If order row is successfully updated, Response is empty.
 | City                  | 	string      | 	City |
 | CountryCode           | 	string      | 	2-letter ISO country code |
 
-#### 9.12.7 Order Status
+#### 10.12.7 Order Status
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -744,7 +856,7 @@ If order row is successfully updated, Response is empty.
 | Cancelled             | The order is fully cancelled |
 | Failed                | The payment for this order has failed |
 
-#### 9.12.8 Order actions
+#### 10.12.8 Order actions
 
 | Parameter                 |  Description                                               |
 |---------------------------|------------------------------------------------------------|
@@ -756,7 +868,7 @@ If order row is successfully updated, Response is empty.
 | CanAddOrderRow            ||
 | CanUpdateOrderRow         ||
 
-#### 9.12.9 Delivery actions
+#### 10.12.9 Delivery actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -764,7 +876,7 @@ If order row is successfully updated, Response is empty.
 | CanCreditOrderRows    ||
 | CanCreditAmount       ||		
 
-#### 9.12.10 Order Row actions
+#### 10.12.10 Order Row actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|

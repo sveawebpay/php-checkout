@@ -24,4 +24,10 @@ class ImplementationFactoryTest extends TestCase
         $co = ImplementationFactory::returnUpdateOrderClass($this->connectorMock);
         $this->assertInstanceOf('\Svea\Checkout\Implementation\UpdateOrder', $co);
     }
+
+    public function testReturnGetAvailablePartPaymentCampaigns()
+    {
+        $co = ImplementationFactory::returnGetAvailablePartPaymentCampaignsClass($this->connectorMock);
+        $this->assertInstanceOf('\Svea\Checkout\Implementation\GetAvailablePartPaymentCampaigns', $co);
+    }
 }
