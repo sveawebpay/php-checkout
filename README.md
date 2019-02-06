@@ -10,14 +10,14 @@
 * [7. Additional requests](#7-additional-requests)
 * [8. Data structures](#8-data-structures)
 * [9. HttpStatusCodes](#9-httpstatuscodes)
-* [10. Administrate orders](#10-administrate-orders)
+* [10. Order administration](#10-order-administration)
 
 ## Introduction
-The checkout offers a complete solution with a variety of payment methods. The payment methods that are currently available in the checkout is invoice, payment plan, account credit, card payments and payment by bank.
+The checkout offers a complete solution with a variety of payment methods. The payment methods that are currently available in the checkout are invoice, payment plan, account credit, card payments and payment by bank.
 
 
 The checkout supports both B2C and B2B payments, fast customer identification and caches customers behaviour. 
-For administration of orders, you can either implement it in your own project, or use our new admin interface.
+For administration of orders, you can either implement it in your own project, or use Sveas admin user interface.
 
 The library provides entry points to integrate the checkout into your platform and to administrate checkout orders.
 
@@ -48,7 +48,7 @@ You can also download and unzip the project and upload it to your server.
 
 ### 2. Create a Connector
 You use a connector object as parameter when creating a CheckoutClient request.
-Parameters for creating Connector are: checkoutMerchantId, checkoutSecret and base Api url.
+Parameters for creating Connector are: checkoutMerchantId, checkoutSecret and base API url(environment).
 
 ```php
 // include the library
@@ -66,10 +66,24 @@ $connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $chec
 ```
 
 ### 3. Create Order
-Create a new order with the given merchant and cart, where the cart contains the order rows.
-Returns the order information and the Gui needed to display the iframe Svea checkout.
+To create a new order, you'll need to send order data using a connector. The response will contain all order data along with a GUI which contains the iframe which needs to be rendered to the end-user.
 
-[See full Create order example](https://github.com/sveawebpay/php-checkout/blob/master/examples/create-order.php)
+| Parameters IN   | Required | Type | Description                                       |
+|-----------------|----------|------|---------------------------------------------------|
+|MerchantSettings | *        |[*MerchantSettings*](#81-merchantsettings) |The merchants settings for the order              |
+|Cart             | *        |Cart  |A cart-object containing the [*OrderRows*](#83-orderrow)            |
+|Locale           | *        |String|The current locale of the checkout, i.e. sv-SE etc. Does not change the actual language in the GUI|
+|Currency         | *        |String|The current currency as defined by ISO 4217, i.e. SEK, NOK etc. Currently fixed to merchant, only SEK for swedish merchants, etc |
+|CountryCode      | *        |String|Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, NO, FI etc. Setting this parameter to anything but the country which the merchant is configured for will trigger the "International flow" which is in english and only supports card payments |
+|ClientOrderNumber| *        |String|A string with maximum of 32 characters identifying the order in the merchant’s system|
+|PresetValues     |          |Array of [*Preset values*](#84-presetvalue) |Array of [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
+|IdentityFlags    |          |Array of [*IdentityFlags*](#812-identityflags) | Array of [*IdentityFlags*](#812-identityflags) used to hide certain features of the iframe |
+  
+| Parameters OUT | Type | Description |
+|----------------|------|-------------|
+|Data            | Data | An object containing all of the order-data, see structure [here](#6-response). 
+
+[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/create-order.php)
 
 #### 3.1 Order data
 
@@ -121,17 +135,17 @@ $data = array(
             )
         ),
         "merchantSettings" => array(
-            "termsUri" => "http://localhost:51898/terms",
-            "checkoutUri" => "http://localhost:51925/",
-            "confirmationUri" => "http://localhost:51925/checkout/confirm",
-            "pushUri" => "https://localhost:51925/push.php?svea_order_id={checkout.order.uri}",
+            "termsUri" => "http://yourshop.se/terms/",
+            "checkoutUri" => "http://yourshop.se/checkout/",
+            "confirmationUri" => "http://yourshop.se/checkout/confirm/",
+            "pushUri" => "https://yourshop.se/push.php?checkout_order_id={checkout.order.uri}",
         )
     );
 ```
 
 #### 3.2 Create the Order
 Create a CheckoutClient object with the [*Connector*](#2-create-a-connector) as parameter.
-The checkoutClient object is an entry point to use library.
+The CheckoutClient object is an entry point to use the library.
 
 ```php
 // include the library
@@ -148,17 +162,18 @@ $response = $checkoutClient->create($data);
 ```
 
 ### 4. Get Order
-Get an existing order. Returns the order information and the Gui needed to display the iframe for Svea checkout.
-
-[See full Get order example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-order.php)
+To fetch an existing order, you need to pass the checkout order id as a parameter, which is first given to you when you create an order. The response contains the order information and the along with the GUI which can be used to render the iframe once again.
 
 | Parameters IN                | Required  | Type      | Description  |
 |------------------------------|-----------|-----------|--------------|
-| Id                           |	*      | Long      | Checkoutorderid of the specified order. |
+| orderId                           |	*      | Long      | Checkoutorderid of the specified order |
 
 | Parameters OUT               | Type      | Description  |
 |------------------------------|-----------|--------------|
-| Data                         | Data      | An object containing all information needed to return a checkout to the merchant, see (#6-response) |
+| Data                         | Data      | An object containing all of the order-data, see structure [here](#6-response) |
+
+
+[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-order.php)
 
 #### 4.1 Get the Order
 Create a CheckoutClient object with the [*Connector*](#2-create-a-connector) as parameter.
@@ -187,14 +202,11 @@ Update an existing order. Returns the order information and the updated Gui need
 
 Updating an order is only possible while the CheckoutOrderStatus is "Created", see [*CheckoutOrderStatus*](#78-checkoutorderstatus).
 
-[See full Update order example](https://github.com/sveawebpay/php-checkout/blob/master/examples/update-order.php)
+[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/update-order.php)
 
-| Parameters IN  as URI-parameters: | Required   | Type      | Description  |
-|-----------------------------------|------------|-----------|--------------|
-| Id                                |	*        | Long      | Checkoutorderid of the specified order. |
-
-| Parameters IN as Content:     | Required   | Type      | Description  |
+| Parameters IN:     | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
+| OrderId                       |	*        | Long      | Checkoutorderid of the specified order.
 | Cart                          |	 *       | Cart      | A cart-object containing the [*OrderRows*](#73-orderrow) |
 | MerchantData                  |            | String    | Can be used to store data, the data is not displayed anywhere but in the API |
 
@@ -250,30 +262,31 @@ $response = $checkoutClient->update($data);
 ```
 
 ### 6. Response
-The create method will return an array with the response data. The response contains information about the Cart,
-merchantSettings, Customer and the Gui for the checkout.
+The response contains information about the order such as Cart, Status, PaymentType and much more.
 
 | Parameters OUT                | Type                 | Description |
 |-------------------------------|----------------------|-------------|
-| MerchantSettings              | MerchantSettings     | Specific merchant URIs, see [*Merchant settings*](#71-merchantsettings) |
-| Cart                          | Cart                 | A cart-object containing the [*OrderRows*](#73-orderrow) |
-| Gui                           | Gui                  | See [*Gui*](#75-gui) |
-| Customer                      | Customer             | Identified [*Customer*](#76-customer) of the order. |
-| ShippingAddress               | Address              | Shipping [*Address*](#77-address) of identified customer. |
-| BillingAddress                | Address              | Billing [*Address*](#77-address) of identified customer. Returned empty if same as ShippingAddress.|
-| Locale                        | String               | The current locale of the checkout, i.e. sv-SE etc. |
-| Currency                      | String               | The current currency as defined by ISO 4217, i.e. SEK, NOK etc. |
-| CountryCode                   | String               | Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, DE, FI etc.  |
+| MerchantSettings              | [*Merchant settings*](#81-merchantsettings)     | Specific merchant URIs |
+| Cart                          | Cart                 | A cart-object containing the [*OrderRows*](#83-orderrow) |
+| Gui                           | [*Gui*](#85-gui)     | Contains iframe and layout information  |
+| Customer                      | [*Customer*](#86-customer)             | Identified [*Customer*](#86-customer) of the order. |
+| ShippingAddress               | [*Address*](#87-address)              | Shipping [*Address*](#87-address) of identified customer. |
+| BillingAddress                | [*Address*](#87-address)              | Billing [*Address*](#87-address) of identified customer. Returned empty if same as ShippingAddress. |
+| Locale                        | String               | The current locale of the checkout, i.e. sv-SE etc. Does not override language in iframe |
+| Currency                      | String               | The current currency as defined by ISO 4217, i.e. SEK, NOK etc. Merchant specific, swedish merchants uses SEK etc.|
+| CountryCode                   | String               | Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, NO, FI etc.  |
 | ClientOrderNumber             | String               | A string with maximum of 32 characters that identifies the order in the merchant’s systems |
-| PresetValues                  | List of PresetValues | [*Preset values*](#74-presetvalue) chosen by the merchant to be prefilled and eventually locked for changing by the customer. |
-| OrderId                       | Long                 | CheckoutOrderId of the order. |
-| Status                        | The current state of the order, see [*CheckoutOrderStatus*](#78-checkoutorderstatus) below. |
+| PresetValues                  | Array of [*Preset values*](#84-presetvalue) | [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
+| OrderId                       | Long                 | CheckoutOrderId of the order |
+| Status                        | [*CheckoutOrderStatus*](#88-checkoutorderstatus) |The current status of the order. |
 | EmailAddress                  | String               | The customer’s email address |
 | PhoneNumber                   | String               | The customer’s phone number |
-| PaymentType                   | String               | The final payment method for the order. Will only have a value when the order is locked, otherwise null. See [*PaymentType*](#710-paymenttype)|
 | MerchantData                  | String               | Can be used to store data, the data is not displayed anywhere but in the API |
 | SveaWillBuyOrder              | Boolean              | Only applicable if merchant uses the "no-risk flow", used to determine if Svea buys the invoice or not | 
- 
+| IdentityFlags                 | Array of [*IdentityFlags*](#812-identityflags) | Settings which disables certain features in the iframe. See [*IdentityFlags*](#) |
+| PaymentType                   | String               | The final payment method for the order. Will only have a value when the order is finalized, otherwise null. See [*PaymentType*](#810-paymenttype)|
+| CustomerReference             | String               | B2B Customer reference |
+
 Sample response
 ```
 Array
@@ -281,10 +294,10 @@ Array
     [MerchantSettings] => Array
         (
             [CheckoutValidationCallBackUri] => 
-            [PushUri] => https://localhost:51925/push.php?svea_order_id={checkout.order.uri}
-            [TermsUri] => http://localhost:51898/terms
-            [CheckoutUri] => http://localhost:51925/
-            [ConfirmationUri] => http://localhost:51925/checkout/confirm
+            [PushUri] => https://yourdomain.se/push.php?svea_order_id={checkout.order.uri}
+            [TermsUri] => http://yourdomain.se/terms
+            [CheckoutUri] => http://yourdomain.se/checkout/
+            [ConfirmationUri] => http://yourdomain.se/checkout/confirm
             [ActivePartPaymentCampaigns] => Array
                 (
                 )
@@ -298,7 +311,7 @@ Array
                 (
                     [0] => Array
                         (
-                            [ArticleNumber] => 123456
+                            [ArticleNumber] => 1234567
                             [Name] => Yellow rubber duck
                             [Quantity] => 200
                             [UnitPrice] => 66600
@@ -312,18 +325,18 @@ Array
 
                     [1] => Array
                         (
-                            [ArticleNumber] => 658475
-                            [Name] => Shipping Fee Updated
-                            [Quantity] => 100
-                            [UnitPrice] => 4900
-                            [DiscountPercent] => 0
+                            [ArticleNumber] => 987654321
+                            [Name] => Blue rubber duck
+                            [Quantity] => 500
+                            [UnitPrice] => 25000
+                            [DiscountPercent] => 1000
                             [VatPercent] => 2500
-                            [Unit] => 
+                            [Unit] => pcs
                             [TemporaryReference] => 
                             [RowNumber] => 2
                             [MerchantData] => 
                         )
-
+                        
                     [2] => Array
                         (
                             [ArticleNumber] => 6eaceaec-fffc-41ad-8095-c21de609bcfd
@@ -337,9 +350,7 @@ Array
                             [RowNumber] => 3
                             [MerchantData] => 
                         )
-
                 )
-
         )
 
     [Customer] => Array
@@ -384,11 +395,12 @@ Array
 
         )
 
+
     [Gui] => Array
-        (
-            [Layout] => desktop
-            [Snippet] => 
-        )
+            (
+                [Layout] => desktop
+                [Snippet] => <iframe src=\"\"></iframe>
+            )
 
     [Locale] => sv-SE
     [Currency] => SEK
@@ -407,7 +419,7 @@ Array
 )
 ```
 
-The checkout Gui contains the Snippet and the Layout. The Snippet contains the Html and JavaScript that you implement on your
+The checkout GUI contains the Snippet and the Layout. The Snippet contains the Html and JavaScript that you implement on your
 page where you want to display the iframe for Svea checkout. The Layout is a String defining the orientation of the customers screen.
 
 ```php
@@ -417,11 +429,12 @@ echo $response['Gui']['Snippet']
 
 #### 7.1 GetAvailablePartPaymentCampaigns
 
-[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-available-part-payment-campaigns.php)
-
 GetAvailablePartPaymentCampaigns can be used to fetch the details of all the campaigns that are available on the merchant
 
 The information can be used to for example display information about how much it will cost to pay for a certain product or products on the actual product page.
+
+[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-available-part-payment-campaigns.php)
+
 
 Example Request:
 ```php
@@ -440,7 +453,7 @@ $response = $checkoutClient->getAvailablePartPaymentCampaigns($data);
 echo "<pre>" . print_r($response, true) . "</pre>";
 ```
 
-Running the code above will return an array with [8.11 CampaignCodeInfo](#811-campaigncodeinfo)
+Executing the code above will return an array with [8.11 CampaignCodeInfo](#811-campaigncodeinfo)
 
 Example response when decoded:
 ```php
@@ -480,7 +493,7 @@ Array
 )
 ```
 
-The information should be stored in a database for fast access.
+The information should be stored in a database for fast access instead of sending requests on demand.
 
 ##### Calculation formulas
 
@@ -503,33 +516,31 @@ Using the second campaign with a product price of 150kr in the example above wil
 0 + (150 * 0.092586652785396 + 29 ) * 12 = 514.655975 round upwards to closest whole numer -> 515kr
 
 !!! NOTE !!!
-If you are a finnish merchant you have to display ALL the values described [here](https://www.kkv.fi/sv/beslut-och-publikationer/publikationer/konsumentrombudsmannens-riktlinjer/enligt-substans/tillhandahallande-av-konsumentkrediter/#luottolinjausSVE5.1)
+If you are a finnish merchant you have to display ALL the values described [here](https://www.kkv.fi/sv/beslut-och-publikationer/publikationer/konsumentrombudsmannens-riktlinjer/enligt-substans/tillhandahallande-av-konsumentkrediter/#luottolinjausSVE5.1) to be compliant with finnish laws.
 
 ### 8. Data structures
 
-The latest data structures are always available at [Checkout API](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/moduler-integration/merchant-checkout-api.pdf) and [Payment Admin API](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/moduler-integration/paymentadminexternalapi_.pdf) meanwhile the data below can be outdated.
-
 #### 8.1 MerchantSettings
 
-| Parameters IN                | Required  | Type      | Description  | Limits  |
+| Parameters                | Required  | Type      | Description  | Limits  |
 |------------------------------|-----------|-----------|--------------|---------|
-| TermsUri                     |	*      | string    | URI to a page with webshop specific terms. | 1-500 characters, must be a valid Url |
+| TermsUri                     |	*      | string    | URI to a page which contains terms of the webshop. | 1-500 characters, must be a valid Url |
 | CheckoutUri                  |	*      | string    | URI to the page in the webshop that loads the Checkout.  | 1-500 characters, must be a valid Url |
 | ConfirmationUri              |	*      | string    | URI to the page in the webshop displaying specific information to a customer after the order has been confirmed. | 1-500 characters, must be a valid Url |
-| PushUri                      |	*      | string    | URl to a location that is expecting callbacks from the Checkout when an order is confirmed. Uri must have the {checkout.order.uri} placeholder.  | 1-500 characters, must be a valid Url |
+| PushUri                      |	*      | string    | URl to a location that is expecting callbacks from the Checkout when an order is confirmed. Uri should use the {checkout.order.uri} placeholder.  | 1-500 characters, must be a valid Url |
 | CheckoutValidationCallBackUri|           | string    | An optional URl to a location that is expecting callbacks from the Checkout to validate order’s stock status, and also the possibility to update checkout with an updated ClientOrderNumber. Uri may have a {checkout.order.uri} placeholder which will be replaced with the checkoutorderid. Please refer below CheckoutValidationCallbackResponse to see the expected response. | 1-500 characters, must be a valid Url |
-| ActivePartPaymentCampaigns   |           | List<integer> | List of valid CampaignIDs. If used then list of available part payment campaign options will be filtered through the chosen list. | Must be a list of valid CampaignIDs |
+| ActivePartPaymentCampaigns   |           | Array of CampaignCode | Array of valid CampaignCodes. If used then list of available part payment campaign options will be filtered through the chosen list. | Must be an array of valid CampaignCode |
 | PromotedPartPaymentCampaign  |           | integer   | Valid CampaignID. If used then the chosen campaign will be shown as the first payment method in all payment method lists. | Must be valid CampaignID |
 
 #### 8.2 Items
 
-| Parameters IN                | Required  | Type                                 | Description         |
+| Parameters                | Required  | Type                                 | Description         |
 |------------------------------|-----------|--------------------------------------|---------------------|
 | Items                        |	*      | List of [*OrderRows*](#83-orderrow)  | See structure below |
 
 #### 8.3 OrderRow
 
-| Parameters IN                | Required   | Type      | Description  | Limits  |
+| Parameters                | Required   | Type      | Description  | Limits  |
 |------------------------------|------------|-----------|--------------|---------|
 | ArticleNumber                |	        | String    | Articlenumber as a string, can contain letters and numbers. | Maximum 1000 characters |
 | Name                         |	*       | String    | Article name | 1-40 characters |
@@ -543,7 +554,7 @@ The latest data structures are always available at [Checkout API](https://www.sv
 
 #### 8.4 PresetValue
 
-| Parameters IN             | Required  | Type          | Description  |
+| Parameters             | Required  | Type          | Description  |
 |---------------------------|-----------|---------------|--------------|
 | TypeName                  |	*       | String        | Name of the field you want to set (see list below).  |
 | Value                     |	*       | String        | See limits below. |
@@ -557,27 +568,27 @@ The latest data structures are always available at [Checkout API](https://www.sv
 | EmailAddress              | String        |              | Max 50 characters, will be validated as an email address |
 | PhoneNumber               | String        |              | 1-18 digits, can include “+”, “-“s and space |
 | PostalCode                | String        |              | Company specific validation |
-| IsCompany                 | Boolean       | Required if nationalid is set | |
+| IsCompany                 | Boolean       |              | Required if nationalid is set |
 
 #### 8.5 Gui
 
-| Parameters OUT               | Required   | Type      | Description  |
-|------------------------------|------------|-----------|--------------|
-| Layout                       |	*       | String    | Defines the orientation of the device, either “desktop” or “portrait”.  |
-| Snippet                      |	*       | String    | HTML-snippet including javascript to populate the iFrame. |
+| Parameters               |  Type      | Description  |
+|------------------------------|------------|--------------|
+| Layout                       | String     | Defines the orientation of the device, either “desktop” or “portrait”.  |
+| Snippet                      | String     | HTML-snippet including javascript to populate the iFrame. |
 
 #### 8.6 Customer
 
-| Parameters OUT               | Required   | Type      | Description  |
-|------------------------------|------------|-----------|--------------|
-| NationalId                   |	*       | String    | Personal- or organizationnumber. |
-| IsCompany                    |	*       | Boolean   | True if nationalId is organisationnumber, false if nationalid is personalnumber.   |
-| IsMale                       |	        | Boolean  | Indicating if the customer is male or not. |
-| DateOfBirth                  |	        | Nullable datetime | Required only for DE and NL or if NationalId is not set for any reason. |
+| Parameters               | Type      | Description  |
+|------------------------------|-----------|--------------|
+| NationalId                   | String    | Personal- or organizationnumber. |
+| IsCompany                    | Boolean   | True if nationalId is organisationnumber, false if nationalid is personalnumber.   |
+| CountryCode                  | String    |  Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, DE, FI etc.|
+| Id                           | Integer   | Customer-specific id |
 
 #### 8.7 Address
 
-| Parameters OUT               | Type      | Description  |
+| Parameters                | Type      | Description  |
 |------------------------------|-----------|--------------|
 | FullName                     | String    | Company: name of the company. Individual: first name(s), middle name(s) and last name(s). |
 | FirstName                    | String    | First name(s).  |
@@ -587,6 +598,8 @@ The latest data structures are always available at [Checkout API](https://www.sv
 | PostalCode                   | String    | Postal code.  |
 | City                         | String    | City.  |
 | CountryCode                  | String    | Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, DE, FI etc.|
+| IsGeneric                    | Boolean   | True if international flow is used |
+| AddressLines                 | Array of strings | Null unless international flow is used
 
 #### 8.8 CheckoutOrderStatus
 
@@ -594,12 +607,9 @@ The order can only be considered “ready to send to customer” when the Checko
 
 | Parameters OUT               | Description  |
 |------------------------------|--------------|
-| Cancelled                    | The order has been cancelled due to inactivity. |
-| Created                      | The order has been created.  |
-| Confirmed                    | The order has been confirmed using card payment and is waiting to be paid by the customer.   |
-| PaymentGuaranteed            | The order has been confirmed using a credit option; invoice, paymentplan or accountcredit. |
-| WaitingToBeSent              | The order is finished and is waiting to be sent to WebPay’s subsystems for further handling. |
-| Final                        | The order is completed in the checkout and managed by WebPay’s subsystems.|
+| Cancelled                    | The order has been cancelled due to inactivity (default is 48h, can be changed per merchant if requested) |
+| Created                      | The order has been created  |
+| Final                        | The order is completed in the checkout and managed by WebPay’s subsystems. The order can now be administrated using either the library or browsing to the admin user interface|
 
 #### 8.9 Locale
 | Parameter | Description     |
@@ -618,8 +628,10 @@ The order can only be considered “ready to send to customer” when the Checko
 | INVOICE     | Invoice |
 | PAYMENTPLAN |	The customer chose a payment plan |
 | SVEACARDPAY	      | The customer paid the order with card |
-| DirectBank(varies)  |	The customer paid the order with direct bank e.g. Nordea, SEB. See below for all available parameters |
+| Directbank(varies)  |	The customer paid the order with direct bank e.g. Nordea, SEB. See below for all available parameters |
 | ACCOUNTCREDIT	  | The customer chose to use their account credit. |
+
+Directbanks:
 
 | Parameter         | Description     |
 |-------------------|-----------------|
@@ -655,7 +667,14 @@ The order can only be considered “ready to send to customer” when the Checko
 | NumberOfPaymentFreeMonths | Integer   | Number of payment free months |
 | PaymentPlanType           | Integer   | Type of campaign |
 
-### 9.0 HttpStatusCodes
+#### 8.12 IdentityFlags
+| Parameter                 | Type      | Description |
+|---------------------------|-----------|-------------|
+| HideNotYou              | Boolean   | Hides "Not you?"-button in iframe  |
+| HideChangeAddress       | Boolean   | Hides "Change adress"-button in iframe |
+| HideAnonymous           | Boolean   | Hides anonymous flow, forcing users to identify with their nationalId to perform a purchase |
+
+### 9. HttpStatusCodes
 | Parameter | Type          | Description |
 |-----------|---------------|-------------|
 | 200       | Success       | Request was successful. |
@@ -669,9 +688,9 @@ The order can only be considered “ready to send to customer” when the Checko
 | 403       | Forbidden     | The request did not contain correct authorization. | 
 | 404       | Not Found     | No order with the requested ID was found. | 
 
-If the returned ResultCode is not present in the above tables please contact SveaWebPay for further information.
+If the returned ResultCode is not present in the above tables please contact Svea Ekonomi for further information.
 
-## 10. Administrate orders
+## 10. Order administration
 
 [See full examples](examples/admin)
 
@@ -697,7 +716,7 @@ This method is used to get the entire order with all its relevant information. I
 
 | Parameters OUT                | Type      | Description  |
 |-------------------------------|-----------|--------------|
-| info about the order          | array     | An array containing all the order details. |
+| Order          | array     | An array containing all the order details. See [10.12 Data objects](#1012-data-objects) |
 
 
 
@@ -713,7 +732,7 @@ A task will explain the status of a previously performed operation. When finishe
 
 | Parameters OUT                 |Type      | Description  |
 |-------------------------------|-----------|--------------|
-| Task                          | Task      | And object containing details regarding a queued task |
+| Task                          | [Task](#10124-task)      | An object containing details regarding a queued task |
 
 ### 10.3 Deliver order
 Creates a delivery on a checkout order. Assuming the order got the **CanDeliverOrder** action.
@@ -800,7 +819,7 @@ By specifying a new credit row, a new credit row will be created on the delivery
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | deliveryId                    |	*        | int      | Id of the specified delivery row. |
-| newCreditOrderRow             |	*        | array    | The new credit row. |
+| newCreditOrderRow             |	*        | array    | [Order Row](#10125-order-row) |
 
 #### Response
 
@@ -832,7 +851,7 @@ If the new order amount will exceed the current order amount, a credit check wil
 | Parameters IN                 | Required   | Type     | Description  |
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| orderRow                      |	*        | array    | Order Row data. |
+| orderRow                      |	*        | array    | [Order Row](#10125-order-row) |
 
 #### Response
 
@@ -852,7 +871,7 @@ If the new order amount will exceed the current order amount, a credit check wil
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRowId                    |	*        | int      | Id of the specified row. |
-| orderRow                      |	*        | array    | Use only those fields that need to be updated. |
+| orderRow                      |	*        | array    | Use only those fields that need to be updated. [Order Row](#10125-order-row) |
 
 #### Response
 
