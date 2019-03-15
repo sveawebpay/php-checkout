@@ -876,7 +876,7 @@ If order row is successfully updated, Response is empty.
 | OrderAmount           | int           | The total amount on the order. Minor unit|
 | CancelledAmount       | int           | The total cancelled amount on the order. Minor uit|
 | ShippingAddress       | Address       | Shipping address of identified customer.|   
-| BillingAddress        | Address       | Billing address of identified customer.|
+| BillingAddress        | Address       | Billing address of identified customer. Returned empty if same as ShippingAddress. |
 | OrderRows             | List of OrderRow | |
 | Deliveries            | List of Delivery | |
 | Actions               | List of String | A list of actions possible on the order.|
