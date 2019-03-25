@@ -48,7 +48,7 @@ try {
      * Example of update the order and getting the response data
      */
     $data = array(
-        "orderId" => 1669,
+        "orderId" => 251119,
         "cart" => array(
             "items" => array(
                 array(
@@ -107,9 +107,12 @@ try {
      *  - OrderId
      *  - Status
      * */
-    $orderId = $response['Response']['OrderId'];
-    $guiSnippet = $response['Response']['Gui']['Snippet'];
-    $orderStatus = $response['Response']['Status'];
+    $orderId = $response['OrderId'];
+    $guiSnippet = $response['Gui']['Snippet'];
+    $orderStatus = $response['Status'];
+
+    echo '<pre>' . print_r($response, true) . '</pre>';
+
 } catch (\Svea\Checkout\Exception\SveaApiException $ex) {
     examplePrintError($ex, 'Api errors');
 } catch (\Svea\Checkout\Exception\SveaConnectorException $ex) {
