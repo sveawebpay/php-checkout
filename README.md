@@ -210,6 +210,7 @@ Updating an order is only possible while the CheckoutOrderStatus is "Created", s
 | Cart                          |	 *       | Cart      | A cart-object containing the [*OrderRows*](#73-orderrow) |
 | MerchantData                  |            | String    | Can be used to store data, the data is not displayed anywhere but in the API |
 
+
 Sample order data
 ```php
 // Example of data for creating order
@@ -352,7 +353,7 @@ Array
                         )
                 )
         )
-
+        
     [Customer] => Array
         (
             [Id] => 626
@@ -401,7 +402,6 @@ Array
                 [Layout] => desktop
                 [Snippet] => <iframe src=\"\"></iframe>
             )
-
     [Locale] => sv-SE
     [Currency] => SEK
     [CountryCode] => SE
