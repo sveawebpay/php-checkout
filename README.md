@@ -77,46 +77,56 @@ Sample order data
 ```php
 // Example of data for creating order
 $data = array(
-    "CountryCode" => "SE",
-    "Currency" => "SEK",
-    "Locale" => "sv-SE",
-    "Cart" => array(
-        "items" => array(
-            array(
-                "ArticleNumber" => "123456789",
-                "Name" => "Car",
-                "Quantity" => 200,
-                "UnitPrice" => 12300,
-                "DiscountPercent" => 1000,
-                "VatPercent" => 2500,
-                'TemporaryReference' => '230'
-            ),
-            array(
-                "ArticleNumber" => "987654321",
-                "Name" => "Fork",
-                "Quantity" => 300,
-                "UnitPrice" => 15800,
-                "DiscountPercent" => 2000,
-                "VatPercent" => 2500,
-                'TemporaryReference' => '231'
-            ),
-            array(
-                "Type" => "shipping_fee",
-                "ArticleNumber" => "SHIPPING",
-                "Name" => "Shipping fee",
-                "Quantity" => 100,
-                "UnitPrice" => 4900,
-                "VatPercent" => 2500
+        "countryCode" => "SE",
+        "currency" => "SEK",
+        "locale" => "sv-SE",
+        "clientOrderNumber" => rand(10000,30000000),
+        "merchantData" => "Test string from merchant",
+        "cart" => array(
+            "items" => array(
+                array(
+                    "articleNumber" => "1234567",
+                    "name" => "Yellow rubber duck",
+                    "quantity" => 200,
+                    "unitPrice" => 12300,
+                    "discountPercent" => 1000,
+                    "vatPercent" => 2500,
+                    "unit" => "st",
+                    "temporaryReference" => "1",
+                    "merchantData" => "Size: S"
+                ),
+                array(
+                    "articleNumber" => "987654321",
+                    "name" => "Blue rubber duck",
+                    "quantity" => 500,
+                    "unitPrice" => 25000,
+                    "discountPercent" => 1000,
+                    "vatPercent" => 2500,
+                    "unit" => "pcs",
+                    "temporaryReference" => "2",
+                    "merchantData" => null
+                )
             )
+        ),
+        "presetValues" => array(
+            array(
+                "typeName" => "emailAddress",
+                "value" => "test@yourdomain.se",
+                "isReadonly" => false
+            ),
+            array(
+                "typeName" => "postalCode",
+                "value" => "99999",
+                "isReadonly" => false
+            )
+        ),
+        "merchantSettings" => array(
+            "termsUri" => "http://localhost:51898/terms",
+            "checkoutUri" => "http://localhost:51925/",
+            "confirmationUri" => "http://localhost:51925/checkout/confirm",
+            "pushUri" => "https://localhost:51925/push.php?svea_order_id={checkout.order.uri}",
         )
-    ),
-    "MerchantSettings" => array(
-        "TermsUri" => "http://localhost:51898/terms",
-        "CheckoutUri" => "http://localhost:51925/",
-        "ConfirmationUri" => "http://localhost:51925/checkout/confirm",
-        "pushUri" => "https://localhost:51925/push.php?svea_order_id={checkout.order.uri}"
-    )
-);
+    );
 ```
 
 #### 3.2 Create the Order
@@ -185,36 +195,40 @@ Updating an order is only possible while the CheckoutOrderStatus is "Created", s
 
 | Parameters IN as Content:     | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
-| Cart                          |	         | Cart      | A cart-object containing the [*OrderRows*](#73-orderrow) |
+| Cart                          |	 *       | Cart      | A cart-object containing the [*OrderRows*](#73-orderrow) |
+| MerchantData                  |            | String    | Can be used to store data, the data is not displayed anywhere but in the API |
 
 Sample order data
 ```php
 // Example of data for creating order
 $data = array(
-    "Id" => 9,
-    "Cart" => array(
-        "Items" => array(
-            array(
-                "ArticleNumber" => "123456789",
-                "Name" => "Dator",
-                "Quantity" => 200,
-                "UnitPrice" => 12300,
-                "DiscountPercent" => 1000,
-                "VatPercent" => 2500.
-                "TemporaryReference" => "230"
-            ),
-            array(
-                "Type" => "shipping_fee",
-                "ArticleNumber" => "SHIPPING",
-                "Name" => "Shipping Fee Updated",
-                "Quantity" => 100,
-                "UnitPrice" => 4900,
-                "VatPercent" => 2500,
-                "TemporaryReference" => "231"
+        "orderId" => 251147,
+        "merchantData" => "test",
+        "cart" => array(
+            "items" => array(
+                array(
+                    "articleNumber" => "123456",
+                    "name" => "Yellow rubber duck",
+                    "quantity" => 200,
+                    "unitPrice" => 66600,
+                    "discountPercent" => 1000,
+                    "vatPercent" => 2500,
+                    "temporaryReference" => "230",
+                    "merchantData" => "Size: M"
+                ),
+                array(
+                    "type" => "shipping_fee",
+                    "articleNumber" => "658475",
+                    "name" => "Shipping Fee Updated",
+                    "quantity" => 100,
+                    "unitPrice" => 4900,
+                    "vatPercent" => 2500,
+                    "temporaryReference" => "231",
+                    "merchantData" => null
+                )
             )
         )
-    )
-);
+    );
 ```
 
 #### 5.1 Update the Order
@@ -257,18 +271,25 @@ merchantSettings, Customer and the Gui for the checkout.
 | EmailAddress                  | String               | The customer’s email address |
 | PhoneNumber                   | String               | The customer’s phone number |
 | PaymentType                   | String               | The final payment method for the order. Will only have a value when the order is locked, otherwise null. See [*PaymentType*](#710-paymenttype)|
-
-
+| MerchantData                  | String               | Can be used to store data, the data is not displayed anywhere but in the API |
+| SveaWillBuyOrder              | Boolean              | Only applicable if merchant uses the "no-risk flow", used to determine if Svea buys the invoice or not | 
+ 
 Sample response
 ```
 Array
 (
     [MerchantSettings] => Array
         (
+            [CheckoutValidationCallBackUri] => 
+            [PushUri] => https://localhost:51925/push.php?svea_order_id={checkout.order.uri}
             [TermsUri] => http://localhost:51898/terms
             [CheckoutUri] => http://localhost:51925/
             [ConfirmationUri] => http://localhost:51925/checkout/confirm
-            [PushUri] => https://localhost:51925/push.php?svea_order={checkout.order.uri}
+            [ActivePartPaymentCampaigns] => Array
+                (
+                )
+
+            [PromotedPartPaymentCampaign] => 0
         )
 
     [Cart] => Array
@@ -277,45 +298,112 @@ Array
                 (
                     [0] => Array
                         (
-                            [ArticleNumber] => 123456789
-                            [Name] => Dator
+                            [ArticleNumber] => 123456
+                            [Name] => Yellow rubber duck
                             [Quantity] => 200
-                            [UnitPrice] => 12300
+                            [UnitPrice] => 66600
                             [DiscountPercent] => 1000
                             [VatPercent] => 2500
-                            [Unit] =>
-                            [TemporaryReference] => "230"
+                            [Unit] => 
+                            [TemporaryReference] => 
+                            [RowNumber] => 1
+                            [MerchantData] => Size: M
                         )
+
                     [1] => Array
                         (
-                            [ArticleNumber] => SHIPPING
+                            [ArticleNumber] => 658475
                             [Name] => Shipping Fee Updated
                             [Quantity] => 100
                             [UnitPrice] => 4900
                             [DiscountPercent] => 0
                             [VatPercent] => 2500
-                            [Unit] =>
-                            [TemporaryReference] => "231"
+                            [Unit] => 
+                            [TemporaryReference] => 
+                            [RowNumber] => 2
+                            [MerchantData] => 
                         )
+
+                    [2] => Array
+                        (
+                            [ArticleNumber] => 6eaceaec-fffc-41ad-8095-c21de609bcfd
+                            [Name] => InvoiceFee
+                            [Quantity] => 100
+                            [UnitPrice] => 2900
+                            [DiscountPercent] => 0
+                            [VatPercent] => 2500
+                            [Unit] => st
+                            [TemporaryReference] => 
+                            [RowNumber] => 3
+                            [MerchantData] => 
+                        )
+
                 )
-         )
-    [Customer] =>
-    [ShippingAddress] =>
-    [BillingAddress] =>
+
+        )
+
+    [Customer] => Array
+        (
+            [Id] => 626
+            [NationalId] => 194605092222
+            [CountryCode] => SE
+            [IsCompany] => 
+        )
+
+    [ShippingAddress] => Array
+        (
+            [FullName] => Persson, Tess T
+            [FirstName] => Tess T
+            [LastName] => Persson
+            [StreetAddress] => Testgatan 1
+            [CoAddress] => c/o Eriksson, Erik
+            [PostalCode] => 99999
+            [City] => Stan
+            [CountryCode] => SE
+            [IsGeneric] => 
+            [AddressLines] => Array
+                (
+                )
+
+        )
+
+    [BillingAddress] => Array
+        (
+            [FullName] => Persson, Tess T
+            [FirstName] => Tess T
+            [LastName] => Persson
+            [StreetAddress] => Testgatan 1
+            [CoAddress] => c/o Eriksson, Erik
+            [PostalCode] => 99999
+            [City] => Stan
+            [CountryCode] => SE
+            [IsGeneric] => 
+            [AddressLines] => Array
+                (
+                )
+
+        )
+
     [Gui] => Array
         (
             [Layout] => desktop
-            [Snippet] =>
+            [Snippet] => 
         )
+
     [Locale] => sv-SE
-    [Currency] =>
-    [CountryCode] =>
-    [PresetValues] =>
-    [ClientOrderNumber] => '78691'
-    [OrderId] => 9
-    [EmailAddress] => 'integration@svea.com'
-    [PhoneNumber] => '1234567'
-    [Status] => Created
+    [Currency] => SEK
+    [CountryCode] => SE
+    [PresetValues] => 
+    [ClientOrderNumber] => 8828014
+    [OrderId] => 251147
+    [EmailAddress] => test@yourdomain.se
+    [PhoneNumber] => 12312313
+    [PaymentType] => INVOICE
+    [Status] => Final
+    [CustomerReference] => 
+    [SveaWillBuyOrder] => 1
+    [IdentityFlags] => 
+    [MerchantData] => test
 )
 ```
 
@@ -451,6 +539,7 @@ The latest data structures are always available at [Checkout API](https://www.sv
 | VatPercent                   |	*       | Integer       | The VAT percentage of the current product. | Valid vat percentage for that country. Minor currency.  |
 | Unit                         |            | String        | The unit type, e.g., “st”, “pc”, “kg” etc. | 0-4 characters|
 | TemporaryReference           |            | String        | Can be used when creating or updating an order. The returned rows will have their corresponding temporaryreference as they were given in the indata. It will not be stored and will not be returned in GetOrder.  | |
+| MerchantData                 |            | String        | Can be used to store data, the data is not displayed anywhere but in the API
 
 #### 8.4 PresetValue
 

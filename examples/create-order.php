@@ -60,6 +60,7 @@ try {
         "currency" => "SEK",
         "locale" => "sv-SE",
         "clientOrderNumber" => rand(10000,30000000),
+        "merchantData" => "Test string from merchant",
         "cart" => array(
             "items" => array(
                 array(
@@ -70,7 +71,8 @@ try {
                     "discountPercent" => 1000,
                     "vatPercent" => 2500,
                     "unit" => "st",
-                    'temporaryReference' => "1"
+                    "temporaryReference" => "1",
+                    "merchantData" => "Size: S"
                 ),
                 array(
                     "articleNumber" => "987654321",
@@ -80,7 +82,8 @@ try {
                     "discountPercent" => 1000,
                     "vatPercent" => 2500,
                     "unit" => "pcs",
-                    'temporaryReference' => "2"
+                    "temporaryReference" => "2",
+                    "merchantData" => null
                 )
             )
         ),

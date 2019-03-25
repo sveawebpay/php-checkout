@@ -46,10 +46,10 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 
     $data = array(
-        'orderId' => 51721
+        'orderId' => 251147
     );
     $response = $checkoutClient->get($data);
-    print_r($response);
+    echo '<pre>' . print_r($response, true) . '</pre>';
 
     /*
      * Format of returned response array

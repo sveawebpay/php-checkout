@@ -48,17 +48,19 @@ try {
      * Example of update the order and getting the response data
      */
     $data = array(
-        "orderId" => 251119,
+        "orderId" => 251147,
+        "merchantData" => "test",
         "cart" => array(
             "items" => array(
                 array(
                     "articleNumber" => "123456",
-                    "name" => "Dator",
+                    "name" => "Yellow rubber duck",
                     "quantity" => 200,
-                    "unitPrice" => 12300,
+                    "unitPrice" => 66600,
                     "discountPercent" => 1000,
                     "vatPercent" => 2500,
-                    "temporaryReference" => "230"
+                    "temporaryReference" => "230",
+                    "merchantData" => "Size: M"
                 ),
                 array(
                     "type" => "shipping_fee",
@@ -67,7 +69,8 @@ try {
                     "quantity" => 100,
                     "unitPrice" => 4900,
                     "vatPercent" => 2500,
-                    "temporaryReference" => "231"
+                    "temporaryReference" => "231",
+                    "merchantData" => null
                 )
             )
         )
