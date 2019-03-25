@@ -260,7 +260,7 @@ merchantSettings, Customer and the Gui for the checkout.
 | Gui                           | Gui                  | See [*Gui*](#75-gui) |
 | Customer                      | Customer             | Identified [*Customer*](#76-customer) of the order. |
 | ShippingAddress               | Address              | Shipping [*Address*](#77-address) of identified customer. |
-| BillingAddress                | Address              | Billing [*Address*](#77-address) of identified customer. |
+| BillingAddress                | Address              | Billing [*Address*](#77-address) of identified customer. Returned empty if same as ShippingAddress.|
 | Locale                        | String               | The current locale of the checkout, i.e. sv-SE etc. |
 | Currency                      | String               | The current currency as defined by ISO 4217, i.e. SEK, NOK etc. |
 | CountryCode                   | String               | Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, DE, FI etc.  |
@@ -877,7 +877,7 @@ If order row is successfully updated, Response is empty.
 | OrderAmount           | int           | The total amount on the order. Minor unit|
 | CancelledAmount       | int           | The total cancelled amount on the order. Minor uit|
 | ShippingAddress       | Address       | Shipping address of identified customer.|   
-| BillingAddress        | Address       | Billing address of identified customer.|
+| BillingAddress        | Address       | Billing address of identified customer. Returned empty if same as ShippingAddress. |
 | OrderRows             | List of OrderRow | |
 | Deliveries            | List of Delivery | |
 | Actions               | List of String | A list of actions possible on the order.|
