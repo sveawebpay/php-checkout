@@ -2,7 +2,7 @@
 
 ## Index
 * [1. Setup](#1-setup)
-* [2. Create a Connector](#2-create-a-connector)
+* [2. General information](#2-general-information)
 * [3. Create order](#3-create-order)
 * [4. Get order](#4-get-order)
 * [5. Update order](#5-update-order)
@@ -11,28 +11,34 @@
 * [8. Data structures](#8-data-structures)
 * [9. HttpStatusCodes](#9-httpstatuscodes)
 * [10. Order administration](#10-order-administration)
-
+* [11. Javascript API](#11-javascript-api)
 ## Introduction
 The checkout offers a complete solution with a variety of payment methods. The payment methods that are currently available in the checkout are invoice, payment plan, account credit, card payments and payment by bank.
 
 
-The checkout supports both B2C and B2B payments, fast customer identification and caches customers behaviour. 
-For administration of orders, you can either implement it in your own project, or use Sveas admin user interface.
+The checkout supports both B2C and B2B payments, fast customer identification and caches customers behaviour.
 
-The library provides entry points to integrate the checkout into your platform and to administrate checkout orders.
+
+This library provides entrypoints to integrate the checkout into your platform and to administrate checkout orders.
+
+### Test credentials
+
+You can find credentials that can be used in the stage environment without signing an contract with Svea Ekonomi [here](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/integrationspaket-logos-and-doc.-integration-test-instructions-webpay/test-instructions-webpay-partners-.pdf)
+
+The example files also contain merchant credentials which can be used in the stage environment.
 
 ### 1. Setup
 
-#### 1.1 Install with [**Composer**](https://getcomposer.org/)
+#### 1.1 Installing with [**Composer**](https://getcomposer.org/)
 
-In command line
+Execute the following line in your command line interface:
 ```bash
 
-    Composer require sveaekonomi/checkout
+    composer require sveaekonomi/checkout
 
 ```
 
-or add this part to your composer.json
+or add the following to your composer.json:
 
 ```json
     {
@@ -41,20 +47,26 @@ or add this part to your composer.json
         }
     }
 ```
-and run command ` composer update ` in the console
+and run command ` composer update ` in your CLI
 
 #### 1.2 Install without composer
-You can also download and unzip the project and upload it to your server.
+You can also download the library and upload it onto your server.
 
-### 2. Create a Connector
-You use a connector object as parameter when creating a CheckoutClient request.
+### 2. General information
+
+#### 2.1 Creating a Connector
+You have to use a connector object as parameter when creating a CheckoutClient or a CheckoutAdminClient-object which is used to create API requests.
+
+The connector defines what credentials should be used and which environment should be used.
+
+
 Parameters for creating Connector are: checkoutMerchantId, checkoutSecret and base API url(environment).
 
 ```php
 // include the library
 include 'vendor/autoload.php';
 
-// without composer
+// include library without composer, include.php is in the library root
 require_once 'include.php';
 
 $checkoutMerchantId = '100001';
@@ -64,9 +76,48 @@ $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
 $connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
 ```
+#### 2.2 CheckoutClient
+The CheckoutClient class contains four methods which can be used to:
+* [Create order](#3-create-order) - Creates a Svea Checkout order
+* [Update order](#5-update-order) - Updates an existing Svea Checkout order
+* [Get order](#4-get-order) - Gets order data from an existing order
+* [Get payment plan campaigns](#71-getavailablepartpaymentcampaigns) - Fetches campaigns which can for example be used to display price per month on product page
 
-### 3. Create Order
-To create a new order, you'll need to send order data using a connector. The response will contain all order data along with a GUI which contains the iframe which needs to be rendered to the end-user.
+To ensure that a snippet always is displayed to the end-user, we recommend using the following flow in your platform:
+
+![Recommended flow of checkout](docs/image/flow.png?raw=true)
+
+#### 2.3 CheckoutAdminClient
+The CheckoutAdminClient class contains methods which are used to administrate orders which have been creating using the CheckoutClient class.
+
+Orders can only be administrated if [CheckoutOrderStatus](#88-checkoutorderstatus) is "FINAL", any other status indicates that the order has not been finalized by the end-customer.
+
+In order to perform an action on an order, the order needs to have an [action](#10128-order-actions). You'll have to get the order using ["Get Order"](#101-get-order) and check which [actions](#10128-order-actions) are available and then use a corresponding method.
+
+For example, if you want to credit an order you first have to use [Get order](#101-get-order). Let's say that the action returned is "CanCreditAmount", then you'll have to use [Credit amount](#109-credit-amount) to credit the order.
+
+Some actions may not be available on certain order types, but a good integration doesn't check order type but rather which actions are available for use.
+
+The available methods are:
+* [Get order](#101-get-order) - Returns order data from Payment Admin, contains other information than the method in CheckoutClient
+* [Get task](#102-get-task) - Returns the status of a previously performed operation
+* [Deliver order](#103-deliver-order) - Creates a delivery on a checkout order(sends invoice to end-customer etc.)
+* [Cancel order](#104-cancel-order) - Cancels an order
+* [Cancel order amount](#105-cancel-order-amount) - Removes a specified amount from an order
+* [Cancel order row](#106-cancel-order-row) - Removes order rows from an order
+* [Credit order rows](#107-credit-order-rows) - Credits order rows on a delivered order
+* [Credit new order row](#108-credit-new-order-row) - Creates a new order row with a credited amount
+* [Credit amount](#109-credit-amount) - Credits a specified amount
+* [Add order row](#1010-add-order-row) - Adds an order row to the order
+* [Update order row](#1011-update-order-row) - Updates an existing order row
+
+
+### 3. Create order
+To create a new order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#2-create-a-connector) as an parameter.
+
+You can then use the method "create" in the object, pass the data below into the method. See example below.
+
+The response will contain all order data along with a snippet which contains the iframe which needs to be rendered to the end-user.
 
 | Parameters IN   | Required | Type | Description                                       |
 |-----------------|----------|------|---------------------------------------------------|
@@ -78,18 +129,22 @@ To create a new order, you'll need to send order data using a connector. The res
 |ClientOrderNumber| *        |String|A string with maximum of 32 characters identifying the order in the merchant’s system|
 |PresetValues     |          |Array of [*Preset values*](#84-presetvalue) |Array of [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
 |IdentityFlags    |          |Array of [*IdentityFlags*](#812-identityflags) | Array of [*IdentityFlags*](#812-identityflags) used to hide certain features of the iframe |
+|PartnerKey       |          | Guid | Optional, provided by Svea on request. Used to create statistics.
+|MerchantData     |          | String | Metadata visible in the checkout API, returned when order is fetched through the API. |
   
 | Parameters OUT | Type | Description |
 |----------------|------|-------------|
 |Data            | Data | An object containing all of the order-data, see structure [here](#6-response). 
 
-[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/create-order.php)
+#### Create order example:
 
-#### 3.1 Order data
-
-Sample order data
 ```php
-// Example of data for creating order
+// include the library
+include 'vendor/autoload.php'
+
+// without composer
+require_once 'include.php';
+
 $data = array(
         "countryCode" => "SE",
         "currency" => "SEK",
@@ -141,28 +196,20 @@ $data = array(
             "pushUri" => "https://yourshop.se/push.php?checkout_order_id={checkout.order.uri}",
         )
     );
-```
-
-#### 3.2 Create the Order
-Create a CheckoutClient object with the [*Connector*](#2-create-a-connector) as parameter.
-The CheckoutClient object is an entry point to use the library.
-
-```php
-// include the library
-include 'vendor/autoload.php'
-
-// without composer
-require_once 'include.php';
-
-...
 
 $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 
 $response = $checkoutClient->create($data);
 ```
 
+[See full example](https://github.com/sveawebpay/php-checkout/blob/master/examples/create-order.php)
+
 ### 4. Get Order
-To fetch an existing order, you need to pass the checkout order id as a parameter, which is first given to you when you create an order. The response contains the order information and the along with the GUI which can be used to render the iframe once again.
+To fetch an existing order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#2-create-a-connector) as an parameter.
+
+You can then use the method "get" in the object, pass the data below into the method. See example below.
+
+The response contains the order information and the along with the GUI which can be used to render the iframe once again.
 
 | Parameters IN                | Required  | Type      | Description  |
 |------------------------------|-----------|-----------|--------------|
@@ -173,20 +220,12 @@ To fetch an existing order, you need to pass the checkout order id as a paramete
 | Data                         | Data      | An object containing all of the order-data, see structure [here](#6-response) |
 
 
-[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-order.php)
-
-#### 4.1 Get the Order
-Create a CheckoutClient object with the [*Connector*](#2-create-a-connector) as parameter.
-The checkoutClient object is an entry point to use library.
-
 ```php
 // include the library
 include 'vendor/autoload.php'
 
 // without composer
 require_once 'include.php';
-
-...
 
 $data = array(
         'orderId' => 51721
@@ -197,12 +236,18 @@ $checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 $response = $checkoutClient->get($data);
 ```
 
+[See full example](https://github.com/sveawebpay/php-checkout/blob/master/examples/get-order.php)
+
+
+
 ### 5. Update Order
-Update an existing order. Returns the order information and the updated Gui needed to display the iframe for Svea checkout.
+To update an existing order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#2-create-a-connector) as an parameter.
+
+The method returns the order information and the updated Gui needed to display the iframe for Svea Checkout. The previously displayed iframe should be replaced by the iframe in the response received when updating the order unless using the Javascript API.
 
 Updating an order is only possible while the CheckoutOrderStatus is "Created", see [*CheckoutOrderStatus*](#78-checkoutorderstatus).
 
-[See example](https://github.com/sveawebpay/php-checkout/blob/master/examples/update-order.php)
+This method can be combined with the Javascript API, if the iframe is disabled using the JS API and the order is updated while the it's disabled the iframe will be updated once it's enabled again. This removes the requirement of replacing the iframe once the order is updated.
 
 | Parameters IN:     | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
@@ -210,10 +255,17 @@ Updating an order is only possible while the CheckoutOrderStatus is "Created", s
 | Cart                          |	 *       | Cart      | A cart-object containing the [*OrderRows*](#73-orderrow) |
 | MerchantData                  |            | String    | Can be used to store data, the data is not displayed anywhere but in the API |
 
-
-Sample order data
 ```php
-// Example of data for creating order
+// include the library
+include 'vendor/autoload.php'
+
+// without composer
+require_once 'include.php';
+
+...
+
+$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
+
 $data = array(
         "orderId" => 251147,
         "merchantData" => "test",
@@ -242,25 +294,11 @@ $data = array(
             )
         )
     );
-```
-
-#### 5.1 Update the Order
-Create a CheckoutClient object with the [*Connector*](#2-create-a-connector) as parameter.
-The checkoutClient object is an entry point to use library.
-
-```php
-// include the library
-include 'vendor/autoload.php'
-
-// without composer
-require_once 'include.php';
-
-...
-
-$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
 
 $response = $checkoutClient->update($data);
 ```
+
+[See full example](https://github.com/sveawebpay/php-checkout/blob/master/examples/update-order.php)
 
 ### 6. Response
 The response contains information about the order such as Cart, Status, PaymentType and much more.
@@ -289,7 +327,7 @@ The response contains information about the order such as Cart, Status, PaymentT
 | CustomerReference             | String               | B2B Customer reference |
 
 Sample response
-```
+```php
 Array
 (
     [MerchantSettings] => Array
@@ -455,7 +493,7 @@ echo "<pre>" . print_r($response, true) . "</pre>";
 
 Executing the code above will return an array with [8.11 CampaignCodeInfo](#811-campaigncodeinfo)
 
-Example response when decoded:
+Example response:
 ```php
 Array
 (
@@ -499,11 +537,11 @@ The information should be stored in a database for fast access instead of sendin
 
 Calculating price per month:
 ```php
-ProductPrice * MonthlyAnnuityFactor + NotificationFee
+(InitialFee + (ceil(ProductPrice * MonthlyAnnuityFactor) + NotificationFee) * ContractLengthInMonths) / ContractLengthInMonths
 ```
 
-Using the second campaign with a product price of 150kr in the example above will result in:
-150 * 0.092586652785396 + 29 = 42.8879979kr round upwards to closest whole number -> 43kr
+Using the second campaign with a product price of 1500kr in the example above will result in:
+(0 + (ceil(1500 * 0.092586652785396) + 29 ) * 12) / 12 = (0 + (139 + 29) * 12 ) / 12 = 168kr
 
 
 
@@ -513,9 +551,9 @@ InitialFee + (ProductPrice * MonthlyAnnuityFactor + NotificationFee) * ContractL
 ```
 
 Using the second campaign with a product price of 150kr in the example above will result in:
-0 + (150 * 0.092586652785396 + 29 ) * 12 = 514.655975 round upwards to closest whole numer -> 515kr
+0 + (150 * 0.092586652785396 + 29 ) * 12 = 514.655975 round upwards to closest whole number -> 515kr
 
-!!! NOTE !!!
+### !!! NOTE !!!
 If you are a finnish merchant you have to display ALL the values described [here](https://www.kkv.fi/sv/beslut-och-publikationer/publikationer/konsumentrombudsmannens-riktlinjer/enligt-substans/tillhandahallande-av-konsumentkrediter/#luottolinjausSVE5.1) to be compliant with finnish laws.
 
 ### 8. Data structures
@@ -527,8 +565,8 @@ If you are a finnish merchant you have to display ALL the values described [here
 | TermsUri                     |	*      | string    | URI to a page which contains terms of the webshop. | 1-500 characters, must be a valid Url |
 | CheckoutUri                  |	*      | string    | URI to the page in the webshop that loads the Checkout.  | 1-500 characters, must be a valid Url |
 | ConfirmationUri              |	*      | string    | URI to the page in the webshop displaying specific information to a customer after the order has been confirmed. | 1-500 characters, must be a valid Url |
-| PushUri                      |	*      | string    | URl to a location that is expecting callbacks from the Checkout when an order is confirmed. Uri should use the {checkout.order.uri} placeholder.  | 1-500 characters, must be a valid Url |
-| CheckoutValidationCallBackUri|           | string    | An optional URl to a location that is expecting callbacks from the Checkout to validate order’s stock status, and also the possibility to update checkout with an updated ClientOrderNumber. Uri may have a {checkout.order.uri} placeholder which will be replaced with the checkoutorderid. Please refer below CheckoutValidationCallbackResponse to see the expected response. | 1-500 characters, must be a valid Url |
+| PushUri                      |	*      | string    | URI to a location that is expecting callbacks when CheckoutOrderStatus is changed. Uri should use the {checkout.order.uri} placeholder.  | 1-500 characters, must be a valid Url |
+| CheckoutValidationCallBackUri|           | string    | An optional URl to a location that is expecting callbacks from the Checkout to validate order’s stock status, and also the possibility to update checkout with an updated ClientOrderNumber. Uri may have a {checkout.order.uri} placeholder which will be replaced with the CheckoutOrderId. Please refer below [*CheckoutValidationCallbackResponse*](#813-checkoutvalidationcallbackresponse) to see the expected response. | 1-500 characters, must be a valid Url |
 | ActivePartPaymentCampaigns   |           | Array of CampaignCode | Array of valid CampaignCodes. If used then list of available part payment campaign options will be filtered through the chosen list. | Must be an array of valid CampaignCode |
 | PromotedPartPaymentCampaign  |           | integer   | Valid CampaignID. If used then the chosen campaign will be shown as the first payment method in all payment method lists. | Must be valid CampaignID |
 
@@ -614,11 +652,11 @@ The order can only be considered “ready to send to customer” when the Checko
 #### 8.9 Locale
 | Parameter | Description     |
 |-----------|-----------------|
-| sv-SE     | Swedish locale. |
-| nn-NO     | Norwegian locale. |
-| nb-NO     | Norwegian locale. |
-| fi-FI     | Finnish locale. |
-
+| sv-SE     | Swedish locale |
+| nn-NO     | Norwegian locale |
+| nb-NO     | Norwegian locale |
+| fi-FI     | Finnish locale |
+| da-DK     | Danish locale |
 
 
 #### 8.10 PaymentType
@@ -671,8 +709,18 @@ Directbanks:
 | Parameter                 | Type      | Description |
 |---------------------------|-----------|-------------|
 | HideNotYou              | Boolean   | Hides "Not you?"-button in iframe  |
-| HideChangeAddress       | Boolean   | Hides "Change adress"-button in iframe |
+| HideChangeAddress       | Boolean   | Hides "Change address"-button in iframe |
 | HideAnonymous           | Boolean   | Hides anonymous flow, forcing users to identify with their nationalId to perform a purchase |
+
+#### 8.13 CheckoutValidationCallbackResponse
+If a CheckoutValidationCallbackUri is set on an order when it's created, Svea will send a HTTP GET request to the specified URI when a customer clicks on "Confirm Order".
+
+The response should have HTTP status 200, indicating a successful request. The response should contain the required parameters below. Encode the response in JSON before responding.
+
+| Parameter         | Required | Type    | Description |
+|-------------------|----------|---------|-------------|
+| Valid             | *        | Boolean | Should be set to true if Svea should accept the order |
+| ClientOrderNumber |          | String  | Max 32 characters. Set if you want the ClientOrderNumber to be updated. |
 
 ### 9. HttpStatusCodes
 | Parameter | Type          | Description |
@@ -699,8 +747,11 @@ If any action is unsuccessful or there is any other error, library will throw ex
 
 **Possible Exceptions**
 \Svea\Checkout\Exception\SveaInputValidationException - If any of the input fields is invalid or missing.
+
 \Svea\Checkout\Exception\SveaApiException - If there is some problem with API connection or some error occurred with data validation on the API side.
+
 \Svea\Checkout\Exception\SveaConnectorException - will be returned if some of fields merchantId, sharedSecret or baseUrl is missing.
+
 \Exception - For any other error
 
 ### 10.1 Get order
@@ -992,3 +1043,61 @@ If order row is successfully updated, Response is empty.
 | CanCancelRow          ||
 | CanCreditRow          ||	
 | CanUpdateRow          ||
+
+## 11. Javascript API
+
+(Please note that the API is still considered a work in progress and might see significant changes.)
+
+### API entry point
+
+window.scoApi is the root object for the API and contains all the operations available.
+
+### Listening for API readiness
+
+The checkout raises an event when ready, which can be used to safely access the API.
+
+*Example:*
+```javascript
+document.addEventListener("checkoutReady", function() {
+    window.scoApi... // Your code here
+});
+```
+
+### Available operations
+
+#### observeEvent(propertyString, handlerFunction) => function
+
+Observes the client data for changes, calling the supplied function when a change is detected.
+
+Returns a function that can be called to stop observing the specified property.
+
+The following properties are currently supported:
+
+```javascript
+"identity.isCompany"
+"identity.email"
+"identity.phoneNumber"
+"identity.companyName"
+"identity.firstName"
+"identity.lastName"
+"identity.streetAddress"
+"identity.coAddress"
+"identity.postalCode"
+"identity.city"
+"identity.addressLines"
+```
+
+*Example:*
+```javascript
+// Observe the city property
+var unsubscribe = window.scoApi.observeEvent("identity.city", function (data) { 
+    console.log("City changed to %s.", data.value); 
+});
+
+// Stop observing
+unsubscribe();
+```
+
+#### setCheckoutEnabled(value) => void
+
+Pass a false-ish value to disable the checkout. While disabled, the merchant can safely perform updates to the cart. When finished, call setCheckoutEnabled(true) to re-enable the checkout and make it reflect the changes made.
