@@ -25,7 +25,7 @@
     "phpmd/phpmd": "^2.4",
     "phploc/phploc": "^2.0.1",
     "sebastian/phpcpd": "^2.0.4",
-	"symfony/dependency-injection": "3.4.26"
+	"symfony/dependency-injection": "^2.7.51 || ^2.8.50 || ^3.4.26 || ^4.1.12 || ^4.2.7"
   },
   "scripts": {
     "test": "Svea\\Checkout\\Util\\ScriptHandler::runUnitTests",
