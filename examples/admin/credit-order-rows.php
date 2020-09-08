@@ -43,7 +43,7 @@ try {
 
     $data = array(
         "orderId" => 7427, // required - Long  filed (Specified Checkout order for cancel amount)
-        "deliveryId" => 1, // required - Long - Id of the specified delivery.
+        "deliveryId" => 3333333333331, // required - Long - Id of the specified delivery.
         "orderRowIds" => array(2), // required - Array - Ids of the delivered order rows that will be credited.
     );
     $response = $checkoutClient->creditOrderRows($data);
