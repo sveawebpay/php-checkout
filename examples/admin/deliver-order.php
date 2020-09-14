@@ -43,9 +43,9 @@ try {
     $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
     $data = array(
-        "orderId" => 68949,
+        "orderId" => 2572095,
         /* To deliver whole order just send orderRowIds as empty array */
-        "orderRowIds" => array(3)
+        "orderRowIds" => array()
     );
     $response = $checkoutClient->deliverOrder($data);
     print_r($response);

@@ -45,8 +45,8 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 204,        // required - Long  filed (Specified Checkout order for cancel amount)
-        "deliveryId" => 1,          // required - Int - Id of order delivery
+        "orderId" => 2572095,        // required - Long  filed (Specified Checkout order for cancel amount)
+        "deliveryId" => 760583,          // required - Int - Id of order delivery
         "creditedAmount" => 2000,       // required - Int Amount to be credit minor currency,
     );
     $response = $checkoutClient->creditOrderAmount($data);

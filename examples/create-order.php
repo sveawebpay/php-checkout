@@ -64,22 +64,20 @@ try {
         "cart" => array(
             "items" => array(
                 array(
-                    "articleNumber" => "1234567",
-                    "name" => "Yellow rubber duck",
+                    "articleNumber" => "11",
+                    "name" => "aa",
                     "quantity" => 200,
                     "unitPrice" => 12300,
-                    "discountPercent" => 1000,
                     "vatPercent" => 2500,
                     "unit" => "st",
                     "temporaryReference" => "1",
                     "merchantData" => "Size: S"
                 ),
                 array(
-                    "articleNumber" => "987654321",
-                    "name" => "Blue rubber duck",
-                    "quantity" => 500,
+                    "articleNumber" => "22",
+                    "name" => "bb",
+                    "quantity" => 300,
                     "unitPrice" => 25000,
-                    "discountPercent" => 1000,
                     "vatPercent" => 2500,
                     "unit" => "pcs",
                     "temporaryReference" => "2",

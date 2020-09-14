@@ -42,8 +42,8 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 7427, // required - Long  filed (Specified Checkout order for cancel amount)
-        "deliveryId" => 3333333333331, // required - Long - Id of the specified delivery.
+        "orderId" => 2572093, // required - Long  filed (Specified Checkout order for cancel amount)
+        "deliveryId" => 790211112558, // required - Long - Id of the specified delivery.
         "orderRowIds" => array(2), // required - Array - Ids of the delivered order rows that will be credited.
     );
     $response = $checkoutClient->creditOrderRows($data);

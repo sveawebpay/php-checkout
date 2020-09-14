@@ -42,7 +42,7 @@ try {
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(
-        "orderId" => 178693
+        "orderId" => 2572095
     );
 
     $response = $checkoutClient->getOrder($data);
