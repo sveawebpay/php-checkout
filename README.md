@@ -123,6 +123,7 @@ The response will contain all order data along with a snippet which contains the
 |-----------------|----------|------|---------------------------------------------------|
 |MerchantSettings | *        |[*MerchantSettings*](#81-merchantsettings) |The merchants settings for the order              |
 |Cart             | *        |Cart  |A cart-object containing the [*OrderRows*](#83-orderrow)            |
+|RequireElectronicIdAuthentication | |Boolean| Does the checkout require electronic ID authentication such as BankID, 3D Secure or similar?|
 |Locale           | *        |String|The current locale of the checkout, i.e. sv-SE etc. Does not change the actual language in the GUI|
 |Currency         | *        |String|The current currency as defined by ISO 4217, i.e. SEK, NOK etc. Currently fixed to merchant, only SEK for swedish merchants, etc |
 |CountryCode      | *        |String|Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, NO, FI etc. Setting this parameter to anything but the country which the merchant is configured for will trigger the "International flow" which is in english and only supports card payments |
