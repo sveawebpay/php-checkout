@@ -119,19 +119,19 @@ You can then use the method "create" in the object, pass the data below into the
 
 The response will contain all order data along with a snippet which contains the iframe which needs to be rendered to the end-user.
 
-| Parameters IN   | Required | Type | Description                                       |
-|-----------------|----------|------|---------------------------------------------------|
-|MerchantSettings | *        |[*MerchantSettings*](#81-merchantsettings) |The merchants settings for the order              |
-|Cart             | *        |Cart  |A cart-object containing the [*OrderRows*](#83-orderrow)            |
-|RequireElectronicIdAuthentication | |Boolean| Does the checkout require electronic ID authentication such as BankID, 3D Secure or similar?|
-|Locale           | *        |String|The current locale of the checkout, i.e. sv-SE etc. Does not change the actual language in the GUI|
-|Currency         | *        |String|The current currency as defined by ISO 4217, i.e. SEK, NOK etc. Currently fixed to merchant, only SEK for swedish merchants, etc |
-|CountryCode      | *        |String|Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, NO, FI etc. Setting this parameter to anything but the country which the merchant is configured for will trigger the "International flow" which is in english and only supports card payments |
-|ClientOrderNumber| *        |String|A string with maximum of 32 characters identifying the order in the merchant’s system|
-|PresetValues     |          |Array of [*Preset values*](#84-presetvalue) |Array of [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
-|IdentityFlags    |          |Array of [*IdentityFlags*](#812-identityflags) | Array of [*IdentityFlags*](#812-identityflags) used to hide certain features of the iframe |
-|PartnerKey       |          | Guid | Optional, provided by Svea on request. Used to create statistics.
-|MerchantData     |          | String | Metadata visible in the checkout API, returned when order is fetched through the API. |
+| Parameters IN                   | Required | Type | Description                                       |
+|---------------------------------|----------|------|---------------------------------------------------|
+|MerchantSettings                 | *        |[*MerchantSettings*](#81-merchantsettings) |The merchants settings for the order              |
+|Cart                             | *        |Cart   |A cart-object containing the [*OrderRows*](#83-orderrow)            |
+|RequireElectronicIdAuthentication|          |Boolean| Does the checkout require electronic ID authentication such as BankID, 3D Secure or similar?|
+|Locale                           | *        |String |The current locale of the checkout, i.e. sv-SE etc. Does not change the actual language in the GUI|
+|Currency                         | *        |String |The current currency as defined by ISO 4217, i.e. SEK, NOK etc. Currently fixed to merchant, only SEK for swedish merchants, etc |
+|CountryCode                      | *        |String |Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, NO, FI etc. Setting this parameter to anything but the country which the merchant is configured for will trigger the "International flow" which is in english and only supports card payments |
+|ClientOrderNumber                | *        |String |A string with maximum of 32 characters identifying the order in the merchant’s system|
+|PresetValues                     |          |Array of [*Preset values*](#84-presetvalue) |Array of [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
+|IdentityFlags                    |          |Array of [*IdentityFlags*](#812-identityflags) | Array of [*IdentityFlags*](#812-identityflags) used to hide certain features of the iframe |
+|PartnerKey                       |          | Guid | Optional, provided by Svea on request. Used to create statistics.
+|MerchantData                     |          | String | Metadata visible in the checkout API, returned when order is fetched through the API. |
   
 | Parameters OUT | Type | Description |
 |----------------|------|-------------|
