@@ -22,5 +22,9 @@ class ValidateDeliverOrderData extends ValidationService
                 $this->mustBeInteger($orderRowId, 'Order Row Id');
             }
         }
+
+		if (!empty($data['rowdeliveryoptions'])) {
+			$this->mustBeArray($data, 'rowdeliveryoptions', 'Row Delivery Options');
+		}
     }
 }

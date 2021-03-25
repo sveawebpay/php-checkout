@@ -56,6 +56,10 @@ class CreditOrderRows extends AdminImplementationManager
             $requestData['newCreditOrderRow'] = $data['newcreditrow'];
         } else {
             $requestData['orderRowIds'] = $data['orderrowids'];
+
+			if (!empty($data['rowcreditingoptions'])) {
+				$requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
+			}
         }
 
         $orderId = $data['orderid'];

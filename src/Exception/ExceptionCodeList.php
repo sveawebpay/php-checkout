@@ -29,7 +29,7 @@ class ExceptionCodeList
             self::MISSING_API_BASE_URL => 'Missing API Base URL',
             self::INCORRECT_API_BASE_URL => 'Incorrect API Base URL',
             self::INPUT_VALIDATION_ERROR => 'Input Validation Error'
-        );
+		);
 
         if (isset($exceptionMessageList[$exceptionCode])) {
             return $exceptionMessageList[$exceptionCode];
