@@ -169,6 +169,17 @@ class CheckoutAdminClient
         return $this->executeAction(ImplementationAdminFactory::returnReplaceOrderRowsClass($this->connector), $data);
     }
 
+	/**
+     * Credit Order Rows with fee.
+     *
+     * @param int $data
+     * @return mixed
+     */
+    public function creditOrderRowsWithFee($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnCreditOrderRowsWithFeeClass($this->connector), $data);
+    }
+
     /**
      * @param ImplementationInterface $actionObject
      * @param mixed $inputData

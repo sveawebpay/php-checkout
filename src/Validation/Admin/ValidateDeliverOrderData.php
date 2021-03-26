@@ -24,7 +24,7 @@ class ValidateDeliverOrderData extends ValidationService
         }
 
 		if (!empty($data['rowdeliveryoptions'])) {
-			$this->mustBeArray($data, 'rowdeliveryoptions', 'Row Delivery Options');
+			$this->mustNotBeEmptyArray($data, 'rowdeliveryoptions', 'Row Delivery Options');
 		}
     }
 }

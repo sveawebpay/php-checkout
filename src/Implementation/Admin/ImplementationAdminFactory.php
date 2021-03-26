@@ -15,6 +15,7 @@ use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderCreditsData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderDeliveryData;
 use Svea\Checkout\Validation\Admin\ValidateCreditOrderAmountData;
+use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsWithFeeData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
 use Svea\Checkout\Validation\Admin\ValidateReplaceOrderRowsData;
 
@@ -110,5 +111,14 @@ class ImplementationAdminFactory
     public static function returnReplaceOrderRowsClass(Connector $connector)
     {
         return new ReplaceOrderRows($connector, new ValidateReplaceOrderRowsData());
+    }
+
+	/**
+     * @param Connector $connector
+     * @return CreditOrderRowsWithFee
+     */
+    public static function returnCreditOrderRowsWithFeeClass(Connector $connector)
+    {
+        return new CreditOrderRowsWithFee($connector, new ValidateCreditOrderRowsWithFeeData());
     }
 }
