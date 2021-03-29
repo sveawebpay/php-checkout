@@ -804,7 +804,7 @@ However if a subset of all active order rows are specified a partial delivery wi
 |-------------------------------|------------|-----------|--------------|
 | orderId                       |	*        | int       | Checkout order id of the specified order. |
 | orderRowIds                   |	*        | array     | array of *orderRowIds* To deliver whole order just send orderRowIds as empty array |
-| rowDeliveryOptions            |	         | array     | Array of [RowDeliveryOptions](#1031-row-delivery-options) |
+| rowDeliveryOptions            |	         | array     | Array of [*Row Delivery Options*](#1031-row-delivery-options) |
 
 #### Response
 
