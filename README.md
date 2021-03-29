@@ -107,9 +107,11 @@ The available methods are:
 * [Cancel order row](#106-cancel-order-row) - Removes order rows from an order
 * [Credit order rows](#107-credit-order-rows) - Credits order rows on a delivered order
 * [Credit new order row](#108-credit-new-order-row) - Creates a new order row with a credited amount
+* [Credit order rows with fee](#109-credit-order-rows-with-fee) - Credits order rows on a delivered order and adds a fee
 * [Credit amount](#1010-credit-amount) - Credits a specified amount
 * [Add order row](#1011-add-order-row) - Adds an order row to the order
 * [Update order row](#1012-update-order-row) - Updates an existing order row
+* [Replace order rows](#1013-replace-order-rows) - Replaces all order rows on an order with new order rows
 
 
 ### 3. Create order
