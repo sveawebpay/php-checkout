@@ -32,8 +32,8 @@ class ValidateCreditOrderRowsData extends ValidationService
         } else {
             $this->validateRowIds($data);
 
-			if (!empty($data['rowcreditingoptions'])) {
-				$this->mustNotBeEmptyArray($data, 'rowcreditingoptions', 'Row Crediting Options');
+			if (isset($data['rowcreditingoptions'])) {
+				$this->mustNotBeEmptyArray($data['rowcreditingoptions'], 'Row Crediting Options');
 			}
         }
     }

@@ -8,7 +8,7 @@ use Svea\Checkout\Validation\ValidationService;
 
 class ReplaceOrderRows extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%s/rows/updateOrderRows';
+    protected $apiUrl = '/api/v1/orders/%s/rows/replaceOrderRows';
 
     /**
      * @var bool $isNewCreditRow

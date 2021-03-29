@@ -205,6 +205,7 @@ class ResponseHandler
     public function getContent()
     {
         $result = json_decode($this->removeBOM($this->body), true);
+
         if ($result === null && $this->body !== '') {
             throw new SveaApiException('Response format is not valid, JSON decode error', 1000);
         }

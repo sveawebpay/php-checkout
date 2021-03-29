@@ -23,8 +23,8 @@ class ValidateDeliverOrderData extends ValidationService
             }
         }
 
-		if (!empty($data['rowdeliveryoptions'])) {
-			$this->mustNotBeEmptyArray($data, 'rowdeliveryoptions', 'Row Delivery Options');
+		if (isset($data['rowdeliveryoptions'])) {
+			$this->mustNotBeEmptyArray($data['rowdeliveryoptions'], 'Row Delivery Options');
 		}
     }
 }

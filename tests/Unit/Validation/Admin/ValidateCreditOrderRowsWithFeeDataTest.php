@@ -3,12 +3,12 @@
 namespace Svea\Checkout\Tests\Unit\Validation\Admin;
 
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsData;
+use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsWithFeeData;
 
-class ValidateCreditOrderRowsDataTest extends TestCase
+class ValidateCreditOrderRowsWithFeeDataTest extends TestCase
 {
     /**
-     * @var ValidateCreditOrderRowsData $validateUpdateOrderData
+     * @var ValidateCreditOrderRowsWithFeeData $validateUpdateOrderData
      */
     private $validateCreditOrderRow;
 
@@ -20,15 +20,26 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->validateCreditOrderRow = new ValidateCreditOrderRowsData();
+        $this->validateCreditOrderRow = new ValidateCreditOrderRowsWithFeeData();
 
         $this->inputData = array(
             "orderid" => 201,
             "deliveryid" => 1,
             "orderrowids" => array(3),
-            "newcreditrow" => array(
-                'unitPrice' => 5000
-            )
+            "fee" => array(
+				"articlenumber" => "123456",
+				"name" => "Tomatoes",
+				"quantity" => 10,
+				"unitprice" => 600,
+				"discountpercent" => 1000,
+				"vatpercent" => 2500
+			),
+			"rowcreditingoptions" => array(
+				array(
+					"orderrowid" => 1,
+					"quantity" => 1,
+				)
+			)
         );
     }
 
@@ -79,20 +90,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateWithOrderIdAsDecimal()
     {
         $this->inputData['orderid'] = 204.5;
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    public function testValidateValidCreditOrderRowIds()
-    {
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    public function testValidateNewCreditRowWithoutOrderRowIds()
-    {
-        unset($this->inputData['orderrowids']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(true);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -153,8 +150,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateCreditOrderRowIdsWithOrderRowIdsAsString()
     {
         $this->inputData['orderrowids'] = '204';
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -165,15 +160,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateCreditOrderRowIdsWithEmptyOrderRowIds()
     {
         $this->inputData['orderrowids'] = '';
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    public function testValidateNewCreditRowWithValidData()
-    {
-        unset($this->inputData['orderrowids']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(true);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -184,8 +170,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateCreditOrderRowIdsWithOrderRowIdsAsDecimal()
     {
         $this->inputData['orderrowids'] = 204.5;
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -196,8 +180,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateCreditOrderRowIdsWithOrderRowIdAsEmptyArray()
     {
         $this->inputData['orderrowids'] = array();
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -208,8 +190,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateCreditOrderRowIdsWithOrderRowIdAsString()
     {
         $this->inputData['orderrowids'] = array('1');
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -220,8 +200,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateCreditOrderRowIdsWithOrderRowIdAsDecimal()
     {
         $this->inputData['orderrowids'] = array(1.1);
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -232,31 +210,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
     public function testValidateCreditOrderRowIdsWithEmptyOrderRowId()
     {
         $this->inputData['orderrowids'] = array('');
-        unset($this->inputData['newcreditrow']);
-        $this->validateCreditOrderRow->setIsNewCreditRow(false);
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithoutOrderRowIdsAndWithoutNewCreditRow()
-    {
-        unset($this->inputData['orderrowids']);
-        unset($this->inputData['newcreditrow']);
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateNewCreditRowWithoutOrderRowIdsAndEmptyNewCreditRow()
-    {
-        unset($this->inputData['orderrowids']);
-        $this->inputData['newcreditrow'] = array();
-        $this->validateCreditOrderRow->setIsNewCreditRow(true);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
@@ -269,8 +222,8 @@ class ValidateCreditOrderRowsDataTest extends TestCase
         $this->inputData['rowcreditingoptions'] = array();
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
-	
-    public function testValidateWithoutRowCreditingOptions()
+
+	public function testValidateWithoutRowCreditingOptions()
     {
         unset($this->inputData['rowcreditingoptions']);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));

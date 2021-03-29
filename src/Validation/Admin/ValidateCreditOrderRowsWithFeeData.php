@@ -20,11 +20,11 @@ class ValidateCreditOrderRowsWithFeeData extends ValidationService
 		$this->validateRowIds($data);
 
 		if (!empty($data['fee'])) {
-			$this->mustNotBeEmptyArray($data, 'fee', 'Fee');
+			$this->mustNotBeEmptyArray($data['fee'], 'Fee');
 		}
 
-		if (!empty($data['rowcreditingoptions'])) {
-			$this->mustNotBeEmptyArray($data, 'rowcreditingoptions', 'Row Crediting Options');
+		if (isset($data['rowcreditingoptions'])) {
+			$this->mustNotBeEmptyArray($data['rowcreditingoptions'], 'Row Crediting Options');
 		}
     }
 

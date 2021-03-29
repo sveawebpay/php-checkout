@@ -3,14 +3,14 @@
 namespace Svea\Checkout\Tests\Unit\Validation\Admin;
 
 use Svea\Checkout\Tests\Unit\TestCase;
-use Svea\Checkout\Validation\Admin\ValidateDeliverOrderData;
+use Svea\Checkout\Validation\Admin\ValidateReplaceOrderRowsData;
 
-class ValidateDeliverOrderDataTest extends TestCase
+class ValidateReplaceOrderRowsDataTest extends TestCase
 {
     /**
-     * @var ValidateDeliverOrderData $validateUpdateOrderData
+     * @var ValidateReplaceOrderRowsData $validateUpdateOrderData
      */
-    private $validateDeliverOrder;
+    private $validateReplaceOrderRows;
 
     /**
      * @var mixed $inputData
@@ -20,11 +20,20 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->validateDeliverOrder = new ValidateDeliverOrderData();
+        $this->validateReplaceOrderRows = new ValidateReplaceOrderRowsData();
 
         $this->inputData = array(
             "orderid" => 201,
-            'orderrowids' => array(1, 2)
+            'orderrows' => array(
+				array(
+					"articlenumber" => "123456",
+					"name" => "Tomatoes",
+					"quantity" => 10,
+					"unitprice" => 600,
+					"discountpercent" => 1000,
+					"vatpercent" => 2500
+				)
+			)
         );
     }
 
@@ -35,7 +44,7 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithoutOrderId()
     {
         unset($this->inputData['orderid']);
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
@@ -45,7 +54,7 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithOrderIdAsString()
     {
         $this->inputData['orderid'] = '204';
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
@@ -55,7 +64,7 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithEmptyOrderId()
     {
         $this->inputData['orderid'] = '';
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
@@ -65,7 +74,7 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithNullOrderId()
     {
         $this->inputData['orderid'] = null;
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
@@ -75,36 +84,36 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithOrderIdAsDecimal()
     {
         $this->inputData['orderid'] = 204.5;
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithOrderIdAsIntAndWithoutOrderRowIds()
+    public function testValidateWithOrderIdAsIntAndWithoutOrderRows()
     {
-        unset($this->inputData['orderrowids']);
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        unset($this->inputData['orderrows']);
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
-    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsInt()
+    public function testValidateWithOrderIdAsIntAndWithOrderRowsAsInt()
     {
-        $this->inputData['orderrowids'] = 1;
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->inputData['orderrows'] = 1;
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
      * Empty array for orderRowIds will be deliver whole Order
      */
-    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsEmptyArray()
+    public function testValidateWithOrderIdAsIntAndWithOrderRowsAsEmptyArray()
     {
-        $this->inputData['orderrowids'] = array();
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->inputData['orderrows'] = array();
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
@@ -114,7 +123,7 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsArrayWithStrings()
     {
         $this->inputData['orderrowids'] = array('1');
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     /**
@@ -124,27 +133,11 @@ class ValidateDeliverOrderDataTest extends TestCase
     public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsArrayWithDecimalValue()
     {
         $this->inputData['orderrowids'] = array(1.5);
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
     public function testValidateWithOrderIdAsInteger()
     {
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
-    }
-
-	/**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithEmptyRowDeliveryOptions()
-    {
-        $this->inputData['rowdeliveryoptions'] = array();
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
-    }
-
-	public function testValidateWithoutRowDeliveryOptions()
-    {
-        unset($this->inputData['rowdeliveryoptions']);
-        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 }
