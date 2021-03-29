@@ -15,6 +15,6 @@ class ValidateReplaceOrderRowsData extends ValidationService
         $this->mustBeInteger($data['orderid'], 'Order Id');
 
         $this->mustBeSet($data, 'orderrows', 'Order Rows');
-        $this->mustBeArray($data['orderrows'], 'Order Rows');
+        $this->mustNotBeEmptyArray($data['orderrows'], 'Order Rows');
     }
 }

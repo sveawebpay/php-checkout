@@ -108,31 +108,12 @@ class ValidateReplaceOrderRowsDataTest extends TestCase
     }
 
     /**
-     * Empty array for orderRowIds will be deliver whole Order
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
     public function testValidateWithOrderIdAsIntAndWithOrderRowsAsEmptyArray()
     {
         $this->inputData['orderrows'] = array();
-        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsArrayWithStrings()
-    {
-        $this->inputData['orderrowids'] = array('1');
-        $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
-    }
-
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateWithOrderIdAsIntAndWithOrderRowIdsAsArrayWithDecimalValue()
-    {
-        $this->inputData['orderrowids'] = array(1.5);
         $this->invokeMethod($this->validateReplaceOrderRows, 'validate', array($this->inputData));
     }
 
