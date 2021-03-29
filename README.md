@@ -815,7 +815,7 @@ However if a subset of all active order rows are specified a partial delivery wi
 ### 10.3.1 Row Delivery Options
 
 | Parameter                     | Type       | Description  |
-|-------------------------------|------------|----------|--------------|
+|-------------------------------|------------|--------------|
 | orderRowId                    | int        | Id of the order row |
 | quantity                      | int        | Number of items to credit |
 
