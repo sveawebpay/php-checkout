@@ -881,7 +881,7 @@ On the returned URL can be checked status of the task.
 ### 10.7.1 Row Crediting Options
 
 | Parameter                     | Type       | Description  |
-|-------------------------------|------------|----------|--------------|
+|-------------------------------|------------|--------------|
 | orderRowId                    | int        | Id of the order row |
 | quantity                      | int        | Number of items to credit |
 
