@@ -7,7 +7,11 @@ use Svea\Checkout\Validation\ValidationService;
 class ValidateDeliverOrderData extends ValidationService
 {
     /**
+	 * Validate the provided data
+	 * 
      * @param array $data
+	 * 
+	 * @return void
      */
     public function validate($data)
     {
@@ -22,5 +26,9 @@ class ValidateDeliverOrderData extends ValidationService
                 $this->mustBeInteger($orderRowId, 'Order Row Id');
             }
         }
+
+		if (isset($data['rowdeliveryoptions'])) {
+			$this->mustNotBeEmptyArray($data['rowdeliveryoptions'], 'Row Delivery Options');
+		}
     }
 }

@@ -6,9 +6,9 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Validation\ValidationService;
 
-class CreditOrderRows extends AdminImplementationManager
+class CreditOrderRowsWithFee extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%s/deliveries/%s/credits';
+    protected $apiUrl = '/api/v1/orders/%s/deliveries/%s/credits/CreditWithFee';
 
     /**
      * @var bool $isNewCreditRow
@@ -28,10 +28,9 @@ class CreditOrderRows extends AdminImplementationManager
      * @param ValidationService $validationService
      * @param bool $isNewCreditRow
      */
-    public function __construct(Connector $connector, ValidationService $validationService, $isNewCreditRow = false)
+    public function __construct(Connector $connector, ValidationService $validationService)
     {
         parent::__construct($connector, $validationService);
-        $this->isNewCreditRow = $isNewCreditRow;
     }
 
     /**
@@ -52,15 +51,16 @@ class CreditOrderRows extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        if ($this->isNewCreditRow === true) {
-            $requestData['newCreditOrderRow'] = $data['newcreditrow'];
-        } else {
-            $requestData['orderRowIds'] = $data['orderrowids'];
+        
+		$requestData['orderRowIds'] = $data['orderrowids'];
 
-			if (!empty($data['rowcreditingoptions'])) {
-				$requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
-			}
-        }
+		if (!empty($data['fee'])) {
+			$requestData['fee'] = $data['fee'];
+		}
+
+		if (!empty($data['rowcreditingoptions'])) {
+			$requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
+		}
 
         $orderId = $data['orderid'];
         $deliveryId = $data['deliveryid'];
@@ -74,6 +74,8 @@ class CreditOrderRows extends AdminImplementationManager
 
     /**
      * Invoke Api call
+	 * 
+	 * @return void
      */
     public function invoke()
     {
@@ -81,6 +83,8 @@ class CreditOrderRows extends AdminImplementationManager
     }
 
     /**
+	 * Get the request model
+	 * 
      * @return Request
      */
     public function getRequestModel()
@@ -89,7 +93,11 @@ class CreditOrderRows extends AdminImplementationManager
     }
 
     /**
+	 * Set the request model
+	 * 
      * @param Request $requestModel
+	 * 
+	 * @return void
      */
     public function setRequestModel($requestModel)
     {

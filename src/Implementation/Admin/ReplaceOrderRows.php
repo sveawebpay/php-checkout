@@ -6,9 +6,9 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Validation\ValidationService;
 
-class CreditOrderRows extends AdminImplementationManager
+class ReplaceOrderRows extends AdminImplementationManager
 {
-    protected $apiUrl = '/api/v1/orders/%s/deliveries/%s/credits';
+    protected $apiUrl = '/api/v1/orders/%s/rows/replaceOrderRows';
 
     /**
      * @var bool $isNewCreditRow
@@ -28,10 +28,9 @@ class CreditOrderRows extends AdminImplementationManager
      * @param ValidationService $validationService
      * @param bool $isNewCreditRow
      */
-    public function __construct(Connector $connector, ValidationService $validationService, $isNewCreditRow = false)
+    public function __construct(Connector $connector, ValidationService $validationService)
     {
         parent::__construct($connector, $validationService);
-        $this->isNewCreditRow = $isNewCreditRow;
     }
 
     /**
@@ -52,22 +51,14 @@ class CreditOrderRows extends AdminImplementationManager
     public function prepareData($data)
     {
         $requestData = array();
-        if ($this->isNewCreditRow === true) {
-            $requestData['newCreditOrderRow'] = $data['newcreditrow'];
-        } else {
-            $requestData['orderRowIds'] = $data['orderrowids'];
 
-			if (!empty($data['rowcreditingoptions'])) {
-				$requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
-			}
-        }
+		$requestData['orderRows'] = $data['orderrows'];
 
         $orderId = $data['orderid'];
-        $deliveryId = $data['deliveryid'];
-        $urlParams = array($orderId, $deliveryId);
+        $urlParams = array($orderId);
 
         $this->requestModel = new Request();
-        $this->requestModel->setPostMethod();
+        $this->requestModel->setPutMethod();
         $this->requestModel->setBody(json_encode($requestData));
         $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
     }

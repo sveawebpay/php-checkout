@@ -17,7 +17,11 @@ class ValidateCreditOrderRowsData extends ValidationService
     }
 
     /**
+	 * Validate the provided data
+	 * 
      * @param array $data
+	 * 
+	 * @return void
      */
     public function validate($data)
     {
@@ -31,15 +35,33 @@ class ValidateCreditOrderRowsData extends ValidationService
             $this->validateNewCreditRow($data);
         } else {
             $this->validateRowIds($data);
+
+			if (isset($data['rowcreditingoptions'])) {
+				$this->mustNotBeEmptyArray($data['rowcreditingoptions'], 'Row Crediting Options');
+			}
         }
     }
 
+	/**
+	 * Validate new credit row
+	 *
+	 * @param array $data
+	 * 
+	 * @return void
+	 */
     private function validateNewCreditRow($data)
     {
         $this->mustBeSet($data, 'newcreditrow', 'Credit Row');
         $this->mustNotBeEmptyArray($data['newcreditrow'], 'Credit Row');
     }
 
+	/**
+	 * Validate row ids
+	 *
+	 * @param array $data
+	 * 
+	 * @return void
+	 */
     private function validateRowIds($data)
     {
         $this->mustBeSet($data, 'orderrowids', 'Order Row Ids');
@@ -51,6 +73,8 @@ class ValidateCreditOrderRowsData extends ValidationService
     }
 
     /**
+	 * Check if this request contains a new credit row
+	 * 
      * @return boolean
      */
     public function isIsNewCreditRow()
@@ -59,7 +83,11 @@ class ValidateCreditOrderRowsData extends ValidationService
     }
 
     /**
+	 * Set if this request contains a new credit row
+	 * 
      * @param boolean $isNewCreditRow
+	 * 
+	 * @return void
      */
     public function setIsNewCreditRow($isNewCreditRow)
     {

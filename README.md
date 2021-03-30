@@ -92,9 +92,9 @@ The CheckoutAdminClient class contains methods which are used to administrate or
 
 Orders can only be administrated if [CheckoutOrderStatus](#88-checkoutorderstatus) is "FINAL", any other status indicates that the order has not been finalized by the end-customer.
 
-In order to perform an action on an order, the order needs to have an [action](#10128-order-actions). You'll have to get the order using ["Get Order"](#101-get-order) and check which [actions](#10128-order-actions) are available and then use a corresponding method.
+In order to perform an action on an order, the order needs to have an [action](#10148-order-actions). You'll have to get the order using ["Get Order"](#101-get-order) and check which [actions](#10148-order-actions) are available and then use a corresponding method.
 
-For example, if you want to credit an order you first have to use [Get order](#101-get-order). Let's say that the action returned is "CanCreditAmount", then you'll have to use [Credit amount](#109-credit-amount) to credit the order.
+For example, if you want to credit an order you first have to use [Get order](#101-get-order). Let's say that the action returned is "CanCreditAmount", then you'll have to use [Credit amount](#1010-credit-amount) to credit the order.
 
 Some actions may not be available on certain order types, but a good integration doesn't check order type but rather which actions are available for use.
 
@@ -107,9 +107,11 @@ The available methods are:
 * [Cancel order row](#106-cancel-order-row) - Removes order rows from an order
 * [Credit order rows](#107-credit-order-rows) - Credits order rows on a delivered order
 * [Credit new order row](#108-credit-new-order-row) - Creates a new order row with a credited amount
-* [Credit amount](#109-credit-amount) - Credits a specified amount
-* [Add order row](#1010-add-order-row) - Adds an order row to the order
-* [Update order row](#1011-update-order-row) - Updates an existing order row
+* [Credit order rows with fee](#109-credit-order-rows-with-fee) - Credits order rows on a delivered order and adds a fee
+* [Credit amount](#1010-credit-amount) - Credits a specified amount
+* [Add order row](#1011-add-order-row) - Adds an order row to the order
+* [Update order row](#1012-update-order-row) - Updates an existing order row
+* [Replace order rows](#1013-replace-order-rows) - Replaces all order rows on an order with new order rows
 
 
 ### 3. Create order
@@ -772,7 +774,7 @@ This method is used to get the entire order with all its relevant information. I
 
 | Parameters OUT                | Type      | Description  |
 |-------------------------------|-----------|--------------|
-| Order          | array     | An array containing all the order details. See [10.12 Data objects](#1012-data-objects) |
+| Order          | array     | An array containing all the order details. See [10.14 Data objects](#1014-data-objects) |
 
 
 
@@ -788,7 +790,7 @@ A task will explain the status of a previously performed operation. When finishe
 
 | Parameters OUT                 |Type      | Description  |
 |-------------------------------|-----------|--------------|
-| Task                          | [Task](#10124-task)      | An object containing details regarding a queued task |
+| Task                          | [Task](#10144-task)      | An object containing details regarding a queued task |
 
 ### 10.3 Deliver order
 Creates a delivery on a checkout order. Assuming the order got the **CanDeliverOrder** action.
@@ -802,12 +804,20 @@ However if a subset of all active order rows are specified a partial delivery wi
 |-------------------------------|------------|-----------|--------------|
 | orderId                       |	*        | int       | Checkout order id of the specified order. |
 | orderRowIds                   |	*        | array     | array of *orderRowIds* To deliver whole order just send orderRowIds as empty array |
+| rowDeliveryOptions            |	         | array     | Array of [*Row Delivery Options*](#1031-row-delivery-options) |
 
 #### Response
 
 | Parameters OUT                |Type       | Description  |
 |-------------------------------|-----------|--------------|
 | HeaderLocation                | string    | URI to the created task. (Absolute URL) |
+
+### 10.3.1 Row Delivery Options
+
+| Parameter                     | Type       | Description  |
+|-------------------------------|------------|--------------|
+| orderRowId                    | int        | Id of the order row |
+| quantity                      | int        | Number of items to credit |
 
 ### 10.4 Cancel Order
 Cancel an order before it has been delivered. Assuming the order has the action **CanCancelOrder**.
@@ -858,7 +868,7 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | deliveryId                    |	*        | int      | Id of the specified delivery row |
 | orderRowIds                   |	*        | array    | Id of the specified row |
-
+| rowCreditingOptions           |	         | array    | Array of [*Row Crediting Options*](#1071-row-crediting-options) |
 
 #### Response
 
@@ -867,6 +877,13 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 | HeaderLocation                | string    | URI to the created task. (Absolute URL) |
 
 On the returned URL can be checked status of the task.
+
+### 10.7.1 Row Crediting Options
+
+| Parameter                     | Type       | Description  |
+|-------------------------------|------------|----------|--------------|
+| orderRowId                    | int        | Id of the order row |
+| quantity                      | int        | Number of items to credit |
 
 ### 10.8 Credit new order row
 By specifying a new credit row, a new credit row will be created on the delivery, assuming the delivery has action **CanCreditNewRow**.
@@ -875,7 +892,7 @@ By specifying a new credit row, a new credit row will be created on the delivery
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | deliveryId                    |	*        | int      | Id of the specified delivery row. |
-| newCreditOrderRow             |	*        | array    | [Order Row](#10125-order-row) |
+| newCreditOrderRow             |	*        | array    | [Order Row](#10145-order-row) |
 
 #### Response
 
@@ -885,7 +902,25 @@ By specifying a new credit row, a new credit row will be created on the delivery
 
 On the returned URL can be checked status of the task.
 
-### 10.9 Credit amount
+### 10.9 Credit order rows with fee
+Creates a new credit on the specified delivery with specified order rows. Assuming the delivery has action **CanCreditOrderRows** and the specified order rows also has action **CanCreditRow**. Adds the ability to add a fee to the credit.
+
+| Parameters IN                 | Required   | Type     | Description  |
+|-------------------------------|------------|----------|--------------|
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
+| deliveryId                    |	*        | int      | Id of the specified delivery row |
+| orderRowIds                   |	*        | array    | Id of the specified row |
+| fee                           |	         | array    | Array of [*Fee*] |
+| rowCreditingOptions           |	         | array    | Array of [*Row Crediting Options*](#1071-row-crediting-options) |
+
+#### Response
+
+| Parameters OUT                |Type       | Description  |
+|-------------------------------|-----------|--------------|
+| HeaderLocation                | string    | URI to the created task. (Absolute URL) |
+
+On the returned URL can be checked status of the task.
+### 10.10 Credit amount
 By specifying a credited amount larger than the current credited amount. A credit is being made on the specified delivery. The credited amount cannot be lower than the current credited amount or larger than the delivered amount.
 
 This method requires **CanCreditAmount** on the delivery.
@@ -900,14 +935,14 @@ This method requires **CanCreditAmount** on the delivery.
 
 If order amount is successfully credited, Response is empty.
 
-### 10.10 Add order row
+### 10.11 Add order row
 This method is used to add order rows to an order, assuming the order has the action **CanAddOrderRow**. 
 If the new order amount will exceed the current order amount, a credit check will be performed.
 
 | Parameters IN                 | Required   | Type     | Description  |
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| orderRow                      |	*        | array    | [Order Row](#10125-order-row) |
+| orderRow                      |	*        | array    | [Order Row](#10145-order-row) |
 
 #### Response
 
@@ -918,7 +953,7 @@ If the new order amount will exceed the current order amount, a credit check wil
 
 On the returned URL (HeaderLocation) can be checked status of the task.
 
-### 10.11 Update order row
+### 10.12 Update order row
 This method is used to update an order row, assuming the order has action "CanUpdateOrderRow" and the order row has the action **CanUpdateRow**. 
 The method will update all fields set in the payload, if a field is not set the row will keep the current value.
 If the new order amount will exceed the current order amount, a credit check will be performed.
@@ -927,16 +962,30 @@ If the new order amount will exceed the current order amount, a credit check wil
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRowId                    |	*        | int      | Id of the specified row. |
-| orderRow                      |	*        | array    | Use only those fields that need to be updated. [Order Row](#10125-order-row) |
+| orderRow                      |	*        | array    | Use only those fields that need to be updated. [Order Row](#10145-order-row) |
+
+#### Response
+
+If order row is successfully updated, Response is empty.
+
+### 10.13 Replace order rows
+This method is used to update an order row, assuming the order has action "CanUpdateOrderRow".
+This method will delete all the present rows and replace with the ones set in the payload.
+If the new order amount will exceed the current order amount, a credit check will be performed.
+
+| Parameters IN                 | Required   | Type     | Description  |
+|-------------------------------|------------|----------|--------------|
+| orderId                       |	*        | int      | Checkout order id of the specified order. |
+| orderRows                     |	*        | int      | List of [Order Row](#10145-order-row) |
 
 #### Response
 
 If order row is successfully updated, Response is empty.
 
 
-### 10.12 Data objects
+### 10.14 Data objects
 
-#### 10.12.1 Order
+#### 10.14.1 Order
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id                    |   int	        | Checkoutorderid of the order|
@@ -957,7 +1006,7 @@ If order row is successfully updated, Response is empty.
 | Deliveries            | List of Delivery | |
 | Actions               | List of String | A list of actions possible on the order.|
 
-#### 10.12.2 Delivery
+#### 10.14.2 Delivery
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -970,7 +1019,7 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | | 
 | Actions               | List of string | A list of actions possible on the delivery.|
 
-#### 10.12.3 Credit
+#### 10.14.3 Credit
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -978,14 +1027,14 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | |
 | Actions               | List of String | A list of actions possible on the credit.|
 
-#### 10.12.4 Task
+#### 10.14.4 Task
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id	                | Long          |	Identifier for the task |
 | Status                | String        | Status of the task |
 
-#### 10.12.5 Order Row
+#### 10.14.5 Order Row
 
 |Parameter	            |R  | RO | Type     | Description                   |	Limits|
 |-----------------------|---|----|----------|-------------------------------|-------------------|
@@ -1000,7 +1049,7 @@ If order row is successfully updated, Response is empty.
 | IsCancelled           |   | *  |boolean  | Determines if the row is cancelled. | Not possible to set through API, only get.|
 | Actions               |   | *  |List of string | A list of actions possible on the order row. See list of OrderRow actions below. | Not possible to set through API, only get.|
 
-#### 10.12.6 Address
+#### 10.14.6 Address
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -1011,7 +1060,7 @@ If order row is successfully updated, Response is empty.
 | City                  | 	string      | 	City |
 | CountryCode           | 	string      | 	2-letter ISO country code |
 
-#### 10.12.7 Order Status
+#### 10.14.7 Order Status
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -1020,7 +1069,7 @@ If order row is successfully updated, Response is empty.
 | Cancelled             | The order is fully cancelled |
 | Failed                | The payment for this order has failed |
 
-#### 10.12.8 Order actions
+#### 10.14.8 Order actions
 
 | Parameter                 |  Description                                               |
 |---------------------------|------------------------------------------------------------|
@@ -1032,7 +1081,7 @@ If order row is successfully updated, Response is empty.
 | CanAddOrderRow            ||
 | CanUpdateOrderRow         ||
 
-#### 10.12.9 Delivery actions
+#### 10.14.9 Delivery actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -1040,7 +1089,7 @@ If order row is successfully updated, Response is empty.
 | CanCreditOrderRows    ||
 | CanCreditAmount       ||		
 
-#### 10.12.10 Order Row actions
+#### 10.14.10 Order Row actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|

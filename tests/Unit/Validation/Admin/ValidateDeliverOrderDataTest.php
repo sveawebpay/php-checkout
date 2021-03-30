@@ -131,4 +131,20 @@ class ValidateDeliverOrderDataTest extends TestCase
     {
         $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
     }
+
+	/**
+     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
+     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
+     */
+    public function testValidateWithEmptyRowDeliveryOptions()
+    {
+        $this->inputData['rowdeliveryoptions'] = array();
+        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+    }
+
+	public function testValidateWithoutRowDeliveryOptions()
+    {
+        unset($this->inputData['rowdeliveryoptions']);
+        $this->invokeMethod($this->validateDeliverOrder, 'validate', array($this->inputData));
+    }
 }
