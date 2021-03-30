@@ -7,7 +7,11 @@ use Svea\Checkout\Validation\ValidationService;
 class ValidateDeliverOrderData extends ValidationService
 {
     /**
+	 * Validate the provided data
+	 * 
      * @param array $data
+	 * 
+	 * @return void
      */
     public function validate($data)
     {

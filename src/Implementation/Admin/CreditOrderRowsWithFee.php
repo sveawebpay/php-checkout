@@ -74,6 +74,8 @@ class CreditOrderRowsWithFee extends AdminImplementationManager
 
     /**
      * Invoke Api call
+	 * 
+	 * @return void
      */
     public function invoke()
     {
@@ -81,6 +83,8 @@ class CreditOrderRowsWithFee extends AdminImplementationManager
     }
 
     /**
+	 * Get the request model
+	 * 
      * @return Request
      */
     public function getRequestModel()
@@ -89,7 +93,11 @@ class CreditOrderRowsWithFee extends AdminImplementationManager
     }
 
     /**
+	 * Set the request model
+	 * 
      * @param Request $requestModel
+	 * 
+	 * @return void
      */
     public function setRequestModel($requestModel)
     {

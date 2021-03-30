@@ -18,6 +18,11 @@ class CreditOrderRowsWithFeeTest extends TestCase
      */
     protected $validatorMock;
 
+	/**
+	 * Setup the test
+	 *
+	 * @return void
+	 */
     public function setUp()
     {
         parent::setUp();
@@ -27,6 +32,11 @@ class CreditOrderRowsWithFeeTest extends TestCase
         $this->creditOrderRowsWithFee = new CreditOrderRowsWithFee($this->connectorMock, $this->validatorMock);
     }
 
+	/**
+	 * Test the prepare data method
+	 *
+	 * @return void
+	 */
     public function testPrepareData()
     {
         $inputData = array(
@@ -59,6 +69,11 @@ class CreditOrderRowsWithFeeTest extends TestCase
 		$this->assertEquals($inputData['rowcreditingoptions'], $requestBodyData['rowCreditingOptions']);
     }
 
+	/**
+	 * Test the invoke method
+	 *
+	 * @return void
+	 */
     public function testInvoke()
     {
         $fakeResponse = 'Test response!!!';
@@ -73,6 +88,11 @@ class CreditOrderRowsWithFeeTest extends TestCase
         $this->assertEquals($fakeResponse, $createOrder->getResponseHandler());
     }
 
+	/**
+	 * Test the validate method
+	 *
+	 * @return void
+	 */
     public function testValidate()
     {
         $this->validatorMock->expects($this->once())
