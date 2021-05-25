@@ -33,19 +33,17 @@ The example files also contain merchant credentials which can be used in the sta
 
 Execute the following line in your command line interface:
 ```bash
-
 composer require sveaekonomi/checkout
-
 ```
 
 or add the following to your composer.json:
 
 ```json
-    {
-        "require": {
-            "sveaekonomi/checkout": "dev-master"
-        }
+{
+    "require": {
+        "sveaekonomi/checkout": "dev-master"
     }
+}
 ```
 and run command ` composer update ` in your CLI
 
