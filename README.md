@@ -34,7 +34,7 @@ The example files also contain merchant credentials which can be used in the sta
 Execute the following line in your command line interface:
 ```bash
 
-    composer require sveaekonomi/checkout
+composer require sveaekonomi/checkout
 
 ```
 
