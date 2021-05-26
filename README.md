@@ -143,7 +143,7 @@ The response will contain all order data along with a snippet which contains the
 
 ```php
 // include the library
-include 'vendor/autoload.php'
+include 'vendor/autoload.php';
 
 // without composer
 require_once 'include.php';
@@ -225,7 +225,7 @@ The response contains the order information and the along with the GUI which can
 
 ```php
 // include the library
-include 'vendor/autoload.php'
+include 'vendor/autoload.php';
 
 // without composer
 require_once 'include.php';
@@ -260,7 +260,7 @@ This method can be combined with the Javascript API, if the iframe is disabled u
 
 ```php
 // include the library
-include 'vendor/autoload.php'
+include 'vendor/autoload.php';
 
 // without composer
 require_once 'include.php';
