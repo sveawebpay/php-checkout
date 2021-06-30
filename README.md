@@ -23,7 +23,7 @@ This library provides entrypoints to integrate the checkout into your platform a
 
 ### Test credentials
 
-You can find credentials that can be used in the stage environment without signing an contract with Svea Ekonomi [here](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/integrationspaket-logos-and-doc.-integration-test-instructions-webpay/test-instructions-webpay-partners-.pdf)
+You can find credentials that can be used in the stage environment without signing an contract with Svea Ekonomi [here](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/integrationspaket-logos-and-doc.-integration-test-instructions-webpay/test-instructions-webpay-partners...pdf)
 
 The example files also contain merchant credentials which can be used in the stage environment.
 
