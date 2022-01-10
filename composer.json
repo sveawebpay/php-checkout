@@ -1,6 +1,6 @@
 {
   "name": "sveaekonomi/checkout",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Php integration library for Svea Checkout",
   "license": "Apache-2.0",
   "authors": [
