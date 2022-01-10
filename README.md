@@ -283,7 +283,6 @@ $data = array(
                     "merchantData" => "Size: M"
                 ),
                 array(
-                    "type" => "shipping_fee",
                     "articleNumber" => "658475",
                     "name" => "Shipping Fee Updated",
                     "quantity" => 100,
