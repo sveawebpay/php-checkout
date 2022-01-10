@@ -240,7 +240,6 @@ JSON;
                         "vatpercent" => 2500
                     ),
                     array(
-                        "type" => "shipping_fee",
                         "articlenumber" => "SHIPPING",
                         "name" => "Shipping fee",
                         "quantity" => 100,
