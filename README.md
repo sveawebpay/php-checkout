@@ -663,15 +663,21 @@ The order can only be considered “ready to send to customer” when the Checko
 #### 8.10 PaymentType
 | Parameter   | Description     |
 |-------------|-----------------|
-| Null        | The customer hasn't confirmed the order. |
+| *null*        | The customer hasn't confirmed the order. |
 | INVOICE     | Invoice (Svea buys the invoice) |
 | ADMININVOICE | Invoice (Svea only administrates the invoice, not enabled by default) |
 | PAYMENTPLAN |	The customer chose a payment plan |
 | SVEACARDPAY	      | The customer paid the order with card |
-| Directbank(varies)  |	The customer paid the order with direct bank e.g. Nordea, SEB. See below for all available parameters |
+| SVEACARDPAY_PF | The customer paid the order with card via a payment facilitator |
+| SWISH | The customer paid the order with Swish |
+| VIPPS | The customer paid the order with Vipps |
+| LEASING | The customer used leasing as payment |
+| MOBILEPAY | The customer paid with MobilePay |
 | ACCOUNTCREDIT	  | The customer chose to use their account credit. |
 | LEASINGUNAPPROVED | Leasing (Manual approve process by Sveas leasing department, check Store pay admin page) |
 | LEASINGAPPROVED | Leasing (Automatically approved leasing contract)
+| TRUSTLY            | The customer paied with Trustly |
+| Directbank (varies)  |	The customer paid the order with direct bank e.g. Nordea, SEB. See below for all available parameters |
 
 Directbanks:
 
@@ -691,7 +697,7 @@ Directbanks:
 |DBSPANKKIFI	    | S-Pankki, Finland |
 |DBSWEDBANKSE	    | Swedbank, Sweden |
 |DBTAPIOLAFI	    | Tapiola, Finland |
-|TRUSTLY            | Trustly |
+
 
 #### 8.11 CampaignCodeInfo
 | Parameter                 | Type      | Description |
