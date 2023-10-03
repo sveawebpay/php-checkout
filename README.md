@@ -6,12 +6,14 @@
 * [3. Create order](#3-create-order)
 * [4. Get order](#4-get-order)
 * [5. Update order](#5-update-order)
-* [6. Response](#6-response)
-* [7. Additional requests](#7-additional-requests)
-* [8. Data structures](#8-data-structures)
-* [9. HttpStatusCodes](#9-httpstatuscodes)
-* [10. Order administration](#10-order-administration)
-* [11. Javascript API](#11-javascript-api)
+* [6. Create recurring order](#6-create-recurring-order)
+* [7. Get recurring order](#7-get-recurring-order)
+* [8. Response](#8-response)
+* [9. Additional requests](#9-additional-requests)
+* [10. Data structures](#10-data-structures)
+* [11. HttpStatusCodes](#11-httpstatuscodes)
+* [12. Order administration](#12-order-administration)
+* [13. Javascript API](#13-javascript-api)
 ## Introduction
 The checkout offers a complete solution with a variety of payment methods. The payment methods that are currently available in the checkout are invoice, payment plan, account credit, card payments and payment by bank.
 
@@ -23,7 +25,7 @@ This library provides entrypoints to integrate the checkout into your platform a
 
 ### Test credentials
 
-You can find credentials that can be used in the stage environment without signing an contract with Svea Ekonomi [here](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/integrationspaket-logos-and-doc.-integration-test-instructions-webpay/test-instructions-payments-partners.pdf)
+You can find credentials that can be used in the stage environment without signing an contract with Svea Bank [here](https://www.svea.com/globalassets/sweden/foretag/betallosningar/e-handel/integrationspaket-logos-and-doc.-integration-test-instructions-webpay/test-instructions-payments-partners.pdf)
 
 The example files also contain merchant credentials which can be used in the stage environment.
 
@@ -79,7 +81,7 @@ The CheckoutClient class contains four methods which can be used to:
 * [Create order](#3-create-order) - Creates a Svea Checkout order
 * [Update order](#5-update-order) - Updates an existing Svea Checkout order
 * [Get order](#4-get-order) - Gets order data from an existing order
-* [Get payment plan campaigns](#71-getavailablepartpaymentcampaigns) - Fetches campaigns which can for example be used to display price per month on product page
+* [Get payment plan campaigns](#91-getavailablepartpaymentcampaigns) - Fetches campaigns which can for example be used to display price per month on product page
 
 To ensure that a snippet always is displayed to the end-user, we recommend using the following flow in your platform:
 
@@ -88,28 +90,29 @@ To ensure that a snippet always is displayed to the end-user, we recommend using
 #### 2.3 CheckoutAdminClient
 The CheckoutAdminClient class contains methods which are used to administrate orders which have been creating using the CheckoutClient class.
 
-Orders can only be administrated if [CheckoutOrderStatus](#88-checkoutorderstatus) is "FINAL", any other status indicates that the order has not been finalized by the end-customer.
+Orders can only be administrated if [CheckoutOrderStatus](#108-checkoutorderstatus) is "FINAL", any other status indicates that the order has not been finalized by the end-customer.
 
-In order to perform an action on an order, the order needs to have an [action](#10148-order-actions). You'll have to get the order using ["Get Order"](#101-get-order) and check which [actions](#10148-order-actions) are available and then use a corresponding method.
+In order to perform an action on an order, the order needs to have an [action](#12158-order-actions). You'll have to get the order using ["Get Order"](#121-get-order) and check which [actions](#12158-order-actions) are available and then use a corresponding method.
 
-For example, if you want to credit an order you first have to use [Get order](#101-get-order). Let's say that the action returned is "CanCreditAmount", then you'll have to use [Credit amount](#1010-credit-amount) to credit the order.
+For example, if you want to credit an order you first have to use [Get order](#121-get-order). Let's say that the action returned is "CanCreditAmount", then you'll have to use [Credit amount](#1211-credit-amount) to credit the order.
 
 Some actions may not be available on certain order types, but a good integration doesn't check order type but rather which actions are available for use.
 
 The available methods are:
-* [Get order](#101-get-order) - Returns order data from Payment Admin, contains other information than the method in CheckoutClient
-* [Get task](#102-get-task) - Returns the status of a previously performed operation
-* [Deliver order](#103-deliver-order) - Creates a delivery on a checkout order(sends invoice to end-customer etc.)
-* [Cancel order](#104-cancel-order) - Cancels an order
-* [Cancel order amount](#105-cancel-order-amount) - Removes a specified amount from an order
-* [Cancel order row](#106-cancel-order-row) - Removes order rows from an order
-* [Credit order rows](#107-credit-order-rows) - Credits order rows on a delivered order
-* [Credit new order row](#108-credit-new-order-row) - Creates a new order row with a credited amount
-* [Credit order rows with fee](#109-credit-order-rows-with-fee) - Credits order rows on a delivered order and adds a fee
-* [Credit amount](#1010-credit-amount) - Credits a specified amount
-* [Add order row](#1011-add-order-row) - Adds an order row to the order
-* [Update order row](#1012-update-order-row) - Updates an existing order row
-* [Replace order rows](#1013-replace-order-rows) - Replaces all order rows on an order with new order rows
+* [Get order](#121-get-order) - Returns order data from Payment Admin, contains other information than the method in CheckoutClient
+* [Get task](#122-get-task) - Returns the status of a previously performed operation
+* [Deliver order](#123-deliver-order) - Creates a delivery on a checkout order(sends invoice to end-customer etc.)
+* [Deliver order with lower amount](#124-deliver-order-with-lower-amount) - Creates a delivery on a checkout order(sends invoice to end-customer etc.) with a lower amount canceling the remaining amount
+* [Cancel order](#125-cancel-order) - Cancels an order
+* [Cancel order amount](#126-cancel-order-amount) - Removes a specified amount from an order
+* [Cancel order row](#127-cancel-order-row) - Removes order rows from an order
+* [Credit order rows](#128-credit-order-rows) - Credits order rows on a delivered order
+* [Credit new order row](#129-credit-new-order-row) - Creates a new order row with a credited amount
+* [Credit order rows with fee](#1210-credit-order-rows-with-fee) - Credits order rows on a delivered order and adds a fee
+* [Credit amount](#1211-credit-amount) - Credits a specified amount
+* [Add order row](#1212-add-order-row) - Adds an order row to the order
+* [Update order row](#1213-update-order-row) - Updates an existing order row
+* [Replace order rows](#1214-replace-order-rows) - Replaces all order rows on an order with new order rows
 
 
 ### 3. Create order
@@ -119,23 +122,24 @@ You can then use the method "create" in the object, pass the data below into the
 
 The response will contain all order data along with a snippet which contains the iframe which needs to be rendered to the end-user.
 
-| Parameters IN                   | Required | Type | Description                                       |
-|---------------------------------|----------|------|---------------------------------------------------|
-|MerchantSettings                 | *        |[*MerchantSettings*](#81-merchantsettings) |The merchants settings for the order              |
-|Cart                             | *        |Cart   |A cart-object containing the [*OrderRows*](#83-orderrow)            |
-|RequireElectronicIdAuthentication|          |Boolean| Does the checkout require electronic ID authentication such as BankID, 3D Secure or similar?|
-|Locale                           | *        |String |The current locale of the checkout, i.e. sv-SE etc. Does not change the actual language in the GUI|
-|Currency                         | *        |String |The current currency as defined by ISO 4217, i.e. SEK, NOK etc. Currently fixed to merchant, only SEK for swedish merchants, etc |
-|CountryCode                      | *        |String |Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, NO, FI etc. Setting this parameter to anything but the country which the merchant is configured for will trigger the "International flow" which is in english and only supports card payments |
-|ClientOrderNumber                | *        |String |A string with maximum of 32 characters identifying the order in the merchant’s system|
-|PresetValues                     |          |Array of [*Preset values*](#84-presetvalue) |Array of [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
-|IdentityFlags                    |          |Array of [*IdentityFlags*](#812-identityflags) | Array of [*IdentityFlags*](#812-identityflags) used to hide certain features of the iframe |
-|PartnerKey                       |          | Guid | Optional, provided by Svea on request. Used to create statistics.
-|MerchantData                     |          | String | Metadata visible in the checkout API, returned when order is fetched through the API. |
+| Parameters IN                     | Required | Type                                            | Description                                                                                   |
+|-----------------------------------|----------|-------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| MerchantSettings                  | *        | [*MerchantSettings*](#101-merchantsettings)     | The merchant's settings for the order                                                         |
+| Cart                              | *        | Cart                                            | A cart-object containing the [*OrderRows*](#83-orderrow)                                      |
+| RequireElectronicIdAuthentication |          | Boolean                                         | Does the checkout require electronic ID authentication such as BankID, 3D Secure, or similar? |
+| Locale                            | *        | String                                          | The current locale of the checkout, i.e., sv-SE, etc. Does not change the actual language in the GUI |
+| Currency                          | *        | String                                          | The current currency as defined by ISO 4217, i.e., SEK, NOK, etc. Currently fixed to merchant, only SEK for Swedish merchants, etc |
+| CountryCode                       | *        | String                                          | Defined by two-letter ISO 3166-1 alpha-2, i.e., SE, NO, FI, etc. Setting this parameter to anything but the country which the merchant is configured for will trigger the "International flow" which is in English and only supports card payments |
+| ClientOrderNumber                 | *        | String                                          | A string with a maximum of 32 characters identifying the order in the merchant’s system      |
+| PresetValues                      |          | Array of [*Preset values*](#104-presetvalue)    | Array of [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
+| IdentityFlags                     |          | Array of [*IdentityFlags*](#1012-identityflags) | Array of [*IdentityFlags*](#812-identityflags) used to hide certain features of the iframe |
+| PartnerKey                        |          | Guid                                            | Optional, provided by Svea on request. Used to create statistics.                               |
+| Recurring                         |          | Boolean                                         | Optional, if set to true the order will be a recurring order. (Only avilable if the merchant account has this feature enabled)                                 |
+| MerchantData                      |          | String                                          | Metadata visible in the checkout API, returned when the order is fetched through the API.     |
   
 | Parameters OUT | Type | Description |
 |----------------|------|-------------|
-|Data            | Data | An object containing all of the order-data, see structure [here](#6-response). 
+|Data            | Data | An object containing all of the order-data, see structure [here](#8-response). 
 
 #### Create order example:
 
@@ -206,7 +210,7 @@ $response = $checkoutClient->create($data);
 [See full example](https://github.com/sveawebpay/php-checkout/blob/master/examples/create-order.php)
 
 ### 4. Get Order
-To fetch an existing order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#2-create-a-connector) as an parameter.
+To fetch an existing order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#21-creating-a-connector) as an parameter.
 
 You can then use the method "get" in the object, pass the data below into the method. See example below.
 
@@ -242,18 +246,18 @@ $response = $checkoutClient->get($data);
 
 
 ### 5. Update Order
-To update an existing order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#2-create-a-connector) as an parameter.
+To update an existing order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#21-creating-a-connector) as an parameter.
 
 The method returns the order information and the updated Gui needed to display the iframe for Svea Checkout. The previously displayed iframe should be replaced by the iframe in the response received when updating the order unless using the Javascript API.
 
-Updating an order is only possible while the CheckoutOrderStatus is "Created", see [*CheckoutOrderStatus*](#78-checkoutorderstatus).
+Updating an order is only possible while the CheckoutOrderStatus is "Created", see [*CheckoutOrderStatus*](#108-checkoutorderstatus).
 
 This method can be combined with the Javascript API, if the iframe is disabled using the JS API and the order is updated while the it's disabled the iframe will be updated once it's enabled again. This removes the requirement of replacing the iframe once the order is updated.
 
 | Parameters IN:     | Required   | Type      | Description  |
 |-------------------------------|------------|-----------|--------------|
 | OrderId                       |	*        | Long      | Checkoutorderid of the specified order.
-| Cart                          |	 *       | Cart      | A cart-object containing the [*OrderRows*](#73-orderrow) |
+| Cart                          |	 *       | Cart      | A cart-object containing the [*OrderRows*](#103-orderrow) |
 | MerchantData                  |            | String    | Can be used to store data, the data is not displayed anywhere but in the API |
 
 ```php
@@ -300,31 +304,103 @@ $response = $checkoutClient->update($data);
 
 [See full example](https://github.com/sveawebpay/php-checkout/blob/master/examples/update-order.php)
 
-### 6. Response
+
+### 6. Create recurring order
+In order to create a recurring order the feature must be enable on your merchant. Contact Svea if you'd like to enable this feature.
+
+To create a recurring order, you'll need to instantiate an object of \Svea\Checkout\CheckoutClient and pass a [*Connector*](#21-creating-a-connector) as an parameter.
+In the data you'll have to specify the [recurringToken](#recurringtoken) which is returned when the order is finalized.
+
+This uses the checkoutApi and will create a new order that you later can see in PaymentAdmin.
+
+Example:
+```php
+// include the library
+include 'vendor/autoload.php';
+
+// without composer
+require_once 'include.php';
+
+...
+
+$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
+
+$data = array(
+    "token" => "12345678-90ab-cdef-1234-567890abcdef",
+    "currency" => "SEK",
+    "clientOrderNumber" => 12356,
+    "merchantSettings" => array(
+        "checkoutUri" => "http://yourshop.se/checkout/",
+        "pushUri" => "https://yourshop.se/push.php?checkout_order_id={checkout.order.uri}",
+    ),
+    "cart" => array(
+        "items" => array(
+            array(
+                "articleNumber" => "123456",
+                "name" => "Yellow rubber duck",
+                "quantity" => 200,
+                "unitPrice" => 66600,
+                "discountPercent" => 1000,
+                "vatPercent" => 2500,
+                "temporaryReference" => "230",
+                "merchantData" => "Size: M"
+            ),
+        )
+    )
+);
+
+$response = $checkoutClient->create($data);
+```
+
+### 7. Get recurring order
+In order to get a recurring order you need to pass the token used to create the order as well as the orderId.
+Please note that this is only for orders previously created with the [create recurring order](#6-create-recurring-order) method. The original order can be fetched using the [get order](#4-get-order) method.
+
+Example:
+```php
+// include the library
+include 'vendor/autoload.php';
+
+// without composer
+require_once 'include.php';
+
+$data = array(
+    'orderId' => 123456
+    'token' => '12345678-90ab-cdef-1234-567890abcdef'
+);
+
+$checkoutClient = new \Svea\Checkout\CheckoutClient($connector);
+
+$response = $checkoutClient->get($data);
+```
+
+### 8. Response
 The response contains information about the order such as Cart, Status, PaymentType and much more.
 
 | Parameters OUT                | Type                 | Description |
 |-------------------------------|----------------------|-------------|
-| MerchantSettings              | [*Merchant settings*](#81-merchantsettings)     | Specific merchant URIs |
-| Cart                          | Cart                 | A cart-object containing the [*OrderRows*](#83-orderrow) |
-| Gui                           | [*Gui*](#85-gui)     | Contains iframe and layout information  |
-| Customer                      | [*Customer*](#86-customer)             | Identified [*Customer*](#86-customer) of the order. |
-| ShippingAddress               | [*Address*](#87-address)              | Shipping [*Address*](#87-address) of identified customer. |
-| BillingAddress                | [*Address*](#87-address)              | Billing [*Address*](#87-address) of identified customer. Returned empty if same as ShippingAddress. |
+| MerchantSettings              | [*Merchant settings*](#101-merchantsettings)     | Specific merchant URIs |
+| Cart                          | Cart                 | A cart-object containing the [*OrderRows*](#103-orderrow) |
+| Gui                           | [*Gui*](#105-gui)     | Contains iframe and layout information (not applicable for an order created with token, ie recurring)  |
+| Customer                      | [*Customer*](#106-customer)             | Identified [*Customer*](#105-customer) of the order. |
+| ShippingAddress               | [*Address*](#107-address)              | Shipping [*Address*](#107-address) of identified customer. |
+| BillingAddress                | [*Address*](#107-address)              | Billing [*Address*](#107-address) of identified customer. Returned empty if same as ShippingAddress. |
 | Locale                        | String               | The current locale of the checkout, i.e. sv-SE etc. Does not override language in iframe |
 | Currency                      | String               | The current currency as defined by ISO 4217, i.e. SEK, NOK etc. Merchant specific, swedish merchants uses SEK etc.|
 | CountryCode                   | String               | Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, NO, FI etc.  |
 | ClientOrderNumber             | String               | A string with maximum of 32 characters that identifies the order in the merchant’s systems |
-| PresetValues                  | Array of [*Preset values*](#84-presetvalue) | [*Preset values*](#84-presetvalue) chosen by the merchant to be pre-filled in the iframe |
+| PresetValues                  | Array of [*Preset values*](#104-presetvalue) | [*Preset values*](#104-presetvalue) chosen by the merchant to be pre-filled in the iframe |
 | OrderId                       | Long                 | CheckoutOrderId of the order |
-| Status                        | [*CheckoutOrderStatus*](#88-checkoutorderstatus) |The current status of the order. |
+| Status                        | [*CheckoutOrderStatus*](#108-checkoutorderstatus) |The current status of the order. |
 | EmailAddress                  | String               | The customer’s email address |
 | PhoneNumber                   | String               | The customer’s phone number |
 | MerchantData                  | String               | Can be used to store data, the data is not displayed anywhere but in the API |
 | SveaWillBuyOrder              | Boolean              | Only applicable if merchant uses the "no-risk flow", used to determine if Svea buys the invoice or not | 
-| IdentityFlags                 | Array of [*IdentityFlags*](#812-identityflags) | Settings which disables certain features in the iframe. See [*IdentityFlags*](#) |
-| PaymentType                   | String               | The final payment method for the order. Will only have a value when the order is finalized, otherwise null. See [*PaymentType*](#810-paymenttype)|
+| IdentityFlags                 | Array of [*IdentityFlags*](#1012-identityflags) | Settings which disables certain features in the iframe. See [*IdentityFlags*](#) |
+| PaymentType                   | String               | The final payment method for the order. Will only have a value when the order is finalized, otherwise null. See [*PaymentType*](#1010-paymenttype)|
 | CustomerReference             | String               | B2B Customer reference |
+| Recurring                     | Boolean              | If the order is a recurring order |
+| RecurringToken                | String               | Token used to later create recurring orders |
 
 Sample response
 ```php
@@ -454,6 +530,8 @@ Array
     [SveaWillBuyOrder] => 1
     [IdentityFlags] => 
     [MerchantData] => test
+    [Recurring] => 1
+    [RecurringToken] => 12345678-90ab-cdef-1234-567890abcdef (Only available when the order is FINAL)
 )
 ```
 
@@ -463,9 +541,9 @@ page where you want to display the iframe for Svea checkout. The Layout is a Str
 ```php
 echo $response['Gui']['Snippet']
 ```
-### 7. Additional requests
+### 9. Additional requests
 
-#### 7.1 GetAvailablePartPaymentCampaigns
+#### 9.1 GetAvailablePartPaymentCampaigns
 
 GetAvailablePartPaymentCampaigns can be used to fetch the details of all the campaigns that are available on the merchant
 
@@ -491,7 +569,7 @@ $response = $checkoutClient->getAvailablePartPaymentCampaigns($data);
 echo "<pre>" . print_r($response, true) . "</pre>";
 ```
 
-Executing the code above will return an array with [8.11 CampaignCodeInfo](#811-campaigncodeinfo)
+Executing the code above will return an array with [8.11 CampaignCodeInfo](#1011-campaigncodeinfo)
 
 Example response:
 ```php
@@ -556,9 +634,9 @@ Using the second campaign with a product price of 150kr in the example above wil
 ### !!! NOTE !!!
 If you are a finnish merchant you have to display ALL the values described [here](https://www.kkv.fi/sv/beslut-och-publikationer/publikationer/konsumentrombudsmannens-riktlinjer/enligt-substans/tillhandahallande-av-konsumentkrediter/#luottolinjausSVE5.1) to be compliant with finnish laws.
 
-### 8. Data structures
+### 10. Data structures
 
-#### 8.1 MerchantSettings
+#### 10.1 MerchantSettings
 
 | Parameters                | Required  | Type      | Description  | Limits  |
 |------------------------------|-----------|-----------|--------------|---------|
@@ -566,17 +644,17 @@ If you are a finnish merchant you have to display ALL the values described [here
 | CheckoutUri                  |	*      | string    | URI to the page in the webshop that loads the Checkout.  | 1-500 characters, must be a valid Url |
 | ConfirmationUri              |	*      | string    | URI to the page in the webshop displaying specific information to a customer after the order has been confirmed. | 1-500 characters, must be a valid Url |
 | PushUri                      |	*      | string    | URI to a location that is expecting callbacks when CheckoutOrderStatus is changed. Uri should use the {checkout.order.uri} placeholder.  | 1-500 characters, must be a valid Url |
-| CheckoutValidationCallBackUri|           | string    | An optional URl to a location that is expecting callbacks from the Checkout to validate order’s stock status, and also the possibility to update checkout with an updated ClientOrderNumber. Uri may have a {checkout.order.uri} placeholder which will be replaced with the CheckoutOrderId. Please refer below [*CheckoutValidationCallbackResponse*](#813-checkoutvalidationcallbackresponse) to see the expected response. | 1-500 characters, must be a valid Url |
+| CheckoutValidationCallBackUri|           | string    | An optional URl to a location that is expecting callbacks from the Checkout to validate order’s stock status, and also the possibility to update checkout with an updated ClientOrderNumber. Uri may have a {checkout.order.uri} placeholder which will be replaced with the CheckoutOrderId. Please refer below [*CheckoutValidationCallbackResponse*](#1013-checkoutvalidationcallbackresponse) to see the expected response. | 1-500 characters, must be a valid Url |
 | ActivePartPaymentCampaigns   |           | Array of CampaignCode | Array of valid CampaignCodes. If used then list of available part payment campaign options will be filtered through the chosen list. | Must be an array of valid CampaignCode |
 | PromotedPartPaymentCampaign  |           | integer   | Valid CampaignID. If used then the chosen campaign will be shown as the first payment method in all payment method lists. | Must be valid CampaignID |
 
-#### 8.2 Items
+#### 10.2 Items
 
 | Parameters                | Required  | Type                                 | Description         |
 |------------------------------|-----------|--------------------------------------|---------------------|
-| Items                        |	*      | List of [*OrderRows*](#83-orderrow)  | See structure below |
+| Items                        |	*      | List of [*OrderRows*](#103-orderrow)  | See structure below |
 
-#### 8.3 OrderRow
+#### 10.3 OrderRow
 
 | Parameters                | Required   | Type      | Description  | Limits  |
 |------------------------------|------------|-----------|--------------|---------|
@@ -590,7 +668,7 @@ If you are a finnish merchant you have to display ALL the values described [here
 | TemporaryReference           |            | String        | Can be used when creating or updating an order. The returned rows will have their corresponding temporaryreference as they were given in the indata. It will not be stored and will not be returned in GetOrder.  | |
 | MerchantData                 |            | String        | Can be used to store data, the data is not displayed anywhere but in the API
 
-#### 8.4 PresetValue
+#### 10.4 PresetValue
 
 | Parameters             | Required  | Type          | Description  |
 |---------------------------|-----------|---------------|--------------|
@@ -608,14 +686,14 @@ If you are a finnish merchant you have to display ALL the values described [here
 | PostalCode                | String        |              | Company specific validation |
 | IsCompany                 | Boolean       |              | Required if nationalid is set |
 
-#### 8.5 Gui
+#### 10.5 Gui
 
 | Parameters               |  Type      | Description  |
 |------------------------------|------------|--------------|
 | Layout                       | String     | Defines the orientation of the device, either “desktop” or “portrait”.  |
 | Snippet                      | String     | HTML-snippet including javascript to populate the iFrame. |
 
-#### 8.6 Customer
+#### 10.6 Customer
 
 | Parameters               | Type      | Description  |
 |------------------------------|-----------|--------------|
@@ -624,7 +702,7 @@ If you are a finnish merchant you have to display ALL the values described [here
 | CountryCode                  | String    |  Defined by two-letter ISO 3166-1 alpha-2, i.e. SE, DE, FI etc.|
 | Id                           | Integer   | Customer-specific id |
 
-#### 8.7 Address
+#### 10.7 Address
 
 | Parameters                | Type      | Description  |
 |------------------------------|-----------|--------------|
@@ -639,7 +717,7 @@ If you are a finnish merchant you have to display ALL the values described [here
 | IsGeneric                    | Boolean   | True if international flow is used |
 | AddressLines                 | Array of strings | Null unless international flow is used
 
-#### 8.8 CheckoutOrderStatus
+#### 10.8 CheckoutOrderStatus
 
 The order can only be considered “ready to send to customer” when the CheckoutOrderStatus is Final. No other status can guarantee payment.
 
@@ -649,7 +727,7 @@ The order can only be considered “ready to send to customer” when the Checko
 | Created                      | The order has been created  |
 | Final                        | The order is completed in the checkout and managed by WebPay’s subsystems. The order can now be administrated using either the library or browsing to the admin user interface|
 
-#### 8.9 Locale
+#### 10.9 Locale
 | Parameter | Description     |
 |-----------|-----------------|
 | sv-SE     | Swedish locale. |
@@ -660,7 +738,7 @@ The order can only be considered “ready to send to customer” when the Checko
 | de-DE     | German locale. |
 
 
-#### 8.10 PaymentType
+#### 10.10 PaymentType
 | Parameter   | Description     |
 |-------------|-----------------|
 | *null*        | The customer hasn't confirmed the order. |
@@ -699,7 +777,7 @@ Directbanks:
 |DBTAPIOLAFI	    | Tapiola, Finland |
 
 
-#### 8.11 CampaignCodeInfo
+#### 10.11 CampaignCodeInfo
 | Parameter                 | Type      | Description |
 |---------------------------|-----------|-------------|
 | CampaignCode              | Integer   | CampaignId  |
@@ -715,14 +793,14 @@ Directbanks:
 | NumberOfPaymentFreeMonths | Integer   | Number of payment free months |
 | PaymentPlanType           | Integer   | Type of campaign |
 
-#### 8.12 IdentityFlags
+#### 10.12 IdentityFlags
 | Parameter                 | Type      | Description |
 |---------------------------|-----------|-------------|
 | HideNotYou              | Boolean   | Hides "Not you?"-button in iframe  |
 | HideChangeAddress       | Boolean   | Hides "Change address"-button in iframe |
 | HideAnonymous           | Boolean   | Hides anonymous flow, forcing users to identify with their nationalId to perform a purchase |
 
-#### 8.13 CheckoutValidationCallbackResponse
+#### 10.13 CheckoutValidationCallbackResponse
 If a CheckoutValidationCallbackUri is set on an order when it's created, Svea will send a HTTP GET request to the specified URI when a customer clicks on "Confirm Order".
 
 The response should have HTTP status 200, indicating a successful request. The response should contain the required parameters below. Encode the response in JSON before responding.
@@ -732,7 +810,7 @@ The response should have HTTP status 200, indicating a successful request. The r
 | Valid             | *        | Boolean | Should be set to true if Svea should accept the order |
 | ClientOrderNumber |          | String  | Max 32 characters. Set if you want the ClientOrderNumber to be updated. |
 
-### 9. HttpStatusCodes
+### 11. HttpStatusCodes
 | Parameter | Type          | Description |
 |-----------|---------------|-------------|
 | 200       | Success       | Request was successful. |
@@ -748,7 +826,7 @@ The response should have HTTP status 200, indicating a successful request. The r
 
 If the returned ResultCode is not present in the above tables please contact Svea Ekonomi for further information.
 
-## 10. Order administration
+## 12. Order administration
 
 [See full examples](examples/admin)
 
@@ -764,7 +842,7 @@ If any action is unsuccessful or there is any other error, library will throw ex
 
 \Exception - For any other error
 
-### 10.1 Get order
+### 12.1 Get order
 This method is used to get the entire order with all its relevant information. Including its deliveries, rows, credits and addresses.
 
 #### Parameters
@@ -777,11 +855,11 @@ This method is used to get the entire order with all its relevant information. I
 
 | Parameters OUT                | Type      | Description  |
 |-------------------------------|-----------|--------------|
-| Order          | array     | An array containing all the order details. See [10.14 Data objects](#1014-data-objects) |
+| Order          | array     | An array containing all the order details. See [12.14 Data objects](#1215-data-objects) |
 
 
 
-### 10.2 Get task
+### 12.2 Get task
 A task will explain the status of a previously performed operation. When finished it will point towards the new resource with the Location.
 #### Parameters
 
@@ -793,9 +871,9 @@ A task will explain the status of a previously performed operation. When finishe
 
 | Parameters OUT                 |Type      | Description  |
 |-------------------------------|-----------|--------------|
-| Task                          | [Task](#10144-task)      | An object containing details regarding a queued task |
+| Task                          | [Task](#12154-task)      | An object containing details regarding a queued task |
 
-### 10.3 Deliver order
+### 12.3 Deliver order
 Creates a delivery on a checkout order. Assuming the order got the **CanDeliverOrder** action.
 
 The deliver call should contain a list of all order row ids that should be delivered.
@@ -807,7 +885,7 @@ However if a subset of all active order rows are specified a partial delivery wi
 |-------------------------------|------------|-----------|--------------|
 | orderId                       |	*        | int       | Checkout order id of the specified order. |
 | orderRowIds                   |	*        | array     | array of *orderRowIds* To deliver whole order just send orderRowIds as empty array |
-| rowDeliveryOptions            |	         | array     | Array of [*Row Delivery Options*](#1031-row-delivery-options) |
+| rowDeliveryOptions            |	         | array     | Array of [*Row Delivery Options*](#1231-row-delivery-options) |
 
 #### Response
 
@@ -815,14 +893,31 @@ However if a subset of all active order rows are specified a partial delivery wi
 |-------------------------------|-----------|--------------|
 | HeaderLocation                | string    | URI to the created task. (Absolute URL) |
 
-### 10.3.1 Row Delivery Options
+### 12.3.1 Row Delivery Options
 
 | Parameter                     | Type       | Description  |
 |-------------------------------|------------|--------------|
 | orderRowId                    | int        | Id of the order row |
 | quantity                      | int        | Number of items to credit |
 
-### 10.4 Cancel Order
+### 12.4 Deliver order with lower amount
+Creates a delivery on a checkout order with a lower amount than the total, canceling the remaining amount. Assuming the order got **CanDeliverOrder** and **CanCancelAmount** action.
+
+The deliver with lower amount call should be used when the delivery is complete but should not capture the full amount. All order rows will be seen as delivered.
+
+| Parameter IN     | Required | Type | Description                                |
+|------------------|----------|------|--------------------------------------------|
+| orderId          | *        | int  | Checkout order id of the specified order.  |
+| deliveredamount  | *        | int  | Amount (in minor currency) to be delivered |
+
+#### Response
+
+| Parameters OUT       | Type   | Description                             |
+|----------------------|--------|-----------------------------------------|
+| DeliveryId           | int    | ID of the delivery                      |
+| HeaderLocation       | string | URI to the created task (Absolute URL)  |
+
+### 12.5 Cancel Order
 Cancel an order before it has been delivered. Assuming the order has the action **CanCancelOrder**.
 
 | Parameters IN                 | Required   | Type      | Description  |
@@ -834,7 +929,7 @@ Cancel an order before it has been delivered. Assuming the order has the action 
 
 If the order is successfully cancelled, Response is empty. 
 
-### 10.5 Cancel order amount
+### 12.6 Cancel order amount
 By specifying a higher amount than the current order cancelled amount then the order cancelled amount will increase, 
 assuming the order has the action **CanCancelOrderAmount**. The delta between the new *CancelledAmount* and the former *CancelledAmount* will be cancelled.
 
@@ -850,7 +945,7 @@ The new *CancelledAmount* cannot be equal to or lower than the current *Cancelle
 
 If order amount is successfully cancelled, Response is empty.
 
-### 10.6 Cancel order row
+### 12.7 Cancel order row
 Changes the status of an order row to *Cancelled*, assuming the order has the action **CanCancelOrderRow** and the OrderRow has the action **CanCancelRow**. 
 
 | Parameters IN                 | Required   | Type     | Description  |
@@ -863,7 +958,7 @@ Changes the status of an order row to *Cancelled*, assuming the order has the ac
 
 If order row is successfully cancelled, Response is empty.
 
-### 10.7 Credit order rows
+### 12.8 Credit order rows
 Creates a new credit on the specified delivery with specified order rows. Assuming the delivery has action **CanCreditOrderRows** and the specified order rows also has action **CanCreditRow**
 
 | Parameters IN                 | Required   | Type     | Description  |
@@ -871,7 +966,7 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | deliveryId                    |	*        | int      | Id of the specified delivery row |
 | orderRowIds                   |	*        | array    | Id of the specified row |
-| rowCreditingOptions           |	         | array    | Array of [*Row Crediting Options*](#1071-row-crediting-options) |
+| rowCreditingOptions           |	         | array    | Array of [*Row Crediting Options*](#1281-row-crediting-options) |
 
 #### Response
 
@@ -881,21 +976,21 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 
 On the returned URL can be checked status of the task.
 
-### 10.7.1 Row Crediting Options
+### 12.8.1 Row Crediting Options
 
 | Parameter                     | Type       | Description  |
 |-------------------------------|------------|--------------|
 | orderRowId                    | int        | Id of the order row |
 | quantity                      | int        | Number of items to credit |
 
-### 10.8 Credit new order row
+### 12.9 Credit new order row
 By specifying a new credit row, a new credit row will be created on the delivery, assuming the delivery has action **CanCreditNewRow**.
 
 | Parameters IN                 | Required   | Type     | Description  |
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | deliveryId                    |	*        | int      | Id of the specified delivery row. |
-| newCreditOrderRow             |	*        | array    | [Order Row](#10145-order-row) |
+| newCreditOrderRow             |	*        | array    | [Order Row](#12155-order-row) |
 
 #### Response
 
@@ -905,7 +1000,7 @@ By specifying a new credit row, a new credit row will be created on the delivery
 
 On the returned URL can be checked status of the task.
 
-### 10.9 Credit order rows with fee
+### 12.10 Credit order rows with fee
 Creates a new credit on the specified delivery with specified order rows. Assuming the delivery has action **CanCreditOrderRows** and the specified order rows also has action **CanCreditRow**. Adds the ability to add a fee to the credit.
 
 | Parameters IN                 | Required   | Type     | Description  |
@@ -914,7 +1009,7 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 | deliveryId                    |	*        | int      | Id of the specified delivery row |
 | orderRowIds                   |	*        | array    | Id of the specified row |
 | fee                           |	         | array    | Array of [*Fee*] |
-| rowCreditingOptions           |	         | array    | Array of [*Row Crediting Options*](#1071-row-crediting-options) |
+| rowCreditingOptions           |	         | array    | Array of [*Row Crediting Options*](#1281-row-crediting-options) |
 
 #### Response
 
@@ -923,7 +1018,7 @@ Creates a new credit on the specified delivery with specified order rows. Assumi
 | HeaderLocation                | string    | URI to the created task. (Absolute URL) |
 
 On the returned URL can be checked status of the task.
-### 10.10 Credit amount
+### 12.11 Credit amount
 By specifying a credited amount larger than the current credited amount. A credit is being made on the specified delivery. The credited amount cannot be lower than the current credited amount or larger than the delivered amount.
 
 This method requires **CanCreditAmount** on the delivery.
@@ -938,14 +1033,14 @@ This method requires **CanCreditAmount** on the delivery.
 
 If order amount is successfully credited, Response is empty.
 
-### 10.11 Add order row
+### 12.12 Add order row
 This method is used to add order rows to an order, assuming the order has the action **CanAddOrderRow**. 
 If the new order amount will exceed the current order amount, a credit check will be performed.
 
 | Parameters IN                 | Required   | Type     | Description  |
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| orderRow                      |	*        | array    | [Order Row](#10145-order-row) |
+| orderRow                      |	*        | array    | [Order Row](#12155-order-row) |
 
 #### Response
 
@@ -956,7 +1051,7 @@ If the new order amount will exceed the current order amount, a credit check wil
 
 On the returned URL (HeaderLocation) can be checked status of the task.
 
-### 10.12 Update order row
+### 12.13 Update order row
 This method is used to update an order row, assuming the order has action "CanUpdateOrderRow" and the order row has the action **CanUpdateRow**. 
 The method will update all fields set in the payload, if a field is not set the row will keep the current value.
 If the new order amount will exceed the current order amount, a credit check will be performed.
@@ -965,13 +1060,13 @@ If the new order amount will exceed the current order amount, a credit check wil
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
 | orderRowId                    |	*        | int      | Id of the specified row. |
-| orderRow                      |	*        | array    | Use only those fields that need to be updated. [Order Row](#10145-order-row) |
+| orderRow                      |	*        | array    | Use only those fields that need to be updated. [Order Row](#12155-order-row) |
 
 #### Response
 
 If order row is successfully updated, Response is empty.
 
-### 10.13 Replace order rows
+### 12.14 Replace order rows
 This method is used to update an order row, assuming the order has action "CanUpdateOrderRow".
 This method will delete all the present rows and replace with the ones set in the payload.
 If the new order amount will exceed the current order amount, a credit check will be performed.
@@ -979,16 +1074,16 @@ If the new order amount will exceed the current order amount, a credit check wil
 | Parameters IN                 | Required   | Type     | Description  |
 |-------------------------------|------------|----------|--------------|
 | orderId                       |	*        | int      | Checkout order id of the specified order. |
-| orderRows                     |	*        | int      | List of [Order Row](#10145-order-row) |
+| orderRows                     |	*        | int      | List of [Order Row](#12155-order-row) |
 
 #### Response
 
 If order row is successfully updated, Response is empty.
 
 
-### 10.14 Data objects
+### 12.15 Data objects
 
-#### 10.14.1 Order
+#### 12.15.1 Order
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id                    |   int	        | Checkoutorderid of the order|
@@ -1009,7 +1104,7 @@ If order row is successfully updated, Response is empty.
 | Deliveries            | List of Delivery | |
 | Actions               | List of String | A list of actions possible on the order.|
 
-#### 10.14.2 Delivery
+#### 12.15.2 Delivery
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -1022,7 +1117,7 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | | 
 | Actions               | List of string | A list of actions possible on the delivery.|
 
-#### 10.14.3 Credit
+#### 12.15.3 Credit
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -1030,14 +1125,14 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | |
 | Actions               | List of String | A list of actions possible on the credit.|
 
-#### 10.14.4 Task
+#### 12.15.4 Task
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id	                | Long          |	Identifier for the task |
 | Status                | String        | Status of the task |
 
-#### 10.14.5 Order Row
+#### 12.15.5 Order Row
 
 |Parameter	            |R  | RO | Type     | Description                   |	Limits|
 |-----------------------|---|----|----------|-------------------------------|-------------------|
@@ -1052,7 +1147,7 @@ If order row is successfully updated, Response is empty.
 | IsCancelled           |   | *  |boolean  | Determines if the row is cancelled. | Not possible to set through API, only get.|
 | Actions               |   | *  |List of string | A list of actions possible on the order row. See list of OrderRow actions below. | Not possible to set through API, only get.|
 
-#### 10.14.6 Address
+#### 12.15.6 Address
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -1063,7 +1158,7 @@ If order row is successfully updated, Response is empty.
 | City                  | 	string      | 	City |
 | CountryCode           | 	string      | 	2-letter ISO country code |
 
-#### 10.14.7 Order Status
+#### 12.15.7 Order Status
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -1072,7 +1167,7 @@ If order row is successfully updated, Response is empty.
 | Cancelled             | The order is fully cancelled |
 | Failed                | The payment for this order has failed |
 
-#### 10.14.8 Order actions
+#### 12.15.8 Order actions
 
 | Parameter                 |  Description                                               |
 |---------------------------|------------------------------------------------------------|
@@ -1084,7 +1179,7 @@ If order row is successfully updated, Response is empty.
 | CanAddOrderRow            ||
 | CanUpdateOrderRow         ||
 
-#### 10.14.9 Delivery actions
+#### 12.15.9 Delivery actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -1092,7 +1187,7 @@ If order row is successfully updated, Response is empty.
 | CanCreditOrderRows    ||
 | CanCreditAmount       ||		
 
-#### 10.14.10 Order Row actions
+#### 12.15.10 Order Row actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -1101,7 +1196,7 @@ If order row is successfully updated, Response is empty.
 | CanCreditRow          ||	
 | CanUpdateRow          ||
 
-## 11. Javascript API
+## 13. Javascript API
 
 (Please note that the API is still considered a work in progress and might see significant changes.)
 
