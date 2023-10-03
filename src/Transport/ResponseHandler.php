@@ -87,6 +87,14 @@ class ResponseHandler
                     $error = $errorContent['Errors'][0];
                     $errorMessage = $error['ErrorMessage'];
                 }
+                if (empty($errorCode)) {
+                    if (isset($errorContent['resultCode'])) {
+                        $errorCode = $errorContent['resultCode'];
+                    }
+                    if (isset($errorContent['errorMessage'])) {
+                        $errorMessage = $errorContent['errorMessage'];
+                    }
+                }
             } else {
                 if (isset($this->header['http_code'])) {
                     $errorMessage = $this->header['http_code'];

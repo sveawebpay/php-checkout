@@ -62,7 +62,13 @@ class CheckoutClient
      */
     public function create(array $data)
     {
-        return $this->executeAction(ImplementationFactory::returnCreateOrderClass($this->connector), $data);
+        if (isset($data['token'])) {
+            $class = ImplementationFactory::returnCreateTokenOrderClass($this->connector);
+        } else {
+            $class = ImplementationFactory::returnCreateOrderClass($this->connector);
+        }
+
+        return $this->executeAction($class, $data);
     }
 
     /**
@@ -84,7 +90,24 @@ class CheckoutClient
      */
     public function get($data)
     {
-        return $this->executeAction(ImplementationFactory::returnGetOrderClass($this->connector), $data);
+        if (!empty($data['token'])) {
+            $class = ImplementationFactory::returnGetTokenOrderClass($this->connector);
+        } else {
+            $class = ImplementationFactory::returnGetOrderClass($this->connector);
+        }
+
+        return $this->executeAction($class, $data);
+    }
+    
+    /**
+     * Return a token
+     *
+     * @param array $data
+     * @return void
+     */
+    public function getToken($data)
+    {
+        return $this->executeAction(ImplementationFactory::returnGetTokenClass($this->connector), $data);
     }
 
     /**
