@@ -3,6 +3,7 @@
 namespace Svea\Checkout\Implementation\Admin;
 
 use Svea\Checkout\Transport\Connector;
+use Svea\Checkout\Validation\Admin\ValidateDeliverOrderWithLowerAmountData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderData;
 use Svea\Checkout\Validation\Admin\ValidateAddOrderRowData;
 use Svea\Checkout\Validation\Admin\ValidateCancelOrderData;
@@ -28,6 +29,15 @@ class ImplementationAdminFactory
     public static function returnDeliverOrderClass(Connector $connector)
     {
         return new DeliverOrder($connector, new ValidateDeliverOrderData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return DeliverOrderWithLowerAmount
+     */
+    public static function returnDeliverOrderWithLowerAmountClass(Connector $connector)
+    {
+        return new DeliverOrderWithLowerAmount($connector, new ValidateDeliverOrderWithLowerAmountData());
     }
 
     /**
