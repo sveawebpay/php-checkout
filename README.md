@@ -396,7 +396,7 @@ The response contains information about the order such as Cart, Status, PaymentT
 | PhoneNumber                   | String               | The customer’s phone number |
 | MerchantData                  | String               | Can be used to store data, the data is not displayed anywhere but in the API |
 | SveaWillBuyOrder              | Boolean              | Only applicable if merchant uses the "no-risk flow", used to determine if Svea buys the invoice or not | 
-| IdentityFlags                 | Array of [*IdentityFlags*](#1012-identityflags) | Settings which disables certain features in the iframe. See [*IdentityFlags*](#) |
+| IdentityFlags                 | Array of [*IdentityFlags*](#1012-identityflags) | Settings which disables certain features in the iframe. See [*IdentityFlags*](#1012-identityflags) |
 | PaymentType                   | String               | The final payment method for the order. Will only have a value when the order is finalized, otherwise null. See [*PaymentType*](#1010-paymenttype)|
 | CustomerReference             | String               | B2B Customer reference |
 | Recurring                     | Boolean              | If the order is a recurring order |
