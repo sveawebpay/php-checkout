@@ -654,10 +654,10 @@ The order can only be considered “ready to send to customer” when the Checko
 |-----------|-----------------|
 | sv-SE     | Swedish locale. |
 | nn-NO     | Norwegian locale. |
-| nb-NO     | Norwegian locale. |
 | fi-FI     | Finnish locale. |
 | da-DK     | Danish locale. |
 | de-DE     | German locale. |
+| en-US     | English locale. |
 
 
 #### 8.10 PaymentType
