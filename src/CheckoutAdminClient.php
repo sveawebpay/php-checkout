@@ -68,6 +68,17 @@ class CheckoutAdminClient
     }
 
     /**
+     * Deliver Svea Checkout order with lower amount.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function deliverOrderWithLowerAmount($data)
+    {
+        return $this->executeAction(ImplementationAdminFactory::returnDeliverOrderWithLowerAmountClass($this->connector), $data);
+    }
+
+    /**
      * Cancel Svea Checkout order.
      *
      * @param mixed $data
