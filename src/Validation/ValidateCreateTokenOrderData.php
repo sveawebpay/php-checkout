@@ -70,7 +70,7 @@ class ValidateCreateTokenOrderData extends ValidationService
         $this->mustBeArray($data['merchantsettings'], 'Merchant settings');
 
         $merchantData = $data['merchantsettings'];
-        $requiredFields = array('checkouturi', 'pushuri');
+        $requiredFields = array('pushuri');
 
         foreach ($requiredFields as $field) {
             $this->mustBeSet($merchantData, $field, 'Merchant settings' . $field);

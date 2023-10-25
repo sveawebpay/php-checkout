@@ -10,6 +10,7 @@ use Svea\Checkout\Validation\ValidateUpdateOrderData;
 use Svea\Checkout\Validation\ValidateGetAvailablePartPaymentCampaignsData;
 use Svea\Checkout\Validation\ValidateGetTokenData;
 use Svea\Checkout\Validation\ValidateGetTokenOrderData;
+use Svea\Checkout\Validation\ValidateUpdateTokenData;
 
 class ImplementationFactory
 {
@@ -55,6 +56,15 @@ class ImplementationFactory
     public static function returnGetTokenClass(Connector $connector)
     {
         return new GetToken($connector, new ValidateGetTokenData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return ImplementationInterface
+     */
+    public static function returnUpdateTokenClass(Connector $connector)
+    {
+        return new UpdateToken($connector, new ValidateUpdateTokenData());
     }
 
     /**

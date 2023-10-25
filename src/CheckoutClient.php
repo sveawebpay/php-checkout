@@ -62,7 +62,7 @@ class CheckoutClient
      */
     public function create(array $data)
     {
-        if (isset($data['token'])) {
+        if (isset($data['Token'])) {
             $class = ImplementationFactory::returnCreateTokenOrderClass($this->connector);
         } else {
             $class = ImplementationFactory::returnCreateOrderClass($this->connector);
@@ -90,7 +90,7 @@ class CheckoutClient
      */
     public function get($data)
     {
-        if (!empty($data['token'])) {
+        if (!empty($data['Token'])) {
             $class = ImplementationFactory::returnGetTokenOrderClass($this->connector);
         } else {
             $class = ImplementationFactory::returnGetOrderClass($this->connector);
@@ -108,6 +108,16 @@ class CheckoutClient
     public function getToken($data)
     {
         return $this->executeAction(ImplementationFactory::returnGetTokenClass($this->connector), $data);
+    }
+
+    /**
+     * Update token
+     *
+     * @param array $data
+     * @return void
+     */
+    public function updateToken($data) {
+        return $this->executeAction(ImplementationFactory::returnupdateTokenClass($this->connector), $data);
     }
 
     /**

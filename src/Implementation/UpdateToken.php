@@ -6,9 +6,9 @@ use Svea\Checkout\Model\Request;
 use Svea\Checkout\Exception\SveaApiException;
 use Svea\Checkout\Exception\SveaInputValidationException;
 
-class GetTokenOrder extends ImplementationManager
+class UpdateToken extends ImplementationManager
 {
-    protected $apiUrl = '/api/tokens/%s/orders/%d/';
+    protected $apiUrl = '/api/tokens/%s';
 
     /**
      * Request body - JSON
@@ -34,12 +34,12 @@ class GetTokenOrder extends ImplementationManager
      */
     public function prepareData($data)
     {
-        $orderId = $data['orderid'];
         $token = $data['token'];
+        unset($data['token']);
         $this->requestModel = new Request();
-        $this->requestModel->setGetMethod();
-
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $token, $orderId ));
+        $this->requestModel->setPatchMethod();
+        $this->requestModel->setBody(json_encode($data));
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $token));
     }
 
     /**
