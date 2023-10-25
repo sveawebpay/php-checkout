@@ -103,7 +103,7 @@ class CheckoutClient
      * Return a token
      *
      * @param array $data
-     * @return void
+     * @return mixed
      */
     public function getToken($data)
     {
@@ -114,7 +114,7 @@ class CheckoutClient
      * Update token
      *
      * @param array $data
-     * @return void
+     * @return mixed
      */
     public function updateToken($data) {
         return $this->executeAction(ImplementationFactory::returnupdateTokenClass($this->connector), $data);

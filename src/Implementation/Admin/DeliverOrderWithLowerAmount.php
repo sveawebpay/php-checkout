@@ -7,7 +7,7 @@ use Svea\Checkout\Model\Request;
 class DeliverOrderWithLowerAmount extends AdminImplementationManager
 {
     /**
-     * url of action
+     * Url of action
      */
     protected $apiUrl =  '/api/v1/orders/%d/deliveries/DeliverAndLowerAmount';
 
@@ -20,6 +20,7 @@ class DeliverOrderWithLowerAmount extends AdminImplementationManager
 
     /**
      * Input data validation
+     * 
      * @param array $data Input data to Svea Checkout Library
      */
     public function validateData($data)
@@ -57,6 +58,8 @@ class DeliverOrderWithLowerAmount extends AdminImplementationManager
     }
 
     /**
+     * Get request model
+     * 
      * @return Request
      */
     public function getRequestModel()
@@ -65,6 +68,8 @@ class DeliverOrderWithLowerAmount extends AdminImplementationManager
     }
 
     /**
+     * Send request model
+     * 
      * @param Request $requestModel
      */
     public function setRequestModel($requestModel)

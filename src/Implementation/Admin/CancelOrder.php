@@ -67,7 +67,7 @@ class CancelOrder extends AdminImplementationManager
 
         $urlParams = array($orderId);
         $this->requestModel->setApiUrl($this->prepareUrl($urlParams));
-    }   
+    }
 
     /**
      * Invoke Api call

@@ -39,7 +39,7 @@ class GetTokenOrder extends ImplementationManager
         $this->requestModel = new Request();
         $this->requestModel->setGetMethod();
 
-        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $token, $orderId ));
+        $this->requestModel->setApiUrl($this->connector->getBaseApiUrl() . sprintf($this->apiUrl, $token, $orderId));
     }
 
     /**

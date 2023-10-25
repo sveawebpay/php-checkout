@@ -68,13 +68,6 @@ class ApiClient
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
         }
 
-        // if ($request->getApiUrl() !== 'https://checkoutapistage.svea.com/api/orders/8949177' ) {
-        //     echo '<pre>';
-        //     var_dump( $request->getApiUrl() );
-        //     echo '</pre>';
-        //     die;
-        // }
-
         $httpResponse = $this->httpClient->execute();
         $httpCode = $this->httpClient->getInfo(CURLINFO_HTTP_CODE);
 
