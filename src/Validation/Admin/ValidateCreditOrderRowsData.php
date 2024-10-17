@@ -31,28 +31,13 @@ class ValidateCreditOrderRowsData extends ValidationService
         $this->mustBeSet($data, 'deliveryid', 'Delivery Id');
         $this->mustBeInteger($data['deliveryid'], 'Delivery Id');
 
-        if ($this->isNewCreditRow === true) {
-            $this->validateNewCreditRow($data);
-        } else {
+        if ($this->isNewCreditRow === false) {
             $this->validateRowIds($data);
 
 			if (isset($data['rowcreditingoptions'])) {
 				$this->mustNotBeEmptyArray($data['rowcreditingoptions'], 'Row Crediting Options');
 			}
         }
-    }
-
-	/**
-	 * Validate new credit row
-	 *
-	 * @param array $data
-	 * 
-	 * @return void
-	 */
-    private function validateNewCreditRow($data)
-    {
-        $this->mustBeSet($data, 'newcreditrow', 'Credit Row');
-        $this->mustNotBeEmptyArray($data['newcreditrow'], 'Credit Row');
     }
 
 	/**
