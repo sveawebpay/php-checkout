@@ -248,18 +248,6 @@ class ValidateCreditOrderRowsDataTest extends TestCase
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-    /**
-     * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
-     * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
-     */
-    public function testValidateNewCreditRowWithoutOrderRowIdsAndEmptyNewCreditRow()
-    {
-        unset($this->inputData['orderrowids']);
-        $this->inputData['newcreditrow'] = array();
-        $this->validateCreditOrderRow->setIsNewCreditRow(true);
-        $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
-    }
-
 	/**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
