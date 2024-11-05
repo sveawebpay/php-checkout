@@ -35,8 +35,7 @@ class CheckoutAdminClient
     /**
      * Get Svea Checkout order information.
      *
-     * @param int $data
-     *
+     * @param mixed $data
      * @return mixed
      */
     public function getOrder($data)
@@ -47,8 +46,7 @@ class CheckoutAdminClient
     /**
      * Get Svea Checkout task information.
      *
-     * @param int $data
-     *
+     * @param mixed $data
      * @return mixed
      */
     public function getTask($data)
@@ -103,7 +101,7 @@ class CheckoutAdminClient
     /**
      * Cancel Checkout order row.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function cancelOrderRow($data)
@@ -114,7 +112,7 @@ class CheckoutAdminClient
     /**
      * Credit order rows for Svea Checkout order.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function creditOrderRows($data)
@@ -125,7 +123,7 @@ class CheckoutAdminClient
     /**
      * Credit new order row.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function creditNewOrderRow($data)
@@ -139,7 +137,7 @@ class CheckoutAdminClient
     /**
      * Credit amount for Svea Checkout order.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function creditOrderAmount($data)
@@ -150,7 +148,7 @@ class CheckoutAdminClient
     /**
      * Add Order Row.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function addOrderRow($data)
@@ -161,7 +159,7 @@ class CheckoutAdminClient
     /**
      * Update Order Row.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function updateOrderRow($data)
@@ -172,7 +170,7 @@ class CheckoutAdminClient
 	/**
      * Replace Order Rows.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function replaceOrderRows($data)
@@ -183,7 +181,7 @@ class CheckoutAdminClient
 	/**
      * Credit Order Rows with fee.
      *
-     * @param int $data
+     * @param mixed $data
      * @return mixed
      */
     public function creditOrderRowsWithFee($data)
