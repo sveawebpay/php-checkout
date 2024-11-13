@@ -41,6 +41,9 @@ class UpdateOrder extends ImplementationManager
         if (isset($data['shippinginformation'])) {
             $cart['shippinginformation'] = $data['shippinginformation'];
         }
+        if (isset($data['validation'])) {
+            $cart['validation'] = $data['validation'];
+        }
         $orderId = $data['orderid'];
         $this->requestModel = new Request();
         $this->requestModel->setPutMethod();
