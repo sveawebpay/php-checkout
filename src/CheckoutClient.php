@@ -72,6 +72,18 @@ class CheckoutClient
     }
 
     /**
+     * Change payment method for existing Svea Checkout order.
+     *
+     * @param array $data
+     * @return mixed
+     */
+    public function changePaymentMethod( array $data )
+    {
+        return $this->executeAction(ImplementationFactory::returnChangePaymentMethodClass($this->connector), $data);
+        
+    }
+
+    /**
      * Update existing Svea Checkout order.
      *
      * @param array $data

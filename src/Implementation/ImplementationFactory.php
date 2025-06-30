@@ -4,6 +4,7 @@ namespace Svea\Checkout\Implementation;
 
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Validation\ValidateCreateOrderData;
+use Svea\Checkout\Validation\ValidateChangePaymentMethodData;
 use Svea\Checkout\Validation\ValidateCreateTokenOrderData;
 use Svea\Checkout\Validation\ValidateGetOrderData;
 use Svea\Checkout\Validation\ValidateUpdateOrderData;
@@ -16,7 +17,7 @@ class ImplementationFactory
 {
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return CreateOrder
      */
     public static function returnCreateOrderClass(Connector $connector)
     {
@@ -25,15 +26,25 @@ class ImplementationFactory
 
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return CreateTokenOrder
      */
-    public static function returnCreateTokenOrderClass(Connector $connector) {
+    public static function returnCreateTokenOrderClass(Connector $connector)
+    {
         return new CreateTokenOrder($connector, new ValidateCreateTokenOrderData());
     }
 
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return ChangePaymentMethod
+     */
+    public static function returnChangePaymentMethodClass(Connector $connector)
+    {
+        return new ChangePaymentMethod($connector, new ValidateChangePaymentMethodData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return GetOrder
      */
     public static function returnGetOrderClass(Connector $connector)
     {
@@ -42,7 +53,7 @@ class ImplementationFactory
    
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return GetTokenOrder
      */
     public static function returnGetTokenOrderClass(Connector $connector)
     {
@@ -51,7 +62,7 @@ class ImplementationFactory
 
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return GetToken
      */
     public static function returnGetTokenClass(Connector $connector)
     {
@@ -60,7 +71,7 @@ class ImplementationFactory
 
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return UpdateToken
      */
     public static function returnUpdateTokenClass(Connector $connector)
     {
@@ -69,7 +80,7 @@ class ImplementationFactory
 
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return UpdateOrder
      */
     public static function returnUpdateOrderClass(Connector $connector)
     {
@@ -78,7 +89,7 @@ class ImplementationFactory
 
     /**
      * @param Connector $connector
-     * @return ImplementationInterface
+     * @return GetAvailablePartPaymentCampaigns
      */
     public static function returnGetAvailablePartPaymentCampaignsClass(Connector $connector)
     {
