@@ -793,6 +793,8 @@ The order can only be considered “ready to send to customer” when the Checko
 | LEASINGUNAPPROVED | Leasing (Manual approve process by Sveas leasing department, check Store pay admin page) |
 | LEASINGAPPROVED | Leasing (Automatically approved leasing contract)
 | TRUSTLY            | The customer paid with Trustly |
+| APPLEPAY         | The customer paid with Apple Pay |
+| APPLEPAY_PF         | The customer paid with Apple Pay via a payment facilitator |
 | Directbank (varies)  |	The customer paid the order with direct bank e.g. Nordea, SEB. See below for all available parameters |
 
 Directbanks:
