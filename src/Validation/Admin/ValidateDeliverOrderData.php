@@ -18,7 +18,7 @@ class ValidateDeliverOrderData extends ValidationService
         $this->mustBeSet($data, 'orderid', 'Order Id');
         $this->mustBeInteger($data['orderid'], 'Order Id');
 
-        $this->mustBeSet($data, 'orderrowids', 'Order Id');
+        $this->mustBeSet($data, 'orderrowids', 'Order Row Ids');
         $this->mustBeArray($data['orderrowids'], 'Order Row Ids');
 
         if (count($data['orderrowids']) > 0) {
