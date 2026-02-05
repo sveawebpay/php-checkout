@@ -53,13 +53,22 @@ and run command ` composer update ` in your CLI
 #### 1.2 Install without composer
 You can also download the library and upload it onto your server.
 
+### 1.3 Define API timeout (optional)
+The default timeout for API requests is set to 5 seconds. If you want to change this value you can define the constant `SVEA_CHECKOUT_API_TIMEOUT` before including the library.
+
+```php
+// Set timeout to 10 seconds
+define('SVEA_CHECKOUT_API_TIMEOUT', 10);
+// Include the library
+include 'vendor/autoload.php';
+```
+
 ### 2. General information
 
 #### 2.1 Creating a Connector
 You have to use a connector object as parameter when creating a CheckoutClient or a CheckoutAdminClient-object which is used to create API requests.
 
 The connector defines what credentials should be used and which environment should be used.
-
 
 Parameters for creating Connector are: checkoutMerchantId, checkoutSecret and base API url(environment).
 
