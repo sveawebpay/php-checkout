@@ -51,7 +51,6 @@ class ApiClient
         $this->httpClient->setOption(CURLOPT_HTTPHEADER, $header);
         $this->httpClient->setOption(CURLOPT_RETURNTRANSFER, 1);
         $this->httpClient->setOption(CURLOPT_HEADER, 1);
-        $this->httpClient->setOption(CURLOPT_SSL_VERIFYPEER, false);
 
         if ($request->getMethod() === 'POST') {
             $this->httpClient->setOption(CURLOPT_POST, 1);
@@ -67,6 +66,10 @@ class ApiClient
             $this->httpClient->setOption(CURLOPT_CUSTOMREQUEST, "PATCH");
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
         }
+
+        // Set a default timeout of 5 seconds if none is defined
+        $timeout = defined('SVEA_CHECKOUT_API_TIMEOUT') ? SVEA_CHECKOUT_API_TIMEOUT : 5;
+        $this->httpClient->setOption(CURLOPT_TIMEOUT, $timeout);
 
         $httpResponse = $this->httpClient->execute();
         $httpCode = $this->httpClient->getInfo(CURLINFO_HTTP_CODE);

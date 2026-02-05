@@ -25,6 +25,8 @@
  */
 namespace Svea\Checkout;
 
+use Indeed\Uap\PreviousRanks;
+use Opis\JsonSchema\Variables\RefVariablesContainer;
 use Svea\Checkout\Implementation\ImplementationInterface;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Implementation\ImplementationFactory;

@@ -10,7 +10,7 @@ namespace Svea\Checkout\Transport\Http;
 class CurlRequest implements HttpRequestInterface
 {
     /**
-     * @var null|resource
+     * @var null|mixed
      */
     private $handle = null;
 
