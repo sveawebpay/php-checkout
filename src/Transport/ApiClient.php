@@ -67,8 +67,8 @@ class ApiClient
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
         }
 
-        // Set a default timeout of 5 seconds if none is defined
-        $timeout = defined('SVEA_CHECKOUT_API_TIMEOUT') ? SVEA_CHECKOUT_API_TIMEOUT : 5;
+        // Set a default timeout of 15 seconds if none is defined
+        $timeout = defined('SVEA_CHECKOUT_API_TIMEOUT') ? SVEA_CHECKOUT_API_TIMEOUT : 15;
         $this->httpClient->setOption(CURLOPT_TIMEOUT, $timeout);
 
         $httpResponse = $this->httpClient->execute();
