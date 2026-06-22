@@ -41,6 +41,7 @@
       "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpCs",
       "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpMd"
     ],
-    "fix-sniff-violations": "Svea\\Checkout\\Util\\ScriptHandler::fixSniffViolations"
+    "fix-sniff-violations": "Svea\\Checkout\\Util\\ScriptHandler::fixSniffViolations",
+    "circleci": "docker run --rm --platform linux/amd64 -v \"$PWD\":/app -w /app cimg/php:7.4 bash -lc \"if ! php -r 'exit(extension_loaded(\\\"zip\\\") ? 0 : 1);'; then sudo docker-php-ext-install zip; fi && composer install --no-interaction && ./vendor/bin/phpunit && composer run code-analyse\""
   }
 }
