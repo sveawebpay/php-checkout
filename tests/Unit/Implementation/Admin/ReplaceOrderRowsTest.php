@@ -15,11 +15,11 @@ class ReplaceOrderRowTest extends TestCase
     protected $replaceOrderRows;
 
     /**
-     * @var ValidateReplaceOrderRowsData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateReplaceOrderRowsData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -35,22 +35,22 @@ class ReplaceOrderRowTest extends TestCase
         $inputData = array(
             'orderid' => $orderId,
             'orderrows' => array(
-				array(
-					"articlenumber" => "prod-01",
-					"name" => "someProd",
-					"quantity" => 300,
-					"unitprice" => 5000,
-					"vatpercent" => 0,
-					"unit" => "pc"
-				),
-				array(
-					"articlenumber" => "prod-02",
-					"name" => "someProd 2",
-					"quantity" => 500,
-					"unitprice" => 2000,
-					"vatpercent" => 0,
-					"unit" => "st"
-				)
+                array(
+                    "articlenumber" => "prod-01",
+                    "name" => "someProd",
+                    "quantity" => 300,
+                    "unitprice" => 5000,
+                    "vatpercent" => 0,
+                    "unit" => "pc"
+                ),
+                array(
+                    "articlenumber" => "prod-02",
+                    "name" => "someProd 2",
+                    "quantity" => 500,
+                    "unitprice" => 2000,
+                    "vatpercent" => 0,
+                    "unit" => "st"
+                )
             )
         );
         $this->replaceOrderRows->prepareData($inputData);
@@ -60,14 +60,14 @@ class ReplaceOrderRowTest extends TestCase
 
         $this->assertEquals(Request::METHOD_PUT, $requestModel->getMethod());
 
-		foreach ($inputData['orderrows'] as $key => $orderRow) {
-			$this->assertEquals($orderRow['articlenumber'], $requestBodyData['orderRows'][$key]['articlenumber']);
-			$this->assertEquals($orderRow['name'], $requestBodyData['orderRows'][$key]['name']);
-			$this->assertEquals($orderRow['quantity'], $requestBodyData['orderRows'][$key]['quantity']);
-			$this->assertEquals($orderRow['unitprice'], $requestBodyData['orderRows'][$key]['unitprice']);
-			$this->assertEquals($orderRow['vatpercent'], $requestBodyData['orderRows'][$key]['vatpercent']);
-			$this->assertEquals($orderRow['unit'], $requestBodyData['orderRows'][$key]['unit']);
-		}
+        foreach ($inputData['orderrows'] as $key => $orderRow) {
+            $this->assertEquals($orderRow['articlenumber'], $requestBodyData['orderRows'][$key]['articlenumber']);
+            $this->assertEquals($orderRow['name'], $requestBodyData['orderRows'][$key]['name']);
+            $this->assertEquals($orderRow['quantity'], $requestBodyData['orderRows'][$key]['quantity']);
+            $this->assertEquals($orderRow['unitprice'], $requestBodyData['orderRows'][$key]['unitprice']);
+            $this->assertEquals($orderRow['vatpercent'], $requestBodyData['orderRows'][$key]['vatpercent']);
+            $this->assertEquals($orderRow['unit'], $requestBodyData['orderRows'][$key]['unit']);
+        }
     }
 
     public function testInvoke()

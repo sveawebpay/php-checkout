@@ -15,11 +15,11 @@ class CreditOrderRowsTest extends TestCase
     protected $creditOrderRows;
 
     /**
-     * @var ValidateCreditOrderRowsData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateCreditOrderRowsData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

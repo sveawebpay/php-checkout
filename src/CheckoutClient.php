@@ -79,10 +79,9 @@ class CheckoutClient
      * @param array $data
      * @return mixed
      */
-    public function changePaymentMethod( array $data )
+    public function changePaymentMethod(array $data)
     {
         return $this->executeAction(ImplementationFactory::returnChangePaymentMethodClass($this->connector), $data);
-        
     }
 
     /**
@@ -130,7 +129,8 @@ class CheckoutClient
      * @param array $data
      * @return mixed
      */
-    public function updateToken($data) {
+    public function updateToken($data)
+    {
         return $this->executeAction(ImplementationFactory::returnupdateTokenClass($this->connector), $data);
     }
 

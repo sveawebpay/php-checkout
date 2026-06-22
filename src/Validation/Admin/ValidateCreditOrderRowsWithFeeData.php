@@ -7,11 +7,11 @@ use Svea\Checkout\Validation\ValidationService;
 class ValidateCreditOrderRowsWithFeeData extends ValidationService
 {
     /**
-	 * Validate the provided data
-	 * 
+     * Validate the provided data
+     *
      * @param array $data
-	 * 
-	 * @return void
+     *
+     * @return void
      */
     public function validate($data)
     {
@@ -21,24 +21,24 @@ class ValidateCreditOrderRowsWithFeeData extends ValidationService
         $this->mustBeSet($data, 'deliveryid', 'Delivery Id');
         $this->mustBeInteger($data['deliveryid'], 'Delivery Id');
 
-		$this->validateRowIds($data);
+        $this->validateRowIds($data);
 
-		if (!empty($data['fee'])) {
-			$this->mustNotBeEmptyArray($data['fee'], 'Fee');
-		}
+        if (!empty($data['fee'])) {
+            $this->mustNotBeEmptyArray($data['fee'], 'Fee');
+        }
 
-		if (isset($data['rowcreditingoptions'])) {
-			$this->mustNotBeEmptyArray($data['rowcreditingoptions'], 'Row Crediting Options');
-		}
+        if (isset($data['rowcreditingoptions'])) {
+            $this->mustNotBeEmptyArray($data['rowcreditingoptions'], 'Row Crediting Options');
+        }
     }
 
-	/**
-	 * Validate order row ids
-	 *
-	 * @param array $data
-	 * 
-	 * @return void
-	 */
+    /**
+     * Validate order row ids
+     *
+     * @param array $data
+     *
+     * @return void
+     */
     private function validateRowIds($data)
     {
         $this->mustBeSet($data, 'orderrowids', 'Order Row Ids');

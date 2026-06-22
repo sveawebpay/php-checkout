@@ -20,7 +20,7 @@ class DeliverOrderWithLowerAmount extends AdminImplementationManager
 
     /**
      * Input data validation
-     * 
+     *
      * @param array $data Input data to Svea Checkout Library
      */
     public function validateData($data)
@@ -59,7 +59,7 @@ class DeliverOrderWithLowerAmount extends AdminImplementationManager
 
     /**
      * Get request model
-     * 
+     *
      * @return Request
      */
     public function getRequestModel()
@@ -69,7 +69,7 @@ class DeliverOrderWithLowerAmount extends AdminImplementationManager
 
     /**
      * Send request model
-     * 
+     *
      * @param Request $requestModel
      */
     public function setRequestModel($requestModel)

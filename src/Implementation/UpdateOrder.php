@@ -35,7 +35,7 @@ class UpdateOrder extends ImplementationManager
     {
         $cart = array();
         $cart['cart'] = $data['cart'];
-        if(isset($data['merchantdata'])) {
+        if (isset($data['merchantdata'])) {
             $cart['merchantdata'] = $data['merchantdata'];
         }
         if (isset($data['shippinginformation'])) {

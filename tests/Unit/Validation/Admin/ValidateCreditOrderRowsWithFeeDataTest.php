@@ -17,7 +17,7 @@ class ValidateCreditOrderRowsWithFeeDataTest extends TestCase
      */
     private $inputData;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->validateCreditOrderRow = new ValidateCreditOrderRowsWithFeeData();
@@ -27,19 +27,19 @@ class ValidateCreditOrderRowsWithFeeDataTest extends TestCase
             "deliveryid" => 1,
             "orderrowids" => array(3),
             "fee" => array(
-				"articlenumber" => "123456",
-				"name" => "Tomatoes",
-				"quantity" => 10,
-				"unitprice" => 600,
-				"discountpercent" => 1000,
-				"vatpercent" => 2500
-			),
-			"rowcreditingoptions" => array(
-				array(
-					"orderrowid" => 1,
-					"quantity" => 1,
-				)
-			)
+                "articlenumber" => "123456",
+                "name" => "Tomatoes",
+                "quantity" => 10,
+                "unitprice" => 600,
+                "discountpercent" => 1000,
+                "vatpercent" => 2500
+            ),
+            "rowcreditingoptions" => array(
+                array(
+                    "orderrowid" => 1,
+                    "quantity" => 1,
+                )
+            )
         );
     }
 
@@ -213,7 +213,7 @@ class ValidateCreditOrderRowsWithFeeDataTest extends TestCase
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-	/**
+    /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
@@ -223,7 +223,7 @@ class ValidateCreditOrderRowsWithFeeDataTest extends TestCase
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-	public function testValidateWithoutRowCreditingOptions()
+    public function testValidateWithoutRowCreditingOptions()
     {
         unset($this->inputData['rowcreditingoptions']);
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));

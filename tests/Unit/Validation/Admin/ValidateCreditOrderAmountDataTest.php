@@ -17,7 +17,7 @@ class ValidateCreditOrderAmountDataTest extends TestCase
      */
     private $inputData;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->validateCreditOrderAmount = new ValidateCreditOrderAmountData();

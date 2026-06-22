@@ -17,7 +17,7 @@ class ValidateCancelOrderDataTest extends TestCase
      */
     private $inputData;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->validateCancelOrder = new ValidateCancelOrderData();

@@ -15,11 +15,11 @@ class CancelOrderTest extends TestCase
     protected $cancelOrder;
 
     /**
-     * @var ValidateCancelOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateCancelOrderData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

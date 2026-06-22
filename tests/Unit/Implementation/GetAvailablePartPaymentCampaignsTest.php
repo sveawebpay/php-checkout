@@ -11,7 +11,7 @@ use Svea\Checkout\Validation\ValidateGetOrderData;
 class GetAvailablePartPaymentCampaignsTest extends TestCase
 {
     /**
-     * @var ValidateGetOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateGetOrderData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
@@ -20,7 +20,7 @@ class GetAvailablePartPaymentCampaignsTest extends TestCase
      */
     protected $getAvailablePartPaymentCampaigns;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

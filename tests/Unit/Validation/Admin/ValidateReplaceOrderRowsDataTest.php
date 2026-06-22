@@ -17,7 +17,7 @@ class ValidateReplaceOrderRowsDataTest extends TestCase
      */
     private $inputData;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->validateReplaceOrderRows = new ValidateReplaceOrderRowsData();
@@ -25,15 +25,15 @@ class ValidateReplaceOrderRowsDataTest extends TestCase
         $this->inputData = array(
             "orderid" => 201,
             'orderrows' => array(
-				array(
-					"articlenumber" => "123456",
-					"name" => "Tomatoes",
-					"quantity" => 10,
-					"unitprice" => 600,
-					"discountpercent" => 1000,
-					"vatpercent" => 2500
-				)
-			)
+                array(
+                    "articlenumber" => "123456",
+                    "name" => "Tomatoes",
+                    "quantity" => 10,
+                    "unitprice" => 600,
+                    "discountpercent" => 1000,
+                    "vatpercent" => 2500
+                )
+            )
         );
     }
 

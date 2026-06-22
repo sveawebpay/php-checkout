@@ -15,11 +15,11 @@ class CreateOrderTest extends TestCase
     protected $createOrder;
 
     /**
-     * @var ValidateCreateOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateCreateOrderData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

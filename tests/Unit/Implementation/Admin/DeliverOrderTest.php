@@ -15,11 +15,11 @@ class DeliverOrderTest extends TestCase
     protected $deliverOrder;
 
     /**
-     * @var ValidateDeliverOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateDeliverOrderData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

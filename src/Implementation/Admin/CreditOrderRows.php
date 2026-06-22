@@ -53,17 +53,17 @@ class CreditOrderRows extends AdminImplementationManager
     {
         $requestData = array();
         if ($this->isNewCreditRow === true) {
-			if (isset($data['newcreditrow'])) {
-				$requestData['newCreditOrderRow'] = $data['newcreditrow'];
-			} else if (isset($data['newcreditrows'])) {
-				$requestData['newCreditOrderRows'] = $data['newcreditrows'];
-			}
+            if (isset($data['newcreditrow'])) {
+                $requestData['newCreditOrderRow'] = $data['newcreditrow'];
+            } elseif (isset($data['newcreditrows'])) {
+                $requestData['newCreditOrderRows'] = $data['newcreditrows'];
+            }
         } else {
             $requestData['orderRowIds'] = $data['orderrowids'];
 
-			if (!empty($data['rowcreditingoptions'])) {
-				$requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
-			}
+            if (!empty($data['rowcreditingoptions'])) {
+                $requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
+            }
         }
 
         $orderId = $data['orderid'];
