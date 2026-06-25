@@ -859,6 +859,37 @@ The response should have HTTP status 200, indicating a successful request. The r
 | Valid             | *        | Boolean | Should be set to true if Svea should accept the order |
 | ClientOrderNumber |          | String  | Max 32 characters. Set if you want the ClientOrderNumber to be updated. |
 
+#### 11.14 Callback HMAC signature verification
+Svea Checkout can sign callbacks using the following headers:
+
+| Header          | Description |
+|-----------------|-------------|
+| X-Signature-512 | HMAC-SHA512 signature generated from the timestamp and request payload |
+| X-Timestamp     | Unix timestamp in seconds from when the request was created |
+
+The signature is generated from the timestamp and the raw request body. Use the same checkout secret that is used when creating the connector.
+
+```php
+// include the library
+include 'vendor/autoload.php';
+
+// without composer
+require_once 'include.php';
+
+$payload = file_get_contents('php://input');
+$signature = isset($_SERVER['HTTP_X_SIGNATURE_512']) ? $_SERVER['HTTP_X_SIGNATURE_512'] : null;
+$timestamp = isset($_SERVER['HTTP_X_TIMESTAMP']) ? $_SERVER['HTTP_X_TIMESTAMP'] : null;
+
+$verifier = new \Svea\Checkout\Callback\HmacSignatureVerifier();
+
+if (!$verifier->verify($payload, $signature, $timestamp, $checkoutSecret)) {
+    http_response_code(401);
+    exit;
+}
+
+// Continue processing the callback.
+```
+
 ### 12. HttpStatusCodes
 | Parameter | Type          | Description |
 |-----------|---------------|-------------|

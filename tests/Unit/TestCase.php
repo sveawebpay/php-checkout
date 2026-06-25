@@ -2,12 +2,15 @@
 
 namespace Svea\Checkout\Tests\Unit;
 
+use ReflectionClass;
+use ReflectionMethod;
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\ApiClient;
 use Svea\Checkout\Transport\Connector;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
+use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 
-class TestCase extends \PHPUnit_Framework_TestCase
+class TestCase extends PHPUnitTestCase
 {
     /**
      * @var Request $requestModel
@@ -15,17 +18,17 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $requestModel;
 
     /**
-     * @var Connector|\PHPUnit_Framework_MockObject_MockObject $connectorMock
+     * @var Connector|\PHPUnit\Framework\MockObject\MockObject $connectorMock
      */
     protected $connectorMock;
 
     /**
-     * @var ApiClient|\PHPUnit_Framework_MockObject_MockObject $apiClientMock
+     * @var ApiClient|\PHPUnit\Framework\MockObject\MockObject $apiClientMock
      */
     protected $apiClientMock;
 
     /**
-     * @var HttpRequestInterface|\PHPUnit_Framework_MockObject_MockObject $httpClientMock
+     * @var HttpRequestInterface|\PHPUnit\Framework\MockObject\MockObject $httpClientMock
      */
     protected $httpClientMock;
 
@@ -68,8 +71,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $apiUrl = Connector::TEST_BASE_URL;
 
-    protected function setUp()
+    protected function setUp(): void
     {
+        $this->setLegacyExpectedExceptionFromAnnotation();
         $this->setApiResponse();
         $this->setRequest();
         $this->setCurlRequest();
@@ -91,11 +95,39 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected function invokeMethod($object, $methodName, array $parameters = array())
     {
-        $reflection = new \ReflectionClass(get_class($object));
+        $reflection = new ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);
         $method->setAccessible(true);
 
         return $method->invokeArgs($object, $parameters);
+    }
+
+    private function setLegacyExpectedExceptionFromAnnotation(): void
+    {
+        $reflection = new ReflectionMethod($this, $this->getName(false));
+        $docComment = $reflection->getDocComment();
+
+        if ($docComment === false) {
+            return;
+        }
+
+        if (preg_match('/@expectedException\s+([^\s]+)/', $docComment, $exceptionMatch)) {
+            $this->expectException(ltrim($exceptionMatch[1], '\\'));
+        }
+
+        if (preg_match('/@expectedExceptionCode\s+([^\s]+)/', $docComment, $codeMatch)) {
+            $code = $codeMatch[1];
+
+            if (strpos($code, '::') !== false) {
+                $code = constant(ltrim($code, '\\'));
+            }
+
+            $this->expectExceptionCode($code);
+        }
+
+        if (preg_match('/@expectedExceptionMessage\s+([^\r\n]+)/', $docComment, $messageMatch)) {
+            $this->expectExceptionMessage(trim($messageMatch[1]));
+        }
     }
 
     private function setRequest()

@@ -11,7 +11,7 @@ class ImplementationManagerTest extends TestCase
     {
         $validatorServiceMock = $this->getMockBuilder('\Svea\Checkout\Validation\ValidationService')->getMock();
         /**
-         * @var ImplementationManager|\PHPUnit_Framework_MockObject_MockObject $mock
+         * @var ImplementationManager|\PHPUnit\Framework\MockObject\MockObject $mock
          */
         $mock = $this->getMockBuilder('\Svea\Checkout\Implementation\ImplementationManager')
             ->setConstructorArgs(array($this->connectorMock, $validatorServiceMock))

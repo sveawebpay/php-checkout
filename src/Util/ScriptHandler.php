@@ -72,7 +72,7 @@ class ScriptHandler
         $srcPath = $rootPath . self::SRC_PATH;
         $testsPath = $rootPath . self::TESTS_PATH;
 
-        $params = "$srcPath,$testsPath xml $ruleSetFilePath --reportfile $logDestinationPath --quiet";
+        $params = "--reportfile $logDestinationPath $srcPath,$testsPath xml $ruleSetFilePath";
         self::executeScript('phpmd', $params);
     }
 
@@ -88,7 +88,7 @@ class ScriptHandler
         $srcPath = $rootPath . self::SRC_PATH;
         $testsPath = $rootPath . self::TESTS_PATH;
 
-        self::executeScript('phpcbf', "--standard=$ruleSetFilePath $srcPath $testsPath --no-patch --quiet");
+        self::executeScript('phpcbf', "--standard=$ruleSetFilePath $srcPath $testsPath");
     }
 
     /**

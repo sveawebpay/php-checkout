@@ -15,11 +15,11 @@ class CancelOrderRowTest extends TestCase
     protected $cancelOrderRow;
 
     /**
-     * @var ValidateCancelOrderRowData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateCancelOrderRowData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

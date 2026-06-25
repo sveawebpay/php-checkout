@@ -17,7 +17,7 @@ class ValidateUpdateOrderRowDataTest extends TestCase
      */
     private $inputData;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->validateUpdateOrderRow = new ValidateUpdateOrderRowData();

@@ -56,7 +56,7 @@ class ResponseHandler
      */
     public function __construct($content, $httpCode)
     {
-        $this->content = $content;
+        $this->content = (string) $content;
         $this->httpCode = $httpCode;
 
         $this->setHeader();
@@ -221,7 +221,8 @@ class ResponseHandler
         return $result;
     }
 
-    private function removeBOM($data) {
+    private function removeBOM($data)
+    {
         if (0 === strpos(bin2hex($data), 'efbbbf')) {
             return substr($data, 3);
         }

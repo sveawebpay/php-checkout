@@ -39,9 +39,9 @@ class DeliverOrder extends AdminImplementationManager
             'orderRowIds' => $data['orderrowids']
         );
 
-		if (!empty($data['rowdeliveryoptions'])) {
-			$requestData['rowDeliveryOptions'] = $data['rowdeliveryoptions'];
-		}
+        if (!empty($data['rowdeliveryoptions'])) {
+            $requestData['rowDeliveryOptions'] = $data['rowdeliveryoptions'];
+        }
 
         $orderId = $data['orderid'];
         $this->requestModel = new Request();

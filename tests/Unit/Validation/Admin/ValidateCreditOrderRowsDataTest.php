@@ -17,7 +17,7 @@ class ValidateCreditOrderRowsDataTest extends TestCase
      */
     private $inputData;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->validateCreditOrderRow = new ValidateCreditOrderRowsData();
@@ -248,7 +248,7 @@ class ValidateCreditOrderRowsDataTest extends TestCase
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
 
-	/**
+    /**
      * @expectedException \Svea\Checkout\Exception\SveaInputValidationException
      * @expectedExceptionCode Svea\Checkout\Exception\ExceptionCodeList::INPUT_VALIDATION_ERROR
      */
@@ -257,7 +257,7 @@ class ValidateCreditOrderRowsDataTest extends TestCase
         $this->inputData['rowcreditingoptions'] = array();
         $this->invokeMethod($this->validateCreditOrderRow, 'validate', array($this->inputData));
     }
-	
+    
     public function testValidateWithoutRowCreditingOptions()
     {
         unset($this->inputData['rowcreditingoptions']);

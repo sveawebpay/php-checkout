@@ -167,7 +167,7 @@ class CheckoutAdminClient
         return $this->executeAction(ImplementationAdminFactory::returnUpdateOrderRowClass($this->connector), $data);
     }
 
-	/**
+    /**
      * Replace Order Rows.
      *
      * @param mixed $data
@@ -178,7 +178,7 @@ class CheckoutAdminClient
         return $this->executeAction(ImplementationAdminFactory::returnReplaceOrderRowsClass($this->connector), $data);
     }
 
-	/**
+    /**
      * Credit Order Rows with fee.
      *
      * @param mixed $data

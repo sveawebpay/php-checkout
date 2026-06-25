@@ -16,11 +16,11 @@ class UpdateOrderTest extends TestCase
     protected $updateOrder;
 
     /**
-     * @var ValidateUpdateOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateUpdateOrderData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

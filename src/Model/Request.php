@@ -145,10 +145,8 @@ class Request
     public function setUriParameters($uriParameters)
     {
         $uriParametersString = "?";
-        foreach($uriParameters as $key => $value)
-        {
-            if(is_bool($value))
-            {
+        foreach ($uriParameters as $key => $value) {
+            if (is_bool($value)) {
                 $value = $value ? 'true' : 'false';
             }
             $uriParametersString = $uriParametersString . $key . "=" . $value . "&";

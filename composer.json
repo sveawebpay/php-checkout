@@ -1,6 +1,6 @@
 {
   "name": "sveaekonomi/checkout",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Php integration library for Svea Checkout",
   "license": "Apache-2.0",
   "authors": [
@@ -15,17 +15,22 @@
     }
   },
   "require": {
-    "php": ">=5.3.0",
+    "php": ">=7.4",
     "ext-curl": "*"
   },
   "require-dev": {
-    "phpunit/phpunit": "~4.8 || ~5.5",
-    "satooshi/php-coveralls": "~1.0",
-    "squizlabs/php_codesniffer": "2.*",
-    "phpmd/phpmd": "^2.4",
-    "phploc/phploc": "^2.0.1",
-    "sebastian/phpcpd": "^2.0.4",
-	  "symfony/dependency-injection": "^2.7.51 || ^2.8.50 || ^3.4.26 || ^4.1.12 || ^4.2.7"
+    "phpunit/phpunit": "^9.6",
+    "php-coveralls/php-coveralls": "^2.9",
+    "squizlabs/php_codesniffer": "^3.13",
+    "phpmd/phpmd": "^2.15",
+    "phploc/phploc": "^7.0",
+    "sebastian/phpcpd": "^6.0",
+    "symfony/dependency-injection": "^5.4"
+  },
+  "config": {
+    "platform": {
+      "php": "7.4.0"
+    }
   },
   "scripts": {
     "test": "Svea\\Checkout\\Util\\ScriptHandler::runUnitTests",
@@ -36,6 +41,7 @@
       "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpCs",
       "Svea\\Checkout\\Util\\ScriptHandler::codeAnalysisPhpMd"
     ],
-    "fix-sniff-violations": "Svea\\Checkout\\Util\\ScriptHandler::fixSniffViolations"
+    "fix-sniff-violations": "Svea\\Checkout\\Util\\ScriptHandler::fixSniffViolations",
+    "circleci": "docker run --rm --platform linux/amd64 -v \"$PWD\":/app -w /app cimg/php:7.4 bash -lc \"composer install --no-interaction && ./vendor/bin/phpunit && composer run code-analyse\""
   }
 }

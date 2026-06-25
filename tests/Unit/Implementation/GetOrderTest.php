@@ -10,7 +10,7 @@ use Svea\Checkout\Validation\ValidateGetOrderData;
 class GetOrderTest extends TestCase
 {
     /**
-     * @var ValidateGetOrderData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateGetOrderData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
@@ -19,7 +19,7 @@ class GetOrderTest extends TestCase
      */
     protected $getOrder;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

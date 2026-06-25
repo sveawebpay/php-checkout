@@ -32,14 +32,11 @@ class ValidateCreateOrderData extends ValidationService
     {
         $fieldTitle = "merchantData";
 
-        if(isset($data['merchantData']))
-        {
+        if (isset($data['merchantData'])) {
             $this->lengthMustBeBetween($data['merchantData'], 0, 6000, $fieldTitle);
         }
-        foreach($data['cart']['items'] as $item)
-        {
-            if(isset($item['merchantData']))
-            {
+        foreach ($data['cart']['items'] as $item) {
+            if (isset($item['merchantData'])) {
                 $this->lengthMustBeBetween($item['merchantData'], 0, 255, $fieldTitle);
             }
         }

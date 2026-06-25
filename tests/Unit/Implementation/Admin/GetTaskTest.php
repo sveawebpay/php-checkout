@@ -10,7 +10,7 @@ use Svea\Checkout\Validation\Admin\ValidateGetTaskData;
 class GetTaskTest extends TestCase
 {
     /**
-     * @var ValidateGetTaskData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateGetTaskData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
@@ -19,7 +19,7 @@ class GetTaskTest extends TestCase
      */
     protected $getTask;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

@@ -15,11 +15,11 @@ class UpdateOrderRowTest extends TestCase
     protected $updateOrderRow;
 
     /**
-     * @var ValidateUpdateOrderRowData|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateUpdateOrderRowData|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

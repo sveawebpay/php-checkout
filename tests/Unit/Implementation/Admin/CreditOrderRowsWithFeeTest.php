@@ -14,16 +14,16 @@ class CreditOrderRowsWithFeeTest extends TestCase
     protected $creditOrderRowsWithFee;
 
     /**
-     * @var ValidateCreditOrderRowsWithFee|\PHPUnit_Framework_MockObject_MockObject $validatorMock
+     * @var ValidateCreditOrderRowsWithFee|\PHPUnit\Framework\MockObject\MockObject $validatorMock
      */
     protected $validatorMock;
 
-	/**
-	 * Setup the test
-	 *
-	 * @return void
-	 */
-    public function setUp()
+    /**
+     * Setup the test
+     *
+     * @return void
+     */
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -32,31 +32,31 @@ class CreditOrderRowsWithFeeTest extends TestCase
         $this->creditOrderRowsWithFee = new CreditOrderRowsWithFee($this->connectorMock, $this->validatorMock);
     }
 
-	/**
-	 * Test the prepare data method
-	 *
-	 * @return void
-	 */
+    /**
+     * Test the prepare data method
+     *
+     * @return void
+     */
     public function testPrepareData()
     {
         $inputData = array(
             'orderid' => 201,
             'deliveryid' => 1,
             'orderrowids' => array(1, 2),
-			'fee' => array(
-				'articlenumber' => '123456',
-				'name' => 'Tomatoes',
-				'quantity' => 10,
-				'unitprice' => 600,
-				'discountpercent' => 1000,
-				'vatpercent' => 2500
-			),
-			'rowcreditingoptions' => array(
-				array(
-					'orderrowid' => 1,
-					'quantity' => 1,
-				)
-			)
+            'fee' => array(
+                'articlenumber' => '123456',
+                'name' => 'Tomatoes',
+                'quantity' => 10,
+                'unitprice' => 600,
+                'discountpercent' => 1000,
+                'vatpercent' => 2500
+            ),
+            'rowcreditingoptions' => array(
+                array(
+                    'orderrowid' => 1,
+                    'quantity' => 1,
+                )
+            )
         );
         $this->creditOrderRowsWithFee->prepareData($inputData);
 
@@ -65,15 +65,15 @@ class CreditOrderRowsWithFeeTest extends TestCase
 
         $this->assertEquals(Request::METHOD_POST, $requestModel->getMethod());
         $this->assertEquals($inputData['orderrowids'], $requestBodyData['orderRowIds']);
-		$this->assertEquals($inputData['fee'], $requestBodyData['fee']);
-		$this->assertEquals($inputData['rowcreditingoptions'], $requestBodyData['rowCreditingOptions']);
+        $this->assertEquals($inputData['fee'], $requestBodyData['fee']);
+        $this->assertEquals($inputData['rowcreditingoptions'], $requestBodyData['rowCreditingOptions']);
     }
 
-	/**
-	 * Test the invoke method
-	 *
-	 * @return void
-	 */
+    /**
+     * Test the invoke method
+     *
+     * @return void
+     */
     public function testInvoke()
     {
         $fakeResponse = 'Test response!!!';
@@ -88,11 +88,11 @@ class CreditOrderRowsWithFeeTest extends TestCase
         $this->assertEquals($fakeResponse, $createOrder->getResponseHandler());
     }
 
-	/**
-	 * Test the validate method
-	 *
-	 * @return void
-	 */
+    /**
+     * Test the validate method
+     *
+     * @return void
+     */
     public function testValidate()
     {
         $this->validatorMock->expects($this->once())

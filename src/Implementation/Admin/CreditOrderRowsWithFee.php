@@ -52,15 +52,15 @@ class CreditOrderRowsWithFee extends AdminImplementationManager
     {
         $requestData = array();
         
-		$requestData['orderRowIds'] = $data['orderrowids'];
+        $requestData['orderRowIds'] = $data['orderrowids'];
 
-		if (!empty($data['fee'])) {
-			$requestData['fee'] = $data['fee'];
-		}
+        if (!empty($data['fee'])) {
+            $requestData['fee'] = $data['fee'];
+        }
 
-		if (!empty($data['rowcreditingoptions'])) {
-			$requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
-		}
+        if (!empty($data['rowcreditingoptions'])) {
+            $requestData['rowCreditingOptions'] = $data['rowcreditingoptions'];
+        }
 
         $orderId = $data['orderid'];
         $deliveryId = $data['deliveryid'];
@@ -74,8 +74,8 @@ class CreditOrderRowsWithFee extends AdminImplementationManager
 
     /**
      * Invoke Api call
-	 * 
-	 * @return void
+     *
+     * @return void
      */
     public function invoke()
     {
@@ -83,8 +83,8 @@ class CreditOrderRowsWithFee extends AdminImplementationManager
     }
 
     /**
-	 * Get the request model
-	 * 
+     * Get the request model
+     *
      * @return Request
      */
     public function getRequestModel()
@@ -93,11 +93,11 @@ class CreditOrderRowsWithFee extends AdminImplementationManager
     }
 
     /**
-	 * Set the request model
-	 * 
+     * Set the request model
+     *
      * @param Request $requestModel
-	 * 
-	 * @return void
+     *
+     * @return void
      */
     public function setRequestModel($requestModel)
     {

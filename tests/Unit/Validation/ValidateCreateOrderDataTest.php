@@ -12,7 +12,7 @@ class ValidateCreateOrderDataTest extends TestCase
      */
     private $validateCreateOrderData;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->validateCreateOrderData = new ValidateCreateOrderData();
