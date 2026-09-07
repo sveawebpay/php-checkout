@@ -3,7 +3,7 @@
 namespace Svea\Checkout\Callback;
 
 /**
- * Verifies HMAC signatures sent with Svea Checkout callbacks.
+ * Verifies HMAC signatures sent for callback subscriptions.
  */
 class HmacSignatureVerifier
 {
@@ -20,19 +20,24 @@ class HmacSignatureVerifier
      * @param string $payload Raw request body
      * @param string $signature Header value from X-Signature-512
      * @param string|int $timestamp Header value from X-Timestamp
-     * @param string $sharedSecret Checkout secret
+     * @param string $secret Shared secret
      * @return bool
      */
-    public function verify($payload, $signature, $timestamp, $sharedSecret)
+    public function verify($payload, $signature, $timestamp, $secret)
     {
-        if ($payload === null || $signature === null || $timestamp === null || $sharedSecret === null) {
+        if (
+            !is_string($payload)
+            || !is_string($signature)
+            || (!is_string($timestamp) && !is_int($timestamp))
+            || !is_string($secret)
+        ) {
             return false;
         }
 
         $signature = trim($signature);
         $timestampString = trim((string) $timestamp);
 
-        if ($signature === '' || $timestampString === '' || $sharedSecret === '') {
+        if ($signature === '' || $timestampString === '' || $secret === '') {
             return false;
         }
 
@@ -40,7 +45,7 @@ class HmacSignatureVerifier
             return false;
         }
 
-        $expectedSignature = $this->createSignature($payload, $timestampString, $sharedSecret);
+        $expectedSignature = $this->createSignature($payload, $timestampString, $secret);
 
         return hash_equals($expectedSignature, $signature);
     }
@@ -50,14 +55,14 @@ class HmacSignatureVerifier
      *
      * @param string $payload Raw request body
      * @param string|int $timestamp Header value from X-Timestamp
-     * @param string $sharedSecret Checkout secret
+     * @param string $secret Shared secret
      * @return string
      */
-    public function createSignature($payload, $timestamp, $sharedSecret)
+    public function createSignature($payload, $timestamp, $secret)
     {
         $message = $timestamp . '.' . $payload;
 
-        return base64_encode(hash_hmac('sha512', $message, $sharedSecret, true));
+        return base64_encode(hash_hmac('sha512', $message, $secret, true));
     }
 
     /**
@@ -68,6 +73,10 @@ class HmacSignatureVerifier
      */
     private function isTimestampValid($timestamp)
     {
+        if (preg_match('/^\d+$/D', $timestamp) !== 1) {
+            return false;
+        }
+
         return abs(time() - (int) $timestamp) <= self::MAX_TIMESTAMP_AGE_SECONDS;
     }
 }

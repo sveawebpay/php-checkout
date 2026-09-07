@@ -190,6 +190,89 @@ class CheckoutAdminClient
     }
 
     /**
+     * Get all callback subscriptions.
+     *
+     * @return mixed
+     */
+    public function getCallbackSubscriptions()
+    {
+        return $this->executeAction(
+            ImplementationAdminFactory::returnGetCallbackSubscriptionsClass($this->connector),
+            array()
+        );
+    }
+
+    /**
+     * Get a callback subscription.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function getCallbackSubscription($data)
+    {
+        return $this->executeAction(
+            ImplementationAdminFactory::returnGetCallbackSubscriptionClass($this->connector),
+            $data
+        );
+    }
+
+    /**
+     * Add a callback subscription.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function addCallbackSubscription($data)
+    {
+        return $this->executeAction(
+            ImplementationAdminFactory::returnAddCallbackSubscriptionClass($this->connector),
+            $data
+        );
+    }
+
+    /**
+     * Update a callback subscription.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function updateCallbackSubscription($data)
+    {
+        return $this->executeAction(
+            ImplementationAdminFactory::returnUpdateCallbackSubscriptionClass($this->connector),
+            $data
+        );
+    }
+
+    /**
+     * Verify a callback subscription.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function verifyCallbackSubscription($data)
+    {
+        return $this->executeAction(
+            ImplementationAdminFactory::returnVerifyCallbackSubscriptionClass($this->connector),
+            $data
+        );
+    }
+
+    /**
+     * Remove a callback subscription.
+     *
+     * @param mixed $data
+     * @return mixed
+     */
+    public function removeCallbackSubscription($data)
+    {
+        return $this->executeAction(
+            ImplementationAdminFactory::returnRemoveCallbackSubscriptionClass($this->connector),
+            $data
+        );
+    }
+
+    /**
      * @param ImplementationInterface $actionObject
      * @param mixed $inputData
      * @return array

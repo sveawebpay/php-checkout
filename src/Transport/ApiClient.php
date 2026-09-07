@@ -6,6 +6,7 @@ use \Exception;
 use Svea\Checkout\Exception\ExceptionCodeList;
 use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\Http\HttpRequestInterface;
+use Svea\Checkout\Version;
 
 /**
  * Class ApiClient - Used to make a request to Svea Checkout API
@@ -44,6 +45,7 @@ class ApiClient
         $header[] = 'Content-type: application/json';
         $header[] = 'Authorization: Svea ' . $request->getAuthorizationToken();
         $header[] = 'Timestamp: ' . $request->getTimestamp();
+        $header[] = 'X-SVEA-SDK-PACKAGE: PHP:' . Version::SDK;
         $header[] = 'Expect:';
 
         $this->httpClient->init();
@@ -65,6 +67,10 @@ class ApiClient
         if ($request->getMethod() === 'PATCH') {
             $this->httpClient->setOption(CURLOPT_CUSTOMREQUEST, "PATCH");
             $this->httpClient->setOption(CURLOPT_POSTFIELDS, $request->getBody());
+        }
+
+        if ($request->getMethod() === Request::METHOD_DELETE) {
+            $this->httpClient->setOption(CURLOPT_CUSTOMREQUEST, Request::METHOD_DELETE);
         }
 
         // Set a default timeout of 15 seconds if none is defined

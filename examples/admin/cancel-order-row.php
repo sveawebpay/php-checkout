@@ -21,7 +21,7 @@ require_once '../../include.php';
  * Base Url for SVEA Api. Can be TEST_ADMIN_BASE_URL and PROD_ADMIN_BASE_URL
  */
 $checkoutMerchantId = 100002;
-$checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d2";
+$secret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d2";
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_ADMIN_BASE_URL;
 
 try {
@@ -29,7 +29,7 @@ try {
      * Create Connector object
      *
      * Exception \Svea\Checkout\Exception\SveaConnectorException will be returned if
-     * some of fields $merchantId, $sharedSecret and $baseUrl is missing
+     * some of fields $merchantId, $secret and $baseUrl is missing
      *
      *
      * Cancel Order Row
@@ -39,7 +39,7 @@ try {
      * \Svea\Checkout\Exception\SveaApiException
      * \Exception - for any other error
      */
-    $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+    $conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $secret, $baseUrl);
     $checkoutClient = new \Svea\Checkout\CheckoutAdminClient($conn);
 
     $data = array(

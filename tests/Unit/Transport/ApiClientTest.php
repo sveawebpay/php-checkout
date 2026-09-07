@@ -3,11 +3,46 @@
 namespace Svea\Checkout\Tests\Unit\Transport;
 
 use Svea\Checkout\Tests\Unit\TestCase;
+use Svea\Checkout\Model\Request;
 use Svea\Checkout\Transport\ApiClient;
 use Svea\Checkout\Transport\ResponseHandler;
+use Svea\Checkout\Version;
 
 class ApiClientTest extends TestCase
 {
+    public function testSetDeleteMethod()
+    {
+        $this->requestModel->setDeleteMethod();
+
+        $this->assertEquals(Request::METHOD_DELETE, $this->requestModel->getMethod());
+        $this->assertNull($this->requestModel->getBody());
+    }
+
+    public function testDeleteUsesCustomRequestWithoutPostData()
+    {
+        $options = array();
+        $this->httpClientMock->method('setOption')
+            ->willReturnCallback(function ($name, $value) use (&$options) {
+                $options[$name] = $value;
+            });
+        $this->mockHttpClient($this->apiResponse, 200);
+        $this->requestModel->setDeleteMethod();
+
+        $this->apiClientMock->sendRequest($this->requestModel);
+
+        $this->assertEquals(Request::METHOD_DELETE, $options[CURLOPT_CUSTOMREQUEST]);
+        $this->assertArrayNotHasKey(CURLOPT_POST, $options);
+        $this->assertArrayNotHasKey(CURLOPT_POSTFIELDS, $options);
+    }
+
+    public function testDeleteRejectsBodySetAfterMethod()
+    {
+        $this->requestModel->setDeleteMethod();
+
+        $this->expectException('\InvalidArgumentException');
+        $this->requestModel->setBody('{}');
+    }
+
     public function testSendRequestWithOkStatusResponse()
     {
         $httpCode = 200;
@@ -20,6 +55,20 @@ class ApiClientTest extends TestCase
 
         $this->assertInstanceOf('Svea\Checkout\Transport\ResponseHandler', $responseHandler);
         $this->assertEquals($httpCode, $responseHandler->getHttpCode());
+    }
+
+    public function testSendRequestIncludesSdkPackageHeader()
+    {
+        $options = array();
+        $this->httpClientMock->method('setOption')
+            ->willReturnCallback(function ($name, $value) use (&$options) {
+                $options[$name] = $value;
+            });
+        $this->mockHttpClient($this->apiResponse, 200);
+
+        $this->apiClientMock->sendRequest($this->requestModel);
+
+        $this->assertContains('X-SVEA-SDK-PACKAGE: PHP:' . Version::SDK, $options[CURLOPT_HTTPHEADER]);
     }
 
     public function testSendRequestWithCreatedStatusResponse()

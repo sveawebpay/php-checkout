@@ -135,6 +135,14 @@ class ResponseHandlerTest extends TestCase
         $this->assertEquals('', $responseHandler->getResponse());
     }
 
+    public function testGetResponseWith200AndEmptyBodyReturnsEmptyArray()
+    {
+        $content = 'HTTP/1.1 200 OK' . "\r\n\r\n";
+        $responseHandler = new ResponseHandler($content, 200);
+
+        $this->assertEquals(array(), $responseHandler->getResponse());
+    }
+
     public function testGetResponseWith201CreatedStatusResponse()
     {
         $body = '{"test":"Order credited successful"}';
