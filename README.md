@@ -70,7 +70,7 @@ You have to use a connector object as parameter when creating a CheckoutClient o
 
 The connector defines what credentials should be used and which environment should be used.
 
-Parameters for creating Connector are: checkoutMerchantId, checkoutSecret and base API url(environment).
+Parameters for creating Connector are: checkoutMerchantId, secret and base API url(environment).
 
 ```php
 // include the library
@@ -80,11 +80,11 @@ include 'vendor/autoload.php';
 require_once 'include.php';
 
 $checkoutMerchantId = '100001';
-$checkoutSecret = 'checkoutSecret';
+$secret = 'secret';
 //set endpoint url. Eg. test or prod
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-$connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+$connector = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $secret, $baseUrl);
 ```
 #### 2.2 CheckoutClient
 The CheckoutClient class contains four methods which can be used to:
@@ -98,7 +98,7 @@ To ensure that a snippet always is displayed to the end-user, we recommend using
 ![Recommended flow of checkout](docs/image/flow.png?raw=true)
 
 #### 2.3 CheckoutAdminClient
-The CheckoutAdminClient class contains methods which are used to administrate orders which have been creating using the CheckoutClient class.
+The CheckoutAdminClient class contains methods used to administrate orders and callback subscriptions.
 
 Orders can only be administrated if [CheckoutOrderStatus](#108-checkoutorderstatus) is "FINAL", any other status indicates that the order has not been finalized by the end-customer.
 
@@ -123,6 +123,12 @@ The available methods are:
 * [Add order row](#1212-add-order-row) - Adds an order row to the order
 * [Update order row](#1213-update-order-row) - Updates an existing order row
 * [Replace order rows](#1214-replace-order-rows) - Replaces all order rows on an order with new order rows
+* [Get callback subscriptions](#1315-callback-subscriptions) - Lists callback subscriptions
+* [Get callback subscription](#1315-callback-subscriptions) - Gets one callback subscription
+* [Add callback subscription](#1315-callback-subscriptions) - Adds a callback subscription
+* [Update callback subscription](#1315-callback-subscriptions) - Updates a callback subscription
+* [Verify callback subscription](#1315-callback-subscriptions) - Sends a verification ping
+* [Remove callback subscription](#1315-callback-subscriptions) - Removes a callback subscription
 
 
 ### 3. Create order
@@ -603,10 +609,10 @@ Example Request:
 ```php
 
 $checkoutMerchantId = 100002;
-$checkoutSecret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d2";
+$secret = "3862e010913d7c44f104ddb4b2881f810b50d5385244571c3327802e241140cc692522c04aa21c942793c8a69a8e55ca7b6131d9ac2a2ae2f4f7c52634fe30d2";
 $baseUrl = \Svea\Checkout\Transport\Connector::TEST_BASE_URL;
 
-$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $checkoutSecret, $baseUrl);
+$conn = \Svea\Checkout\Transport\Connector::init($checkoutMerchantId, $secret, $baseUrl);
 $checkoutClient = new \Svea\Checkout\CheckoutClient($conn);
 
 $data = array(
@@ -860,14 +866,14 @@ The response should have HTTP status 200, indicating a successful request. The r
 | ClientOrderNumber |          | String  | Max 32 characters. Set if you want the ClientOrderNumber to be updated. |
 
 #### 11.14 Callback HMAC signature verification
-Svea Checkout can sign callbacks using the following headers:
+Svea can sign callback subscription requests using the following headers:
 
 | Header          | Description |
 |-----------------|-------------|
 | X-Signature-512 | HMAC-SHA512 signature generated from the timestamp and request payload |
 | X-Timestamp     | Unix timestamp in seconds from when the request was created |
 
-The signature is generated from the timestamp and the raw request body. Use the same checkout secret that is used when creating the connector.
+The signature is generated from the timestamp and the exact raw request body. Configure a dedicated secret on the callback subscription; do not reuse the merchant API secret used by the connector. The verifier rejects malformed timestamps and timestamps more than five minutes away from the current time.
 
 ```php
 // include the library
@@ -879,15 +885,16 @@ require_once 'include.php';
 $payload = file_get_contents('php://input');
 $signature = isset($_SERVER['HTTP_X_SIGNATURE_512']) ? $_SERVER['HTTP_X_SIGNATURE_512'] : null;
 $timestamp = isset($_SERVER['HTTP_X_TIMESTAMP']) ? $_SERVER['HTTP_X_TIMESTAMP'] : null;
+$secret = getenv('SVEA_CALLBACK_SECRET');
 
 $verifier = new \Svea\Checkout\Callback\HmacSignatureVerifier();
 
-if (!$verifier->verify($payload, $signature, $timestamp, $checkoutSecret)) {
+if (!$verifier->verify($payload, $signature, $timestamp, $secret)) {
     http_response_code(401);
     exit;
 }
 
-// Continue processing the callback.
+// Process the verified raw payload. Deliveries can be duplicated and arrive out of order.
 ```
 
 ### 12. HttpStatusCodes
@@ -1161,9 +1168,44 @@ If the new order amount will exceed the current order amount, a credit check wil
 If order row is successfully updated, Response is empty.
 
 
-### 13.15 Data objects
+### 13.15 Callback subscriptions
+Callback subscriptions are managed through `CheckoutAdminClient` using a Payment Admin connector. Callback URLs must use HTTPS. Verification sends a `Subscription.Ping` event to the configured URL, which must return HTTP 200.
 
-#### 13.15.1 Order
+Do not assume callback event delivery is unique or ordered. Consumers must handle duplicate events and events arriving out of order.
+
+| Method | Input array | Response array |
+|--------|-------------|----------------|
+| `getCallbackSubscriptions()` | None | Array of callback subscriptions |
+| `getCallbackSubscription($data)` | `SubscriptionId` | Subscription data |
+| `addCallbackSubscription($data)` | `CallbackUri`, non-empty `Events`, optional `Secret` | Contains the new `SubscriptionId` |
+| `updateCallbackSubscription($data)` | `SubscriptionId`, `CallbackUri`, non-empty `Events`, optional `Secret` | Existing empty success response |
+| `verifyCallbackSubscription($data)` | `SubscriptionId` | Existing empty success response after a successful ping |
+| `removeCallbackSubscription($data)` | `SubscriptionId` | Existing empty success response |
+
+`SubscriptionId` must be a GUID. `Secret` is the dedicated callback HMAC secret and may be omitted. On update, omitting it or supplying an empty string disables signing according to the Payment Admin API. Event names are passed to Payment Admin without an SDK allow-list.
+
+The methods preserve the existing `ResponseHandler` results: JSON is returned as an array, an empty HTTP 200 response is `array()`, and HTTP 204 is an empty string.
+
+```php
+$subscriptions = $checkoutAdminClient->getCallbackSubscriptions();
+
+$created = $checkoutAdminClient->addCallbackSubscription(array(
+    'CallbackUri' => 'https://merchant.example/callback',
+    'Events' => array('CheckoutOrder.Created'),
+    'Secret' => $secret
+));
+
+$subscription = $checkoutAdminClient->getCallbackSubscription(array(
+    'SubscriptionId' => $created['SubscriptionId']
+));
+```
+
+[See full callback subscription example](examples/admin/callback-subscriptions.php).
+
+
+### 13.16 Data objects
+
+#### 13.16.1 Order
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id                    |   int	        | Checkoutorderid of the order|
@@ -1184,7 +1226,7 @@ If order row is successfully updated, Response is empty.
 | Deliveries            | List of Delivery | |
 | Actions               | List of String | A list of actions possible on the order.|
 
-#### 13.15.2 Delivery
+#### 13.16.2 Delivery
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -1197,7 +1239,7 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | | 
 | Actions               | List of string | A list of actions possible on the delivery.|
 
-#### 13.15.3 Credit
+#### 13.16.3 Credit
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -1205,14 +1247,14 @@ If order row is successfully updated, Response is empty.
 | OrderRows             | List of OrderRow | |
 | Actions               | List of String | A list of actions possible on the credit.|
 
-#### 13.15.4 Task
+#### 13.16.4 Task
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
 | Id	                | Long          |	Identifier for the task |
 | Status                | String        | Status of the task |
 
-#### 13.15.5 Order Row
+#### 13.16.5 Order Row
 
 |Parameter	            |R  | RO | Type     | Description                   |	Limits|
 |-----------------------|---|----|----------|-------------------------------|-------------------|
@@ -1227,7 +1269,7 @@ If order row is successfully updated, Response is empty.
 | IsCancelled           |   | *  |boolean  | Determines if the row is cancelled. | Not possible to set through API, only get.|
 | Actions               |   | *  |List of string | A list of actions possible on the order row. See list of OrderRow actions below. | Not possible to set through API, only get.|
 
-#### 13.15.6 Address
+#### 13.16.6 Address
 
 | Parameter             |   Type        | Description                                               |
 |-----------------------|---------------|-----------------------------------------------------------|
@@ -1238,7 +1280,7 @@ If order row is successfully updated, Response is empty.
 | City                  | 	string      | 	City |
 | CountryCode           | 	string      | 	2-letter ISO country code |
 
-#### 13.15.7 Order Status
+#### 13.16.7 Order Status
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -1247,7 +1289,7 @@ If order row is successfully updated, Response is empty.
 | Cancelled             | The order is fully cancelled |
 | Failed                | The payment for this order has failed |
 
-#### 13.15.8 Order actions
+#### 13.16.8 Order actions
 
 | Parameter                 |  Description                                               |
 |---------------------------|------------------------------------------------------------|
@@ -1259,7 +1301,7 @@ If order row is successfully updated, Response is empty.
 | CanAddOrderRow            ||
 | CanUpdateOrderRow         ||
 
-#### 13.15.9 Delivery actions
+#### 13.16.9 Delivery actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|
@@ -1267,7 +1309,7 @@ If order row is successfully updated, Response is empty.
 | CanCreditOrderRows    ||
 | CanCreditAmount       ||		
 
-#### 13.15.10 Order Row actions
+#### 13.16.10 Order Row actions
 
 | Parameter             |  Description                                               |
 |-----------------------|------------------------------------------------------------|

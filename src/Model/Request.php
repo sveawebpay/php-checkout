@@ -14,6 +14,7 @@ class Request
     const METHOD_POST = 'POST';
     const METHOD_PUT = 'PUT';
     const METHOD_PATCH = 'PATCH';
+    const METHOD_DELETE = 'DELETE';
 
     /**
      * Authorization token, sent trough authorization header in request.
@@ -84,6 +85,10 @@ class Request
      */
     public function setBody($body)
     {
+        if ($this->method === self::METHOD_DELETE && $body !== null) {
+            throw new \InvalidArgumentException('DELETE requests must not contain a body.');
+        }
+
         $this->body = $body;
     }
 
@@ -125,6 +130,15 @@ class Request
     public function setPatchMethod()
     {
         $this->method = self::METHOD_PATCH;
+    }
+
+    /**
+     * Set DELETE method to the request.
+     */
+    public function setDeleteMethod()
+    {
+        $this->method = self::METHOD_DELETE;
+        $this->body = null;
     }
 
     /**

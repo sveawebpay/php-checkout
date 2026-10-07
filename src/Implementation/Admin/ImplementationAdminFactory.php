@@ -19,6 +19,9 @@ use Svea\Checkout\Validation\Admin\ValidateCreditOrderAmountData;
 use Svea\Checkout\Validation\Admin\ValidateCreditOrderRowsWithFeeData;
 use Svea\Checkout\Validation\Admin\ValidateGetOrderAddressesData;
 use Svea\Checkout\Validation\Admin\ValidateReplaceOrderRowsData;
+use Svea\Checkout\Validation\Admin\ValidateCallbackSubscriptionData;
+use Svea\Checkout\Validation\Admin\ValidateCallbackSubscriptionIdData;
+use Svea\Checkout\Validation\Admin\ValidateGetCallbackSubscriptionsData;
 
 class ImplementationAdminFactory
 {
@@ -130,5 +133,59 @@ class ImplementationAdminFactory
     public static function returnCreditOrderRowsWithFeeClass(Connector $connector)
     {
         return new CreditOrderRowsWithFee($connector, new ValidateCreditOrderRowsWithFeeData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return GetCallbackSubscriptions
+     */
+    public static function returnGetCallbackSubscriptionsClass(Connector $connector)
+    {
+        return new GetCallbackSubscriptions($connector, new ValidateGetCallbackSubscriptionsData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return GetCallbackSubscription
+     */
+    public static function returnGetCallbackSubscriptionClass(Connector $connector)
+    {
+        return new GetCallbackSubscription($connector, new ValidateCallbackSubscriptionIdData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return AddCallbackSubscription
+     */
+    public static function returnAddCallbackSubscriptionClass(Connector $connector)
+    {
+        return new AddCallbackSubscription($connector, new ValidateCallbackSubscriptionData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return UpdateCallbackSubscription
+     */
+    public static function returnUpdateCallbackSubscriptionClass(Connector $connector)
+    {
+        return new UpdateCallbackSubscription($connector, new ValidateCallbackSubscriptionData(true));
+    }
+
+    /**
+     * @param Connector $connector
+     * @return VerifyCallbackSubscription
+     */
+    public static function returnVerifyCallbackSubscriptionClass(Connector $connector)
+    {
+        return new VerifyCallbackSubscription($connector, new ValidateCallbackSubscriptionIdData());
+    }
+
+    /**
+     * @param Connector $connector
+     * @return RemoveCallbackSubscription
+     */
+    public static function returnRemoveCallbackSubscriptionClass(Connector $connector)
+    {
+        return new RemoveCallbackSubscription($connector, new ValidateCallbackSubscriptionIdData());
     }
 }
